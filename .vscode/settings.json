@@ -1,0 +1,29 @@
+{
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.addMissingImports": true,
+      "source.fixAll.eslint": true
+    }
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.addMissingImports": true,
+      "source.fixAll.eslint": true
+    }
+  },
+  "python.formatting.provider": "none",
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact"
+  },
+  "eslint.workingDirectories": [{ "mode": "auto" }],
+  "editor.stickyScroll.enabled": true,
+  "editor.inlineSuggest.enabled": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "modifications",
+  "typescript.tsdk": "../frontend/node_modules/typescript/lib",
+  "typescript.preferences.importModuleSpecifier": "non-relative"
+}

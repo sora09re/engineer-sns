@@ -1,7 +1,7 @@
 import { Button, Checkbox, Group, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import type { CustomNextPage } from "next";
-import { AuthLayout } from "src/component/layout";
+import { AuthLayout } from "src/components/layout";
 
 const SignIn: CustomNextPage = () => {
   const form = useForm({ initialValues: { email: "", termsOfService: true } });
