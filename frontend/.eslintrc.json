@@ -120,6 +120,7 @@
       "files": [
         "src/pages/**/*.tsx",
         "src/pages/api/**/*.ts",
+        "src/**/*.stories.tsx",
         "next.config.mjs"
       ],
       "rules": {
