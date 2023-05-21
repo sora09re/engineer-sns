@@ -1,12 +1,9 @@
-import { Button as MantineButton } from "@mantine/core";
-import { MantineProvider } from "@mantine/core";
+import { Button as MantineButton, MantineProvider } from "@mantine/core";
 
-const Button = () => {
+export const Button = () => {
   return (
     <MantineProvider>
       <MantineButton>投稿する</MantineButton>
     </MantineProvider>
   );
 };
-
-export default Button;
