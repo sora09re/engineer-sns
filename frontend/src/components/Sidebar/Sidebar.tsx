@@ -1,7 +1,5 @@
-import { Box, NavLink } from "@mantine/core";
+import { Box, Button, NavLink } from "@mantine/core";
 import { IconBell, IconHome2, IconUserCircle } from "@tabler/icons";
-
-import { Button } from "../Button/Button";
 
 const items = [
   {
@@ -27,7 +25,7 @@ export const Sidebar = () => {
       {items.map((item) => {
         return <NavLink key={item.href} label={item.label} icon={item.icon} />;
       })}
-      <Button />
+      <Button>投稿する</Button>
     </Box>
   );
 };
