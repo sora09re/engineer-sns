@@ -1,23 +1,17 @@
 import { Button, Paper, Space, Textarea } from "@mantine/core";
-import type { Dispatch, SetStateAction } from "react";
 import { useState } from "react";
 
-type Post = {
-  id: number;
-  content: string;
-};
+import type { PostsProps } from "@/pages/_app";
 
-type NewPostFormProps = {
-  posts: Post[];
-  setPosts: Dispatch<SetStateAction<Post[]>>;
-};
-
-export const NewPostForm = ({ posts, setPosts }: NewPostFormProps) => {
+export const NewPostForm = ({ posts, setPosts }: PostsProps) => {
   const [postContent, setPostContent] = useState("");
   const handlePost = () => {
     const newPost = {
       id: posts.length + 1,
+      comments: 0,
       content: postContent,
+      likes: 0,
+      reposts: 0,
     };
     setPosts([newPost, ...posts]);
     setPostContent("");

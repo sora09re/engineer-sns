@@ -18,7 +18,13 @@ export const Default: Story = (args: PostProps) => {
 };
 
 Default.args = {
-  post: { id: 1, content: "Sample content" },
+  post: {
+    id: 1,
+    comments: 12,
+    content: "Hello, world! This is a tweet.",
+    likes: 321,
+    reposts: 22,
+  },
 };
 
 export const Code: Story = (args: PostProps) => {
@@ -26,5 +32,11 @@ export const Code: Story = (args: PostProps) => {
 };
 
 Code.args = {
-  post: { id: 1, content: "```<p>これはpタグです。</p>```" },
+  post: {
+    id: 1,
+    comments: 12,
+    content: "```<p>これはpタグです。</p>```",
+    likes: 321,
+    reposts: 22,
+  },
 };
