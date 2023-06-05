@@ -9,7 +9,7 @@ import {
 } from "@tabler/icons";
 import { useState } from "react";
 
-import { PostModal } from "@/components/PostModal/PostModal";
+import { PostModal } from "@/features/posts-feature/PostModal/PostModal";
 import type { PostsProps } from "@/pages/_app";
 
 const items = [
