@@ -50,7 +50,7 @@ const App: CustomAppPage = ({ Component, pageProps }) => {
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS>
       <NotificationsProvider>
-        <Sidebar />
+        <Sidebar posts={posts} setPosts={setPosts} />
         {getLayout(<Component {...pageProps} />)}
       </NotificationsProvider>
     </MantineProvider>

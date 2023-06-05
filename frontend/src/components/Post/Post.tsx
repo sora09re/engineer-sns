@@ -1,5 +1,6 @@
 import { Flex, Group, Paper, Space, Text } from "@mantine/core";
 import { IconMessageCircle2, IconRotate, IconThumbUp } from "@tabler/icons";
+import { useEffect, useState } from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { monokaiSublime } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 
@@ -50,6 +51,20 @@ export const ContentPart: React.FC<ContentPartProps> = ({ part }) => {
 };
 
 export const Post: React.FC<PostProps> = ({ post }) => {
+  const [likes, setLikes] = useState(post ? post.likes : 0);
+  const [liked, setLiked] = useState(false);
+
+  useEffect(() => {
+    if (post) {
+      setLikes(post.likes);
+    }
+  }, [post]);
+
+  const handleLikeClick = () => {
+    setLikes(liked ? likes - 1 : likes + 1);
+    setLiked(!liked);
+  };
+
   if (!post) {
     return null;
   }
@@ -61,21 +76,27 @@ export const Post: React.FC<PostProps> = ({ post }) => {
       {parsedContent.map((part, index) => {
         return <ContentPart key={index} part={part} />;
       })}
+      <Space h="md" />
       <Group spacing="xl">
         <Flex align="center">
-          <IconMessageCircle2 size="1.0rem" stroke={1.0} cursor="pointer" />
+          <IconMessageCircle2 size="1.2rem" cursor="pointer" />
           <Space w="xs" />
           <Text>{post.comments}</Text>
         </Flex>
         <Flex align="center">
-          <IconRotate size="1.0rem" stroke={1.0} cursor="pointer" />
+          <IconRotate size="1.2rem" cursor="pointer" />
           <Space w="xs" />
           <Text>{post.reposts}</Text>
         </Flex>
         <Flex align="center">
-          <IconThumbUp size="1.0rem" stroke={1.0} cursor="pointer" />
+          <IconThumbUp
+            size="1.2rem"
+            color={liked ? "#228be6" : "black"}
+            cursor="pointer"
+            onClick={handleLikeClick}
+          />
           <Space w="xs" />
-          <Text>{post.likes}</Text>
+          <Text>{likes}</Text>
         </Flex>
       </Group>
     </Paper>

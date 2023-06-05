@@ -1,9 +1,20 @@
 import { Button, Paper, Space, Textarea } from "@mantine/core";
+import type { Dispatch, SetStateAction } from "react";
 import { useState } from "react";
 
-import type { PostsProps } from "@/pages/_app";
+import type { Post } from "@/pages/_app";
 
-export const NewPostForm = ({ posts, setPosts }: PostsProps) => {
+type NewPostsProps = {
+  posts: Post[];
+  setModalOpened?: (opened: boolean) => void;
+  setPosts: Dispatch<SetStateAction<Post[]>>;
+};
+
+export const NewPostForm = ({
+  posts,
+  setModalOpened,
+  setPosts,
+}: NewPostsProps) => {
   const [postContent, setPostContent] = useState("");
   const handlePost = () => {
     const newPost = {
@@ -15,6 +26,9 @@ export const NewPostForm = ({ posts, setPosts }: PostsProps) => {
     };
     setPosts([newPost, ...posts]);
     setPostContent("");
+    if (setModalOpened) {
+      setModalOpened(false);
+    }
   };
 
   return (
