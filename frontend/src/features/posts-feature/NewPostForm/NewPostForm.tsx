@@ -1,21 +1,15 @@
 import { Button, Paper, Space, Textarea } from "@mantine/core";
-import type { Dispatch, SetStateAction } from "react";
 import { useState } from "react";
+import { useRecoilState } from "recoil";
 
-import type { Post } from "@/pages/_app";
+import { useModal } from "@/hooks/useModal";
+import { postsState } from "@/stores/postsState";
 
-type NewPostsProps = {
-  posts: Post[];
-  setModalOpened?: (opened: boolean) => void;
-  setPosts: Dispatch<SetStateAction<Post[]>>;
-};
-
-export const NewPostForm = ({
-  posts,
-  setModalOpened,
-  setPosts,
-}: NewPostsProps) => {
+export const NewPostForm = () => {
   const [postContent, setPostContent] = useState("");
+  const [, setIsVisible] = useModal("post");
+  const [posts, setPosts] = useRecoilState(postsState);
+
   const handlePost = () => {
     const newPost = {
       id: posts.length + 1,
@@ -26,9 +20,7 @@ export const NewPostForm = ({
     };
     setPosts([newPost, ...posts]);
     setPostContent("");
-    if (setModalOpened) {
-      setModalOpened(false);
-    }
+    setIsVisible(false);
   };
 
   return (

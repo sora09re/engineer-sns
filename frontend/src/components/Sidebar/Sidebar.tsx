@@ -9,8 +9,7 @@ import {
 } from "@tabler/icons";
 import { useState } from "react";
 
-import { PostModal } from "@/features/posts-feature/PostModal/PostModal";
-import type { PostsProps } from "@/pages/_app";
+import { useModal } from "@/hooks/useModal";
 
 const items = [
   {
@@ -35,13 +34,14 @@ const items = [
   },
 ];
 
-export const Sidebar = ({ posts, setPosts }: PostsProps) => {
-  const [modalOpened, setModalOpened] = useState(false);
+export const Sidebar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [, setIsVisible] = useModal("post");
 
   const handleLoginLogout = () => {
     setIsLoggedIn(!isLoggedIn);
   };
+
   return (
     <Box w={220}>
       {items.map((item) => {
@@ -49,17 +49,11 @@ export const Sidebar = ({ posts, setPosts }: PostsProps) => {
       })}
       <Button
         onClick={() => {
-          return setModalOpened(true);
+          return setIsVisible(true);
         }}
       >
         投稿する
       </Button>
-      <PostModal
-        modalOpened={modalOpened}
-        setModalOpened={setModalOpened}
-        posts={posts}
-        setPosts={setPosts}
-      />
       <Space h="md" />
       <Button onClick={handleLoginLogout}>
         {isLoggedIn ? (

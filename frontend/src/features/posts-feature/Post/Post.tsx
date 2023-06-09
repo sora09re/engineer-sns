@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { monokaiSublime } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 
+import { useModal } from "@/hooks/useModal";
+
 export type PostProps = {
   post: {
     id: number;
@@ -54,6 +56,8 @@ export const Post: React.FC<PostProps> = ({ post }) => {
   const [likes, setLikes] = useState(post ? post.likes : 0);
   const [liked, setLiked] = useState(false);
 
+  const [, setIsVisible] = useModal("comment");
+
   useEffect(() => {
     if (post) {
       setLikes(post.likes);
@@ -79,7 +83,13 @@ export const Post: React.FC<PostProps> = ({ post }) => {
       <Space h="md" />
       <Group spacing="xl">
         <Flex align="center">
-          <IconMessageCircle2 size="1.2rem" cursor="pointer" />
+          <IconMessageCircle2
+            size="1.2rem"
+            cursor="pointer"
+            onClick={() => {
+              return setIsVisible(true);
+            }}
+          />
           <Space w="xs" />
           <Text>{post.comments}</Text>
         </Flex>
