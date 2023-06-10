@@ -1,29 +1,12 @@
 import { Button, Grid, Image, Paper, Text } from "@mantine/core";
-import { useState } from "react";
+import { useRecoilState } from "recoil";
 
-import { EditProfile } from "@/components/EditProfile/EditProfile";
-
-export type User = {
-  bio: string;
-  location: string;
-  name: string;
-  profileImage: File;
-  username: string;
-  website: string;
-};
-
-export const defaultUser: User = {
-  bio: "Software Engineer",
-  location: "Tokyo, Japan",
-  name: "John Doe",
-  profileImage: new File([""], "dummy.jpg"),
-  username: "@johndoe",
-  website: "https://johndoe.com",
-};
+import { useModal } from "@/hooks/useModal";
+import { userState } from "@/stores/userState";
 
 export const Profile = () => {
-  const [user, setUser] = useState<User>(defaultUser);
-  const [modalOpened, setModalOpened] = useState(false);
+  const [user] = useRecoilState(userState);
+  const [, setIsVisible] = useModal("editProfile");
 
   return (
     <Paper p="md" shadow="xs">
@@ -68,17 +51,11 @@ export const Profile = () => {
       </Grid>
       <Button
         onClick={() => {
-          return setModalOpened(true);
+          return setIsVisible(true);
         }}
       >
         プロフィールを編集
       </Button>
-      <EditProfile
-        modalOpened={modalOpened}
-        setModalOpened={setModalOpened}
-        user={user}
-        setUser={setUser}
-      />
     </Paper>
   );
 };

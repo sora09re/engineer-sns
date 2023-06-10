@@ -10,28 +10,20 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useState } from "react";
+import { useRecoilState } from "recoil";
 
-import type { User } from "@/components/Profile/Profile";
+import { useModal } from "@/hooks/useModal";
+import { userState } from "@/stores/userState";
 
-interface EditProfileProps {
-  modalOpened: boolean;
-  setModalOpened: (opened: boolean) => void;
-  setUser: (user: User) => void;
-  user: User;
-}
-
-export const EditProfile = ({
-  modalOpened,
-  setModalOpened,
-  setUser,
-  user,
-}: EditProfileProps) => {
+export const EditProfileModal = () => {
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const [location, setLocation] = useState("");
   const [website, setWebsite] = useState("");
   const [profileImage, setProfileImage] = useState<File | null>(null);
+  const [isVisible, setIsVisible] = useModal("editProfile");
+  const [user, setUser] = useRecoilState(userState);
 
   const onSave = () => {
     setUser({
@@ -43,14 +35,14 @@ export const EditProfile = ({
       username: username !== "" ? username : user.username,
       website: website !== "" ? website : user.website,
     });
-    setModalOpened(false);
+    setIsVisible(false);
   };
 
   return (
     <Modal
-      opened={modalOpened}
+      opened={isVisible}
       onClose={() => {
-        return setModalOpened(false);
+        return setIsVisible(false);
       }}
       title="プロフィールを編集"
       withCloseButton
