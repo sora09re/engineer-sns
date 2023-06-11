@@ -1,56 +1,13 @@
 import { Flex, Group, Paper, Space, Text } from "@mantine/core";
 import { IconMessageCircle2, IconRotate, IconThumbUp } from "@tabler/icons";
 import { useEffect, useState } from "react";
-import SyntaxHighlighter from "react-syntax-highlighter";
-import { monokaiSublime } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 
+import {
+  ContentPart,
+  parseContent,
+} from "@/features/posts-feature/ContentPart/ContentPart";
 import { useModal } from "@/hooks/useModal";
-
-export type PostProps = {
-  post: {
-    id: number;
-    comments: number;
-    content: string;
-    likes: number;
-    reposts: number;
-  };
-};
-
-type ParsedContent = { content: string; type: "text" | "code" };
-
-type ContentPartProps = {
-  part: ParsedContent;
-};
-
-const COMPONENT_MAP = {
-  code: SyntaxHighlighter,
-  text: Text,
-};
-
-export const parseContent = (content: string): ParsedContent[] => {
-  const parts = content.split("```");
-
-  return parts.map((part, index) => {
-    return {
-      content: part,
-      type: index % 2 === 0 ? "text" : "code",
-    };
-  });
-};
-
-export const ContentPart: React.FC<ContentPartProps> = ({ part }) => {
-  const Component = COMPONENT_MAP[part.type];
-
-  if (part.type === "code") {
-    return (
-      <Component language="htmlbars" style={monokaiSublime}>
-        {part.content}
-      </Component>
-    );
-  }
-
-  return <Component>{part.content}</Component>;
-};
+import type { PostProps } from "@/types/post";
 
 export const Post: React.FC<PostProps> = ({ post }) => {
   const [likes, setLikes] = useState(post ? post.likes : 0);

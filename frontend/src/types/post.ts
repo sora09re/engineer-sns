@@ -8,6 +8,10 @@ export type Post = {
   reposts: number;
 };
 
+export type PostProps = {
+  post: Post;
+};
+
 export type PostsProps = {
   posts: Post[];
   setPosts: Dispatch<SetStateAction<Post[]>>;
