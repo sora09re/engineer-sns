@@ -1,11 +1,16 @@
 import type { Dispatch, SetStateAction } from "react";
 
+
 export type Post = {
   id: number;
-  comments: number;
+  comments: Comment[];
   content: string;
-  likes: number;
-  reposts: number;
+  createdAt: Date;
+  isDeleted: boolean;
+  likesCount: number;
+  repostsCount: number;
+  updatedAt: Date;
+  userId: number;
 };
 
 export type PostProps = {
