@@ -1,5 +1,6 @@
 import type { Dispatch, SetStateAction } from "react";
 
+import type { Comment } from "@/types/comment";
 
 export type Post = {
   id: number;

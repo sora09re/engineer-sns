@@ -11,21 +11,25 @@ export const postsState = atom({
       comments: [
         {
           id: 1,
+          comments: [],
           content: "This is the first comment",
           createdAt: date1,
           isDeleted: false,
           likesCount: 5,
           postId: 1,
+          repostsCount: 2,
           updatedAt: date1,
           userId: 2,
         },
         {
           id: 2,
+          comments: [],
           content: "This is the second comment",
           createdAt: date1,
           isDeleted: false,
           likesCount: 3,
           postId: 1,
+          repostsCount: 2,
           updatedAt: date1,
           userId: 3,
         },
@@ -43,11 +47,13 @@ export const postsState = atom({
       comments: [
         {
           id: 3,
+          comments: [],
           content: "This is the third comment",
           createdAt: date2,
           isDeleted: false,
           likesCount: 2,
           postId: 2,
+          repostsCount: 2,
           updatedAt: date2,
           userId: 4,
         },
@@ -65,11 +71,13 @@ export const postsState = atom({
       comments: [
         {
           id: 4,
+          comments: [],
           content: "This is the fourth comment",
           createdAt: date3,
           isDeleted: false,
           likesCount: 1,
           postId: 3,
+          repostsCount: 2,
           updatedAt: date3,
           userId: 5,
         },
