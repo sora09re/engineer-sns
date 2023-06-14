@@ -33,7 +33,7 @@ export const Comment = ({ comment }: CommentProps) => {
   const parsedContent = parseContent(comment.content);
 
   return (
-    <Paper key={comment.id} p="md" shadow="xs" style={{ marginBottom: "20px" }}>
+    <Paper key={comment.id} p="md" shadow="xs">
       <Flex>
         {/* TODO ツイートユーザープロフィール画像に変更 */}
         <Avatar src={null} alt="no image here" />
