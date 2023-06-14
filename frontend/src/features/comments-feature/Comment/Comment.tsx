@@ -7,33 +7,33 @@ import {
   parseContent,
 } from "@/features/posts-feature/ContentPart/ContentPart";
 import { useModal } from "@/hooks/useModal";
-import type { PostProps } from "@/types/post";
+import type { CommentProps } from "@/types/comment";
 
-export const Post = ({ post }: PostProps) => {
-  const [likes, setLikes] = useState(post ? post.likesCount : 0);
+export const Comment = ({ comment }: CommentProps) => {
+  const [likes, setLikes] = useState(comment ? comment.likesCount : 0);
   const [liked, setLiked] = useState(false);
 
   const [, setIsVisible] = useModal("comment");
 
   useEffect(() => {
-    if (post) {
-      setLikes(post.likesCount);
+    if (comment) {
+      setLikes(comment.likesCount);
     }
-  }, [post]);
+  }, [comment]);
 
   const handleLikeClick = () => {
     setLikes(liked ? likes - 1 : likes + 1);
     setLiked(!liked);
   };
 
-  if (!post) {
+  if (!comment) {
     return null;
   }
 
-  const parsedContent = parseContent(post.content);
+  const parsedContent = parseContent(comment.content);
 
   return (
-    <Paper key={post.id} p="md" shadow="xs">
+    <Paper key={comment.id} p="md" shadow="xs" style={{ marginBottom: "20px" }}>
       <Flex>
         {/* TODO ツイートユーザープロフィール画像に変更 */}
         <Avatar src={null} alt="no image here" />
@@ -43,7 +43,7 @@ export const Post = ({ post }: PostProps) => {
             {/* TODO ツイートユーザー名に変更 */}
             <Text fw={700}>John Doe</Text>
             <Text color="gray">@johndoe</Text>
-            <Text color="gray">{post.createdAt.toLocaleString()}</Text>
+            <Text color="gray">{comment.createdAt.toLocaleString()}</Text>
           </Group>
           {parsedContent.map((part, index) => {
             return <ContentPart key={index} part={part} />;
@@ -59,12 +59,14 @@ export const Post = ({ post }: PostProps) => {
                 }}
               />
               <Space w="xs" />
-              <Text>{post.comments.length ? post.comments.length : 0}</Text>
+              <Text>
+                {comment.comments.length ? comment.comments.length : 0}
+              </Text>
             </Flex>
             <Flex align="center">
               <IconRotate size="1.2rem" cursor="pointer" />
               <Space w="xs" />
-              <Text>{post.repostsCount}</Text>
+              <Text>{comment.repostsCount}</Text>
             </Flex>
             <Flex align="center">
               <IconThumbUp
