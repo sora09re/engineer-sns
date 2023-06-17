@@ -1,9 +1,6 @@
 import {
   Button,
-  Center,
-  FileButton,
   Grid,
-  Image,
   Modal,
   Paper,
   Textarea,
@@ -12,6 +9,7 @@ import {
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 
+import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
 import { useModal } from "@/hooks/useModal";
 import { userState } from "@/stores/userState";
 
@@ -21,7 +19,8 @@ export const EditProfileModal = () => {
   const [bio, setBio] = useState("");
   const [location, setLocation] = useState("");
   const [website, setWebsite] = useState("");
-  const [profileImage, setProfileImage] = useState<File | null>(null);
+  const [profileImageUrl, setProfileImageUrl] = useState("");
+
   const [isVisible, setIsVisible] = useModal("editProfile");
   const [user, setUser] = useRecoilState(userState);
 
@@ -31,7 +30,8 @@ export const EditProfileModal = () => {
       bio: bio !== "" ? bio : user.bio,
       location: location !== "" ? location : user.location,
       name: name !== "" ? name : user.name,
-      profileImage: profileImage !== null ? profileImage : user.profileImage,
+      profileImageUrl:
+        profileImageUrl !== "" ? profileImageUrl : user.profileImageUrl,
       username: username !== "" ? username : user.username,
       website: website !== "" ? website : user.website,
     });
@@ -50,27 +50,12 @@ export const EditProfileModal = () => {
       <Paper p="md">
         <Grid grow>
           <Grid.Col span={4}>
-            <Center>
-              <Image
-                src={
-                  profileImage
-                    ? URL.createObjectURL(profileImage)
-                    : URL.createObjectURL(user.profileImage)
-                }
-                alt="Profile image"
-                width={120}
-                height={120}
-              />
-            </Center>
-            <FileButton
-              onChange={setProfileImage}
-              accept="image/png,image/jpeg"
-            >
-              {(props) => {
-                return <Button {...props}>Upload Profile Image</Button>;
+            <ImageUpload
+              value={profileImageUrl}
+              onChange={(image) => {
+                return setProfileImageUrl(image);
               }}
-            </FileButton>
-
+            />
             <TextInput
               label="名前"
               placeholder={user.name}

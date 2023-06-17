@@ -6,7 +6,7 @@ export const userState = atom({
     bio: "Software Engineer",
     location: "Tokyo, Japan",
     name: "John Doe",
-    profileImage: new File([""], "dummy.jpg"),
+    profileImageUrl: "dummy.jpg",
     username: "@johndoe",
     website: "https://johndoe.com",
   },
