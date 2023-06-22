@@ -14,7 +14,7 @@ initialize();
 export const parameters = {
   msw: {
     handlers: [
-      rest.get("/api/my/profile", async (_, res, ctx) => {
+      rest.get("/api/current", async (_, res, ctx) => {
         return res(
           ctx.status(200),
           ctx.json({
