@@ -1,17 +1,8 @@
 import { Text } from "@mantine/core";
 import SyntaxHighlighter from "react-syntax-highlighter";
-import { monokaiSublime } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { monokaiSublime } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 
 type ParsedContent = { content: string; type: "text" | "code" };
-
-type ContentPartProps = {
-  part: ParsedContent;
-};
-
-const COMPONENT_MAP = {
-  code: SyntaxHighlighter,
-  text: Text,
-};
 
 export const parseContent = (content: string): ParsedContent[] => {
   const parts = content.split("```");
@@ -22,6 +13,15 @@ export const parseContent = (content: string): ParsedContent[] => {
       type: index % 2 === 0 ? "text" : "code",
     };
   });
+};
+
+type ContentPartProps = {
+  part: ParsedContent;
+};
+
+const COMPONENT_MAP = {
+  code: SyntaxHighlighter,
+  text: Text,
 };
 
 export const ContentPart: React.FC<ContentPartProps> = ({ part }) => {

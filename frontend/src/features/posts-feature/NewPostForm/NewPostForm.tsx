@@ -12,11 +12,15 @@ export const NewPostForm = () => {
 
   const handlePost = () => {
     const newPost = {
-      id: posts.length + 1,
-      comments: 0,
+      id: 1,
+      comments: [],
       content: postContent,
-      likes: 0,
-      reposts: 0,
+      createdAt: new Date(),
+      isDeleted: false,
+      likesCount: 0,
+      repostsCount: 0,
+      updatedAt: new Date(),
+      userId: 1,
     };
     setPosts([newPost, ...posts]);
     setPostContent("");
