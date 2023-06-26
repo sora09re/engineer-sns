@@ -4,33 +4,11 @@ import { MantineProvider } from "@mantine/core";
 import { CommentModal } from "../src/components/Modal/CommentModal/CommentModal";
 import { EditProfileModal } from "../src/components/Modal/EditProfileModal/EditProfileModal";
 import { PostModal } from "../src/components/Modal/PostModal/PostModal";
-import { initialize, mswDecorator, mswLoader } from "msw-storybook-addon";
+import { initialize, mswLoader } from "msw-storybook-addon";
 import { rest } from "msw";
 
-export const decorators = [mswDecorator];
-
+// Initialize MSW
 initialize();
-
-export const parameters = {
-  msw: {
-    handlers: [
-      rest.get("/api/current", async (_, res, ctx) => {
-        return res(
-          ctx.status(200),
-          ctx.json({
-            id: 1,
-            bio: "フロントエンドエンジニア。TypeScriptとNextに興味があります。",
-            location: "Tokyo, Japan",
-            name: "TaroYamada",
-            profileImageUrl: "/__mocks__/images/img01.png",
-            username: "@taro_yamada",
-            website: "https://taro_yamada.com",
-          })
-        );
-      }),
-    ],
-  },
-};
 
 const preview = {
   parameters: {
@@ -40,6 +18,24 @@ const preview = {
         color: /(background|color)$/i,
         date: /Date$/,
       },
+    },
+    msw: {
+      handlers: [
+        rest.get("/api/current", async (_, res, ctx) => {
+          return res(
+            ctx.status(200),
+            ctx.json({
+              id: 1,
+              bio: "フロントエンドエンジニア。TypeScriptとNextに興味があります。",
+              location: "Tokyo, Japan",
+              name: "TaroYamada",
+              profileImageUrl: "/__mocks__/images/img01.png",
+              username: "@taro_yamada",
+              website: "https://taro_yamada.com",
+            })
+          );
+        }),
+      ],
     },
   },
   decorators: [

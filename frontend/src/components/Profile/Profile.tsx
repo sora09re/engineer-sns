@@ -1,16 +1,31 @@
 import { Button, Grid, Image, Paper, Space, Text } from "@mantine/core";
-import { useRecoilState } from "recoil";
+import { useEffect, useState } from "react";
 
 import { useModal } from "@/hooks/useModal";
-import { userState } from "@/stores/userState";
+import type { User } from "@/types/user";
 
 export const Profile = () => {
-  const [user] = useRecoilState(userState);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [, setIsVisible] = useModal("editProfile");
+
+  useEffect(() => {
+    fetch("/api/current")
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        return setCurrentUser(data);
+      });
+  }, []);
+
+  if (!currentUser) {
+    return <div>Loading...</div>;
+  }
 
   const handleFollow = () => {
     alert("フォロー機能を実装");
   };
+
   // const handleFollow = async () => {
   //   try {
   //     const response = await axios.post("/api/follow", { userId: user.id });
@@ -34,14 +49,14 @@ export const Profile = () => {
           }}
         >
           <Image
-            src={user.profileImageUrl}
+            src={currentUser.profileImageUrl}
             alt="Profile image"
             width={120}
             height={120}
             withPlaceholder
           />
-          <Text size="xl">{user.name}</Text>
-          <Text color="gray">{user.username}</Text>
+          <Text size="xl">{currentUser.name}</Text>
+          <Text color="gray">{currentUser.username}</Text>
         </Grid.Col>
         <Grid.Col
           span={12}
@@ -51,11 +66,10 @@ export const Profile = () => {
           <Text size="sm">フォロワー: 200</Text>
         </Grid.Col>
       </Grid>
-      <Text size="md">{user.bio}</Text>
+      <Text size="md">{currentUser.bio}</Text>
       <Grid>
         <Grid.Col span={12}>
-          <Text size="sm">場所: {user.location}</Text>
-          <Text size="sm">ウェブサイト: {user.website}</Text>
+          <Text size="sm">ウェブサイト: {currentUser.website}</Text>
         </Grid.Col>
         <Grid.Col span={12}>
           <Text size="sm">ツイート: 1000</Text>
@@ -63,7 +77,7 @@ export const Profile = () => {
         </Grid.Col>
       </Grid>
       <Button onClick={handleFollow}>フォロー</Button>
-      <Space w={20} />
+      <Space w={20} h={10} />
       <Button
         onClick={() => {
           return setIsVisible(true);
