@@ -62,8 +62,8 @@ export const Profile = () => {
           span={12}
           style={{ display: "flex", flexDirection: "column" }}
         >
-          <Text size="sm">フォロー: 100</Text>
-          <Text size="sm">フォロワー: 200</Text>
+          <Text size="sm">フォロー: {currentUser.followingCount}</Text>
+          <Text size="sm">フォロワー: {currentUser.followerCount}</Text>
         </Grid.Col>
       </Grid>
       <Text size="md">{currentUser.bio}</Text>
