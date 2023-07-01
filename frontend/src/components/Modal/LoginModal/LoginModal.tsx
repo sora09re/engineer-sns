@@ -1,11 +1,21 @@
-import { Box, Button, Modal, Text, TextInput } from "@mantine/core";
-import type { FC } from "react";
+import {
+  Box,
+  Button,
+  Modal,
+  PasswordInput,
+  Text,
+  TextInput,
+} from "@mantine/core";
+import Link from "next/link";
 import { useState } from "react";
 
-export const LoginModal: FC = () => {
-  const [opened, setOpened] = useState(false);
+import { useModal } from "@/hooks/useModal";
+
+export const LoginModal = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [isVisibleLoginModal, setIsVisibleLoginModal] = useModal("login");
+  const [, setIsVisibleSignupModal] = useModal("signup");
 
   const handleLogin = () => {
     // ここでAPIを呼び出して実際のログインを行います。
@@ -16,48 +26,54 @@ export const LoginModal: FC = () => {
     //   message: "Welcome back, " + username,
     //   title: "Login successful",
     // });
-    setOpened(false);
+    setIsVisibleLoginModal(false);
+  };
+
+  const openSignupModal = () => {
+    setIsVisibleLoginModal(false);
+    setIsVisibleSignupModal(true);
   };
 
   return (
-    <div>
-      <Button
-        onClick={() => {
-          return setOpened(true);
-        }}
-      >
-        ログイン
-      </Button>
-      <Modal
-        opened={opened}
-        onClose={() => {
-          return setOpened(false);
-        }}
-      >
-        <Box>
-          <Text fz="xl" fw="bold">ログイン</Text>
-          <TextInput
-            style={{ marginTop: 30 }}
-            placeholder="Username"
-            value={username}
-            onChange={(event) => {
-              return setUsername(event.currentTarget.value);
-            }}
-          />
-          <TextInput
-            style={{ marginTop: 10 }}
-            placeholder="Password"
-            type="password"
-            value={password}
-            onChange={(event) => {
-              return setPassword(event.currentTarget.value);
-            }}
-          />
-          <Button fullWidth style={{ marginTop: 30 }} onClick={handleLogin}>
-            ログイン
-          </Button>
-        </Box>
-      </Modal>
-    </div>
+    <Modal
+      opened={isVisibleLoginModal}
+      onClose={() => {
+        return setIsVisibleLoginModal(false);
+      }}
+      withCloseButton
+    >
+      <Box>
+        <Text fz="xl" fw="bold">
+          ログイン
+        </Text>
+        <TextInput
+          label="ユーザー名"
+          placeholder="UserName"
+          mt="lg"
+          value={username}
+          onChange={(event) => {
+            return setUsername(event.currentTarget.value);
+          }}
+        />
+        <PasswordInput
+          label="パスワード"
+          placeholder="Password"
+          mt="md"
+          value={password}
+          onChange={(event) => {
+            return setPassword(event.currentTarget.value);
+          }}
+        />
+        <Button fullWidth mt="lg" onClick={handleLogin}>
+          ログイン
+        </Button>
+        <Text mt="lg" color="gray">
+          アカウントをお持ちでない場合は
+          <Link href="" onClick={openSignupModal}>
+            登録
+          </Link>
+        </Text>
+      </Box>
+    </Modal>
   );
 };

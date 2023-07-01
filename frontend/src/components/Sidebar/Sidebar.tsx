@@ -36,7 +36,8 @@ const items = [
 
 export const Sidebar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [, setIsVisible] = useModal("post");
+  const [, setIsVisiblePostModal] = useModal("post");
+  const [, setIsVisibleLoginModal] = useModal("login");
 
   const handleLoginLogout = () => {
     setIsLoggedIn(!isLoggedIn);
@@ -47,27 +48,30 @@ export const Sidebar = () => {
       {items.map((item) => {
         return <NavLink key={item.href} label={item.label} icon={item.icon} />;
       })}
+      <Space h="lg" />
       <Button
         onClick={() => {
-          return setIsVisible(true);
+          return setIsVisiblePostModal(true);
         }}
       >
         投稿する
       </Button>
       <Space h="md" />
-      <Button onClick={handleLoginLogout}>
-        {isLoggedIn ? (
-          <>
-            <IconLogout size="1.5rem" stroke={1.5} />
-            <Text>ログアウト</Text>
-          </>
-        ) : (
-          <>
-            <IconLogin size="1.5rem" stroke={1.5} />
-            <Text>ログイン</Text>
-          </>
-        )}
-      </Button>
+      {isLoggedIn ? (
+        <Button onClick={handleLoginLogout}>
+          <IconLogout size="1.5rem" stroke={1.5} />
+          <Text>ログアウト</Text>
+        </Button>
+      ) : (
+        <Button
+          onClick={() => {
+            return setIsVisibleLoginModal(true);
+          }}
+        >
+          <IconLogin size="1.5rem" stroke={1.5} />
+          <Text>ログイン</Text>
+        </Button>
+      )}
     </Box>
   );
 };

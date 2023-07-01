@@ -4,6 +4,8 @@ import { MantineProvider } from "@mantine/core";
 import { CommentModal } from "../src/components/Modal/CommentModal/CommentModal";
 import { EditProfileModal } from "../src/components/Modal/EditProfileModal/EditProfileModal";
 import { PostModal } from "../src/components/Modal/PostModal/PostModal";
+import { LoginModal } from "../src/components/Modal/LoginModal/LoginModal";
+import { SignupModal } from "../src/components/Modal/SignupModal/SignupModal";
 import { initialize, mswLoader } from "msw-storybook-addon";
 import { rest } from "msw";
 
@@ -78,6 +80,8 @@ const preview = {
         <MantineProvider withGlobalStyles withNormalizeCSS>
           <CommentModal />
           <PostModal />
+          <LoginModal />
+          <SignupModal />
           <EditProfileModal />
           <Story />
         </MantineProvider>

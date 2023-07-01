@@ -1,11 +1,12 @@
 import { MantineProvider } from "@mantine/core";
-import { NotificationsProvider } from "@mantine/notifications";
 import type { CustomAppPage } from "next/app";
 import { RecoilRoot } from "recoil";
 
 import { CommentModal } from "@/components/Modal/CommentModal/CommentModal";
 import { EditProfileModal } from "@/components/Modal/EditProfileModal/EditProfileModal";
+import { LoginModal } from "@/components/Modal/LoginModal/LoginModal";
 import { PostModal } from "@/components/Modal/PostModal/PostModal";
+import { SignupModal } from "@/components/Modal/SignupModal/SignupModal";
 import { Sidebar } from "@/components/Sidebar/Sidebar";
 
 const App: CustomAppPage = ({ Component, pageProps }) => {
@@ -18,13 +19,13 @@ const App: CustomAppPage = ({ Component, pageProps }) => {
   return (
     <RecoilRoot>
       <MantineProvider withGlobalStyles withNormalizeCSS>
-        <NotificationsProvider>
-          <CommentModal />
-          <PostModal />
-          <Sidebar />
-          <EditProfileModal />
-          {getLayout(<Component {...pageProps} />)}
-        </NotificationsProvider>
+        <SignupModal />
+        <LoginModal />
+        <CommentModal />
+        <PostModal />
+        <EditProfileModal />
+        <Sidebar />
+        {getLayout(<Component {...pageProps} />)}
       </MantineProvider>
     </RecoilRoot>
   );
