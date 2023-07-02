@@ -7,10 +7,40 @@ import { PostModal } from "../src/components/Modal/PostModal/PostModal";
 import { LoginModal } from "../src/components/Modal/LoginModal/LoginModal";
 import { SignupModal } from "../src/components/Modal/SignupModal/SignupModal";
 import { initialize, mswLoader } from "msw-storybook-addon";
+import { testUser1, testUser2, testUser3 } from "../src/test/testUser";
+import { testPost1, testPost2, testPost3 } from "../src/test/testPost";
 import { rest } from "msw";
 
 // Initialize MSW
 initialize();
+
+const mswHandlers = [
+  rest.get("/api/current", (_, res, ctx) => {
+    return res(ctx.status(200), ctx.json({ testUser1 }));
+  }),
+  rest.get("/users/following", (_, res, ctx) => {
+    return res(ctx.status(200), ctx.json([testUser2, testUser3]));
+  }),
+  rest.get("/search/post?query={query}", (_, res, ctx) => {
+    return res(ctx.status(200), ctx.json([testPost1, testPost2, testPost3]));
+  }),
+  rest.get("/search/users?query={query}", (_, res, ctx) => {
+    return res(ctx.status(200), ctx.json([testUser2, testUser3]));
+  }),
+];
+
+const withProviders = (Story) => (
+  <RecoilRoot>
+    <MantineProvider withGlobalStyles withNormalizeCSS>
+      <CommentModal />
+      <PostModal />
+      <LoginModal />
+      <SignupModal />
+      <EditProfileModal />
+      <Story />
+    </MantineProvider>
+  </RecoilRoot>
+);
 
 const preview = {
   parameters: {
@@ -22,72 +52,10 @@ const preview = {
       },
     },
     msw: {
-      handlers: [
-        rest.get("/api/current", (_, res, ctx) => {
-          return res(
-            ctx.status(200),
-            ctx.json({
-              id: 1,
-              bio: "フロントエンドエンジニア。TypeScriptとNextに興味があります。",
-              location: "Tokyo, Japan",
-              email: "takuro_sato@example.com",
-              followerCount: 3421,
-              followingCount: 3143,
-              name: "TaroYamada",
-              profileImageUrl: "/__mocks__/images/img01.png",
-              username: "@taro_yamada",
-              website: "https://taro_yamada.com",
-            })
-          );
-        }),
-        rest.get(`/users/following`, (_, res, ctx) => {
-          return res(
-            ctx.status(200),
-            ctx.json([
-              {
-                id: 2,
-                bio: "バックエンドエンジニア。TypeScriptとPythonに興味があります。",
-                location: "Kyoto, Japan",
-                name: "TakuroSato",
-                profileImageUrl: "/__mocks__/images/img02.png",
-                email: "takuro_sato@example.com",
-                followerCount: 12,
-                followingCount: 31,
-                username: "@takuro_sato",
-                website: "https://takuro_sato.com",
-              },
-              {
-                id: 3,
-                bio: "インフラエンジニア。Dockerに興味があります。",
-                location: "Kanagawa, Japan",
-                name: "TakumiEhara",
-                email: "takuro_sato@example.com",
-                followerCount: 12,
-                followingCount: 31,
-                profileImageUrl: "/__mocks__/images/img02.png",
-                username: "@takumi_ehara",
-                website: "https://takumi_ehara.com",
-              },
-            ])
-          );
-        }),
-      ],
+      handlers: mswHandlers,
     },
   },
-  decorators: [
-    (Story) => (
-      <RecoilRoot>
-        <MantineProvider withGlobalStyles withNormalizeCSS>
-          <CommentModal />
-          <PostModal />
-          <LoginModal />
-          <SignupModal />
-          <EditProfileModal />
-          <Story />
-        </MantineProvider>
-      </RecoilRoot>
-    ),
-  ],
+  decorators: [withProviders],
   loaders: [mswLoader],
 };
 
