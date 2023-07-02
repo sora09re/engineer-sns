@@ -5,7 +5,7 @@ import { LoginModal } from "@/components/Modal/LoginModal/LoginModal";
 const meta: Meta<typeof LoginModal> = {
   component: LoginModal,
   tags: ["autodocs"],
-  title: "LoginModal",
+  title: "Modal/LoginModal",
 };
 
 export default meta;

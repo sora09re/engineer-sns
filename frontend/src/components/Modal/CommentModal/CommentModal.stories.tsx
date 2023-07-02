@@ -5,7 +5,7 @@ import { CommentModal } from "@/components/Modal/CommentModal/CommentModal";
 const meta: Meta<typeof CommentModal> = {
   component: CommentModal,
   tags: ["autodocs"],
-  title: "CommentModal",
+  title: "Modal/CommentModal",
 };
 
 export default meta;

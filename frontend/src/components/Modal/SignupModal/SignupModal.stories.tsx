@@ -8,7 +8,7 @@ const meta: Meta<typeof SignupModal> = {
   },
   component: SignupModal,
   tags: ["autodocs"],
-  title: "SignupModal",
+  title: "Modal/SignupModal",
 };
 
 export default meta;

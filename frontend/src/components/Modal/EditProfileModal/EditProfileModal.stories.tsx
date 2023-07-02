@@ -5,7 +5,7 @@ import { EditProfileModal } from "@/components/Modal/EditProfileModal/EditProfil
 const meta: Meta<typeof EditProfileModal> = {
   component: EditProfileModal,
   tags: ["autodocs"],
-  title: "EditProfileModal",
+  title: "Modal/EditProfileModal",
 };
 
 export default meta;

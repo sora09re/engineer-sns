@@ -5,7 +5,7 @@ import { PostModal } from "@/components/Modal/PostModal/PostModal";
 const meta: Meta<typeof PostModal> = {
   component: PostModal,
   tags: ["autodocs"],
-  title: "PostModal",
+  title: "Modal/PostModal",
 };
 
 export default meta;
