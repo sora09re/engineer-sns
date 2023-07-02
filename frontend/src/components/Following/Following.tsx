@@ -1,7 +1,7 @@
 import { Container } from "@mantine/core";
 import { useEffect, useState } from "react";
 
-import { FollowingItem } from "@/components/FollowingItem/FollowingItem";
+import { UserItem } from "@/components/UserItem/UserItem";
 import type { User } from "@/types/user";
 
 export const Following: React.FC = () => {
@@ -37,7 +37,7 @@ export const Following: React.FC = () => {
   return (
     <Container p={50}>
       {followingUsers.map((followingUser) => {
-        return <FollowingItem key={followingUser.id} followingUser={followingUser} />;
+        return <UserItem key={followingUser.id} propsUser={followingUser} />;
       })}
     </Container>
   );

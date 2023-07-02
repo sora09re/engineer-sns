@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { FollowingItem } from "@/components/FollowingItem/FollowingItem";
+import { UserItem } from "@/components/UserItem/UserItem";
 
-const meta: Meta<typeof FollowingItem> = {
+const meta: Meta<typeof UserItem> = {
   args: {
-    followingUser: {
+    propsUser: {
       id: 2,
       bio: "バックエンドエンジニア。TypeScriptとPythonに興味があります。",
       createdAt: new Date(),
@@ -20,12 +20,12 @@ const meta: Meta<typeof FollowingItem> = {
       website: "https://takuro_sato.com",
     },
   },
-  component: FollowingItem,
+  component: UserItem,
   tags: ["autodocs"],
-  title: "FollowingItem",
+  title: "UserItem",
 };
 
 export default meta;
-type Story = StoryObj<typeof FollowingItem>;
+type Story = StoryObj<typeof UserItem>;
 
 export const Default: Story = {};
