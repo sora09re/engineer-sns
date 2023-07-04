@@ -1,5 +1,7 @@
 import { Avatar, Flex, Group, Paper, Space, Text } from "@mantine/core";
-import { IconMessageCircle2, IconRotate, IconThumbUp } from "@tabler/icons";
+import { IconMessageCircle2, IconThumbUp } from "@tabler/icons";
+import { format, parseISO } from "date-fns";
+import ja from "date-fns/locale/ja";
 import { useEffect, useState } from "react";
 
 import {
@@ -8,6 +10,14 @@ import {
 } from "@/features/posts-feature/ContentPart/ContentPart";
 import { useModal } from "@/hooks/useModal";
 import type { PostProps } from "@/types/post";
+
+const Date = ({ dateString }: { dateString: string }) => {
+  return (
+    <time dateTime={dateString}>
+      {format(parseISO(dateString), "yyyy年MM月dd日 hh:mm", { locale: ja })}
+    </time>
+  );
+};
 
 export const Post = ({ post }: PostProps) => {
   const [likes, setLikes] = useState(post ? post.likesCount : 0);
@@ -43,7 +53,7 @@ export const Post = ({ post }: PostProps) => {
             {/* TODO ツイートユーザー名に変更 */}
             <Text fw={700}>John Doe</Text>
             <Text color="gray">@johndoe</Text>
-            <Text color="gray">{post.createdAt.toLocaleString()}</Text>
+            <Date dateString={post.createdAt.toString()} />
           </Group>
           {parsedContent.map((part, index) => {
             return <ContentPart key={index} part={part} />;
@@ -60,11 +70,6 @@ export const Post = ({ post }: PostProps) => {
               />
               <Space w="xs" />
               <Text>{post.comments.length ? post.comments.length : 0}</Text>
-            </Flex>
-            <Flex align="center">
-              <IconRotate size="1.2rem" cursor="pointer" />
-              <Space w="xs" />
-              <Text>{post.repostsCount}</Text>
             </Flex>
             <Flex align="center">
               <IconThumbUp
