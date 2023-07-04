@@ -21,7 +21,7 @@ const mswHandlers = [
   rest.get("/users/following", (_, res, ctx) => {
     return res(ctx.status(200), ctx.json([testUser2, testUser3]));
   }),
-  rest.get("/search/post?query={query}", (_, res, ctx) => {
+  rest.get("/search/posts?query={query}", (_, res, ctx) => {
     return res(ctx.status(200), ctx.json([testPost1, testPost2, testPost3]));
   }),
   rest.get("/search/users?query={query}", (_, res, ctx) => {
