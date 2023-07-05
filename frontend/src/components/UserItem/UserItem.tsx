@@ -1,4 +1,13 @@
-import { Avatar, Box, Button, Flex, Paper, Space, Text } from "@mantine/core";
+import {
+  Avatar,
+  Badge,
+  Box,
+  Button,
+  Flex,
+  Paper,
+  Space,
+  Text,
+} from "@mantine/core";
 // import Link from "next/link";
 import { useState } from "react";
 
@@ -25,7 +34,9 @@ export const UserItem = ({ propsUser }: UserItemProps) => {
           <Flex justify="space-between">
             <Box>
               <Text>{propsUser.name}</Text>
-              <Text color="dimmed">{propsUser.username}</Text>
+              <Text color="dimmed">
+                {propsUser.username} <Badge color="gray">フォローされています</Badge>
+              </Text>
             </Box>
             <Button
               onMouseEnter={() => {

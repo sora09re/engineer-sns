@@ -18,6 +18,9 @@ const mswHandlers = [
   rest.get("/api/current", (_, res, ctx) => {
     return res(ctx.status(200), ctx.json({ testUser1 }));
   }),
+  rest.get("/users/followers", (_, res, ctx) => {
+    return res(ctx.status(200), ctx.json([testUser2, testUser3]));
+  }),
   rest.get("/users/following", (_, res, ctx) => {
     return res(ctx.status(200), ctx.json([testUser2, testUser3]));
   }),
