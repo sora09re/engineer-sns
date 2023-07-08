@@ -1,5 +1,5 @@
 import { Avatar, Flex, Group, Paper, Space, Text } from "@mantine/core";
-import { IconMessageCircle2, IconRotate, IconThumbUp } from "@tabler/icons";
+import { IconMessageCircle2, IconThumbUp } from "@tabler/icons";
 import { useEffect, useState } from "react";
 
 import {
@@ -62,11 +62,6 @@ export const Comment = ({ comment }: CommentProps) => {
               <Text>
                 {comment.comments.length ? comment.comments.length : 0}
               </Text>
-            </Flex>
-            <Flex align="center">
-              <IconRotate size="1.2rem" cursor="pointer" />
-              <Space w="xs" />
-              <Text>{comment.repostsCount}</Text>
             </Flex>
             <Flex align="center">
               <IconThumbUp

@@ -6,7 +6,6 @@ export type Comment = {
   isDeleted: boolean;
   likesCount: number;
   postId: number;
-  repostsCount: number;
   updatedAt: Date;
   userId: number;
 };

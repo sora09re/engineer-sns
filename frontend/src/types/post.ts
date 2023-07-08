@@ -9,7 +9,6 @@ export type Post = {
   createdAt: Date;
   isDeleted: boolean;
   likesCount: number;
-  repostsCount: number;
   updatedAt: Date;
   userId: number;
 };
