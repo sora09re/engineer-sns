@@ -13,3 +13,7 @@ export type User = {
   username: string;
   website?: string;
 };
+
+export type UserProps = {
+  user: User;
+};
