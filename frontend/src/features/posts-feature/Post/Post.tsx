@@ -1,6 +1,6 @@
 import { Avatar, Flex, Group, Paper, Space, Text } from "@mantine/core";
 import { IconMessageCircle2, IconThumbUp } from "@tabler/icons";
-import { format, parseISO } from "date-fns";
+import { format } from "date-fns";
 import ja from "date-fns/locale/ja";
 import { useEffect, useState } from "react";
 
@@ -11,10 +11,10 @@ import {
 import { useModal } from "@/hooks/useModal";
 import type { PostProps } from "@/types/post";
 
-const Date = ({ dateString }: { dateString: string }) => {
+const DateComponent = ({ date }: { date: Date }) => {
   return (
-    <time dateTime={dateString}>
-      {format(parseISO(dateString), "yyyy年MM月dd日 hh:mm", { locale: ja })}
+    <time dateTime={date.toISOString()}>
+      {format(date, "yyyy年MM月dd日 hh:mm", { locale: ja })}
     </time>
   );
 };
@@ -53,7 +53,7 @@ export const Post = ({ post }: PostProps) => {
             {/* TODO ツイートユーザー名に変更 */}
             <Text fw={700}>John Doe</Text>
             <Text color="gray">@johndoe</Text>
-            <Date dateString={post.createdAt.toString()} />
+            <DateComponent date={post.createdAt} />
           </Group>
           {parsedContent.map((part, index) => {
             return <ContentPart key={index} part={part} />;
