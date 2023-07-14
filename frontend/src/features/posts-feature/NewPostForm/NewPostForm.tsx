@@ -1,4 +1,4 @@
-import { Button, Paper, Space, Textarea } from "@mantine/core";
+import { Button, Space, Textarea } from "@mantine/core";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 
@@ -28,7 +28,8 @@ export const NewPostForm = () => {
   };
 
   return (
-    <Paper p="md" shadow="xs" style={{ marginBottom: "20px" }}>
+    // <Paper p="md" shadow="xs" style={{ marginBottom: "20px" }}>
+    <>
       <Textarea
         placeholder="今どうしてる？"
         label="投稿内容"
@@ -48,6 +49,7 @@ export const NewPostForm = () => {
       >
         投稿する
       </Button>
-    </Paper>
+    </>
+    // </Paper>
   );
 };
