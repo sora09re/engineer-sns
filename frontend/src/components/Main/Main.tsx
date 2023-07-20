@@ -1,4 +1,4 @@
-import { Col, Container, Grid, Space } from "@mantine/core";
+import { Box, Space } from "@mantine/core";
 import { useRecoilState } from "recoil";
 
 import { NewPostForm } from "@/features/posts-feature/NewPostForm/NewPostForm";
@@ -8,20 +8,16 @@ import { postsState } from "@/stores/postsState";
 export const Main = () => {
   const [posts] = useRecoilState(postsState);
   return (
-    <Container>
-      <Grid>
-        <Col span={8} offset={2}>
-          <NewPostForm />
-          {posts.map((post) => {
-            return (
-              <>
-                <Post key={post.id} post={post} />
-                <Space h={20} />
-              </>
-            );
-          })}
-        </Col>
-      </Grid>
-    </Container>
+    <Box w="90%" px="md">
+      <NewPostForm />
+      {posts.map((post) => {
+        return (
+          <div key={post.id}>
+            <Post post={post} />
+            <Space h={20} />
+          </div>
+        );
+      })}
+    </Box>
   );
 };
