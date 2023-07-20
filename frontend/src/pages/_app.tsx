@@ -1,4 +1,4 @@
-import { MantineProvider } from "@mantine/core";
+import { Flex, MantineProvider } from "@mantine/core";
 import type { CustomAppPage } from "next/app";
 import { RecoilRoot } from "recoil";
 
@@ -24,8 +24,10 @@ const App: CustomAppPage = ({ Component, pageProps }) => {
         <CommentModal />
         <PostModal />
         <EditProfileModal />
-        <Sidebar />
-        {getLayout(<Component {...pageProps} />)}
+        <Flex>
+          <Sidebar />
+          {getLayout(<Component {...pageProps} />)}
+        </Flex>
       </MantineProvider>
     </RecoilRoot>
   );
