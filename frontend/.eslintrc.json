@@ -119,7 +119,7 @@
     {
       "files": [
         "src/pages/**/*.tsx",
-        "src/pages/api/**/*.ts",
+        "src/pages/api/**",
         "src/**/*.stories.tsx",
         "next.config.mjs"
       ],
