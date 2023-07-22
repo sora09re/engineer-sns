@@ -1,33 +1,24 @@
 import { Avatar, Flex, Group, Paper, Space, Text } from "@mantine/core";
 import { IconMessageCircle2, IconThumbUp } from "@tabler/icons";
-import { format } from "date-fns";
-import ja from "date-fns/locale/ja";
 import { useEffect, useState } from "react";
 
+import { DateFormat } from "@/components/DateFormat/DateFormat";
 import {
   ContentPart,
   parseContent,
 } from "@/features/posts-feature/ContentPart/ContentPart";
 import { useModal } from "@/hooks/useModal";
-import type { PostProps } from "@/types/post";
+import type { PostDataProps } from "@/types/post";
 
-const DateComponent = ({ date }: { date: Date }) => {
-  return (
-    <time dateTime={date.toISOString()}>
-      {format(date, "yyyy年MM月dd日 hh:mm", { locale: ja })}
-    </time>
-  );
-};
-
-export const Post = ({ post }: PostProps) => {
-  const [likes, setLikes] = useState(post ? post.likesCount : 0);
+export const Post = ({ post }: PostDataProps) => {
+  const [likes, setLikes] = useState(post ? post.likes.length : 0);
   const [liked, setLiked] = useState(false);
 
   const [, setIsVisible] = useModal("comment");
 
   useEffect(() => {
     if (post) {
-      setLikes(post.likesCount);
+      setLikes(post.likes.length);
     }
   }, [post]);
 
@@ -50,10 +41,11 @@ export const Post = ({ post }: PostProps) => {
         <Space w="md" />
         <div>
           <Group spacing="xs">
-            {/* TODO ツイートユーザー名に変更 */}
-            <Text fw={700}>John Doe</Text>
-            <Text color="gray">@johndoe</Text>
-            <DateComponent date={post.createdAt} />
+            <Text fw={700}>{post.users.name}</Text>
+            <Text color="dimmed">@{post.users.username}</Text>
+            <Text color="dimmed">
+              <DateFormat props={post.created_at} />
+            </Text>
           </Group>
           {parsedContent.map((part, index) => {
             return <ContentPart key={index} part={part} />;
@@ -69,7 +61,7 @@ export const Post = ({ post }: PostProps) => {
                 }}
               />
               <Space w="xs" />
-              <Text>{post.comments.length ? post.comments.length : 0}</Text>
+              <Text>{post.comments.length}</Text>
             </Flex>
             <Flex align="center">
               <IconThumbUp
@@ -79,7 +71,7 @@ export const Post = ({ post }: PostProps) => {
                 onClick={handleLikeClick}
               />
               <Space w="xs" />
-              <Text>{likes}</Text>
+              <Text>{post.likes.length}</Text>
             </Flex>
           </Group>
         </div>
