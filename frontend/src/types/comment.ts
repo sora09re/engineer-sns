@@ -2,12 +2,11 @@ export type Comment = {
   id: number;
   comments: Comment[];
   content: string;
-  createdAt: Date;
-  isDeleted: boolean;
-  likesCount: number;
-  postId: number;
-  updatedAt: Date;
-  userId: number;
+  created_at: string;
+  is_deleted: boolean;
+  post_id: number;
+  updated_at: string;
+  user_id: number;
 };
 
 export type CommentProps = {

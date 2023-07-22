@@ -1,15 +1,13 @@
 export type User = {
   id: number;
   bio?: string;
-  createdAt: Date;
+  created_at: string;
   email: string;
-  followerCount: number;
-  followingCount: number;
   location?: string;
   name: string;
-  passwordHash: string;
-  profileImageUrl?: string;
-  updatedAt: Date;
+  password_hash: string;
+  profile_image_url?: string;
+  updated_at: string;
   username: string;
   website?: string;
 };
