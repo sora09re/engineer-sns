@@ -30,7 +30,7 @@ export type PostData = {
   content: string;
   created_at: string;
   is_deleted: boolean;
-  likes: Like;
+  likes: Like[];
   updated_at: string;
   user_id: number;
   users: User;
