@@ -1,13 +1,6 @@
-import {
-  Avatar,
-  Button,
-  Group,
-  Navbar,
-  Space,
-  Text,
-  UnstyledButton,
-} from "@mantine/core";
+import { Button, Navbar, Space } from "@mantine/core";
 
+import { AccountButton } from "@/components/AccountButton/AccountButton";
 import { LoginButton } from "@/components/LoginButton/LoginButton";
 import { MainLinks } from "@/components/MainLinks/MainLinks";
 import { useModal } from "@/hooks/useModal";
@@ -32,19 +25,7 @@ export const Sidebar = () => {
         <LoginButton />
       </Navbar.Section>
       <Navbar.Section>
-        <UnstyledButton>
-          <Group>
-            <Avatar size={40} color="blue">
-              BH
-            </Avatar>
-            <div>
-              <Text>Bob Handsome</Text>
-              <Text size="xs" color="dimmed">
-                bob@handsome.inc
-              </Text>
-            </div>
-          </Group>
-        </UnstyledButton>
+        <AccountButton />
       </Navbar.Section>
     </Navbar>
   );
