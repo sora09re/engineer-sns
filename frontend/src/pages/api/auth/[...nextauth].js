@@ -13,8 +13,10 @@ const options = {
       clientId: process.env.GITHUB_ID,
       clientSecret: process.env.GITHUB_SECRET,
     }),
-    // ...add more providers here
   ],
+  theme: {
+    colorScheme: "light",
+  },
 };
 
 export default NextAuth(options);
