@@ -15,12 +15,6 @@ const App: CustomAppPage<{ session: Session | null | undefined }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
-  const getLayout =
-    Component.getLayout ||
-    ((page) => {
-      return page;
-    });
-
   return (
     <SessionProvider session={session}>
       <RecoilRoot>
@@ -32,7 +26,7 @@ const App: CustomAppPage<{ session: Session | null | undefined }> = ({
           <EditProfileModal />
           <Flex>
             <Sidebar />
-            {getLayout(<Component {...pageProps} />)}
+            <Component {...pageProps} />
           </Flex>
         </MantineProvider>
       </RecoilRoot>

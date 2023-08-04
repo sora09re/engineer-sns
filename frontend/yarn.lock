@@ -1866,6 +1866,11 @@
     "pump" "^3.0.0"
     "tar-fs" "^2.1.1"
 
+"@next-auth/supabase-adapter@^0.2.1":
+  "integrity" "sha512-BlIbBRd8QjdV84h/XH2QuuleZAFcmfRwT0pyvc9iqrVztxmjWOalNRvSA7xsbqsQq9mK16PMmNPRvsDEUAAgfQ=="
+  "resolved" "https://registry.npmjs.org/@next-auth/supabase-adapter/-/supabase-adapter-0.2.1.tgz"
+  "version" "0.2.1"
+
 "@next/env@13.1.1":
   "integrity" "sha512-vFMyXtPjSAiOXOywMojxfKIqE3VWN5RCAx+tT3AS3pcKjMLFTCJFUWsKv8hC+87Z1F4W3r68qTwDFZIFmd5Xkw=="
   "resolved" "https://registry.npmjs.org/@next/env/-/env-13.1.1.tgz"
@@ -2936,10 +2941,10 @@
   dependencies:
     "cross-fetch" "^3.1.5"
 
-"@supabase/gotrue-js@^2.31.0":
-  "integrity" "sha512-qRz9mBleA/QATGKOdMAUjpn+YcbZJrTHyWQCe2hAFqJo15JIe1XziD1ZeFraRpsXwja+vONslGeynGv7H8ZZeQ=="
-  "resolved" "https://registry.npmjs.org/@supabase/gotrue-js/-/gotrue-js-2.39.1.tgz"
-  "version" "2.39.1"
+"@supabase/gotrue-js@^2.46.1":
+  "integrity" "sha512-tebFX3XvPqEJKHOVgkXTN20g9iUhLx6tebIYQvTggYTrqOT2af8oTpSBdgYzbwJ291G6P6CSpR6KY0cT9ade5A=="
+  "resolved" "https://registry.npmjs.org/@supabase/gotrue-js/-/gotrue-js-2.46.1.tgz"
+  "version" "2.46.1"
   dependencies:
     "cross-fetch" "^3.1.5"
 
@@ -2966,13 +2971,13 @@
   dependencies:
     "cross-fetch" "^3.1.5"
 
-"@supabase/supabase-js@^2.0.5", "@supabase/supabase-js@^2.26.0":
-  "integrity" "sha512-RXmTPTobaYAwkSobadHZmEVLmzX3SGrtRZIGfLWnLv92VzBRrjuXn0a+bJqKl50GUzsyqPA+j5pod7EwMkcH5A=="
-  "resolved" "https://registry.npmjs.org/@supabase/supabase-js/-/supabase-js-2.26.0.tgz"
-  "version" "2.26.0"
+"@supabase/supabase-js@^2.0.5", "@supabase/supabase-js@^2.31.0":
+  "integrity" "sha512-W9/4s+KnSUX67wJKBn/3yLq+ieycnMzVjK3nNTLX5Wko3ypNT/081l2iFYrf+nsLQ1CiT4mA92I3dxCy6CmxTg=="
+  "resolved" "https://registry.npmjs.org/@supabase/supabase-js/-/supabase-js-2.31.0.tgz"
+  "version" "2.31.0"
   dependencies:
     "@supabase/functions-js" "^2.1.0"
-    "@supabase/gotrue-js" "^2.31.0"
+    "@supabase/gotrue-js" "^2.46.1"
     "@supabase/postgrest-js" "^1.7.0"
     "@supabase/realtime-js" "^2.7.3"
     "@supabase/storage-js" "^2.5.1"
@@ -8273,7 +8278,7 @@
   "resolved" "https://registry.npmjs.org/neo-async/-/neo-async-2.6.2.tgz"
   "version" "2.6.2"
 
-"next-auth@^4.22.3":
+"next-auth@^4.18.7", "next-auth@^4.22.3":
   "integrity" "sha512-XAgy9xV3J2eJOXrQhmxdjV6MLM29ibm6WtMXc3KY6IPZeApf+SuBuPvlqCUfbu5YsAzlg9WSw6u01dChTfeZOA=="
   "resolved" "https://registry.npmjs.org/next-auth/-/next-auth-4.22.3.tgz"
   "version" "4.22.3"
