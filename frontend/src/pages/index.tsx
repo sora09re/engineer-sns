@@ -1,7 +1,9 @@
+import { Flex } from "@mantine/core";
 import axios from "axios";
 import type { GetServerSideProps, NextPage } from "next";
 
 import { Main } from "@/components/Main/Main";
+import { Sidebar } from "@/components/Sidebar/Sidebar";
 import type { PostData } from "@/types/post";
 
 interface PostsDataPataProps {
@@ -26,7 +28,12 @@ export const getServerSideProps: GetServerSideProps = async () => {
 };
 
 const Index: NextPage<PostsDataPataProps> = ({ posts }) => {
-  return <Main posts={posts} />;
+  return (
+    <Flex>
+      <Sidebar />
+      <Main posts={posts} />
+    </Flex>
+  );
 };
 
 export default Index;
