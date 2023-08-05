@@ -21,7 +21,7 @@ export const LoginButton = () => {
     <Button
       sx={{ fontSize: "1.0rem", fontWeight: "bold" }}
       onClick={() => {
-        return signIn();
+        return signIn("github");
       }}
     >
       <IconLogin size="1.5rem" stroke={1.5} />
