@@ -17,6 +17,9 @@ export const authOptions: NextAuthOptions = {
     secret: process.env.SUPABASE_SERVICE_ROLE_KEY,
     url: process.env.NEXT_PUBLIC_SUPABASE_URL,
   }),
+  pages: {
+    newUser: "/auth/new-user",
+  },
   providers: [
     GithubProvider({
       clientId: process.env.GITHUB_ID,
