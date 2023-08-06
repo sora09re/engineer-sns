@@ -19,7 +19,7 @@ export const EditProfileModal = () => {
   const [bio, setBio] = useState("");
   const [location, setLocation] = useState("");
   const [website, setWebsite] = useState("");
-  const [profileImageUrl, setProfileImageUrl] = useState("");
+  const [profileImageUrl] = useState("");
 
   const [isVisible, setIsVisible] = useModal("editProfile");
   const [user, setUser] = useRecoilState(userState);
@@ -50,12 +50,7 @@ export const EditProfileModal = () => {
       <Paper p="md">
         <Grid grow>
           <Grid.Col span={4}>
-            <ImageUpload
-              value={profileImageUrl}
-              onChange={(image) => {
-                return setProfileImageUrl(image);
-              }}
-            />
+            <ImageUpload image_url={profileImageUrl} />
             <TextInput
               label="名前"
               placeholder={user.name}

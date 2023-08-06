@@ -1,40 +1,24 @@
 import { Group, Image } from "@mantine/core";
 import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
-import { useCallback, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface ImageUploadProps {
   disabled?: boolean;
-  onChange: (base64: string) => void;
-  value?: string;
+  image_url?: string;
 }
 
-export const ImageUpload: React.FC<ImageUploadProps> = ({
-  onChange,
-  value,
-}) => {
-  const [base64, setBase64] = useState(value);
+export const ImageUpload: React.FC<ImageUploadProps> = ({ image_url }) => {
+  const [imageUrl, setImageUrl] = useState(image_url);
 
-  const handleChange = useCallback(
-    (base64: string) => {
-      onChange(base64);
-    },
-    [onChange]
-  );
+  useEffect(() => {
+    setImageUrl(image_url);
+  }, [image_url]);
 
-  const handleDrop = useCallback(
-    (files: any) => {
-      const file = files[0];
-      const reader = new FileReader();
-
-      reader.onload = (event: any) => {
-        setBase64(event.target.result);
-        handleChange(event.target.result);
-      };
-
-      reader.readAsDataURL(file);
-    },
-    [handleChange]
-  );
+  const handleDrop = (files: File[]) => {
+    const file = files[0];
+    const fileUrl = URL.createObjectURL(file);
+    setImageUrl(fileUrl);
+  };
 
   return (
     <Dropzone
@@ -54,7 +38,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
       >
         <Dropzone.Idle>
           <Image
-            src={base64}
+            src={imageUrl}
             height="120"
             width="120"
             alt="Profile image"
