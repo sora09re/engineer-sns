@@ -6,17 +6,17 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { userId } = req.query;
+  const currentUserId = req.query.currentUserId;
 
-  if (!userId) {
-    return res.status(400).json({ error: "userId is required" });
+  if (!currentUserId) {
+    return res.status(400).json({ error: "currentUserId is required" });
   }
 
   if (req.method === "GET") {
     const { data: follows, error: errorFollows } = await supabase
       .from("follows")
       .select("follower_id")
-      .eq("following_id", userId);
+      .eq("following_id", currentUserId);
 
     if (errorFollows) {
       return res.status(500).json({ error: errorFollows.message });
