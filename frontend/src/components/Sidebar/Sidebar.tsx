@@ -4,8 +4,13 @@ import { AccountButton } from "@/components/AccountButton/AccountButton";
 import { LoginButton } from "@/components/LoginButton/LoginButton";
 import { MainLinks } from "@/components/MainLinks/MainLinks";
 import { useModal } from "@/hooks/useModal";
+import type { User } from "@/types/user";
 
-export const Sidebar = () => {
+interface SidebarProps {
+  currentUser: Pick<User, "name" | "username" | "profile_image_url">;
+}
+
+export const Sidebar = ({ currentUser }: SidebarProps) => {
   const [, setIsVisiblePostModal] = useModal("post");
 
   return (
@@ -25,7 +30,7 @@ export const Sidebar = () => {
         <LoginButton />
       </Navbar.Section>
       <Navbar.Section>
-        <AccountButton />
+        <AccountButton currentUser={currentUser} />
       </Navbar.Section>
     </Navbar>
   );
