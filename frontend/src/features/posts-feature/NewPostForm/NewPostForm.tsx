@@ -1,34 +1,38 @@
 import { Box, Button, Space, Textarea } from "@mantine/core";
+import axios from "axios";
 import { useState } from "react";
-import { useRecoilState } from "recoil";
 
-import { useModal } from "@/hooks/useModal";
-import { postsState } from "@/stores/postsState";
+import type { User } from "@/types/user";
+import { baseURL } from "@/utils/baseUrl";
 
-export const NewPostForm = () => {
+interface NewPostFormProps {
+  currentUser: Pick<User, "id">;
+}
+
+export const NewPostForm = ({ currentUser }: NewPostFormProps) => {
   const [postContent, setPostContent] = useState("");
-  const [, setIsVisible] = useModal("post");
-  const [posts, setPosts] = useRecoilState(postsState);
+  const [error, setError] = useState<any>(null);
 
-  const handlePost = () => {
-    const newPost = {
-      id: 1,
-      comments: [],
-      content: postContent,
-      createdAt: new Date(),
-      isDeleted: false,
-      likesCount: 0,
-      repostsCount: 0,
-      updatedAt: new Date(),
-      userId: 1,
-    };
-    setPosts([newPost, ...posts]);
-    setPostContent("");
-    setIsVisible(false);
+  const fetchPost = async () => {
+    try {
+      await axios.post(`${baseURL}/api/posts`, {
+        currentUserId: currentUser.id,
+        postContent: postContent,
+      });
+
+      setError(null);
+    } catch (error) {
+      setError(error);
+    }
   };
 
   return (
     <Box p="md" sx={{ borderBottom: "1px solid lightgray" }}>
+      {error ? (
+        <p style={{ color: "red" }}>投稿に失敗しました。</p>
+      ) : (
+        <p style={{ color: "green" }}>投稿が成功しました！</p>
+      )}
       <Textarea
         placeholder="今どうしてる？"
         label="投稿内容"
@@ -43,7 +47,7 @@ export const NewPostForm = () => {
       <Space h="md" />
       <Button
         fullWidth
-        onClick={handlePost}
+        onClick={fetchPost}
         disabled={postContent ? postContent.trim() === "" : true}
       >
         投稿する

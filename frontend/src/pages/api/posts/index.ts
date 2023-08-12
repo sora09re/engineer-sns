@@ -6,13 +6,17 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const currentUserId = req.query.currentUserId;
-
-  if (!currentUserId) {
-    return res.status(400).json({ error: "currentUserId is required" });
+  if (req.method !== "POST" && req.method !== "GET") {
+    return res.status(405).json({ error: "Method not allowed" });
   }
 
   if (req.method === "GET") {
+    const { currentUserId } = req.query;
+
+    if (!currentUserId) {
+      return res.status(400).json({ error: "currentUserId is required" });
+    }
+
     const { data: follows, error: errorFollows } = await supabase
       .from("follows")
       .select("follower_id")
@@ -36,5 +40,31 @@ export default async function handler(
     }
 
     return res.status(200).json(posts);
+  }
+
+  if (req.method === "POST") {
+    const { currentUserId, postContent } = req.body;
+
+    if (!postContent || !currentUserId) {
+      return res
+        .status(400)
+        .json({ error: "Content and User ID are required" });
+    }
+
+    const { data, error } = await supabase.from("posts").insert([
+      {
+        content: postContent,
+        created_at: new Date(),
+        is_deleted: false,
+        updated_at: new Date(),
+        user_id: currentUserId,
+      },
+    ]);
+
+    if (error) {
+      return res.status(500).json({ error: error.message });
+    }
+
+    return res.status(200).json({ data });
   }
 }

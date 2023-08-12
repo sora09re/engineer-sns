@@ -11,7 +11,7 @@ import type { User } from "@/types/user";
 import { baseURL } from "@/utils/baseUrl";
 
 interface PostsDataPataProps {
-  currentUser: Pick<User, "name" | "username" | "profile_image_url">;
+  currentUser: Pick<User, "id" | "name" | "username" | "profile_image_url">;
   posts: PostData[];
 }
 
@@ -19,7 +19,7 @@ const Index: NextPage<PostsDataPataProps> = ({ currentUser, posts }) => {
   return (
     <Flex>
       <Sidebar currentUser={currentUser} />
-      <Main posts={posts} />
+      <Main posts={posts} currentUser={currentUser} />
     </Flex>
   );
 };
@@ -36,24 +36,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  if (!session || !session.user) {
-    return {
-      redirect: {
-        destination: "/login", // ログインページやエラーページへのリダイレクト先を指定
-        permanent: false,
-      },
-    };
-  }
-
-  const currentUserRes = await axios.get(
-    `${baseURL}/api/users/current?currentUserId=${session?.user?.id}`
-  );
+  const currentUserRes = await axios.get(`${baseURL}/api/users/current`, {
+    params: {
+      currentUserId: session?.user?.id,
+    },
+  });
 
   const currentUser = currentUserRes.data;
 
-  const postsRes = await axios.get(
-    `${baseURL}/api/posts?currentUserId=${session?.user?.id}`
-  );
+  const postsRes = await axios.get(`${baseURL}/api/posts`, {
+    params: {
+      currentUserId: session?.user?.id,
+    },
+  });
   const posts = postsRes.data;
 
   return {

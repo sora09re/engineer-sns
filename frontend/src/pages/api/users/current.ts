@@ -10,16 +10,17 @@ export default async function handler(
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const currentUserId = req.query.currentUserId;
+  const { currentUserId } = req.query;
 
   const { data, error } = await supabase
     .from("users")
-    .select("id,name,username,profile_image_url")
-    .eq("id", currentUserId);
+    .select("*")
+    .eq("id", currentUserId)
+    .single();
 
   if (error) {
     return res.status(500).json({ error: error.message });
   }
 
-  return res.status(200).json(data[0]);
+  return res.status(200).json(data);
 }
