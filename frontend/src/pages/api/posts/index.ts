@@ -22,22 +22,22 @@ export default async function handler(
       .select("follower_id")
       .eq("following_id", currentUserId);
 
-    if (errorFollows) {
-      return res.status(500).json({ error: errorFollows.message });
-    }
+      if (errorFollows) {
+        return res.status(500).json({ error: errorFollows.message });
+      }
 
-    const followerIds = follows.map((follow) => {
-      return follow.follower_id;
-    });
+      const followerIds = follows.map((follow) => {
+        return follow.follower_id;
+      });
 
-    const { data: posts, error: errorPosts } = await supabase
-      .from("posts")
-      .select("*, users (*), comments (*), likes (*)")
-      .in("user_id", followerIds);
+      const { data: posts, error: errorPosts } = await supabase
+        .from("posts")
+        .select("*, users (*), comments (*), likes (*)")
+        .in("user_id", [...followerIds, currentUserId]);
 
-    if (errorPosts) {
-      return res.status(500).json({ error: errorPosts.message });
-    }
+      if (errorPosts) {
+        return res.status(500).json({ error: errorPosts.message });
+      }
 
     return res.status(200).json(posts);
   }
