@@ -37,7 +37,7 @@ export const Post = ({ post }: PostDataProps) => {
     <Paper key={post.id} p="md" shadow="xs">
       <Flex>
         {/* TODO ツイートユーザープロフィール画像に変更 */}
-        <Avatar src={null} alt="no image here" />
+        <Avatar src={post.users.profile_image_url} alt="no image here" />
         <Space w="md" />
         <div>
           <Group spacing="xs">
