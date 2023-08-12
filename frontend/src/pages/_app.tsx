@@ -1,4 +1,5 @@
 import { MantineProvider } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
 import type { CustomAppPage } from "next/app";
 import type { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
@@ -18,6 +19,7 @@ const App: CustomAppPage<{ session: Session | null | undefined }> = ({
     <SessionProvider session={session}>
       <RecoilRoot>
         <MantineProvider withGlobalStyles withNormalizeCSS>
+          <Notifications />
           <SignupModal />
           <LoginModal />
           <CommentModal />

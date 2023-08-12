@@ -1,4 +1,6 @@
 import { Box, Button, Space, Textarea } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
+import { IconCheck, IconX } from "@tabler/icons-react";
 import axios from "axios";
 import { useState } from "react";
 
@@ -11,27 +13,45 @@ interface NewPostFormProps {
 
 export const NewPostForm = ({ currentUser }: NewPostFormProps) => {
   const [postContent, setPostContent] = useState("");
-  const [data, setData] = useState<any>(null);
-  const [error, setError] = useState<any>(null);
 
   const fetchPost = async () => {
+    notifications.show({
+      id: "post-data",
+      autoClose: false,
+      loading: true,
+      message: "しばらくお待ちください。",
+      title: "投稿中...",
+      withCloseButton: false,
+    });
+
     try {
-      const res = await axios.post(`${baseURL}/api/posts`, {
+      await axios.post(`${baseURL}/api/posts`, {
         currentUserId: currentUser.id,
         postContent: postContent,
       });
-
-      setData(res.data);
-      setError(null);
+      setPostContent("");
+      notifications.update({
+        id: "post-data",
+        autoClose: 2000,
+        color: "green",
+        icon: <IconCheck size="1rem" />,
+        message: "投稿が成功しました！",
+        title: "成功",
+      });
     } catch (error) {
-      setError(error);
+      notifications.update({
+        id: "post-data",
+        autoClose: 2000,
+        color: "red",
+        icon: <IconX size="1rem" />,
+        message: "投稿に失敗しました。",
+        title: "エラー",
+      });
     }
   };
 
   return (
     <Box p="md" sx={{ borderBottom: "1px solid lightgray" }}>
-      {error && <p style={{ color: "red" }}>投稿に失敗しました。</p>}
-      {data && <p style={{ color: "green" }}>投稿が成功しました！</p>}
       <Textarea
         placeholder="今どうしてる？"
         label="投稿内容"
