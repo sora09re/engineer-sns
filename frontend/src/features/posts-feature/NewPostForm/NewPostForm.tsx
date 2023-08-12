@@ -11,15 +11,17 @@ interface NewPostFormProps {
 
 export const NewPostForm = ({ currentUser }: NewPostFormProps) => {
   const [postContent, setPostContent] = useState("");
+  const [data, setData] = useState<any>(null);
   const [error, setError] = useState<any>(null);
 
   const fetchPost = async () => {
     try {
-      await axios.post(`${baseURL}/api/posts`, {
+      const res = await axios.post(`${baseURL}/api/posts`, {
         currentUserId: currentUser.id,
         postContent: postContent,
       });
 
+      setData(res.data);
       setError(null);
     } catch (error) {
       setError(error);
@@ -28,11 +30,8 @@ export const NewPostForm = ({ currentUser }: NewPostFormProps) => {
 
   return (
     <Box p="md" sx={{ borderBottom: "1px solid lightgray" }}>
-      {error ? (
-        <p style={{ color: "red" }}>投稿に失敗しました。</p>
-      ) : (
-        <p style={{ color: "green" }}>投稿が成功しました！</p>
-      )}
+      {error && <p style={{ color: "red" }}>投稿に失敗しました。</p>}
+      {data && <p style={{ color: "green" }}>投稿が成功しました！</p>}
       <Textarea
         placeholder="今どうしてる？"
         label="投稿内容"
