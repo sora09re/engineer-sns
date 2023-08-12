@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { addHours, format } from "date-fns";
 import { ja } from "date-fns/locale";
 
 interface DateFormatProps {
@@ -7,9 +7,11 @@ interface DateFormatProps {
 
 export const DateFormat = ({ props }: DateFormatProps) => {
   const date = new Date(props);
+  const jaDateTime = addHours(date, 9);
+
   return (
     <time dateTime={new Date(date).toISOString()}>
-      {format(date, "yyyy年MM月dd日 hh:mm", { locale: ja })}
+      {format(jaDateTime, "yyyy年MM月dd日 HH:mm", { locale: ja })}
     </time>
   );
 };
