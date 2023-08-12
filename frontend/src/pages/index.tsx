@@ -8,11 +8,21 @@ import { Sidebar } from "@/components/Sidebar/Sidebar";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import type { PostData } from "@/types/post";
 import type { User } from "@/types/user";
+import { baseURL } from "@/utils/baseUrl";
 
 interface PostsDataPataProps {
   currentUser: Pick<User, "name" | "username" | "profile_image_url">;
   posts: PostData[];
 }
+
+const Index: NextPage<PostsDataPataProps> = ({ currentUser, posts }) => {
+  return (
+    <Flex>
+      <Sidebar currentUser={currentUser} />
+      <Main posts={posts} />
+    </Flex>
+  );
+};
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getServerSession(context.req, context.res, authOptions);
@@ -35,11 +45,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  // const userId = context.params?.userId;
-  const baseURL = process.env.SERVER
-    ? process.env.SERVER
-    : "http://localhost:3000";
-
   const currentUserRes = await axios.get(
     `${baseURL}/api/users/current?currentUserId=${session?.user?.id}`
   );
@@ -57,15 +62,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       posts,
     },
   };
-};
-
-const Index: NextPage<PostsDataPataProps> = ({ currentUser, posts }) => {
-  return (
-    <Flex>
-      <Sidebar currentUser={currentUser} />
-      <Main posts={posts} />
-    </Flex>
-  );
 };
 
 export default Index;
