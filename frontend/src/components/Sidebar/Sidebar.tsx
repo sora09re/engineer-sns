@@ -5,6 +5,7 @@ import { LoginButton } from "@/components/LoginButton/LoginButton";
 import { MainLinks } from "@/components/MainLinks/MainLinks";
 import { useModal } from "@/hooks/useModal";
 import type { User } from "@/types/user";
+import { sideBarWidthBase } from "@/utils/sideBarWidth";
 
 interface SidebarProps {
   currentUser: Pick<User, "name" | "username" | "profile_image_url">;
@@ -14,7 +15,7 @@ export const Sidebar = ({ currentUser }: SidebarProps) => {
   const [, setIsVisiblePostModal] = useModal("post");
 
   return (
-    <Navbar width={{ base: 350 }} p="xl">
+    <Navbar width={{ base: sideBarWidthBase }} p="xl" fixed={true}>
       <Navbar.Section grow mt="md" px="20px">
         <MainLinks />
         <Space h="xl" />

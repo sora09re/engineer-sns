@@ -4,6 +4,7 @@ import { NewPostForm } from "@/features/posts-feature/NewPostForm/NewPostForm";
 import { Post } from "@/features/posts-feature/Post/Post";
 import type { PostData } from "@/types/post";
 import type { User } from "@/types/user";
+import { sideBarWidthBase } from "@/utils/sideBarWidth";
 
 interface MainProps {
   currentUser: Pick<User, "id">;
@@ -12,7 +13,7 @@ interface MainProps {
 
 export const Main = ({ currentUser, posts }: MainProps) => {
   return (
-    <Box w="90%" px="md">
+    <Box w="90%" px="md" ml={sideBarWidthBase}>
       <NewPostForm currentUser={currentUser} />
       <Space h={20} />
       {posts.map((post) => {
