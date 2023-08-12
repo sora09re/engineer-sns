@@ -33,7 +33,8 @@ export default async function handler(
       const { data: posts, error: errorPosts } = await supabase
         .from("posts")
         .select("*, users (*), comments (*), likes (*)")
-        .in("user_id", [...followerIds, currentUserId]);
+        .in("user_id", [...followerIds, currentUserId])
+        .order("updated_at", { ascending: false });
 
       if (errorPosts) {
         return res.status(500).json({ error: errorPosts.message });
