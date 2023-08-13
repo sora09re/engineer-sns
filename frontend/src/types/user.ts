@@ -5,7 +5,6 @@ export type User = {
   email: string;
   location?: string;
   name: string;
-  password_hash: string;
   profile_image_url?: string;
   updated_at: string;
   username: string;
