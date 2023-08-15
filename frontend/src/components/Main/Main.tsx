@@ -20,7 +20,7 @@ export const Main = ({ currentUser, mutate, posts }: MainProps) => {
       {posts.map((post) => {
         return (
           <div key={post.id}>
-            <Post post={post} />
+            <Post post={post} currentUser={currentUser} mutate={mutate} />
             <Space h={20} />
           </div>
         );
