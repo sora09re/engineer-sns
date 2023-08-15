@@ -2,6 +2,7 @@ import { Flex } from "@mantine/core";
 import axios from "axios";
 import type { GetServerSideProps, NextPage } from "next";
 import { getServerSession } from "next-auth";
+import useSWR from "swr";
 
 import { Main } from "@/components/Main/Main";
 import { Sidebar } from "@/components/Sidebar/Sidebar";
@@ -9,17 +10,41 @@ import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import type { PostData } from "@/types/post";
 import type { User } from "@/types/user";
 import { baseURL } from "@/utils/baseUrl";
+import { fetcher } from "@/utils/fetcher";
 
-interface PostsDataPataProps {
+interface PostsDataProps {
   currentUser: Pick<User, "id" | "name" | "username" | "profile_image_url">;
-  posts: PostData[];
+  postsFromServerSideProps: PostData[];
 }
 
-const Index: NextPage<PostsDataPataProps> = ({ currentUser, posts }) => {
+const Index: NextPage<PostsDataProps> = ({
+  currentUser,
+  postsFromServerSideProps,
+}) => {
+  const {
+    data: posts,
+    error,
+    mutate,
+  } = useSWR<PostData[]>(
+    currentUser ? `/api/posts?currentUserId=${currentUser.id}` : null,
+    fetcher,
+    {
+      fallbackData: postsFromServerSideProps,
+    }
+  );
+
+  if (error) {
+    return <div>エラーが発生しました。再度、更新を行ってください。</div>;
+  }
+
   return (
     <Flex>
       <Sidebar currentUser={currentUser} />
-      <Main posts={posts} currentUser={currentUser} />
+      {posts ? (
+        <Main posts={posts} currentUser={currentUser} mutate={mutate} />
+      ) : (
+        <div>読み込み中...</div>
+      )}
     </Flex>
   );
 };
@@ -41,20 +66,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       currentUserId: session?.user?.id,
     },
   });
-
   const currentUser = currentUserRes.data;
 
   const postsRes = await axios.get(`${baseURL}/api/posts`, {
     params: {
-      currentUserId: session?.user?.id,
+      currentUserId: currentUser.id,
     },
   });
-  const posts = postsRes.data;
+  const postsFromServerSideProps = postsRes.data;
 
   return {
     props: {
       currentUser,
-      posts,
+      postsFromServerSideProps,
     },
   };
 };

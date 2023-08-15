@@ -9,9 +9,10 @@ import { baseURL } from "@/utils/baseUrl";
 
 interface NewPostFormProps {
   currentUser: Pick<User, "id">;
+  mutate: any;
 }
 
-export const NewPostForm = ({ currentUser }: NewPostFormProps) => {
+export const NewPostForm = ({ currentUser, mutate }: NewPostFormProps) => {
   const [postContent, setPostContent] = useState("");
 
   const fetchPost = async () => {
@@ -30,6 +31,7 @@ export const NewPostForm = ({ currentUser }: NewPostFormProps) => {
         postContent: postContent,
       });
       setPostContent("");
+      mutate();
       notifications.update({
         id: "post-data",
         autoClose: 2000,

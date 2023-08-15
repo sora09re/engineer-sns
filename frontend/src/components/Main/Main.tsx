@@ -8,13 +8,14 @@ import { sideBarWidthBase } from "@/utils/sideBarWidth";
 
 interface MainProps {
   currentUser: Pick<User, "id">;
+  mutate: any;
   posts: PostData[];
 }
 
-export const Main = ({ currentUser, posts }: MainProps) => {
+export const Main = ({ currentUser, mutate, posts }: MainProps) => {
   return (
     <Box w="90%" px="md" ml={sideBarWidthBase}>
-      <NewPostForm currentUser={currentUser} />
+      <NewPostForm currentUser={currentUser} mutate={mutate} />
       <Space h={20} />
       {posts.map((post) => {
         return (
