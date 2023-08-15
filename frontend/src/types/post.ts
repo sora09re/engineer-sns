@@ -5,7 +5,7 @@ import type { Like } from "@/types/like";
 import type { User } from "@/types/user";
 
 export type Post = {
-  id: number;
+  id: string;
   comments: Comment[];
   content: string;
   createdAt: Date;
@@ -25,7 +25,7 @@ export type PostsProps = {
 };
 
 export type PostData = {
-  id: number;
+  id: string;
   comments: Comment[];
   content: string;
   created_at: string;
