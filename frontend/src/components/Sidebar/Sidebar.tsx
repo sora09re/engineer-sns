@@ -15,7 +15,12 @@ export const Sidebar = ({ currentUser }: SidebarProps) => {
   const [, setIsVisiblePostModal] = useModal("post");
 
   return (
-    <Navbar width={{ base: sideBarWidthBase }} p="xl" fixed={true}>
+    <Navbar
+      width={{ base: sideBarWidthBase }}
+      p="xl"
+      fixed={true}
+      style={{ zIndex: 1 }}
+    >
       <Navbar.Section grow mt="md" px="20px">
         <MainLinks />
         <Space h="xl" />

@@ -8,12 +8,14 @@ export const CommentModal = () => {
 
   return isVisible ? (
     <Modal
+      title="コメント"
       opened={isVisible}
       onClose={() => {
         return setIsVisible(false);
       }}
+      size="80%"
     >
-      <NewPostForm />
+      
     </Modal>
   ) : null;
 };
