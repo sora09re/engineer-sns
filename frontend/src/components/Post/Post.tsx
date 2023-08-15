@@ -62,7 +62,10 @@ export const Post = ({ currentUser, mutate, post }: PostProps) => {
   return (
     <Paper key={post.id} p="md" shadow="xs" w="full">
       <Flex>
-        <Avatar src={post.users.profile_image_url} alt="no image here" />
+        <Avatar
+          src={post.users.profile_image_url}
+          alt="投稿したユーザーのプロフィール画像"
+        />
         <Space w="md" />
         <div>
           <Group spacing="xs">
