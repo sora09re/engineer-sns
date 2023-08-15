@@ -53,7 +53,7 @@ export const NewPostForm = ({ currentUser, mutate }: NewPostFormProps) => {
   };
 
   return (
-    <Box p="md" sx={{ borderBottom: "1px solid lightgray" }}>
+    <Box p="md" sx={{ borderBottom: "1px solid #E9ECEF" }}>
       <Textarea
         placeholder="今どうしてる？"
         label="投稿内容"
