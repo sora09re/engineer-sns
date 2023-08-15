@@ -3,7 +3,7 @@ import { IconSearch } from "@tabler/icons";
 import { useEffect, useState } from "react";
 
 import { UserItem } from "@/components/UserItem/UserItem";
-import { Post } from "@/features/posts-feature/Post/Post";
+import { Post } from "@/components/Post/Post";
 import type { Post as PostType } from "@/types/post";
 import type { User } from "@/types/user";
 

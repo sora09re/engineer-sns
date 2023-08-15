@@ -1,7 +1,7 @@
 import { Box, Space } from "@mantine/core";
 
-import { NewPostForm } from "@/features/posts-feature/NewPostForm/NewPostForm";
-import { Post } from "@/features/posts-feature/Post/Post";
+import { NewPostForm } from "@/components/NewPostForm/NewPostForm";
+import { Post } from "@/components/Post/Post";
 import type { PostData } from "@/types/post";
 import type { User } from "@/types/user";
 import { sideBarWidthBase } from "@/utils/sideBarWidth";

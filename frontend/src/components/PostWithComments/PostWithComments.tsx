@@ -1,8 +1,8 @@
 import { Divider } from "@mantine/core";
 import { useRecoilValue } from "recoil";
 
-import { Comment } from "@/features/comments-feature/Comment/Comment";
-import { Post } from "@/features/posts-feature/Post/Post";
+import { Comment } from "@/components/Comment/Comment";
+import { Post } from "@/components/Post/Post";
 import { postsState } from "@/stores/postsState";
 
 export const PostWithComments = () => {

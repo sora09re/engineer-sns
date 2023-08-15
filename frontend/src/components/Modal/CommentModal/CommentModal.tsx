@@ -1,6 +1,5 @@
 import { Modal } from "@mantine/core";
 
-import { NewPostForm } from "@/features/posts-feature/NewPostForm/NewPostForm";
 import { useModal } from "@/hooks/useModal";
 
 export const CommentModal = () => {
@@ -14,8 +13,6 @@ export const CommentModal = () => {
         return setIsVisible(false);
       }}
       size="80%"
-    >
-      
-    </Modal>
+    ></Modal>
   ) : null;
 };

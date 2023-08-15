@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { Post } from "@/features/posts-feature/Post/Post"; // PostPropsをインポート
+import { Post } from "@/components/Post/Post"; // PostPropsをインポート
 import type { PostProps } from "@/types/post";
 
 const meta: Meta<typeof Post> = {

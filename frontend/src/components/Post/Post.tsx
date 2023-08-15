@@ -2,26 +2,24 @@ import { Avatar, Flex, Group, Paper, Space, Text } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconMessageCircle2, IconThumbUp, IconX } from "@tabler/icons";
 import axios from "axios";
+import Link from "next/link";
 
-import { DateFormat } from "@/components/DateFormat/DateFormat";
 import {
   ContentPart,
   parseContent,
-} from "@/features/posts-feature/ContentPart/ContentPart";
-import { useModal } from "@/hooks/useModal";
+} from "@/components/ContentPart/ContentPart";
+import { DateFormat } from "@/components/DateFormat/DateFormat";
 import type { PostData } from "@/types/post";
 import type { User } from "@/types/user";
 import { baseURL } from "@/utils/baseUrl";
 
 interface PostProps {
   currentUser: Pick<User, "id">;
-  mutate: any;
+  mutate?: any;
   post: PostData;
 }
 
 export const Post = ({ currentUser, mutate, post }: PostProps) => {
-  const [, setIsVisible] = useModal("comment");
-
   if (!post) {
     return null;
   }
@@ -62,7 +60,7 @@ export const Post = ({ currentUser, mutate, post }: PostProps) => {
   const parsedContent = parseContent(post.content);
 
   return (
-    <Paper key={post.id} p="md" shadow="xs">
+    <Paper key={post.id} p="md" shadow="xs" w="full">
       <Flex>
         <Avatar src={post.users.profile_image_url} alt="no image here" />
         <Space w="md" />
@@ -80,13 +78,13 @@ export const Post = ({ currentUser, mutate, post }: PostProps) => {
           <Space h="md" />
           <Group spacing="xl">
             <Flex align="center">
-              <IconMessageCircle2
-                size="1.2rem"
-                cursor="pointer"
-                onClick={() => {
-                  return setIsVisible(true);
-                }}
-              />
+              <Link href={`/posts/${post.id}`} style={{ height: "1.2rem" }}>
+                <IconMessageCircle2
+                  size="1.2rem"
+                  cursor="pointer"
+                  color="black"
+                />
+              </Link>
               <Space w="xs" />
               <Text>{post.comments.length}</Text>
             </Flex>

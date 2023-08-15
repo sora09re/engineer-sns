@@ -1,6 +1,6 @@
 import { Modal } from "@mantine/core";
 
-import { NewPostForm } from "@/features/posts-feature/NewPostForm/NewPostForm";
+import { NewPostForm } from "@/components/NewPostForm/NewPostForm";
 import { useModal } from "@/hooks/useModal";
 
 export const PostModal = () => {

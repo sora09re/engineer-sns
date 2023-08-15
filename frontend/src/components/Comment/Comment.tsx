@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import {
   ContentPart,
   parseContent,
-} from "@/features/posts-feature/ContentPart/ContentPart";
+} from "@/components/ContentPart/ContentPart";
 import { useModal } from "@/hooks/useModal";
 import type { CommentProps } from "@/types/comment";
 
