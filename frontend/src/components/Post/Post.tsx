@@ -9,13 +9,15 @@ import {
   parseContent,
 } from "@/components/ContentPart/ContentPart";
 import { DateFormat } from "@/components/DateFormat/DateFormat";
+import type { CommentData } from "@/types/comment";
+import type { MutateFunction } from "@/types/mutate";
 import type { PostData } from "@/types/post";
 import type { User } from "@/types/user";
 import { baseURL } from "@/utils/baseUrl";
 
 interface PostProps {
   currentUser: Pick<User, "id">;
-  mutate?: any;
+  mutate: MutateFunction<PostData[] | CommentData[]>;
   post: PostData;
 }
 
