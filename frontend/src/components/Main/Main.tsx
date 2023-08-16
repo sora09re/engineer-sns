@@ -2,13 +2,14 @@ import { Box, Space } from "@mantine/core";
 
 import { NewPostForm } from "@/components/NewPostForm/NewPostForm";
 import { Post } from "@/components/Post/Post";
+import type { MutateFunction } from "@/types/mutate";
 import type { PostData } from "@/types/post";
 import type { User } from "@/types/user";
 import { sideBarWidthBase } from "@/utils/sideBarWidth";
 
 interface MainProps {
   currentUser: Pick<User, "id">;
-  mutate: any;
+  mutate: MutateFunction<PostData[]>;
   posts: PostData[];
 }
 
