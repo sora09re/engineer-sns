@@ -1,6 +1,5 @@
-import type { User } from "next-auth";
-
 import type { Like } from "@/types/like";
+import type { User } from "@/types/user";
 
 export type Comment = {
   id: number;
