@@ -10,7 +10,6 @@ export type Post = {
   content: string;
   createdAt: Date;
   isDeleted: boolean;
-  likesCount: number;
   updatedAt: Date;
   userId: number;
 };
@@ -32,7 +31,7 @@ export type PostData = {
   is_deleted: boolean;
   likes: Like[];
   updated_at: string;
-  user_id: number;
+  user_id: string;
   users: User;
 };
 
