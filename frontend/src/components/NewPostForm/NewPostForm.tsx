@@ -5,13 +5,13 @@ import axios from "axios";
 import { useState } from "react";
 
 import type { MutateFunction } from "@/types/mutate";
-import type { PostData } from "@/types/post";
+import type { PostType } from "@/types/post";
 import type { User } from "@/types/user";
 import { baseURL } from "@/utils/baseUrl";
 
 interface NewPostFormProps {
   currentUser: Pick<User, "id">;
-  mutate: MutateFunction<PostData[]>;
+  mutate: MutateFunction<PostType[]>;
 }
 
 export const NewPostForm = ({ currentUser, mutate }: NewPostFormProps) => {

@@ -7,14 +7,14 @@ import useSWR from "swr";
 import { Main } from "@/components/Main/Main";
 import { Sidebar } from "@/components/Sidebar/Sidebar";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
-import type { PostData } from "@/types/post";
+import type { PostType } from "@/types/post";
 import type { User } from "@/types/user";
 import { baseURL } from "@/utils/baseUrl";
 import { fetcher } from "@/utils/fetcher";
 
 interface PostsDataProps {
   currentUser: Pick<User, "id" | "name" | "username" | "profile_image_url">;
-  postsFromServerSideProps: PostData[];
+  postsFromServerSideProps: PostType[];
 }
 
 const Index: NextPage<PostsDataProps> = ({
@@ -25,7 +25,7 @@ const Index: NextPage<PostsDataProps> = ({
     data: posts,
     error,
     mutate,
-  } = useSWR<PostData[]>(
+  } = useSWR<PostType[]>(
     currentUser ? `/api/posts?currentUserId=${currentUser.id}` : null,
     fetcher,
     {

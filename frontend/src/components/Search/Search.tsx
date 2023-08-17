@@ -2,9 +2,9 @@ import { Box, Tabs, TextInput } from "@mantine/core";
 import { IconSearch } from "@tabler/icons";
 import { useEffect, useState } from "react";
 
-import { UserItem } from "@/components/UserItem/UserItem";
 import { Post } from "@/components/Post/Post";
-import type { Post as PostType } from "@/types/post";
+import { UserItem } from "@/components/UserItem/UserItem";
+import type { PostType } from "@/types/post";
 import type { User } from "@/types/user";
 
 export const Search = () => {

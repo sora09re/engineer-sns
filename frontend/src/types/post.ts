@@ -1,40 +1,19 @@
-import type { Dispatch, SetStateAction } from "react";
-
-import type { Comment } from "@/types/comment";
 import type { Like } from "@/types/like";
 import type { User } from "@/types/user";
 
-export type Post = {
+export type PostType = {
   id: string;
-  comments: Comment[];
-  content: string;
-  createdAt: Date;
-  isDeleted: boolean;
-  updatedAt: Date;
-  userId: number;
-};
-
-export type PostProps = {
-  post: Post;
-};
-
-export type PostsProps = {
-  posts: Post[];
-  setPosts: Dispatch<SetStateAction<Post[]>>;
-};
-
-export type PostData = {
-  id: string;
-  comments: Comment[];
+  comments: PostType[];
   content: string;
   created_at: string;
   is_deleted: boolean;
   likes: Like[];
+  parent_post_id: string;
   updated_at: string;
   user_id: string;
   users: User;
 };
 
-export type PostDataProps = {
-  post: PostData;
+export type PostProps = {
+  post: PostType;
 };

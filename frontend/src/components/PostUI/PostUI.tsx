@@ -7,13 +7,12 @@ import {
   parseContent,
 } from "@/components/ContentPart/ContentPart";
 import { DateFormat } from "@/components/DateFormat/DateFormat";
-import type { CommentData } from "@/types/comment";
-import type { PostData } from "@/types/post";
+import type { PostType } from "@/types/post";
 
 interface PostUIProps {
   handleLikeClick: (postId: string) => void;
   isLikedByCurrentUser: boolean;
-  post: PostData | CommentData;
+  post: PostType;
 }
 
 export const PostUI = ({

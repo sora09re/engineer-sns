@@ -1,16 +1,16 @@
 import { Box, Space } from "@mantine/core";
+import type { KeyedMutator } from "swr";
 
 import { NewPostForm } from "@/components/NewPostForm/NewPostForm";
 import { Post } from "@/components/Post/Post";
-import type { MutateFunction } from "@/types/mutate";
-import type { PostData } from "@/types/post";
+import type { PostType } from "@/types/post";
 import type { User } from "@/types/user";
 import { sideBarWidthBase } from "@/utils/sideBarWidth";
 
 interface MainProps {
   currentUser: Pick<User, "id">;
-  mutate: MutateFunction<PostData[]>;
-  posts: PostData[];
+  mutate: KeyedMutator<any>;
+  posts: PostType[];
 }
 
 export const Main = ({ currentUser, mutate, posts }: MainProps) => {

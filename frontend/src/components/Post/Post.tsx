@@ -1,18 +1,17 @@
 import { notifications } from "@mantine/notifications";
 import { IconX } from "@tabler/icons";
 import axios from "axios";
+import type { KeyedMutator } from "swr";
 
 import { PostUI } from "@/components/PostUI/PostUI";
-import type { CommentData } from "@/types/comment";
-import type { MutateFunction } from "@/types/mutate";
-import type { PostData } from "@/types/post";
+import type { PostType } from "@/types/post";
 import type { User } from "@/types/user";
 import { baseURL } from "@/utils/baseUrl";
 
 interface PostProps {
   currentUser: Pick<User, "id">;
-  mutate: MutateFunction<PostData[] | CommentData[]>;
-  post: PostData | CommentData;
+  mutate: KeyedMutator<any>;
+  post: PostType;
 }
 
 export const Post = ({ currentUser, mutate, post }: PostProps) => {
