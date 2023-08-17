@@ -32,7 +32,8 @@ export default async function handler(
 
       const { data: posts, error: errorPosts } = await supabase
         .from("posts")
-        .select("*, users (*), comments (*), likes (*)")
+        .select("*, users (*), likes (*)")
+        .eq("parent_post_id", null)
         .in("user_id", [...followerIds, currentUserId])
         .order("updated_at", { ascending: false });
 
@@ -57,6 +58,7 @@ export default async function handler(
         content: postContent,
         created_at: new Date(),
         is_deleted: false,
+        parent_post_id: null,
         updated_at: new Date(),
         user_id: currentUserId,
       },
