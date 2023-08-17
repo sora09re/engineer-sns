@@ -52,7 +52,7 @@ export const PostUI = ({
                 />
               </Link>
               <Space w="xs" />
-              <Text>{post.comments.length}</Text>
+              <Text>{post.comments ? post.comments.length : 0}</Text>
             </Flex>
             <Flex align="center">
               <IconThumbUp

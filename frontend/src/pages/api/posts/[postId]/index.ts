@@ -19,7 +19,7 @@ export default async function handler(
 
     const { data: post, error } = await supabase
       .from("posts")
-      .select("*, users (*), comments (*), likes (*)")
+      .select("*, users (*), comments: posts (*), likes (*)")
       .eq("id", postId)
       .single();
 
