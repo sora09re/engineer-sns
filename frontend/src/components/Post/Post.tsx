@@ -10,7 +10,7 @@ import { baseURL } from "@/utils/baseUrl";
 
 interface PostProps {
   currentUser: Pick<User, "id">;
-  mutate: KeyedMutator<any>;
+  mutate: KeyedMutator<PostType> | KeyedMutator<PostType[]>;
   post: PostType;
 }
 

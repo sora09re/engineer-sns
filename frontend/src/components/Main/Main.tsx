@@ -9,7 +9,7 @@ import { sideBarWidthBase } from "@/utils/sideBarWidth";
 
 interface MainProps {
   currentUser: Pick<User, "id">;
-  mutate: KeyedMutator<any>;
+  mutate: KeyedMutator<PostType[]>;
   posts: PostType[];
 }
 
