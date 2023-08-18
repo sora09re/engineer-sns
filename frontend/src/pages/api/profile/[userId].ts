@@ -13,7 +13,9 @@ export default async function handler(
   const { userId } = req.query;
   const { data: user, error } = await supabase
     .from("users")
-    .select("*")
+    .select(
+      "*,follower_user_id:follows!follower_id (*),following_user_id:follows!following_id (*)"
+    )
     .eq("id", userId)
     .single();
 

@@ -3,12 +3,12 @@ import { Box, Loader } from "@mantine/core";
 import { ProfileActionsButton } from "@/components/ProfileActionsButton/ProfileActionsButton";
 import { ProfileHeader } from "@/components/ProfileHeader/ProfileHeader";
 import { ProfileStats } from "@/components/ProfileStats/ProfileStats";
-import type { User } from "@/types/user";
+import type { ProfileType } from "@/types/profile";
 import { sideBarWidthBase } from "@/utils/sideBarWidth";
 
 interface ProfileProps {
   currentUserId: string;
-  user: User;
+  user: ProfileType;
 }
 
 export const Profile = ({ currentUserId, user }: ProfileProps) => {
@@ -26,7 +26,7 @@ export const Profile = ({ currentUserId, user }: ProfileProps) => {
       }}
     >
       <ProfileHeader user={user} />
-      <ProfileStats />
+      <ProfileStats user={user} />
       <ProfileActionsButton currentUserId={currentUserId} userId={user.id} />
     </Box>
   );

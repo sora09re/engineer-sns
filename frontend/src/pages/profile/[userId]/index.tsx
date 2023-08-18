@@ -6,12 +6,13 @@ import { getServerSession } from "next-auth";
 import { Profile } from "@/components/Profile/Profile";
 import { Sidebar } from "@/components/Sidebar/Sidebar";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import type { ProfileType } from "@/types/profile";
 import type { User } from "@/types/user";
 import { baseURL } from "@/utils/baseUrl";
 
 interface ProfilePageProps {
   currentUser: User;
-  user: User;
+  user: ProfileType;
 }
 
 const ProfilePage: NextPage<ProfilePageProps> = ({ currentUser, user }) => {
