@@ -8,6 +8,10 @@ interface MainLinkProps {
   label: string;
 }
 
+interface MainLinksProps {
+  currentUserId: string;
+}
+
 const MainLink = ({ href, icon, label }: MainLinkProps) => {
   return (
     <UnstyledButton
@@ -53,25 +57,25 @@ const MainLink = ({ href, icon, label }: MainLinkProps) => {
   );
 };
 
-const data = [
-  {
-    href: "/",
-    icon: <IconHome2 size="2.0rem" stroke={1.5} color="black" />,
-    label: "ホーム",
-  },
-  {
-    href: "/search",
-    icon: <IconSearch size="2.0rem" stroke={1.5} color="black" />,
-    label: "検索",
-  },
-  {
-    href: `/users/123`,
-    icon: <IconUserCircle size="2.0rem" stroke={1.5} color="black" />,
-    label: "プロフィール",
-  },
-];
+export const MainLinks = ({ currentUserId }: MainLinksProps) => {
+  const data = [
+    {
+      href: "/",
+      icon: <IconHome2 size="2.0rem" stroke={1.5} color="black" />,
+      label: "ホーム",
+    },
+    {
+      href: "/search",
+      icon: <IconSearch size="2.0rem" stroke={1.5} color="black" />,
+      label: "検索",
+    },
+    {
+      href: `/users/${currentUserId}`,
+      icon: <IconUserCircle size="2.0rem" stroke={1.5} color="black" />,
+      label: "プロフィール",
+    },
+  ];
 
-export const MainLinks = () => {
   const links = data.map((link) => {
     return <MainLink {...link} key={link.label} />;
   });

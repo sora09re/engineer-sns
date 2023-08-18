@@ -8,7 +8,7 @@ import type { User } from "@/types/user";
 import { sideBarWidthBase } from "@/utils/sideBarWidth";
 
 interface SidebarProps {
-  currentUser: Pick<User, "name" | "username" | "profile_image_url">;
+  currentUser: Pick<User, "id" | "name" | "username" | "profile_image_url">;
 }
 
 export const Sidebar = ({ currentUser }: SidebarProps) => {
@@ -22,7 +22,7 @@ export const Sidebar = ({ currentUser }: SidebarProps) => {
       style={{ zIndex: 1 }}
     >
       <Navbar.Section grow mt="md" px="20px">
-        <MainLinks />
+        <MainLinks currentUserId={currentUser.id} />
         <Space h="xl" />
         <Button
           sx={{ fontSize: "1.0rem", fontWeight: "bold" }}
