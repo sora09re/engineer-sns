@@ -70,7 +70,7 @@ export const MainLinks = ({ currentUserId }: MainLinksProps) => {
       label: "検索",
     },
     {
-      href: `/users/${currentUserId}`,
+      href: `/profile/${currentUserId}`,
       icon: <IconUserCircle size="2.0rem" stroke={1.5} color="black" />,
       label: "プロフィール",
     },
