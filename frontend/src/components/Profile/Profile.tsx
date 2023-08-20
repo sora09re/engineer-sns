@@ -8,7 +8,7 @@ import { sideBarWidthBase } from "@/utils/sideBarWidth";
 
 interface ProfileProps {
   currentUserId: string;
-  user: ProfileType;
+  user: ProfileType | undefined;
 }
 
 export const Profile = ({ currentUserId, user }: ProfileProps) => {
