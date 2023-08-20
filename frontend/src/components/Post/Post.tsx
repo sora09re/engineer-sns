@@ -10,7 +10,7 @@ import { baseURL } from "@/utils/baseUrl";
 
 interface PostProps {
   currentUser: Pick<User, "id">;
-  mutate: KeyedMutator<PostType> | KeyedMutator<PostType[]>;
+  mutate?: KeyedMutator<PostType> | KeyedMutator<PostType[]>;
   post: PostType;
 }
 
@@ -39,7 +39,9 @@ export const Post = ({ currentUser, mutate, post }: PostProps) => {
           },
         });
       }
-      mutate();
+      if (mutate) {
+        mutate();
+      }
     } catch (error) {
       notifications.show({
         id: "click-likes",
