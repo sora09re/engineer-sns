@@ -18,6 +18,7 @@ import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 
 import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
+import { baseURL } from "@/utils/baseUrl";
 
 interface NewUserValues {
   id: string;
@@ -33,11 +34,8 @@ interface NewUserValues {
 const NewUserPage: NextPage = () => {
   const { data: session } = useSession();
   const router = useRouter();
-  
+
   const postNewUser = async (values: NewUserValues) => {
-    const baseURL = process.env.SERVER
-      ? process.env.SERVER
-      : "http://localhost:3000";
     try {
       const res = await axios.post(`${baseURL}/api/auth/signup`, values);
       if (res.status === 200) {
