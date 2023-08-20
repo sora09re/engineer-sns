@@ -5,11 +5,6 @@ import type { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { RecoilRoot } from "recoil";
 
-import { CommentModal } from "@/components/Modal/CommentModal/CommentModal";
-import { EditProfileModal } from "@/components/Modal/EditProfileModal/EditProfileModal";
-import { LoginModal } from "@/components/Modal/LoginModal/LoginModal";
-import { PostModal } from "@/components/Modal/PostModal/PostModal";
-import { SignupModal } from "@/components/Modal/SignupModal/SignupModal";
 
 const App: CustomAppPage<{ session: Session | null | undefined }> = ({
   Component,
@@ -20,11 +15,6 @@ const App: CustomAppPage<{ session: Session | null | undefined }> = ({
       <RecoilRoot>
         <MantineProvider withGlobalStyles withNormalizeCSS>
           <Notifications />
-          <SignupModal />
-          <LoginModal />
-          <CommentModal />
-          <PostModal />
-          <EditProfileModal />
           <Component {...pageProps} />
         </MantineProvider>
       </RecoilRoot>
