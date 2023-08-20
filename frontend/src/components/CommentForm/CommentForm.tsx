@@ -46,7 +46,7 @@ export const CommentForm = ({
         autoClose: 2000,
         color: "green",
         icon: <IconCheck size="1rem" />,
-        message: "コメントが成功しました！",
+        message: "コメントに成功しました！",
         title: "成功",
       });
     } catch (error) {

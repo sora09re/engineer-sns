@@ -39,7 +39,7 @@ export const NewPostForm = ({ currentUser, mutate }: NewPostFormProps) => {
         autoClose: 2000,
         color: "green",
         icon: <IconCheck size="1rem" />,
-        message: "投稿が成功しました！",
+        message: "投稿に成功しました！",
         title: "成功",
       });
     } catch (error) {
