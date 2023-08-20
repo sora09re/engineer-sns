@@ -35,11 +35,6 @@ const mswHandlers = [
 const withProviders = (Story) => (
   <RecoilRoot>
     <MantineProvider withGlobalStyles withNormalizeCSS>
-      <CommentModal />
-      <PostModal />
-      <LoginModal />
-      <SignupModal />
-      <EditProfileModal />
       <Story />
     </MantineProvider>
   </RecoilRoot>
