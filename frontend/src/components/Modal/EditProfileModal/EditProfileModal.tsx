@@ -1,30 +1,46 @@
-import { Button, Grid, Modal, Paper, Textarea, TextInput } from "@mantine/core";
+import {
+  Button,
+  Center,
+  Grid,
+  Modal,
+  Paper,
+  Textarea,
+  TextInput,
+} from "@mantine/core";
+import { notifications } from "@mantine/notifications";
+import { IconCheck, IconX } from "@tabler/icons";
+import axios from "axios";
 import { useState } from "react";
+import type { KeyedMutator } from "swr";
 
 import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
 import { useModal } from "@/hooks/useModal";
+import type { ProfileType } from "@/types/profile";
 import type { User } from "@/types/user";
+import { baseURL } from "@/utils/baseUrl";
 
 interface EditProfileModalProps {
   currentUser: User;
+  mutate: KeyedMutator<ProfileType>;
 }
 
-type UserProfile = {
+export interface UserProfile {
   bio?: string;
   location?: string;
   name: string;
-  profileImageUrl?: string;
+  profile_image_url?: string;
   username: string;
   website?: string;
-};
+}
 
 const useUserProfile = (currentUser: any) => {
   const [userProfile, setUserProfile] = useState<UserProfile>({
     bio: currentUser.bio,
     location: currentUser.location,
     name: currentUser.name,
-    profileImageUrl: currentUser.profile_image_url,
+    profile_image_url: currentUser.profile_image_url,
     username: currentUser.username,
+    website: currentUser.website,
   });
 
   const updateUserProfile = (newUserProfile: Partial<UserProfile>) => {
@@ -36,13 +52,49 @@ const useUserProfile = (currentUser: any) => {
   return { updateUserProfile, userProfile };
 };
 
-export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
+export const EditProfileModal = ({
+  currentUser,
+  mutate,
+}: EditProfileModalProps) => {
+  const marginTopPx = 10;
   const { updateUserProfile, userProfile } = useUserProfile(currentUser);
 
   const [isVisible, setIsVisible] = useModal("editProfile");
 
-  const editProfile = () => {
-    alert("editProfileのAPIを実装する");
+  const editProfile = async () => {
+    notifications.show({
+      id: "updateProfile",
+      autoClose: false,
+      loading: true,
+      message: "しばらくお待ちください。",
+      title: "更新中...",
+      withCloseButton: false,
+    });
+
+    try {
+      await axios.post(`${baseURL}/api/profile/${currentUser.id}`, {
+        values: userProfile,
+      });
+      setIsVisible(false);
+      mutate();
+      notifications.update({
+        id: "updateProfile",
+        autoClose: 2000,
+        color: "green",
+        icon: <IconCheck size="1rem" />,
+        message: "更新に成功しました！",
+        title: "成功",
+      });
+    } catch (error) {
+      notifications.update({
+        id: "updateProfile",
+        autoClose: 2000,
+        color: "red",
+        icon: <IconX size="1rem" />,
+        message: "更新に失敗しました。",
+        title: "エラー",
+      });
+    }
   };
 
   return (
@@ -57,7 +109,9 @@ export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
       <Paper p="md">
         <Grid grow>
           <Grid.Col span={4}>
-            <ImageUpload image_url={userProfile.profileImageUrl} />
+            <Center>
+              <ImageUpload profile_image_url={userProfile.profile_image_url} userProfileImage={userProfile.profile_image_url} setUserProfileImage={updateUserProfile} />
+            </Center>
             <TextInput
               label="名前"
               placeholder={userProfile.name}
@@ -65,6 +119,7 @@ export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
               onChange={(e) => {
                 return updateUserProfile({ name: e.currentTarget.value });
               }}
+              mt={marginTopPx}
             />
             <TextInput
               label="ユーザー名"
@@ -73,6 +128,7 @@ export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
               onChange={(e) => {
                 return updateUserProfile({ username: e.currentTarget.value });
               }}
+              mt={marginTopPx}
             />
             <Textarea
               label="自己紹介"
@@ -82,6 +138,8 @@ export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
                 return updateUserProfile({ bio: e.currentTarget.value });
               }}
               maxLength={160}
+              minRows={4}
+              mt={marginTopPx}
             />
             <TextInput
               label="場所"
@@ -90,6 +148,7 @@ export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
               onChange={(e) => {
                 return updateUserProfile({ location: e.currentTarget.value });
               }}
+              mt={marginTopPx}
             />
             <TextInput
               label="ウェブサイト"
@@ -98,9 +157,17 @@ export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
               onChange={(e) => {
                 return updateUserProfile({ website: e.currentTarget.value });
               }}
+              mt={marginTopPx}
             />
 
-            <Button onClick={editProfile}>保存</Button>
+            <Button
+              onClick={() => {
+                return editProfile();
+              }}
+              mt={marginTopPx}
+            >
+              保存
+            </Button>
           </Grid.Col>
         </Grid>
       </Paper>

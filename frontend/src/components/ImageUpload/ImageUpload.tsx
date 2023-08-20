@@ -1,23 +1,27 @@
 import { Group, Image } from "@mantine/core";
 import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+
+import type { UserProfile } from "@/components/Modal/EditProfileModal/EditProfileModal";
 
 interface ImageUploadProps {
-  disabled?: boolean;
-  image_url?: string;
+  profile_image_url?: string;
+  setUserProfileImage: (newUserProfile: Partial<UserProfile>) => void;
+  userProfileImage?: string;
 }
 
-export const ImageUpload: React.FC<ImageUploadProps> = ({ image_url }) => {
-  const [imageUrl, setImageUrl] = useState(image_url);
-
+export const ImageUpload = ({
+  setUserProfileImage,
+  userProfileImage,
+}: ImageUploadProps) => {
   useEffect(() => {
-    setImageUrl(image_url);
-  }, [image_url]);
+    setUserProfileImage({ profile_image_url: userProfileImage });
+  }, [userProfileImage, setUserProfileImage]);
 
   const handleDrop = (files: File[]) => {
     const file = files[0];
     const fileUrl = URL.createObjectURL(file);
-    setImageUrl(fileUrl);
+    setUserProfileImage({ profile_image_url: fileUrl });
   };
 
   return (
@@ -38,7 +42,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ image_url }) => {
       >
         <Dropzone.Idle>
           <Image
-            src={imageUrl}
+            src={userProfileImage}
             height="120"
             width="120"
             alt="Profile image"
