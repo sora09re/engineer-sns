@@ -1,41 +1,48 @@
-import {
-  Button,
-  Grid,
-  Modal,
-  Paper,
-  Textarea,
-  TextInput,
-} from "@mantine/core";
+import { Button, Grid, Modal, Paper, Textarea, TextInput } from "@mantine/core";
 import { useState } from "react";
-import { useRecoilState } from "recoil";
 
 import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
 import { useModal } from "@/hooks/useModal";
-import { userState } from "@/stores/userState";
+import type { User } from "@/types/user";
 
-export const EditProfileModal = () => {
-  const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
-  const [bio, setBio] = useState("");
-  const [location, setLocation] = useState("");
-  const [website, setWebsite] = useState("");
-  const [profileImageUrl] = useState("");
+interface EditProfileModalProps {
+  currentUser: User;
+}
+
+type UserProfile = {
+  bio?: string;
+  location?: string;
+  name: string;
+  profileImageUrl?: string;
+  username: string;
+  website?: string;
+};
+
+const useUserProfile = (currentUser: any) => {
+  const [userProfile, setUserProfile] = useState<UserProfile>({
+    bio: currentUser.bio,
+    location: currentUser.location,
+    name: currentUser.name,
+    profileImageUrl: currentUser.profile_image_url,
+    username: currentUser.username,
+  });
+
+  const updateUserProfile = (newUserProfile: Partial<UserProfile>) => {
+    setUserProfile((prev) => {
+      return { ...prev, ...newUserProfile };
+    });
+  };
+
+  return { updateUserProfile, userProfile };
+};
+
+export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
+  const { updateUserProfile, userProfile } = useUserProfile(currentUser);
 
   const [isVisible, setIsVisible] = useModal("editProfile");
-  const [user, setUser] = useRecoilState(userState);
 
-  const onSave = () => {
-    setUser({
-      ...user,
-      bio: bio !== "" ? bio : user.bio,
-      location: location !== "" ? location : user.location,
-      name: name !== "" ? name : user.name,
-      profileImageUrl:
-        profileImageUrl !== "" ? profileImageUrl : user.profileImageUrl,
-      username: username !== "" ? username : user.username,
-      website: website !== "" ? website : user.website,
-    });
-    setIsVisible(false);
+  const editProfile = () => {
+    alert("editProfileのAPIを実装する");
   };
 
   return (
@@ -50,50 +57,50 @@ export const EditProfileModal = () => {
       <Paper p="md">
         <Grid grow>
           <Grid.Col span={4}>
-            <ImageUpload image_url={profileImageUrl} />
+            <ImageUpload image_url={userProfile.profileImageUrl} />
             <TextInput
               label="名前"
-              placeholder={user.name}
-              value={name}
+              placeholder={userProfile.name}
+              value={userProfile.name}
               onChange={(e) => {
-                return setName(e.currentTarget.value);
+                return updateUserProfile({ name: e.currentTarget.value });
               }}
             />
             <TextInput
               label="ユーザー名"
-              placeholder={user.username}
-              value={username}
+              placeholder={userProfile.username}
+              value={userProfile.username}
               onChange={(e) => {
-                return setUsername(e.currentTarget.value);
+                return updateUserProfile({ username: e.currentTarget.value });
               }}
             />
             <Textarea
               label="自己紹介"
-              placeholder={user.bio}
-              value={bio}
+              placeholder={userProfile.bio}
+              value={userProfile.bio}
               onChange={(e) => {
-                return setBio(e.currentTarget.value);
+                return updateUserProfile({ bio: e.currentTarget.value });
               }}
               maxLength={160}
             />
             <TextInput
               label="場所"
-              placeholder={user.location}
-              value={location}
+              placeholder={userProfile.location}
+              value={userProfile.location}
               onChange={(e) => {
-                return setLocation(e.currentTarget.value);
+                return updateUserProfile({ location: e.currentTarget.value });
               }}
             />
             <TextInput
               label="ウェブサイト"
-              placeholder={user.website}
-              value={website}
+              placeholder={userProfile.website}
+              value={userProfile.website}
               onChange={(e) => {
-                return setWebsite(e.currentTarget.value);
+                return updateUserProfile({ website: e.currentTarget.value });
               }}
             />
 
-            <Button onClick={onSave}>保存</Button>
+            <Button onClick={editProfile}>保存</Button>
           </Grid.Col>
         </Grid>
       </Paper>

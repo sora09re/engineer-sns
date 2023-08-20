@@ -3,6 +3,7 @@ import axios from "axios";
 import type { GetServerSideProps, NextPage } from "next";
 import { getServerSession } from "next-auth";
 
+import { EditProfileModal } from "@/components/Modal/EditProfileModal/EditProfileModal";
 import { Profile } from "@/components/Profile/Profile";
 import { Sidebar } from "@/components/Sidebar/Sidebar";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
@@ -20,6 +21,7 @@ const ProfilePage: NextPage<ProfilePageProps> = ({ currentUser, user }) => {
     <Flex>
       <Sidebar currentUser={currentUser} />
       <Profile user={user} currentUserId={currentUser.id} />
+      <EditProfileModal currentUser={currentUser} />
     </Flex>
   );
 };
