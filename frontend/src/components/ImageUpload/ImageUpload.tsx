@@ -16,7 +16,8 @@ export const ImageUpload = ({
 }: ImageUploadProps) => {
   useEffect(() => {
     setUserProfileImage({ profile_image_url: userProfileImage });
-  }, [userProfileImage, setUserProfileImage]);
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userProfileImage]);
 
   const handleDrop = (files: File[]) => {
     const file = files[0];
