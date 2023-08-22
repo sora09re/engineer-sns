@@ -13,7 +13,7 @@ import { baseURL } from "@/utils/baseUrl";
 import { fetcher } from "@/utils/fetcher";
 
 interface PostsDataProps {
-  currentUser: Pick<User, "id" | "name" | "username" | "profile_image_url">;
+  currentUser: User;
   postsFromServerSideProps: PostType[];
 }
 

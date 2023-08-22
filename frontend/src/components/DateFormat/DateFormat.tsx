@@ -2,7 +2,7 @@ import { addHours, format } from "date-fns";
 import { ja } from "date-fns/locale";
 
 interface DateFormatProps {
-  props: string;
+  props: Date;
 }
 
 export const DateFormat = ({ props }: DateFormatProps) => {

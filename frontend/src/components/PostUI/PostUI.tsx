@@ -2,7 +2,6 @@ import {
   Avatar,
   Box,
   Group,
-  Paper,
   Space,
   Text,
   Tooltip,
@@ -44,15 +43,14 @@ export const PostUI = ({
     : "black";
 
   return (
-    <Paper
+    <Box
       key={post.id}
       p="md"
-      shadow="xs"
-      w="full"
+      w="100%"
+      sx={{ borderBottom: "1px solid #E9ECEF", cursor: "pointer" }}
       onClick={() => {
         return router.push(`/posts/${post.id}`);
       }}
-      style={{ cursor: "pointer" }}
     >
       <Group align="start">
         <Box>
@@ -118,6 +116,6 @@ export const PostUI = ({
           </Group>
         </Box>
       </Group>
-    </Paper>
+    </Box>
   );
 };

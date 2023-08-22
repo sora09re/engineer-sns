@@ -4,7 +4,6 @@ import { ProfileActionsButton } from "@/components/ProfileActionsButton/ProfileA
 import { ProfileHeader } from "@/components/ProfileHeader/ProfileHeader";
 import { ProfileStats } from "@/components/ProfileStats/ProfileStats";
 import type { ProfileType } from "@/types/profile";
-import { sideBarWidthBase } from "@/utils/sideBarWidth";
 
 interface ProfileProps {
   currentUserId: string;
@@ -20,7 +19,6 @@ export const Profile = ({ currentUserId, user }: ProfileProps) => {
     <Box
       p="xl"
       w="100%"
-      ml={sideBarWidthBase}
       sx={{
         borderBottom: "1px solid #E9ECEF",
       }}
