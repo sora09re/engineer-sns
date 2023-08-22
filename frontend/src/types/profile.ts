@@ -1,4 +1,5 @@
 import type { Follow } from "@/types/follow";
+import type { PostType } from "@/types/post";
 
 export type ProfileType = {
   id: string;
@@ -9,6 +10,7 @@ export type ProfileType = {
   following_user_id: Follow[];
   location?: string;
   name: string;
+  posts: PostType[];
   profile_image_url?: string;
   updated_at: string;
   username: string;
