@@ -27,7 +27,7 @@ export default async function handler(
           comments: posts (
             *,
             users (*),
-            likes (*),å
+            likes (*),
             comments: posts (*)
           )
         `
