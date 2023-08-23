@@ -1,13 +1,5 @@
-import {
-  Avatar,
-  Badge,
-  Box,
-  Button,
-  Flex,
-  Paper,
-  Space,
-  Text,
-} from "@mantine/core";
+import { Avatar, Badge, Box, Button, Flex, Space, Text } from "@mantine/core";
+import Link from "next/link";
 // import Link from "next/link";
 import { useState } from "react";
 
@@ -21,21 +13,25 @@ export const UserItem = ({ propsUser }: UserItemProps) => {
   const [label, setLabel] = useState("フォロー中");
 
   return (
-    // <Link href="">
-    <Paper p="md" w="100%" style={{ marginBottom: 20 }}>
+    <Box
+      p="md"
+      w="100%"
+      sx={{ borderBottom: "1px solid #E9ECEF", cursor: "pointer" }}
+    >
       <Flex>
-        <Avatar
-          src={propsUser.profileImageUrl}
-          size={50}
-          style={{ marginBottom: 10 }}
-        />
-        <Space w={10} />
+        <Link href={`/profile/${propsUser.id}`}>
+          <Avatar src={propsUser.profile_image_url} alt="プロフィール画像" />
+        </Link>
+        <Space w="1rem" />
         <Box w="100%">
           <Flex justify="space-between">
             <Box>
-              <Text>{propsUser.name}</Text>
+              <Text fw={700} color="black">
+                {propsUser.name}
+              </Text>
               <Text color="dimmed">
-                {propsUser.username} <Badge color="gray">フォローされています</Badge>
+                @{propsUser.username}{" "}
+                <Badge color="gray">フォローされています</Badge>
               </Text>
             </Box>
             <Button
@@ -64,7 +60,6 @@ export const UserItem = ({ propsUser }: UserItemProps) => {
           <Text variant="h5">{propsUser.bio}</Text>
         </Box>
       </Flex>
-    </Paper>
-    // </Link>
+    </Box>
   );
 };
