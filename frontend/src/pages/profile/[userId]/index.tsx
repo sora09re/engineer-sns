@@ -1,27 +1,55 @@
-import { Flex } from "@mantine/core";
+import { Box, Flex } from "@mantine/core";
 import axios from "axios";
 import type { GetServerSideProps, NextPage } from "next";
 import { getServerSession } from "next-auth";
+import useSWR from "swr";
 
 import { EditProfileModal } from "@/components/Modal/EditProfileModal/EditProfileModal";
+import { PostsList } from "@/components/PostsList/PostsList";
 import { Profile } from "@/components/Profile/Profile";
 import { Sidebar } from "@/components/Sidebar/Sidebar";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import type { ProfileType } from "@/types/profile";
 import type { User } from "@/types/user";
 import { baseURL } from "@/utils/baseUrl";
+import { fetcher } from "@/utils/fetcher";
+import { sideBarWidthBase } from "@/utils/sideBarWidth";
 
 interface ProfilePageProps {
   currentUser: User;
-  user: ProfileType;
+  userFromServerSideProps: ProfileType;
 }
 
-const ProfilePage: NextPage<ProfilePageProps> = ({ currentUser, user }) => {
+const ProfilePage: NextPage<ProfilePageProps> = ({
+  currentUser,
+  userFromServerSideProps,
+}) => {
+  const {
+    data: user,
+    error: getUserProfileError,
+    mutate,
+  } = useSWR<ProfileType>(
+    `${baseURL}/api/profile/${userFromServerSideProps.id}`,
+    fetcher,
+    {
+      fallbackData: userFromServerSideProps,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
+  );
+
+  if (getUserProfileError || !user) {
+    return <div>エラーが発生しました。更新を行ってください。</div>;
+  }
+
   return (
     <Flex>
       <Sidebar currentUser={currentUser} />
-      <Profile user={user} currentUserId={currentUser.id} />
-      <EditProfileModal currentUser={currentUser} />
+      <Box w="100%" ml={sideBarWidthBase}>
+        <Profile user={user} currentUserId={currentUser.id} />
+        <PostsList posts={user.posts} currentUser={currentUser} />
+      </Box>
+      <EditProfileModal currentUser={currentUser} mutate={mutate} />
     </Flex>
   );
 };
@@ -47,8 +75,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const userId = context.params?.userId;
   const res = await axios.get(`${baseURL}/api/profile/${userId}`);
-  const user = res.data;
-  return { props: { currentUser, user } };
+  const userFromServerSideProps = res.data;
+  return { props: { currentUser, userFromServerSideProps } };
 };
 
 export default ProfilePage;
