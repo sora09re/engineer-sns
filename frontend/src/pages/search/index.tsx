@@ -19,7 +19,7 @@ const SearchPage: NextPage<SearchPageProps> = ({ currentUser }) => {
     <Flex>
       <Sidebar currentUser={currentUser} />
       <Box w="100%" ml={sideBarWidthBase}>
-        <Search />
+        <Search currentUser={currentUser} />
       </Box>
     </Flex>
   );

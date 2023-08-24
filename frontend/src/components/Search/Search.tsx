@@ -1,45 +1,70 @@
-import { Box, Tabs, TextInput } from "@mantine/core";
+import { Box, Center, Loader, Tabs, TextInput } from "@mantine/core";
 import { IconSearch } from "@tabler/icons";
+import error from "next/error";
 import { useState } from "react";
+import useSWR from "swr";
 
 import { PostsList } from "@/components/PostsList/PostsList";
 import { UsersList } from "@/components/UsersList/UsersList";
-import { testPost1, testPost2, testPost3 } from "@/test/testPost";
-import { testUser1, testUser2, testUser3 } from "@/test/testUser";
-import type { PostType } from "@/types/post";
 import type { User } from "@/types/user";
+import { fetcher } from "@/utils/fetcher";
 
-const currentUser: User = testUser1;
+interface SearchProps {
+  currentUser: User;
+}
 
-export const Search = () => {
-  const [searchPostResults, _setSearchPostResults] = useState<PostType[]>([
-    testPost1,
-    testPost2,
-    testPost3,
-  ]);
-  const [searchUserResults, _setSearchUserResults] = useState<User[] | null>([
-    testUser1,
-    testUser2,
-    testUser3,
-  ]);
+export const Search = ({ currentUser }: SearchProps) => {
+  const [keyword, setKeyword] = useState("");
 
-  if (!searchUserResults) {
-    return <div>Loading...</div>;
+  const {
+    data: searchUserResults,
+    error: searchUserError,
+    isLoading: isLoadingSearchUser,
+  } = useSWR(`/api/search/users?keyword=${keyword}`, fetcher);
+
+  const {
+    data: searchPostResults,
+    error: searchPostError,
+    isLoading: isLoadingSearchPost,
+    mutate
+  } = useSWR(`/api/search/posts?keyword=${keyword}`, fetcher);
+
+  if (searchUserError || searchPostError) {
+    console.error("Error fetching search results:", error);
   }
 
   return (
     <Box p="md">
-      <TextInput icon={<IconSearch />} placeholder="キーワード検索" />
+      <TextInput
+        icon={<IconSearch />}
+        placeholder="キーワード検索"
+        value={keyword}
+        onChange={(e) => {
+          return setKeyword(e.target.value);
+        }}
+      />
       <Tabs defaultValue="post" mt="md">
         <Tabs.List grow position="center">
           <Tabs.Tab value="post">投稿</Tabs.Tab>
           <Tabs.Tab value="account">アカウント</Tabs.Tab>
         </Tabs.List>
         <Tabs.Panel value="post">
-          <PostsList currentUser={currentUser} posts={searchPostResults} />
+          {isLoadingSearchPost ? (
+            <Center mt={200}>
+              <Loader />
+            </Center>
+          ) : (
+            <PostsList currentUser={currentUser} posts={searchPostResults} mutate={mutate} />
+          )}
         </Tabs.Panel>
         <Tabs.Panel value="account">
-          <UsersList users={searchUserResults} />
+          {isLoadingSearchUser ? (
+            <Center mt={200}>
+              <Loader />
+            </Center>
+          ) : (
+            <UsersList users={searchUserResults} />
+          )}
         </Tabs.Panel>
       </Tabs>
     </Box>
