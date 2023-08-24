@@ -8,6 +8,10 @@ interface PostsListProps {
 }
 
 export const UsersList = ({ users }: PostsListProps) => {
+  if (!users) {
+    return <></>;
+  }
+
   return (
     <>
       {users.map((user) => {

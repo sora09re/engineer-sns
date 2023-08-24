@@ -11,6 +11,10 @@ interface PostsListProps {
 }
 
 export const PostsList = ({ currentUser, mutate, posts }: PostsListProps) => {
+  if (!posts) {
+    return <></>;
+  }
+
   return (
     <>
       {posts.map((post) => {
