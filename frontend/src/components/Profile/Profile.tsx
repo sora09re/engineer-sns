@@ -1,4 +1,5 @@
 import { Box, Loader } from "@mantine/core";
+import type { KeyedMutator } from "swr";
 
 import { ProfileActionsButton } from "@/components/ProfileActionsButton/ProfileActionsButton";
 import { ProfileHeader } from "@/components/ProfileHeader/ProfileHeader";
@@ -7,10 +8,11 @@ import type { ProfileType } from "@/types/profile";
 
 interface ProfileProps {
   currentUserId: string;
+  mutate: KeyedMutator<ProfileType>;
   user: ProfileType | undefined;
 }
 
-export const Profile = ({ currentUserId, user }: ProfileProps) => {
+export const Profile = ({ currentUserId, mutate, user }: ProfileProps) => {
   if (!user) {
     return <Loader />;
   }
@@ -25,7 +27,7 @@ export const Profile = ({ currentUserId, user }: ProfileProps) => {
     >
       <ProfileHeader user={user} />
       <ProfileStats user={user} />
-      <ProfileActionsButton currentUserId={currentUserId} userId={user.id} />
+      <ProfileActionsButton currentUserId={currentUserId} userId={user.id} mutate={mutate} />
     </Box>
   );
 };

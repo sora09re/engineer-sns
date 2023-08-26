@@ -1,30 +1,59 @@
 import { Button, Center } from "@mantine/core";
+import axios from "axios";
+import type { KeyedMutator } from "swr";
+import useSWR from "swr";
 
 import { useModal } from "@/hooks/useModal";
+import type { ProfileType } from "@/types/profile";
+import { baseURL } from "@/utils/baseUrl";
+import { fetcher } from "@/utils/fetcher";
 
 interface ProfileActionsButtonProps {
   currentUserId: string;
+  mutate: KeyedMutator<ProfileType>;
   userId: string;
 }
 
 export const ProfileActionsButton = ({
   currentUserId,
+  mutate,
   userId,
 }: ProfileActionsButtonProps) => {
   const [, setIsVisible] = useModal("editProfile");
-  const isFollowing = true; // この部分は実際のロジックに基づいて変更する必要があります。
+  const endpoint = `${baseURL}/api/users/${userId}/follow`;
+  const isCurrentUser = currentUserId === userId;
 
-  const handleFollow = () => {
-    alert("フォロー機能を実装");
+  const {
+    data,
+    error,
+    mutate: fetchFollowMutate,
+  } = useSWR(`${endpoint}?currentUserId=${currentUserId}`, fetcher);
+
+  if (error) {
+    return <div>エラーが発生しました: {error.message}</div>;
+  }
+
+  const isFollowing = data && data.isFollowing;
+
+  const handleFollow = async () => {
+    await axios.post(`${endpoint}?currentUserId=${currentUserId}`);
+    fetchFollowMutate();
+    mutate();
   };
 
-  const handleRemoveFollow = () => {
-    alert("フォロー機能を実装");
+  const handleRemoveFollow = async () => {
+    await axios.delete(`${endpoint}`, {
+      params: {
+        currentUserId,
+      },
+    });
+    fetchFollowMutate();
+    mutate();
   };
 
   return (
     <Center>
-      {currentUserId === userId ? (
+      {isCurrentUser ? (
         <Button
           variant="outline"
           color="dark"
@@ -35,11 +64,11 @@ export const ProfileActionsButton = ({
           プロフィールを編集
         </Button>
       ) : isFollowing ? (
-        <Button variant="outline" color="dark" onClick={handleFollow}>
+        <Button variant="outline" color="dark" onClick={handleRemoveFollow}>
           フォロー中
         </Button>
       ) : (
-        <Button onClick={handleRemoveFollow}>フォロー</Button>
+        <Button onClick={handleFollow}>フォロー</Button>
       )}
     </Center>
   );

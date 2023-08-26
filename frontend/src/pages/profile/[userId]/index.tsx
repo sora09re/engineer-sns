@@ -46,7 +46,7 @@ const ProfilePage: NextPage<ProfilePageProps> = ({
     <Flex>
       <Sidebar currentUser={currentUser} />
       <Box w="100%" ml={sideBarWidthBase}>
-        <Profile user={user} currentUserId={currentUser.id} />
+        <Profile user={user} currentUserId={currentUser.id} mutate={mutate} />
         <PostsList posts={user.posts} currentUser={currentUser} />
       </Box>
       <EditProfileModal currentUser={currentUser} mutate={mutate} />
