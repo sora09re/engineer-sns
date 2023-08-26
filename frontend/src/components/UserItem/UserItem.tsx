@@ -1,17 +1,16 @@
-import { Avatar, Badge, Box, Button, Flex, Space, Text } from "@mantine/core";
+import { Avatar, Badge, Box, Flex, Space, Text } from "@mantine/core";
 import Link from "next/link";
 import { useRouter } from "next/router";
-// import Link from "next/link";
-import { useState } from "react";
 
+import { FollowButton } from "@/components/FollowButton/FollowButton";
 import type { User } from "@/types/user";
 
 type UserItemProps = {
+  currentUserId: string;
   propsUser: User;
 };
 
-export const UserItem = ({ propsUser }: UserItemProps) => {
-  const [label, setLabel] = useState("フォロー中");
+export const UserItem = ({ currentUserId, propsUser }: UserItemProps) => {
   const router = useRouter();
 
   return (
@@ -44,28 +43,7 @@ export const UserItem = ({ propsUser }: UserItemProps) => {
                 <Badge color="gray">フォローされています</Badge>
               </Text>
             </Box>
-            <Button
-              onMouseEnter={() => {
-                return setLabel("フォロー解除");
-              }}
-              onMouseLeave={() => {
-                return setLabel("フォロー中");
-              }}
-              variant="outline"
-              styles={(theme) => {
-                return {
-                  root: {
-                    "&:not([data-disabled])": theme.fn.hover({
-                      backgroundColor: "white",
-                      borderColor: "red",
-                      color: "red",
-                    }),
-                  },
-                };
-              }}
-            >
-              {label}
-            </Button>
+            <FollowButton userId={propsUser.id} currentUserId={currentUserId} />
           </Flex>
           <Text variant="h5">{propsUser.bio}</Text>
         </Box>

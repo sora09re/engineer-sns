@@ -2,12 +2,11 @@ import { UserItem } from "@/components/UserItem/UserItem";
 import type { User } from "@/types/user";
 
 interface PostsListProps {
-  // currentUser: User;
-  // mutate?: KeyedMutator<PostType> | KeyedMutator<PostType[]>;
+  currentUserId: string;
   users: User[];
 }
 
-export const UsersList = ({ users }: PostsListProps) => {
+export const UsersList = ({ currentUserId, users }: PostsListProps) => {
   if (!users) {
     return <></>;
   }
@@ -15,7 +14,13 @@ export const UsersList = ({ users }: PostsListProps) => {
   return (
     <>
       {users.map((user) => {
-        return <UserItem key={user.id} propsUser={user} />;
+        return (
+          <UserItem
+            key={user.id}
+            propsUser={user}
+            currentUserId={currentUserId}
+          />
+        );
       })}
     </>
   );
