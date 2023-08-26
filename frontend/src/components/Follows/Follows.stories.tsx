@@ -1,15 +1,16 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-//import rest from "react-syntax-highlighter/dist/esm/languages/prism/rest";
-import { Following } from "@/components/Following/Following";
+import { Follows } from "@/components/Follows/Follows";
 
-const meta: Meta<typeof Following> = {
-  component: Following,
+//import rest from "react-syntax-highlighter/dist/esm/languages/prism/rest";
+
+const meta: Meta<typeof Follows> = {
+  component: Follows,
   tags: ["autodocs"],
-  title: "Following",
+  title: "Follows",
 };
 
 export default meta;
-type Story = StoryObj<typeof Following>;
+type Story = StoryObj<typeof Follows>;
 
 export const Default: Story = {};
