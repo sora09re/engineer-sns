@@ -12,6 +12,7 @@ type UserItemProps = {
 
 export const UserItem = ({ currentUserId, propsUser }: UserItemProps) => {
   const router = useRouter();
+  const isCurrentUser = currentUserId === propsUser.id;
 
   return (
     <Box
@@ -44,7 +45,14 @@ export const UserItem = ({ currentUserId, propsUser }: UserItemProps) => {
                 <Badge color="gray">フォローされています</Badge> */}
               </Text>
             </Box>
-            <FollowButton userId={propsUser.id} currentUserId={currentUserId} />
+            {isCurrentUser ? (
+              <></>
+            ) : (
+              <FollowButton
+                userId={propsUser.id}
+                currentUserId={currentUserId}
+              />
+            )}
           </Flex>
           <Text variant="h5">{propsUser.bio}</Text>
         </Box>
