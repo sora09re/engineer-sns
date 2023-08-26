@@ -1,4 +1,4 @@
-import { Avatar, Badge, Box, Flex, Space, Text } from "@mantine/core";
+import { Avatar, Box, Flex, Space, Text } from "@mantine/core";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -39,8 +39,9 @@ export const UserItem = ({ currentUserId, propsUser }: UserItemProps) => {
                 </Text>
               </Link>
               <Text color="dimmed">
-                @{propsUser.username}{" "}
-                <Badge color="gray">フォローされています</Badge>
+                @{propsUser.username}
+                {/* {" "}
+                <Badge color="gray">フォローされています</Badge> */}
               </Text>
             </Box>
             <FollowButton userId={propsUser.id} currentUserId={currentUserId} />
