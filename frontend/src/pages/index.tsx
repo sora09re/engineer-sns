@@ -61,18 +61,20 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  const currentUserRes = await axios.get(`${baseURL}/api/users/current`, {
-    params: {
-      currentUserId: session?.user?.id,
-    },
-  });
-  const currentUser = currentUserRes.data;
+  const [currentUserRes, postsRes] = await Promise.all([
+    axios.get(`${baseURL}/api/users/current`, {
+      params: {
+        currentUserId: session?.user?.id,
+      },
+    }),
+    axios.get(`${baseURL}/api/posts`, {
+      params: {
+        currentUserId: session?.user?.id,
+      },
+    }),
+  ]);
 
-  const postsRes = await axios.get(`${baseURL}/api/posts`, {
-    params: {
-      currentUserId: currentUser.id,
-    },
-  });
+  const currentUser = currentUserRes.data;
   const postsFromServerSideProps = postsRes.data;
 
   return {
