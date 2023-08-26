@@ -20,6 +20,7 @@ export default async function handler(
     const { data: searchPostResults, error } = await supabase
       .from("posts")
       .select("*, users (*), likes (*), comments: posts (*)")
+      .is("parent_post_id", null)
       .ilike("content", `%${keyword}%`);
 
     if (error) {
