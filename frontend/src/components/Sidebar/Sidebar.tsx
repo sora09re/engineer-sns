@@ -1,21 +1,18 @@
 import { Button, Navbar, Space } from "@mantine/core";
-import { type KeyedMutator } from "swr";
 
 import { AccountButton } from "@/components/AccountButton/AccountButton";
 import { LoginButton } from "@/components/LoginButton/LoginButton";
 import { MainLinks } from "@/components/MainLinks/MainLinks";
 import { PostModal } from "@/components/Modal/PostModal/PostModal";
 import { useModal } from "@/hooks/useModal";
-import type { PostType } from "@/types/post";
 import type { User } from "@/types/user";
 import { sideBarWidthBase } from "@/utils/sideBarWidth";
 
 interface SidebarProps {
   currentUser: User;
-  mutate?: KeyedMutator<PostType[]>;
 }
 
-export const Sidebar = ({ currentUser, mutate }: SidebarProps) => {
+export const Sidebar = ({ currentUser }: SidebarProps) => {
   const [, setIsVisiblePostModal] = useModal("post");
 
   return (
@@ -36,7 +33,7 @@ export const Sidebar = ({ currentUser, mutate }: SidebarProps) => {
         >
           投稿する
         </Button>
-        <PostModal currentUser={currentUser} mutate={mutate} />
+        <PostModal currentUser={currentUser} />
         <Space h="md" />
         <LoginButton />
       </Navbar.Section>

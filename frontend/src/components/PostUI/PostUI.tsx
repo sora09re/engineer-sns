@@ -12,20 +12,21 @@ import { PostActionsButtonGroup } from "@/components/PostActionsButtonGroup/Post
 import type { PostType } from "@/types/post";
 
 interface PostUIProps {
+  currentUserId: string;
   handleLikeClick: (postId: string) => void;
   isLikedByCurrentUser: boolean;
-  isPostByCurrentUser: boolean;
   post: PostType;
 }
 
 export const PostUI = ({
+  currentUserId,
   handleLikeClick,
   isLikedByCurrentUser,
-  isPostByCurrentUser,
   post,
 }: PostUIProps) => {
   const parsedContent = parseContent(post.content);
   const router = useRouter();
+  const isPostByCurrentUser = post.user_id === currentUserId;
 
   return (
     <Box
@@ -41,7 +42,11 @@ export const PostUI = ({
         return router.push(`/posts/${post.id}`);
       }}
     >
-      {isPostByCurrentUser ? <PostActionMenu postId={post.id} /> : <></>}
+      {isPostByCurrentUser ? (
+        <PostActionMenu postId={post.id} currentUserId={currentUserId} />
+      ) : (
+        <></>
+      )}
       <Group align="start">
         <Box>
           <Link href={`/profile/${post.user_id}`}>

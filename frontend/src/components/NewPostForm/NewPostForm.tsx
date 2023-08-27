@@ -3,21 +3,20 @@ import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import axios from "axios";
 import { useState } from "react";
-import type { KeyedMutator } from "swr";
 
+import { useGetTimelinePosts } from "@/hooks/useGetTimelinePosts";
 import { useModal } from "@/hooks/useModal";
-import type { PostType } from "@/types/post";
 import type { User } from "@/types/user";
 import { baseURL } from "@/utils/baseUrl";
 
 interface NewPostFormProps {
   currentUser: Pick<User, "id">;
-  mutate?: KeyedMutator<PostType[]>;
 }
 
-export const NewPostForm = ({ currentUser, mutate }: NewPostFormProps) => {
+export const NewPostForm = ({ currentUser }: NewPostFormProps) => {
   const [postContent, setPostContent] = useState("");
   const [, setIsVisiblePostModal] = useModal("post");
+  const { mutate } = useGetTimelinePosts(currentUser.id);
 
   const fetchPost = async () => {
     notifications.show({
@@ -36,9 +35,7 @@ export const NewPostForm = ({ currentUser, mutate }: NewPostFormProps) => {
       });
       setPostContent("");
       setIsVisiblePostModal(false);
-      if (mutate) {
-        mutate();
-      }
+      mutate();
       notifications.update({
         id: "post-data",
         autoClose: 2000,

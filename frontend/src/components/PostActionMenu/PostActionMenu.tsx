@@ -4,14 +4,20 @@ import { IconCheck, IconDots, IconTrash, IconX } from "@tabler/icons";
 import axios from "axios";
 import { useState } from "react";
 
+import { useGetTimelinePosts } from "@/hooks/useGetTimelinePosts";
 import { baseURL } from "@/utils/baseUrl";
 
 interface PostActionMenuProps {
+  currentUserId: string;
   postId: string;
 }
 
-export const PostActionMenu = ({ postId }: PostActionMenuProps) => {
+export const PostActionMenu = ({
+  currentUserId,
+  postId,
+}: PostActionMenuProps) => {
   const [opened, setOpened] = useState(false);
+  const { mutate } = useGetTimelinePosts(currentUserId);
 
   const deletePost = async () => {
     notifications.show({
@@ -32,6 +38,7 @@ export const PostActionMenu = ({ postId }: PostActionMenuProps) => {
         message: "削除しました。",
         title: "成功",
       });
+      mutate();
     } catch (error) {
       notifications.update({
         id: "deletePost",
