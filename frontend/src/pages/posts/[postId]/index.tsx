@@ -19,7 +19,7 @@ import { sideBarWidthBase } from "@/utils/sideBarWidth";
 
 interface PostDetailProps {
   commentsFromServerSideProps: PostType[];
-  currentUser: Pick<User, "id" | "name" | "username" | "profile_image_url">;
+  currentUser: User;
   postFromServerSideProps: PostType;
   postId: string;
 }
