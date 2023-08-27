@@ -26,6 +26,8 @@ export const Post = ({ currentUser, mutate, post }: PostProps) => {
   const isLikedByCurrentUser =
     index !== -1 && post.likes[index].user_id === currentUser.id;
 
+  const isPostByCurrentUser = post.user_id === currentUser.id;
+
   const handleLikeClick = async (postId: string) => {
     try {
       if (!isLikedByCurrentUser) {
@@ -59,6 +61,7 @@ export const Post = ({ currentUser, mutate, post }: PostProps) => {
       post={post}
       isLikedByCurrentUser={isLikedByCurrentUser}
       handleLikeClick={handleLikeClick}
+      isPostByCurrentUser={isPostByCurrentUser}
     />
   );
 };

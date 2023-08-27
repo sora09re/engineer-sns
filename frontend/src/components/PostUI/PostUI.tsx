@@ -14,12 +14,14 @@ import type { PostType } from "@/types/post";
 interface PostUIProps {
   handleLikeClick: (postId: string) => void;
   isLikedByCurrentUser: boolean;
+  isPostByCurrentUser: boolean;
   post: PostType;
 }
 
 export const PostUI = ({
   handleLikeClick,
   isLikedByCurrentUser,
+  isPostByCurrentUser,
   post,
 }: PostUIProps) => {
   const parsedContent = parseContent(post.content);
@@ -39,7 +41,7 @@ export const PostUI = ({
         return router.push(`/posts/${post.id}`);
       }}
     >
-      <PostActionMenu />
+      {isPostByCurrentUser ? <PostActionMenu postId={post.id} /> : <></>}
       <Group align="start">
         <Box>
           <Link href={`/profile/${post.user_id}`}>
