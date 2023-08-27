@@ -1,6 +1,6 @@
 import { atomFamily } from "recoil";
 
-export type ModalType = "comment" | "post" | "editProfile" | "login" | "signup";
+export type ModalType = "post" | "editProfile";
 export const ModalVisibilityState = atomFamily({
   default: false,
   key: "ModalVisibilityState",
