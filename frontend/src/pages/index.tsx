@@ -39,7 +39,7 @@ const Index: NextPage<PostsDataProps> = ({
 
   return (
     <Flex>
-      <Sidebar currentUser={currentUser} />
+      <Sidebar currentUser={currentUser} mutate={mutate} />
       {posts ? (
         <Main posts={posts} currentUser={currentUser} mutate={mutate} />
       ) : (

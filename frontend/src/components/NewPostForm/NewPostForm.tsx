@@ -3,19 +3,21 @@ import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import axios from "axios";
 import { useState } from "react";
+import type { KeyedMutator } from "swr";
 
-import type { MutateFunction } from "@/types/mutate";
+import { useModal } from "@/hooks/useModal";
 import type { PostType } from "@/types/post";
 import type { User } from "@/types/user";
 import { baseURL } from "@/utils/baseUrl";
 
 interface NewPostFormProps {
   currentUser: Pick<User, "id">;
-  mutate: MutateFunction<PostType[]>;
+  mutate?: KeyedMutator<PostType[]>;
 }
 
 export const NewPostForm = ({ currentUser, mutate }: NewPostFormProps) => {
   const [postContent, setPostContent] = useState("");
+  const [, setIsVisiblePostModal] = useModal("post");
 
   const fetchPost = async () => {
     notifications.show({
@@ -33,7 +35,10 @@ export const NewPostForm = ({ currentUser, mutate }: NewPostFormProps) => {
         postContent: postContent,
       });
       setPostContent("");
-      mutate();
+      setIsVisiblePostModal(false);
+      if (mutate) {
+        mutate();
+      }
       notifications.update({
         id: "post-data",
         autoClose: 2000,
