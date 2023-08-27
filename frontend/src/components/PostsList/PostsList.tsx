@@ -7,7 +7,7 @@ import type { User } from "@/types/user";
 interface PostsListProps {
   currentUser: User;
   mutate?: KeyedMutator<PostType> | KeyedMutator<PostType[]>;
-  posts: PostType[];
+  posts: PostType[] | undefined;
 }
 
 export const PostsList = ({ currentUser, mutate, posts }: PostsListProps) => {

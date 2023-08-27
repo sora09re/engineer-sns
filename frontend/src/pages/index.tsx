@@ -1,37 +1,28 @@
-import { Flex } from "@mantine/core";
-import axios from "axios";
+import { Box, Center, Flex, Loader } from "@mantine/core";
 import type { GetServerSideProps, NextPage } from "next";
-import { getServerSession } from "next-auth";
 import useSWR from "swr";
 
-import { Main } from "@/components/Main/Main";
+import { NewPostForm } from "@/components/NewPostForm/NewPostForm";
+import { PostsList } from "@/components/PostsList/PostsList";
 import { Sidebar } from "@/components/Sidebar/Sidebar";
-import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import { getCurrentUser } from "@/services/server/getCurrentUser";
 import type { PostType } from "@/types/post";
 import type { User } from "@/types/user";
-import { baseURL } from "@/utils/baseUrl";
 import { fetcher } from "@/utils/fetcher";
+import { sideBarWidthBase } from "@/utils/sideBarWidth";
 
 interface PostsDataProps {
   currentUser: User;
   postsFromServerSideProps: PostType[];
 }
 
-const Index: NextPage<PostsDataProps> = ({
-  currentUser,
-  postsFromServerSideProps,
-}) => {
+const Index: NextPage<PostsDataProps> = ({ currentUser }) => {
   const {
     data: posts,
     error,
+    isLoading,
     mutate,
-  } = useSWR<PostType[]>(
-    currentUser ? `/api/posts?currentUserId=${currentUser.id}` : null,
-    fetcher,
-    {
-      fallbackData: postsFromServerSideProps,
-    }
-  );
+  } = useSWR<PostType[]>(`/api/posts?currentUserId=${currentUser.id}`, fetcher);
 
   if (error) {
     return <div>エラーが発生しました。再度、更新を行ってください。</div>;
@@ -40,49 +31,23 @@ const Index: NextPage<PostsDataProps> = ({
   return (
     <Flex>
       <Sidebar currentUser={currentUser} mutate={mutate} />
-      {posts ? (
-        <Main posts={posts} currentUser={currentUser} mutate={mutate} />
-      ) : (
-        <div>読み込み中...</div>
-      )}
+      <Box w="100%" ml={sideBarWidthBase}>
+        <NewPostForm currentUser={currentUser} mutate={mutate} />
+        {isLoading ? (
+          <Center mt={200}>
+            <Loader />
+          </Center>
+        ) : (
+          <PostsList posts={posts} currentUser={currentUser} mutate={mutate} />
+        )}
+      </Box>
     </Flex>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getServerSession(context.req, context.res, authOptions);
-
-  if (!session || !session.user || !session.user.id) {
-    console.error("Session or user ID is not available");
-    return {
-      props: {
-        posts: [],
-      },
-    };
-  }
-
-  const [currentUserRes, postsRes] = await Promise.all([
-    axios.get(`${baseURL}/api/users/current`, {
-      params: {
-        currentUserId: session?.user?.id,
-      },
-    }),
-    axios.get(`${baseURL}/api/posts`, {
-      params: {
-        currentUserId: session?.user?.id,
-      },
-    }),
-  ]);
-
-  const currentUser = currentUserRes.data;
-  const postsFromServerSideProps = postsRes.data;
-
-  return {
-    props: {
-      currentUser,
-      postsFromServerSideProps,
-    },
-  };
+  const currentUser = await getCurrentUser({ context });
+  return currentUser;
 };
 
 export default Index;
