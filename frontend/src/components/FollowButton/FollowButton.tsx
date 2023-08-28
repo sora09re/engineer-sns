@@ -1,26 +1,21 @@
 import { Button } from "@mantine/core";
 import axios from "axios";
 import { useState } from "react";
-import type { KeyedMutator } from "swr";
 import useSWR from "swr";
 
-import type { ProfileType } from "@/types/profile";
+import { useGetProfile } from "@/hooks/useGetProfile";
 import { baseURL } from "@/utils/baseUrl";
 import { fetcher } from "@/utils/fetcher";
 
 interface FollowButtonProps {
   currentUserId: string;
-  propsMutate?: KeyedMutator<ProfileType>;
   userId: string;
 }
 
-export const FollowButton = ({
-  currentUserId,
-  propsMutate,
-  userId,
-}: FollowButtonProps) => {
+export const FollowButton = ({ currentUserId, userId }: FollowButtonProps) => {
   const [label, setLabel] = useState("フォロー中");
   const endpoint = `${baseURL}/api/users/${userId}/follow`;
+  const { mutate: getProfileMutate } = useGetProfile(userId);
 
   const {
     data,
@@ -37,9 +32,7 @@ export const FollowButton = ({
   const handleFollow = async () => {
     await axios.post(`${endpoint}?currentUserId=${currentUserId}`);
     fetchFollowMutate();
-    if (propsMutate) {
-      propsMutate();
-    }
+    getProfileMutate();
   };
 
   const handleRemoveFollow = async () => {
@@ -49,9 +42,7 @@ export const FollowButton = ({
       },
     });
     fetchFollowMutate();
-    if (propsMutate) {
-      propsMutate();
-    }
+    getProfileMutate();
   };
 
   return (

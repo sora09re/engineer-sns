@@ -1,19 +1,15 @@
 import { Button, Center } from "@mantine/core";
-import type { KeyedMutator } from "swr";
 
 import { FollowButton } from "@/components/FollowButton/FollowButton";
 import { useModal } from "@/hooks/useModal";
-import type { ProfileType } from "@/types/profile";
 
 interface ProfileActionsButtonProps {
   currentUserId: string;
-  mutate: KeyedMutator<ProfileType>;
   userId: string;
 }
 
 export const ProfileActionsButton = ({
   currentUserId,
-  mutate,
   userId,
 }: ProfileActionsButtonProps) => {
   const [, setIsVisible] = useModal("editProfile");
@@ -32,11 +28,7 @@ export const ProfileActionsButton = ({
           プロフィールを編集
         </Button>
       ) : (
-        <FollowButton
-          currentUserId={currentUserId}
-          userId={userId}
-          propsMutate={mutate}
-        />
+        <FollowButton currentUserId={currentUserId} userId={userId} />
       )}
     </Center>
   );

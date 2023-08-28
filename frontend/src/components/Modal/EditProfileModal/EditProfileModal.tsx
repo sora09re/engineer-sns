@@ -11,17 +11,15 @@ import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons";
 import axios from "axios";
 import { useState } from "react";
-import type { KeyedMutator } from "swr";
 
 import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
+import { useGetProfile } from "@/hooks/useGetProfile";
 import { useModal } from "@/hooks/useModal";
-import type { ProfileType } from "@/types/profile";
 import type { User } from "@/types/user";
 import { baseURL } from "@/utils/baseUrl";
 
 interface EditProfileModalProps {
   currentUser: User;
-  mutate: KeyedMutator<ProfileType>;
 }
 
 export interface UserProfile {
@@ -52,12 +50,10 @@ const useUserProfile = (currentUser: any) => {
   return { updateUserProfile, userProfile };
 };
 
-export const EditProfileModal = ({
-  currentUser,
-  mutate,
-}: EditProfileModalProps) => {
+export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
   const marginTopPx = 10;
   const { updateUserProfile, userProfile } = useUserProfile(currentUser);
+  const { mutate } = useGetProfile(currentUser.id);
 
   const [isVisible, setIsVisible] = useModal("editProfile");
 
@@ -110,7 +106,11 @@ export const EditProfileModal = ({
         <Grid grow>
           <Grid.Col span={4}>
             <Center>
-              <ImageUpload profile_image_url={userProfile.profile_image_url} userProfileImage={userProfile.profile_image_url} setUserProfileImage={updateUserProfile} />
+              <ImageUpload
+                profile_image_url={userProfile.profile_image_url}
+                userProfileImage={userProfile.profile_image_url}
+                setUserProfileImage={updateUserProfile}
+              />
             </Center>
             <TextInput
               label="名前"
