@@ -6,6 +6,7 @@ import useSWR from "swr";
 
 import { PostsList } from "@/components/PostsList/PostsList";
 import { UsersList } from "@/components/UsersList/UsersList";
+import { useSearchPosts } from "@/hooks/useSearchPosts";
 import type { User } from "@/types/user";
 import { fetcher } from "@/utils/fetcher";
 
@@ -26,8 +27,7 @@ export const Search = ({ currentUser }: SearchProps) => {
     data: searchPostResults,
     error: searchPostError,
     isLoading: isLoadingSearchPost,
-    mutate
-  } = useSWR(`/api/search/posts?keyword=${keyword}`, fetcher);
+  } = useSearchPosts(keyword);
 
   if (searchUserError || searchPostError) {
     console.error("Error fetching search results:", error);
@@ -55,9 +55,9 @@ export const Search = ({ currentUser }: SearchProps) => {
             </Center>
           ) : (
             <PostsList
-              currentUser={currentUser}
+              currentUserId={currentUser.id}
               posts={searchPostResults}
-              mutate={mutate}
+              keyword={keyword}
             />
           )}
         </Tabs.Panel>

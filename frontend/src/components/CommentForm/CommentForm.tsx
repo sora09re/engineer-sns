@@ -3,24 +3,21 @@ import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons";
 import axios from "axios";
 import { useState } from "react";
-import type { KeyedMutator } from "swr";
 
-import type { PostType } from "@/types/post";
+import { useGetCommentsForPost } from "@/hooks/useGetCommentsForPost";
+import { useGetPostDetail } from "@/hooks/useGetPostDetail";
 import type { User } from "@/types/user";
 import { baseURL } from "@/utils/baseUrl";
 
 interface CommentFormProps {
   currentUser: Pick<User, "id">;
-  mutates: (KeyedMutator<PostType> | KeyedMutator<PostType[]>)[];
   postId: string;
 }
 
-export const CommentForm = ({
-  currentUser,
-  mutates,
-  postId,
-}: CommentFormProps) => {
+export const CommentForm = ({ currentUser, postId }: CommentFormProps) => {
   const [commentContent, setCommentContent] = useState("");
+  const { mutate: getPostDetailMutate } = useGetPostDetail(postId);
+  const { mutate: getCommentsForPostMutate } = useGetCommentsForPost(postId);
 
   const fetchComment = async () => {
     notifications.show({
@@ -38,9 +35,8 @@ export const CommentForm = ({
         currentUserId: currentUser.id,
       });
       setCommentContent("");
-      mutates.forEach((m) => {
-        return m();
-      });
+      getPostDetailMutate();
+      getCommentsForPostMutate();
       notifications.update({
         id: "fetchComment",
         autoClose: 2000,

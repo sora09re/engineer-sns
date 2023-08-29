@@ -1,60 +1,32 @@
-import { Box, Flex, Space } from "@mantine/core";
-import axios from "axios";
+import { Box, Center, Flex, Loader, Space } from "@mantine/core";
 import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
-import { getServerSession } from "next-auth";
-import useSWR from "swr";
 
 import { CommentForm } from "@/components/CommentForm/CommentForm";
 import { CommentList } from "@/components/CommentList/CommentList";
 import { Post } from "@/components/Post/Post";
 import { PreviousPageHeader } from "@/components/PreviousPageHeader/PreviousPageHeader";
 import { Sidebar } from "@/components/Sidebar/Sidebar";
-import { authOptions } from "@/pages/api/auth/[...nextauth]";
-import type { PostType } from "@/types/post";
+import { useGetCommentsForPost } from "@/hooks/useGetCommentsForPost";
+import { useGetPostDetail } from "@/hooks/useGetPostDetail";
+import { getCurrentUser } from "@/services/server/getCurrentUser";
 import type { User } from "@/types/user";
-import { baseURL } from "@/utils/baseUrl";
-import { fetcher } from "@/utils/fetcher";
 import { sideBarWidthBase } from "@/utils/sideBarWidth";
 
-interface PostDetailProps {
-  commentsFromServerSideProps: PostType[];
+interface PostDetailPageProps {
   currentUser: User;
-  postFromServerSideProps: PostType;
-  postId: string;
 }
 
-const PostDetail: NextPage<PostDetailProps> = ({
-  commentsFromServerSideProps,
-  currentUser,
-  postFromServerSideProps,
-  postId,
-}) => {
+const PostDetailPage: NextPage<PostDetailPageProps> = ({ currentUser }) => {
   const router = useRouter();
+  const postId = router.query.postId as string;
 
-  const {
-    data: post,
-    error: getPostError,
-    mutate: mutatePost,
-  } = useSWR<PostType>(
-    currentUser ? `${baseURL}/api/posts/${postId}` : null,
-    fetcher,
-    {
-      fallbackData: postFromServerSideProps,
-    }
-  );
-
+  const { data: post, error: getPostError } = useGetPostDetail(postId);
   const {
     data: comments,
     error: getCommentsError,
-    mutate: mutateComments,
-  } = useSWR<PostType[]>(
-    currentUser ? `${baseURL}/api/posts/${postId}/comments` : null,
-    fetcher,
-    {
-      fallbackData: commentsFromServerSideProps,
-    }
-  );
+    isLoading,
+  } = useGetCommentsForPost(postId);
 
   if (getPostError || getCommentsError) {
     return <div>エラーが発生しました。更新を行ってください。</div>;
@@ -69,60 +41,24 @@ const PostDetail: NextPage<PostDetailProps> = ({
       <Sidebar currentUser={currentUser} />
       <Box ml={sideBarWidthBase} w="100%">
         <PreviousPageHeader router={router} />
-        <Post post={post} currentUser={currentUser} mutate={mutatePost} />
+        <Post post={post} currentUserId={currentUser.id} />
         <Space h="md" />
-        <CommentForm
-          currentUser={currentUser}
-          mutates={[mutatePost, mutateComments]}
-          postId={post.id}
-        />
-        <CommentList
-          mutate={mutateComments}
-          currentUser={currentUser}
-          comments={comments || []}
-        />
+        <CommentForm currentUser={currentUser} postId={post.id} />
+        {isLoading ? (
+          <Center mt={200}>
+            <Loader />
+          </Center>
+        ) : (
+          <CommentList currentUser={currentUser} comments={comments || []} />
+        )}
       </Box>
     </Flex>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getServerSession(context.req, context.res, authOptions);
-
-  if (!session || !session.user || !session.user.id) {
-    console.error("Session or user ID is not available");
-    return {
-      props: {
-        posts: [],
-      },
-    };
-  }
-
-  const currentUserRes = await axios.get(`${baseURL}/api/users/current`, {
-    params: {
-      currentUserId: session?.user?.id,
-    },
-  });
-  const currentUser = currentUserRes.data;
-  const postId = context?.params?.postId;
-
-  const postRes = await axios.get(`${baseURL}/api/posts/${postId}`);
-  const postFromServerSideProps: PostType = postRes.data;
-
-  const commentsRes = await axios.get(
-    `${baseURL}/api/posts/${postId}/comments`
-  );
-
-  const commentsFromServerSideProps: PostType[] = commentsRes.data;
-
-  return {
-    props: {
-      commentsFromServerSideProps,
-      currentUser,
-      postFromServerSideProps,
-      postId,
-    },
-  };
+  const currentUser = await getCurrentUser({ context });
+  return currentUser;
 };
 
-export default PostDetail;
+export default PostDetailPage;

@@ -3,10 +3,15 @@ import type { PostType } from "@/types/post";
 
 interface PostsListProps {
   currentUserId: string;
+  keyword?: string;
   posts: PostType[] | undefined;
 }
 
-export const PostsList = ({ currentUserId, posts }: PostsListProps) => {
+export const PostsList = ({
+  currentUserId,
+  keyword,
+  posts,
+}: PostsListProps) => {
   if (!posts) {
     return <></>;
   }
@@ -14,7 +19,14 @@ export const PostsList = ({ currentUserId, posts }: PostsListProps) => {
   return (
     <>
       {posts.map((post) => {
-        return <Post key={post.id} post={post} currentUserId={currentUserId} />;
+        return (
+          <Post
+            key={post.id}
+            post={post}
+            currentUserId={currentUserId}
+            keyword={keyword}
+          />
+        );
       })}
     </>
   );

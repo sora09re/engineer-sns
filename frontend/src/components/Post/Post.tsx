@@ -3,17 +3,26 @@ import { IconX } from "@tabler/icons";
 import axios from "axios";
 
 import { PostUI } from "@/components/PostUI/PostUI";
+import { useGetCommentsForPost } from "@/hooks/useGetCommentsForPost";
+import { useGetPostDetail } from "@/hooks/useGetPostDetail";
 import { useGetTimelinePosts } from "@/hooks/useGetTimelinePosts";
+import { useSearchPosts } from "@/hooks/useSearchPosts";
 import type { PostType } from "@/types/post";
 import { baseURL } from "@/utils/baseUrl";
 
 interface PostProps {
   currentUserId: string;
+  keyword?: string;
   post: PostType;
 }
 
-export const Post = ({ currentUserId, post }: PostProps) => {
-  const { mutate } = useGetTimelinePosts(currentUserId);
+export const Post = ({ currentUserId, keyword, post }: PostProps) => {
+  const { mutate: getTimelinePostsMutate } = useGetTimelinePosts(currentUserId);
+  const { mutate: getPostDetailMutate } = useGetPostDetail(post.id);
+  const { mutate: searchPostsMutate } = useSearchPosts(keyword);
+  const { mutate: getCommentsForPostMutate } = useGetCommentsForPost(
+    post.parent_post_id
+  );
 
   if (!post) {
     return null;
@@ -39,7 +48,10 @@ export const Post = ({ currentUserId, post }: PostProps) => {
           },
         });
       }
-      mutate();
+      getTimelinePostsMutate();
+      getPostDetailMutate();
+      searchPostsMutate();
+      getCommentsForPostMutate();
     } catch (error) {
       notifications.show({
         id: "click-likes",
