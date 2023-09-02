@@ -31,7 +31,7 @@ export interface UserProfile {
   website?: string;
 }
 
-const useUserProfile = (currentUser: any) => {
+const useUserProfile = (currentUser: User) => {
   const [userProfile, setUserProfile] = useState<UserProfile>({
     bio: currentUser.bio,
     location: currentUser.location,
@@ -107,7 +107,6 @@ export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
           <Grid.Col span={4}>
             <Center>
               <ImageUpload
-                profile_image_url={userProfile.profile_image_url}
                 userProfileImage={userProfile.profile_image_url}
                 setUserProfileImage={updateUserProfile}
               />

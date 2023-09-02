@@ -10,12 +10,11 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import { useForm } from "@mantine/form";
 import axios from "axios";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { useState } from "react";
 
 import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
 import { baseURL } from "@/utils/baseUrl";
@@ -31,9 +30,35 @@ interface NewUserValues {
   website: string;
 }
 
+const useUserProfile = (sessionUser: any) => {
+  const [userProfile, setUserProfile] = useState<NewUserValues>({
+    id: sessionUser?.id ?? "",
+    bio: "",
+    email: sessionUser?.email ?? "",
+    location: "",
+    name: sessionUser?.name ?? "",
+    profile_image_url: sessionUser?.image ?? "",
+    username: "",
+    website: "",
+  });
+
+  const updateUserProfile = (newUserProfile: Partial<NewUserValues>) => {
+    setUserProfile((prev) => {
+      return { ...prev, ...newUserProfile };
+    });
+  };
+
+  return { updateUserProfile, userProfile };
+};
+
 const NewUserPage: NextPage = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  const { updateUserProfile, userProfile } = useUserProfile(session?.user);
   const router = useRouter();
+
+  if (status === "unauthenticated" || !session) {
+    return <div>再ログインしてください。</div>;
+  }
 
   const postNewUser = async (values: NewUserValues) => {
     try {
@@ -47,41 +72,6 @@ const NewUserPage: NextPage = () => {
     }
   };
 
-  const form = useForm({
-    initialValues: {
-      id: "",
-      bio: "",
-      email: "",
-      location: "",
-      name: "",
-      profile_image_url: "",
-      username: "",
-      website: "",
-    },
-
-    validate: {
-      email: (value) => {
-        return /^\S+@\S+$/.test(value);
-      },
-      name: (value) => {
-        return value.trim().length > 0;
-      },
-      username: (value) => {
-        return value.trim().length > 0;
-      },
-    },
-  });
-
-  useEffect(() => {
-    if (session?.user?.email && session?.user?.name && session?.user?.image) {
-      form.setFieldValue("id", session.user.id);
-      form.setFieldValue("email", session.user.email);
-      form.setFieldValue("name", session.user.name);
-      form.setFieldValue("profile_image_url", session.user.image);
-    }
-    //TODO: eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session]);
-
   return (
     <Container size={400} p={20}>
       <Paper p="md">
@@ -90,61 +80,57 @@ const NewUserPage: NextPage = () => {
         </Title>
         <form
           onSubmit={(event) => {
-            event.preventDefault(); // デフォルトの動作を防止
-            postNewUser(form.values);
+            event.preventDefault();
           }}
           style={{ marginTop: 15 }}
         >
           <Flex justify="center">
-            <ImageUpload image_url={form.values.profile_image_url} />
+            <ImageUpload
+              userProfileImage={userProfile.profile_image_url}
+              setUserProfileImage={updateUserProfile}
+            />
           </Flex>
           <Grid>
             <Col style={{ marginTop: 5 }}>
               <TextInput
                 label="名前"
                 placeholder="Your name"
-                value={form.values.name}
+                value={userProfile.name}
                 withAsterisk
-                onChange={(event) => {
-                  return form.setFieldValue("name", event.currentTarget.value);
+                onChange={(e) => {
+                  return updateUserProfile({ name: e.currentTarget.value });
                 }}
-                // error={form.errors.name && "Please enter your name"}
               />
             </Col>
             <Col style={{ marginTop: 5 }}>
               <TextInput
                 label="ユーザーネーム"
                 placeholder="Your username"
-                value={form.values.username}
+                value={userProfile.username}
                 withAsterisk
-                onChange={(event) => {
-                  return form.setFieldValue(
-                    "username",
-                    event.currentTarget.value
-                  );
+                onChange={(e) => {
+                  return updateUserProfile({ username: e.currentTarget.value });
                 }}
-                // error={form.errors.username && "Please enter your username"}
               />
             </Col>
             <Col style={{ marginTop: 5 }}>
               <TextInput
                 label="メールアドレス"
                 placeholder="Your email"
-                value={form.values.email}
+                value={userProfile.email}
                 withAsterisk
-                onChange={(event) => {
-                  return form.setFieldValue("email", event.currentTarget.value);
+                onChange={(e) => {
+                  return updateUserProfile({ email: e.currentTarget.value });
                 }}
-                // error={form.errors.email && "Please enter a valid email"}
               />
             </Col>
             <Col style={{ marginTop: 5 }}>
               <Textarea
                 label="自己紹介"
                 placeholder="Your bio"
-                value={form.values.bio}
-                onChange={(event) => {
-                  return form.setFieldValue("bio", event.currentTarget.value);
+                value={userProfile.bio}
+                onChange={(e) => {
+                  return updateUserProfile({ bio: e.currentTarget.value });
                 }}
                 maxLength={160}
               />
@@ -153,12 +139,9 @@ const NewUserPage: NextPage = () => {
               <TextInput
                 label="場所"
                 placeholder="Your location"
-                value={form.values.location}
-                onChange={(event) => {
-                  return form.setFieldValue(
-                    "location",
-                    event.currentTarget.value
-                  );
+                value={userProfile.location}
+                onChange={(e) => {
+                  return updateUserProfile({ location: e.currentTarget.value });
                 }}
               />
             </Col>
@@ -166,18 +149,21 @@ const NewUserPage: NextPage = () => {
               <TextInput
                 label="ウェブサイト"
                 placeholder="Your website"
-                value={form.values.website}
-                onChange={(event) => {
-                  return form.setFieldValue(
-                    "website",
-                    event.currentTarget.value
-                  );
+                value={userProfile.website}
+                onChange={(e) => {
+                  return updateUserProfile({ website: e.currentTarget.value });
                 }}
               />
             </Col>
           </Grid>
           <Group position="right" style={{ marginTop: 15 }}>
-            <Button type="submit" color="blue">
+            <Button
+              type="submit"
+              color="blue"
+              onClick={() => {
+                return postNewUser(userProfile);
+              }}
+            >
               送信
             </Button>
           </Group>

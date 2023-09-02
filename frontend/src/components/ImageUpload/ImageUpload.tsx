@@ -5,7 +5,6 @@ import { useEffect } from "react";
 import type { UserProfile } from "@/components/Modal/EditProfileModal/EditProfileModal";
 
 interface ImageUploadProps {
-  profile_image_url?: string;
   setUserProfileImage: (newUserProfile: Partial<UserProfile>) => void;
   userProfileImage?: string;
 }
