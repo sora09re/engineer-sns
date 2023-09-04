@@ -18,6 +18,10 @@ interface PostsDataProps {
 const Index: NextPage<PostsDataProps> = ({ currentUser }) => {
   const { data: posts, error, isLoading } = useGetTimelinePosts(currentUser.id);
 
+  if (!currentUser) {
+    return <div>ユーザーが見つかりません。ログインしてください。</div>;
+  }
+
   if (error) {
     return <div>エラーが発生しました。再度、更新を行ってください。</div>;
   }
