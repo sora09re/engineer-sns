@@ -19,6 +19,15 @@ const fetchCurrentUser = async (userId: string | undefined) => {
 
 export const getCurrentUser = async ({ context }: getCurrentUserProps) => {
   const session = await getServerSession(context.req, context.res, authOptions);
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/auth/signin",
+        permanent: false,
+      },
+    };
+  }
+
   const userId = session?.user?.id;
 
   if (!userId) {
