@@ -1,26 +1,34 @@
-import { Box, Flex } from "@mantine/core";
-import type { GetServerSideProps, NextPage } from "next";
+import { Box, Center, Flex, Loader } from "@mantine/core";
+import type { NextPage } from "next";
 import { useRouter } from "next/router";
 
 import { EditProfileModal } from "@/components/Modal/EditProfileModal/EditProfileModal";
 import { PostsList } from "@/components/PostsList/PostsList";
 import { Profile } from "@/components/Profile/Profile";
 import { Sidebar } from "@/components/Sidebar/Sidebar";
+import { useGetCurrentUser } from "@/hooks/useGetCurrentUser";
 import { useGetProfile } from "@/hooks/useGetProfile";
-import { getCurrentUser } from "@/services/server/getCurrentUser";
-import type { User } from "@/types/user";
 import { sideBarWidthBase } from "@/utils/sideBarWidth";
 
-interface ProfilePageProps {
-  currentUser: User;
-}
-
-const ProfilePage: NextPage<ProfilePageProps> = ({ currentUser }) => {
+const ProfilePage: NextPage = () => {
   const router = useRouter();
   const userId = router.query.userId as string;
-  const { data: user, error } = useGetProfile(userId);
+  const {
+    data: currentUser,
+    error: getCurrentUserError,
+    isLoading: getCurrentUserIsLoading,
+  } = useGetCurrentUser();
+  const { data: user, error: getProfileError } = useGetProfile(userId);
 
-  if (error || !user) {
+  if (getCurrentUserIsLoading || !currentUser || !user) {
+    return (
+      <Center style={{ height: "100vh" }}>
+        <Loader />
+      </Center>
+    );
+  }
+
+  if (getProfileError || getCurrentUserError) {
     return <div>エラーが発生しました。更新を行ってください。</div>;
   }
 
@@ -34,11 +42,6 @@ const ProfilePage: NextPage<ProfilePageProps> = ({ currentUser }) => {
       <EditProfileModal currentUser={currentUser} />
     </Flex>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const currentUser = await getCurrentUser({ context });
-  return currentUser;
 };
 
 export default ProfilePage;

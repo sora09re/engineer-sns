@@ -1,5 +1,5 @@
 import { Box, Center, Flex, Loader, Space } from "@mantine/core";
-import type { GetServerSideProps, NextPage } from "next";
+import type { NextPage } from "next";
 import { useRouter } from "next/router";
 
 import { CommentForm } from "@/components/CommentForm/CommentForm";
@@ -8,18 +8,18 @@ import { Post } from "@/components/Post/Post";
 import { PreviousPageHeader } from "@/components/PreviousPageHeader/PreviousPageHeader";
 import { Sidebar } from "@/components/Sidebar/Sidebar";
 import { useGetCommentsForPost } from "@/hooks/useGetCommentsForPost";
+import { useGetCurrentUser } from "@/hooks/useGetCurrentUser";
 import { useGetPostDetail } from "@/hooks/useGetPostDetail";
-import { getCurrentUser } from "@/services/server/getCurrentUser";
-import type { User } from "@/types/user";
 import { sideBarWidthBase } from "@/utils/sideBarWidth";
 
-interface PostDetailPageProps {
-  currentUser: User;
-}
-
-const PostDetailPage: NextPage<PostDetailPageProps> = ({ currentUser }) => {
+const PostDetailPage: NextPage = () => {
   const router = useRouter();
   const postId = router.query.postId as string;
+  const {
+    data: currentUser,
+    error: getCurrentUserError,
+    isLoading: getCurrentUserIsLoading,
+  } = useGetCurrentUser();
 
   const { data: post, error: getPostError } = useGetPostDetail(postId);
   const {
@@ -28,12 +28,16 @@ const PostDetailPage: NextPage<PostDetailPageProps> = ({ currentUser }) => {
     isLoading,
   } = useGetCommentsForPost(postId);
 
-  if (getPostError || getCommentsError) {
-    return <div>エラーが発生しました。更新を行ってください。</div>;
+  if (!currentUser || getCurrentUserIsLoading || !post) {
+    return (
+      <Center mt={200}>
+        <Loader />
+      </Center>
+    );
   }
 
-  if (!post) {
-    return <div>投稿の情報が取得できませんでした。</div>;
+  if (getCurrentUserError || getPostError || getCommentsError) {
+    return <div>エラーが発生しました。更新を行ってください。</div>;
   }
 
   return (
@@ -54,11 +58,6 @@ const PostDetailPage: NextPage<PostDetailPageProps> = ({ currentUser }) => {
       </Box>
     </Flex>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const currentUser = await getCurrentUser({ context });
-  return currentUser;
 };
 
 export default PostDetailPage;

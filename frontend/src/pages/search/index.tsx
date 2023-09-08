@@ -1,17 +1,30 @@
-import { Box, Flex } from "@mantine/core";
-import type { GetServerSideProps, NextPage } from "next";
+import { Box, Center, Flex, Loader } from "@mantine/core";
+import type { NextPage } from "next";
 
 import { Search } from "@/components/Search/Search";
 import { Sidebar } from "@/components/Sidebar/Sidebar";
-import { getCurrentUser } from "@/services/server/getCurrentUser";
-import type { User } from "@/types/user";
+import { useGetCurrentUser } from "@/hooks/useGetCurrentUser";
 import { sideBarWidthBase } from "@/utils/sideBarWidth";
 
-interface SearchPageProps {
-  currentUser: User;
-}
+const SearchPage: NextPage = () => {
+  const {
+    data: currentUser,
+    error: getCurrentUserError,
+    isLoading: getCurrentUserIsLoading,
+  } = useGetCurrentUser();
 
-const SearchPage: NextPage<SearchPageProps> = ({ currentUser }) => {
+  if (!currentUser || getCurrentUserIsLoading) {
+    return (
+      <Center style={{ height: "100vh" }}>
+        <Loader />
+      </Center>
+    );
+  }
+
+  if (getCurrentUserError) {
+    return <div>エラーが発生しました。再度、更新を行ってください。</div>;
+  }
+
   return (
     <Flex>
       <Sidebar currentUser={currentUser} />
@@ -20,11 +33,6 @@ const SearchPage: NextPage<SearchPageProps> = ({ currentUser }) => {
       </Box>
     </Flex>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const currentUser = await getCurrentUser({ context });
-  return currentUser;
 };
 
 export default SearchPage;

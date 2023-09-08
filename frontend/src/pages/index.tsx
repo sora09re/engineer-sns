@@ -1,24 +1,35 @@
 import { Box, Center, Flex, Loader } from "@mantine/core";
-import type { GetServerSideProps, NextPage } from "next";
+import type { NextPage } from "next";
 
 import { NewPostForm } from "@/components/NewPostForm/NewPostForm";
 import { PostsList } from "@/components/PostsList/PostsList";
 import { Sidebar } from "@/components/Sidebar/Sidebar";
+import { useGetCurrentUser } from "@/hooks/useGetCurrentUser";
 import { useGetTimelinePosts } from "@/hooks/useGetTimelinePosts";
-import { getCurrentUser } from "@/services/server/getCurrentUser";
-import type { PostType } from "@/types/post";
-import type { User } from "@/types/user";
 import { sideBarWidthBase } from "@/utils/sideBarWidth";
 
-interface PostsDataProps {
-  currentUser: User;
-  postsFromServerSideProps: PostType[];
-}
+const Index: NextPage = () => {
+  const {
+    data: currentUser,
+    error: getCurrentUserError,
+    isLoading: getCurrentUserIsLoading,
+  } = useGetCurrentUser();
 
-const Index: NextPage<PostsDataProps> = ({ currentUser }) => {
-  const { data: posts, error, isLoading } = useGetTimelinePosts(currentUser.id);
+  const {
+    data: posts,
+    error: getTimelinePostsError,
+    isLoading: getTimelinePostsIsLoading,
+  } = useGetTimelinePosts(currentUser?.id);
 
-  if (error) {
+  if (!currentUser || getCurrentUserIsLoading) {
+    return (
+      <Center style={{ height: "100vh" }}>
+        <Loader />
+      </Center>
+    );
+  }
+
+  if (getCurrentUserError || getTimelinePostsError) {
     return <div>エラーが発生しました。再度、更新を行ってください。</div>;
   }
 
@@ -27,8 +38,8 @@ const Index: NextPage<PostsDataProps> = ({ currentUser }) => {
       <Sidebar currentUser={currentUser} />
       <Box w="100%" ml={sideBarWidthBase}>
         <NewPostForm currentUser={currentUser} />
-        {isLoading ? (
-          <Center mt={200}>
+        {getTimelinePostsIsLoading ? (
+          <Center style={{ height: "100vh" }}>
             <Loader />
           </Center>
         ) : (
@@ -37,11 +48,6 @@ const Index: NextPage<PostsDataProps> = ({ currentUser }) => {
       </Box>
     </Flex>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const currentUser = await getCurrentUser({ context });
-  return currentUser;
 };
 
 export default Index;
