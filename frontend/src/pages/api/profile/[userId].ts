@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import type { PostType } from "@/types/post";
 import { supabase } from "@/utils/supabase";
 
 export default async function handler(
@@ -18,18 +17,10 @@ export default async function handler(
       const { data: user, error } = await supabase
         .from("users")
         .select(
-          "*, posts (*, users (*), likes (*), comments: posts (*)), follower_user_id:follows!follower_id (*), following_user_id:follows!following_id (*)"
+          "*, follower_user_id:follows!follower_id (*), following_user_id:follows!following_id (*)"
         )
         .eq("id", userId)
         .single();
-
-      if (user && user.posts) {
-        user.posts.sort((a: PostType, b: PostType) => {
-          return (
-            new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
-          );
-        });
-      }
 
       if (error) {
         throw error;
