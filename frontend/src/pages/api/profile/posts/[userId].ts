@@ -1,51 +1,39 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
+import type { PostType } from "@/types/post";
 import { supabase } from "@/utils/supabase";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  if (req.method !== "POST" && req.method !== "GET") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
+
+  const { userId } = req.query;
+
   try {
-    if (req.method !== "GET" && req.method !== "POST") {
-      return res.status(405).json({ error: "Method not allowed" });
-    }
-
-    const { userId } = req.query;
-
     if (req.method === "GET") {
-      const { data: user, error } = await supabase
-        .from("users")
-        .select(
-          "*, follower_user_id:follows!follower_id (*), following_user_id:follows!following_id (*)"
-        )
-        .eq("id", userId)
+      const { data: posts, error } = await supabase
+        .from("posts")
+        .select("*, users (*), likes (*), comments: posts (*)")
+        .eq("user_id", userId)
         .single();
 
-      if (error) {
-        throw error;
+      if (posts) {
+        posts.sort((a: PostType, b: PostType) => {
+          return (
+            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+          );
+        });
       }
-
-      return res.status(200).json(user);
-    }
-
-    if (req.method === "POST") {
-      const { values } = req.body;
-      const { data, error } = await supabase
-        .from("users")
-        .update([
-          {
-            ...values,
-            updated_at: new Date(),
-          },
-        ])
-        .eq("id", userId);
 
       if (error) {
         throw error;
       }
 
-      return res.status(200).json(data);
+      return res.status(200).json(posts);
     }
   } catch (error: unknown) {
     if (error instanceof Error) {
