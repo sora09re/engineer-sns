@@ -5,6 +5,7 @@ import axios from "axios";
 import { PostUI } from "@/components/PostUI/PostUI";
 import { useGetCommentsForPost } from "@/hooks/useGetCommentsForPost";
 import { useGetPostDetail } from "@/hooks/useGetPostDetail";
+import { useGetPostsForUser } from "@/hooks/useGetPostsForUser";
 import { useGetTimelinePosts } from "@/hooks/useGetTimelinePosts";
 import { useSearchPosts } from "@/hooks/useSearchPosts";
 import type { PostType } from "@/types/post";
@@ -23,6 +24,7 @@ export const Post = ({ currentUserId, keyword, post }: PostProps) => {
   const { mutate: getCommentsForPostMutate } = useGetCommentsForPost(
     post.parent_post_id
   );
+  const { mutate: getPostsForUserMutate } = useGetPostsForUser(post.user_id);
 
   if (!post) {
     return null;
@@ -52,6 +54,7 @@ export const Post = ({ currentUserId, keyword, post }: PostProps) => {
       getPostDetailMutate();
       searchPostsMutate();
       getCommentsForPostMutate();
+      getPostsForUserMutate();
     } catch (error) {
       notifications.show({
         id: "click-likes",
