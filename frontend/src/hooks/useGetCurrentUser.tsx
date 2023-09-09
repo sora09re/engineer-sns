@@ -2,14 +2,13 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
 
-import { CenteredLoader } from "@/components/CenteredLoader/CenteredLoader";
 import type { User } from "@/types/user";
 import { baseURL } from "@/utils/baseUrl";
 import { fetcher } from "@/utils/fetcher";
 
 export const useGetCurrentUser = () => {
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const currentUserId = session?.user.id;
   const { data, error, isLoading } = useSWR<User>(
     currentUserId
@@ -18,12 +17,16 @@ export const useGetCurrentUser = () => {
     fetcher
   );
 
-  if (typeof window !== "undefined" && !session) {
+  if (
+    typeof window !== "undefined" &&
+    status === "unauthenticated" &&
+    !session
+  ) {
     router.push("/auth/signin");
   }
 
   if (!data) {
-    <CenteredLoader />;
+    return { loading: true };
   }
 
   return {
