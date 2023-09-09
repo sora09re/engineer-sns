@@ -46,7 +46,7 @@ const PostDetailPage: NextPage = () => {
         <Space h="md" />
         <CommentForm currentUser={currentUser} postId={post.id} />
         {isLoading ? (
-          <Center mt={300}>
+          <Center mt={100}>
             <Loader />
           </Center>
         ) : (
