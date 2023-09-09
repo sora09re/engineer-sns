@@ -18,8 +18,7 @@ export default async function handler(
       const { data: posts, error } = await supabase
         .from("posts")
         .select("*, users (*), likes (*), comments: posts (*)")
-        .eq("user_id", userId)
-        .single();
+        .eq("user_id", userId);
 
       if (posts) {
         posts.sort((a: PostType, b: PostType) => {
