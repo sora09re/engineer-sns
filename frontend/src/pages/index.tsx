@@ -1,6 +1,7 @@
 import { Box, Center, Flex, Loader } from "@mantine/core";
 import type { NextPage } from "next";
 
+import { CenteredLoader } from "@/components/CenteredLoader/CenteredLoader";
 import { NewPostForm } from "@/components/NewPostForm/NewPostForm";
 import { PostsList } from "@/components/PostsList/PostsList";
 import { Sidebar } from "@/components/Sidebar/Sidebar";
@@ -22,11 +23,7 @@ const Index: NextPage = () => {
   } = useGetTimelinePosts(currentUser?.id);
 
   if (!currentUser || getCurrentUserIsLoading) {
-    return (
-      <Center style={{ height: "100vh" }}>
-        <Loader />
-      </Center>
-    );
+    return <CenteredLoader />;
   }
 
   if (getCurrentUserError || getTimelinePostsError) {
@@ -39,7 +36,7 @@ const Index: NextPage = () => {
       <Box w="100%" ml={sideBarWidthBase}>
         <NewPostForm currentUser={currentUser} />
         {getTimelinePostsIsLoading ? (
-          <Center style={{ height: "100vh" }}>
+          <Center mt={300}>
             <Loader />
           </Center>
         ) : (

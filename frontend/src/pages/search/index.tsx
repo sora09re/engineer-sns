@@ -1,6 +1,7 @@
-import { Box, Center, Flex, Loader } from "@mantine/core";
+import { Box, Flex } from "@mantine/core";
 import type { NextPage } from "next";
 
+import { CenteredLoader } from "@/components/CenteredLoader/CenteredLoader";
 import { Search } from "@/components/Search/Search";
 import { Sidebar } from "@/components/Sidebar/Sidebar";
 import { useGetCurrentUser } from "@/hooks/useGetCurrentUser";
@@ -14,11 +15,7 @@ const SearchPage: NextPage = () => {
   } = useGetCurrentUser();
 
   if (!currentUser || getCurrentUserIsLoading) {
-    return (
-      <Center style={{ height: "100vh" }}>
-        <Loader />
-      </Center>
-    );
+    return <CenteredLoader />;
   }
 
   if (getCurrentUserError) {

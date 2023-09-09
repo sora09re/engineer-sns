@@ -50,7 +50,7 @@ export const Search = ({ currentUser }: SearchProps) => {
         </Tabs.List>
         <Tabs.Panel value="post">
           {isLoadingSearchPost ? (
-            <Center mt={200}>
+            <Center mt={300}>
               <Loader />
             </Center>
           ) : (
@@ -63,7 +63,7 @@ export const Search = ({ currentUser }: SearchProps) => {
         </Tabs.Panel>
         <Tabs.Panel value="account">
           {isLoadingSearchUser ? (
-            <Center mt={200}>
+            <Center mt={300}>
               <Loader />
             </Center>
           ) : (

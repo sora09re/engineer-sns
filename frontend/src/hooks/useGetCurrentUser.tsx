@@ -1,8 +1,8 @@
-import { Center, Loader } from "@mantine/core";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
 
+import { CenteredLoader } from "@/components/CenteredLoader/CenteredLoader";
 import type { User } from "@/types/user";
 import { baseURL } from "@/utils/baseUrl";
 import { fetcher } from "@/utils/fetcher";
@@ -23,9 +23,7 @@ export const useGetCurrentUser = () => {
   }
 
   if (!data) {
-    <Center mt={200}>
-      <Loader />
-    </Center>;
+    <CenteredLoader />;
   }
 
   return {

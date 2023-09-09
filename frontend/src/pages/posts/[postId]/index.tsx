@@ -2,6 +2,7 @@ import { Box, Center, Flex, Loader, Space } from "@mantine/core";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 
+import { CenteredLoader } from "@/components/CenteredLoader/CenteredLoader";
 import { CommentForm } from "@/components/CommentForm/CommentForm";
 import { CommentList } from "@/components/CommentList/CommentList";
 import { Post } from "@/components/Post/Post";
@@ -29,11 +30,7 @@ const PostDetailPage: NextPage = () => {
   } = useGetCommentsForPost(postId);
 
   if (!currentUser || getCurrentUserIsLoading || !post) {
-    return (
-      <Center mt={200}>
-        <Loader />
-      </Center>
-    );
+    return <CenteredLoader />;
   }
 
   if (getCurrentUserError || getPostError || getCommentsError) {
@@ -49,7 +46,7 @@ const PostDetailPage: NextPage = () => {
         <Space h="md" />
         <CommentForm currentUser={currentUser} postId={post.id} />
         {isLoading ? (
-          <Center mt={200}>
+          <Center mt={300}>
             <Loader />
           </Center>
         ) : (

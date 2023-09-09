@@ -1,7 +1,8 @@
-import { Box, Center, Flex, Loader } from "@mantine/core";
+import { Box, Flex } from "@mantine/core";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 
+import { CenteredLoader } from "@/components/CenteredLoader/CenteredLoader";
 import { EditProfileModal } from "@/components/Modal/EditProfileModal/EditProfileModal";
 import { PostsList } from "@/components/PostsList/PostsList";
 import { Profile } from "@/components/Profile/Profile";
@@ -21,11 +22,7 @@ const ProfilePage: NextPage = () => {
   const { data: user, error: getProfileError } = useGetProfile(userId);
 
   if (getCurrentUserIsLoading || !currentUser || !user) {
-    return (
-      <Center style={{ height: "100vh" }}>
-        <Loader />
-      </Center>
-    );
+    return <CenteredLoader />;
   }
 
   if (getProfileError || getCurrentUserError) {
