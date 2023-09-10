@@ -20,6 +20,7 @@ export const PostActionsButtonGroup = ({
 }: PostActionsButtonGroupProps) => {
   const { hovered: hoveredComments, ref: refComments } = useHover();
   const { hovered: hoveredLikes, ref: refLikes } = useHover();
+
   const isLikedByCurrentUserInitialValue = post.likes.some((like) => {
     return like.post_id === post.id && like.user_id === currentUserId;
   });
@@ -36,22 +37,19 @@ export const PostActionsButtonGroup = ({
     : "black";
 
   const handleLikeClick = async (postId: string) => {
+    const newLikeStatus = !isLikedByCurrentUser;
+    setIsLikedByCurrentUser(newLikeStatus);
+    setLikeCount(likeCount + (newLikeStatus ? 1 : -1));
+    
     try {
-      if (!isLikedByCurrentUser) {
-        await axios.post(`${baseURL}/api/posts/${postId}/likes`, {
-          currentUserId: currentUserId,
-        });
-        setIsLikedByCurrentUser(true);
-        setLikeCount(likeCount + 1);
-      } else {
-        await axios.delete(`${baseURL}/api/posts/${postId}/likes`, {
-          params: {
-            currentUserId: currentUserId,
-          },
-        });
-        setIsLikedByCurrentUser(false);
-        setLikeCount(likeCount - 1);
-      }
+      const endpoint = `${baseURL}/api/posts/${postId}/likes`;
+      newLikeStatus
+        ? await axios.post(endpoint, { currentUserId })
+        : await axios.delete(endpoint, {
+            params: {
+              currentUserId,
+            },
+          });
     } catch (error) {
       notifications.show({
         id: "click-likes",
