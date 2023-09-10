@@ -40,7 +40,11 @@ export const Post = ({ currentUserId, post }: PostProps) => {
       }}
     >
       {isPostByCurrentUser ? (
-        <PostActionMenu postId={post.id} currentUserId={currentUserId} />
+        <PostActionMenu
+          postId={post.id}
+          currentUserId={currentUserId}
+          postUserId={post.user_id}
+        />
       ) : (
         <></>
       )}
