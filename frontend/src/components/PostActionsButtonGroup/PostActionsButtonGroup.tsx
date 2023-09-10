@@ -1,29 +1,68 @@
 import { Group, Text, Tooltip, UnstyledButton } from "@mantine/core";
 import { useHover } from "@mantine/hooks";
-import { IconMessageCircle2, IconThumbUp } from "@tabler/icons";
+import { notifications } from "@mantine/notifications";
+import { IconMessageCircle2, IconThumbUp, IconX } from "@tabler/icons";
+import axios from "axios";
 import Link from "next/link";
+import { useState } from "react";
 
 import type { PostType } from "@/types/post";
+import { baseURL } from "@/utils/baseUrl";
 
 interface PostActionsButtonGroupProps {
-  handleLikeClick: (postId: string) => void;
-  isLikedByCurrentUser: boolean;
+  currentUserId: string;
   post: PostType;
 }
 
 export const PostActionsButtonGroup = ({
-  handleLikeClick,
-  isLikedByCurrentUser,
+  currentUserId,
   post,
 }: PostActionsButtonGroupProps) => {
   const { hovered: hoveredComments, ref: refComments } = useHover();
   const { hovered: hoveredLikes, ref: refLikes } = useHover();
+  const isLikedByCurrentUserInitialValue = post.likes.some((like) => {
+    return like.post_id === post.id && like.user_id === currentUserId;
+  });
+  const [isLikedByCurrentUser, setIsLikedByCurrentUser] = useState(
+    isLikedByCurrentUserInitialValue
+  );
+  const [likeCount, setLikeCount] = useState(post.likes.length);
+
   const commentsColor = hoveredComments ? "#228be6" : "black";
   const likesColor = hoveredLikes
     ? "#37B24D"
     : isLikedByCurrentUser
     ? "#37B24D"
     : "black";
+
+  const handleLikeClick = async (postId: string) => {
+    try {
+      if (!isLikedByCurrentUser) {
+        await axios.post(`${baseURL}/api/posts/${postId}/likes`, {
+          currentUserId: currentUserId,
+        });
+        setIsLikedByCurrentUser(true);
+        setLikeCount(likeCount + 1);
+      } else {
+        await axios.delete(`${baseURL}/api/posts/${postId}/likes`, {
+          params: {
+            currentUserId: currentUserId,
+          },
+        });
+        setIsLikedByCurrentUser(false);
+        setLikeCount(likeCount - 1);
+      }
+    } catch (error) {
+      notifications.show({
+        id: "click-likes",
+        autoClose: 2000,
+        color: "red",
+        icon: <IconX size="1rem" />,
+        message: "いいねに失敗しました。",
+        title: "エラー",
+      });
+    }
+  };
 
   return (
     <Group align="center" spacing={40}>
@@ -52,7 +91,7 @@ export const PostActionsButtonGroup = ({
         >
           <Group ref={refLikes} align="center" spacing="sm">
             <IconThumbUp size="1.2rem" color={likesColor} />
-            <Text color={likesColor}>{post.likes.length}</Text>
+            <Text color={likesColor}>{likeCount}</Text>
           </Group>
         </Tooltip>
       </UnstyledButton>

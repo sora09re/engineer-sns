@@ -13,17 +13,10 @@ import type { PostType } from "@/types/post";
 
 interface PostUIProps {
   currentUserId: string;
-  handleLikeClick: (postId: string) => void;
-  isLikedByCurrentUser: boolean;
   post: PostType;
 }
 
-export const PostUI = ({
-  currentUserId,
-  handleLikeClick,
-  isLikedByCurrentUser,
-  post,
-}: PostUIProps) => {
+export const PostUI = ({ currentUserId, post }: PostUIProps) => {
   const parsedContent = parseContent(post.content);
   const router = useRouter();
   const isPostByCurrentUser = post.user_id === currentUserId;
@@ -75,11 +68,7 @@ export const PostUI = ({
             return <ContentPart key={index} part={part} />;
           })}
           <Space h="md" />
-          <PostActionsButtonGroup
-            handleLikeClick={handleLikeClick}
-            isLikedByCurrentUser={isLikedByCurrentUser}
-            post={post}
-          />
+          <PostActionsButtonGroup currentUserId={currentUserId} post={post} />
         </Box>
       </Group>
     </Box>

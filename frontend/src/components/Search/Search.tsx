@@ -57,7 +57,6 @@ export const Search = ({ currentUser }: SearchProps) => {
             <PostsList
               currentUserId={currentUser.id}
               posts={searchPostResults}
-              keyword={keyword}
             />
           )}
         </Tabs.Panel>

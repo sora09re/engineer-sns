@@ -1,78 +1,80 @@
-import { notifications } from "@mantine/notifications";
-import { IconX } from "@tabler/icons";
-import axios from "axios";
+import { Avatar, Box, Group, Space, Text } from "@mantine/core";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
-import { PostUI } from "@/components/PostUI/PostUI";
-import { useGetCommentsForPost } from "@/hooks/useGetCommentsForPost";
-import { useGetPostDetail } from "@/hooks/useGetPostDetail";
-import { useGetPostsForUser } from "@/hooks/useGetPostsForUser";
-import { useGetTimelinePosts } from "@/hooks/useGetTimelinePosts";
-import { useSearchPosts } from "@/hooks/useSearchPosts";
+import {
+  ContentPart,
+  parseContent,
+} from "@/components/ContentPart/ContentPart";
+import { DateFormat } from "@/components/DateFormat/DateFormat";
+import { PostActionMenu } from "@/components/PostActionMenu/PostActionMenu";
+import { PostActionsButtonGroup } from "@/components/PostActionsButtonGroup/PostActionsButtonGroup";
 import type { PostType } from "@/types/post";
-import { baseURL } from "@/utils/baseUrl";
 
 interface PostProps {
   currentUserId: string;
-  keyword?: string;
   post: PostType;
 }
 
-export const Post = ({ currentUserId, keyword, post }: PostProps) => {
-  const { mutate: getTimelinePostsMutate } = useGetTimelinePosts(currentUserId);
-  const { mutate: getPostDetailMutate } = useGetPostDetail(post.id);
-  const { mutate: searchPostsMutate } = useSearchPosts(keyword);
-  const { mutate: getCommentsForPostMutate } = useGetCommentsForPost(
-    post.parent_post_id
-  );
-  const { mutate: getPostsForUserMutate } = useGetPostsForUser(post.user_id);
+export const Post = ({ currentUserId, post }: PostProps) => {
+  const parsedContent = parseContent(post.content);
+  const router = useRouter();
+  const isPostByCurrentUser = post.user_id === currentUserId;
 
   if (!post) {
     return null;
   }
 
-  const index = post.likes.findIndex((like) => {
-    return like.post_id === post.id;
-  });
-
-  const isLikedByCurrentUser =
-    index !== -1 && post.likes[index].user_id === currentUserId;
-
-  const handleLikeClick = async (postId: string) => {
-    try {
-      if (!isLikedByCurrentUser) {
-        await axios.post(`${baseURL}/api/posts/${postId}/likes`, {
-          currentUserId: currentUserId,
-        });
-      } else {
-        await axios.delete(`${baseURL}/api/posts/${postId}/likes`, {
-          params: {
-            currentUserId: currentUserId,
-          },
-        });
-      }
-      getTimelinePostsMutate();
-      getPostDetailMutate();
-      searchPostsMutate();
-      getCommentsForPostMutate();
-      getPostsForUserMutate();
-    } catch (error) {
-      notifications.show({
-        id: "click-likes",
-        autoClose: 2000,
-        color: "red",
-        icon: <IconX size="1rem" />,
-        message: "いいねに失敗しました。",
-        title: "エラー",
-      });
-    }
-  };
-
   return (
-    <PostUI
-      post={post}
-      isLikedByCurrentUser={isLikedByCurrentUser}
-      handleLikeClick={handleLikeClick}
-      currentUserId={currentUserId}
-    />
+    <Box
+      key={post.id}
+      p="md"
+      w="100%"
+      sx={{
+        borderBottom: "1px solid #E9ECEF",
+        cursor: "pointer",
+        position: "relative",
+      }}
+      onClick={() => {
+        return router.push(`/posts/${post.id}`);
+      }}
+    >
+      {isPostByCurrentUser ? (
+        <PostActionMenu postId={post.id} currentUserId={currentUserId} />
+      ) : (
+        <></>
+      )}
+      <Group align="start">
+        <Box>
+          <Link href={`/profile/${post.user_id}`}>
+            <Avatar
+              src={post.users.profile_image_url}
+              alt="投稿したユーザーのプロフィール画像"
+            />
+          </Link>
+        </Box>
+        <Box>
+          <Group spacing="xs">
+            <Link
+              href={`/profile/${post.user_id}`}
+              style={{ textDecoration: "none" }}
+            >
+              <Text fw={700} color="black">
+                {post.users.name}
+              </Text>
+            </Link>
+            <Text color="dimmed">@{post.users.username}</Text>
+            <Text color="dimmed">
+              <DateFormat props={post.created_at} />
+            </Text>
+          </Group>
+          {parsedContent.map((part, index) => {
+            return <ContentPart key={index} part={part} />;
+          })}
+          <Space h="md" />
+          <PostActionsButtonGroup currentUserId={currentUserId} post={post} />
+        </Box>
+      </Group>
+    </Box>
   );
 };
