@@ -9,18 +9,27 @@ export default async function handler(
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
+  try {
+    const user = {
+      ...req.body,
+      created_at: new Date(),
+      updated_at: new Date(),
+    };
 
-  const user = {
-    ...req.body,
-    created_at: new Date(),
-    updated_at: new Date(),
-  };
+    const { data, error } = await supabase.from("users").insert([user]);
 
-  const { data, error } = await supabase.from("users").insert([user]);
+    if (error) {
+      throw error;
+    }
 
-  if (error) {
-    return res.status(500).json({ error: error.message });
+    return res.status(200).json({ data });
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error("API Error:", error);
+      return res.status(500).json({ error: error.message });
+    } else {
+      console.error("An unknown error occurred:", error);
+      return res.status(500).json({ error: "An unknown error occurred" });
+    }
   }
-
-  return res.status(200).json({ data });
 }

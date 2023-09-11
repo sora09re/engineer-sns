@@ -18,7 +18,7 @@ export default async function handler(
   const currentUserId = req.query.currentUserId;
 
   if (!userId) {
-    res.status(200).json([]);
+    return res.status(200).json([]);
   }
 
   try {
@@ -34,7 +34,7 @@ export default async function handler(
         throw error;
       }
 
-      res.status(200).json({ isFollowing: data.length > 0 });
+      return res.status(200).json({ isFollowing: data.length > 0 });
     }
 
     if (req.method === "POST") {

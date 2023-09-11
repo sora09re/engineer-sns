@@ -9,18 +9,18 @@ export default async function handler(
   if (req.method !== "POST" && req.method !== "GET") {
     return res.status(405).json({ error: "Method not allowed" });
   }
+  try {
+    if (req.method === "GET") {
+      const { postId } = req.query;
 
-  if (req.method === "GET") {
-    const { postId } = req.query;
+      if (!postId) {
+        return res.status(400).json({ error: "postId is required" });
+      }
 
-    if (!postId) {
-      return res.status(400).json({ error: "postId is required" });
-    }
-
-    const { data: comments, error: errorPosts } = await supabase
-      .from("posts")
-      .select(
-        `
+      const { data: comments, error } = await supabase
+        .from("posts")
+        .select(
+          `
           *,
           users (*),
           likes (*),
@@ -31,42 +31,51 @@ export default async function handler(
             comments: posts (*)
           )
         `
-      )
-      .eq("parent_post_id", postId)
-      .order("updated_at", { ascending: false });
+        )
+        .eq("parent_post_id", postId)
+        .order("updated_at", { ascending: false });
 
-    if (errorPosts) {
-      return res.status(500).json({ error: errorPosts.message });
+      if (error) {
+        throw error;
+      }
+
+      return res.status(200).json(comments);
     }
 
-    return res.status(200).json(comments);
-  }
+    if (req.method === "POST") {
+      const { commentContent, currentUserId } = req.body;
+      const { postId } = req.query;
 
-  if (req.method === "POST") {
-    const { commentContent, currentUserId } = req.body;
-    const { postId } = req.query;
+      if (!commentContent || !currentUserId || !postId) {
+        return res
+          .status(400)
+          .json({ error: "Content, User ID and Post Id are required" });
+      }
 
-    if (!commentContent || !currentUserId || !postId) {
-      return res
-        .status(400)
-        .json({ error: "Content, User ID and Post Id are required" });
+      const { data, error } = await supabase.from("posts").insert([
+        {
+          content: commentContent,
+          created_at: new Date(),
+          is_deleted: false,
+          parent_post_id: postId,
+          updated_at: new Date(),
+          user_id: currentUserId,
+        },
+      ]);
+
+      if (error) {
+        throw error;
+      }
+
+      return res.status(200).json({ data });
     }
-
-    const { data, error } = await supabase.from("posts").insert([
-      {
-        content: commentContent,
-        created_at: new Date(),
-        is_deleted: false,
-        parent_post_id: postId,
-        updated_at: new Date(),
-        user_id: currentUserId,
-      },
-    ]);
-
-    if (error) {
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error("API Error:", error);
       return res.status(500).json({ error: error.message });
+    } else {
+      console.error("An unknown error occurred:", error);
+      return res.status(500).json({ error: "An unknown error occurred" });
     }
-
-    return res.status(200).json({ data });
   }
 }

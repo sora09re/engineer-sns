@@ -13,7 +13,7 @@ export default async function handler(
   const userId = req.query.userId;
 
   if (!userId) {
-    res.status(200).json([]);
+    return res.status(200).json([]);
   }
 
   try {
@@ -31,7 +31,7 @@ export default async function handler(
         throw error;
       }
 
-      res.status(200).json(followers);
+      return res.status(200).json(followers);
     }
   } catch (error) {
     if (error instanceof Error) {
