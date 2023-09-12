@@ -13,10 +13,11 @@ import type { PostType } from "@/types/post";
 
 interface PostProps {
   currentUserId: string;
+  keyword?: string;
   post: PostType;
 }
 
-export const Post = ({ currentUserId, post }: PostProps) => {
+export const Post = ({ currentUserId, keyword, post }: PostProps) => {
   const parsedContent = parseContent(post.content);
   const router = useRouter();
   const isPostByCurrentUser = post.user_id === currentUserId;
@@ -44,6 +45,7 @@ export const Post = ({ currentUserId, post }: PostProps) => {
           postId={post.id}
           currentUserId={currentUserId}
           postUserId={post.user_id}
+          keyword={keyword}
         />
       ) : (
         <></>

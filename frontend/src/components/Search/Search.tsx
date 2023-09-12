@@ -1,6 +1,5 @@
 import { Box, Center, Loader, Tabs, TextInput } from "@mantine/core";
 import { IconSearch } from "@tabler/icons";
-import error from "next/error";
 import { useState } from "react";
 import useSWR from "swr";
 
@@ -30,7 +29,8 @@ export const Search = ({ currentUser }: SearchProps) => {
   } = useSearchPosts(keyword);
 
   if (searchUserError || searchPostError) {
-    console.error("Error fetching search results:", error);
+    console.error("Error fetching search user results:", searchUserError);
+    console.error("Error fetching search post results:", searchPostError);
   }
 
   return (
@@ -57,6 +57,7 @@ export const Search = ({ currentUser }: SearchProps) => {
             <PostsList
               currentUserId={currentUser.id}
               posts={searchPostResults}
+              keyword={keyword}
             />
           )}
         </Tabs.Panel>
