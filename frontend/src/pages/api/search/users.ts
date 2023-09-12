@@ -13,7 +13,7 @@ export default async function handler(
   const keyword = req.query.keyword;
 
   if (!keyword) {
-    res.status(200).json([]);
+    return res.status(200).json([]);
   }
 
   try {
