@@ -1,6 +1,7 @@
-import { Box, Tabs, Text } from "@mantine/core";
+import { Box, Tabs } from "@mantine/core";
 import useSWR from "swr";
 
+import { CenteredLoader } from "@/components/CenteredLoader/CenteredLoader";
 import { UsersList } from "@/components/UsersList/UsersList";
 import type { User } from "@/types/user";
 import { baseURL } from "@/utils/baseUrl";
@@ -12,17 +13,29 @@ interface FollowsProps {
 }
 
 export const Follows = ({ currentUserId, userId }: FollowsProps) => {
-  const { data: followers } = useSWR<User[]>(
-    `${baseURL}/api/users/${userId}/followers`,
-    fetcher
-  );
+  const {
+    data: followers,
+    error: getFollowersError,
+    isLoading: getFollowersIsLoading,
+  } = useSWR<User[]>(`${baseURL}/api/users/${userId}/followers`, fetcher);
 
-  const { data: followingUsers } = useSWR<
-    User[]
-  >(`${baseURL}/api/users/${userId}/following`, fetcher);
+  const {
+    data: followingUsers,
+    error: getFollowingUsersError,
+    isLoading: getFollowingUsersIsLoading,
+  } = useSWR<User[]>(`${baseURL}/api/users/${userId}/following`, fetcher);
 
-  if (!followers || !followingUsers) {
-    return <Text>取得に失敗しました。</Text>;
+  if (
+    getFollowersIsLoading ||
+    getFollowingUsersIsLoading ||
+    !followers ||
+    !followingUsers
+  ) {
+    return <CenteredLoader />;
+  }
+
+  if (getFollowersError || getFollowingUsersError) {
+    return <div>エラーが発生しました。更新を行ってください。</div>;
   }
 
   return (
@@ -33,16 +46,10 @@ export const Follows = ({ currentUserId, userId }: FollowsProps) => {
           <Tabs.Tab value="following">フォロー中</Tabs.Tab>
         </Tabs.List>
         <Tabs.Panel value="followers">
-          <UsersList
-            users={followers}
-            currentUserId={currentUserId}
-          />
+          <UsersList users={followers} currentUserId={currentUserId} />
         </Tabs.Panel>
         <Tabs.Panel value="following">
-          <UsersList
-            users={followingUsers}
-            currentUserId={currentUserId}
-          />
+          <UsersList users={followingUsers} currentUserId={currentUserId} />
         </Tabs.Panel>
       </Tabs>
     </Box>

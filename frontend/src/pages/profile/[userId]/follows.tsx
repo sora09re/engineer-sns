@@ -22,7 +22,7 @@ const FollowsPage: NextPage = () => {
   }
 
   if (getCurrentUserError) {
-    <div>エラーが発生しました。更新を行ってください。</div>;
+    return <div>エラーが発生しました。更新を行ってください。</div>;
   }
 
   return (
