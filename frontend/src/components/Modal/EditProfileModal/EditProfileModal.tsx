@@ -13,6 +13,7 @@ import axios from "axios";
 import { useState } from "react";
 
 import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
+import { useGetPostsForUser } from "@/hooks/useGetPostsForUser";
 import { useGetProfile } from "@/hooks/useGetProfile";
 import { useModal } from "@/hooks/useModal";
 import type { User } from "@/types/user";
@@ -53,7 +54,8 @@ const useUserProfile = (currentUser: User) => {
 export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
   const marginTopPx = 10;
   const { updateUserProfile, userProfile } = useUserProfile(currentUser);
-  const { mutate } = useGetProfile(currentUser.id);
+  const { mutate: getProfileMutate } = useGetProfile(currentUser.id);
+  const { mutate: getPostsForUserMutate } = useGetPostsForUser(currentUser.id);
 
   const [isVisible, setIsVisible] = useModal("editProfile");
 
@@ -72,7 +74,8 @@ export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
         values: userProfile,
       });
       setIsVisible(false);
-      mutate();
+      getProfileMutate();
+      getPostsForUserMutate();
       notifications.update({
         id: "updateProfile",
         autoClose: 2000,
