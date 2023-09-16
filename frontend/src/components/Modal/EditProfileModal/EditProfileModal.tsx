@@ -18,6 +18,7 @@ import { useGetProfile } from "@/hooks/useGetProfile";
 import { useModal } from "@/hooks/useModal";
 import type { User } from "@/types/user";
 import { baseURL } from "@/utils/baseUrl";
+import { supabase } from "@/utils/supabase";
 
 interface EditProfileModalProps {
   currentUser: User;
@@ -59,6 +60,29 @@ export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
 
   const [isVisible, setIsVisible] = useModal("editProfile");
 
+  const uploadImageToSupabase = async () => {
+    if (userProfile.profile_image_url) {
+      const file = await fetch(userProfile.profile_image_url).then((res) => {
+        return res.blob();
+      });
+      const fileName = `${currentUser.id}.jpg`;
+
+      const { error } = await supabase.storage
+        .from("profile_image")
+        .upload(fileName, file);
+
+      if (error) {
+        console.error("Error uploading image: ", error);
+      } else {
+        const { data } = supabase.storage
+          .from("profile_image")
+          .getPublicUrl(fileName);
+        const imageUrl = data?.publicUrl;
+        updateUserProfile({ profile_image_url: imageUrl });
+      }
+    }
+  };
+
   const editProfile = async () => {
     notifications.show({
       id: "updateProfile",
@@ -73,6 +97,7 @@ export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
       await axios.post(`${baseURL}/api/profile/${currentUser.id}`, {
         values: userProfile,
       });
+      await uploadImageToSupabase();
       setIsVisible(false);
       getProfileMutate();
       getPostsForUserMutate();
