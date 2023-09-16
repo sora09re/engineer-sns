@@ -56,6 +56,8 @@ const NewUserPage: NextPage = () => {
   const { updateUserProfile, userProfile } = useUserProfile(session?.user);
   const router = useRouter();
 
+  console.log(session?.user);
+
   if (status === "unauthenticated" || !session) {
     return <div>再ログインしてください。</div>;
   }
