@@ -25,6 +25,10 @@ export const useGetCurrentUser = () => {
     router.push("/auth/signin");
   }
 
+  if(session&&!data) {
+    router.push("/auth/new-user")
+  }
+
   if (!data) {
     return { loading: true };
   }
