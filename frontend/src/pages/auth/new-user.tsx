@@ -14,7 +14,7 @@ import axios from "axios";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
 import { baseURL } from "@/utils/baseUrl";
@@ -56,7 +56,15 @@ const NewUserPage: NextPage = () => {
   const { updateUserProfile, userProfile } = useUserProfile(session?.user);
   const router = useRouter();
 
-  console.log(session?.user);
+  useEffect(() => {
+    if (session?.user?.id) {
+      updateUserProfile({
+        ...session.user,
+        profile_image_url: session.user.image,
+      });
+    }
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session]);
 
   if (status === "unauthenticated" || !session) {
     return <div>再ログインしてください。</div>;

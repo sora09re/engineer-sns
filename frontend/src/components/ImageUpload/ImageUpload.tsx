@@ -1,6 +1,5 @@
 import { Group, Image } from "@mantine/core";
 import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
-import { useEffect } from "react";
 
 import type { UserProfile } from "@/components/Modal/EditProfileModal/EditProfileModal";
 
@@ -13,10 +12,6 @@ export const ImageUpload = ({
   setUserProfileImage,
   userProfileImage,
 }: ImageUploadProps) => {
-  useEffect(() => {
-    setUserProfileImage({ profile_image_url: userProfileImage });
-    //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userProfileImage]);
 
   const handleDrop = (files: File[]) => {
     const file = files[0];
