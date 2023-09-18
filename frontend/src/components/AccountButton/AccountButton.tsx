@@ -14,7 +14,7 @@ export const AccountButton = ({ currentUser }: AccountButtonProps) => {
     return (
       <UnstyledButton>
         <Group>
-          <Avatar src={currentUser.profile_image_url} size={40} color="blue" />
+          <Avatar src={currentUser.profile_image_url} size={40} />
           <div>
             <Text>{currentUser.name}</Text>
             <Text size="xs" color="dimmed">
