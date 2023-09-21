@@ -61,25 +61,34 @@ export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
   const [isVisible, setIsVisible] = useModal("editProfile");
 
   const uploadImageToSupabase = async () => {
-    if (userProfile.profile_image_url) {
-      const file = await fetch(userProfile.profile_image_url).then((res) => {
-        return res.blob();
-      });
+    if (!userProfile.profile_image_url) {
+      return;
+    }
+    try {
+      const response = await fetch(userProfile.profile_image_url);
+      const file = await response.blob();
       const fileName = `${currentUser.id}.jpg`;
 
-      const { error } = await supabase.storage
+      const { error: uploadError } = await supabase.storage
         .from("profile_image")
-        .upload(fileName, file);
+        .upload(fileName, file, { upsert: true });
 
-      if (error) {
-        console.error("Error uploading image: ", error);
-      } else {
-        const { data } = supabase.storage
-          .from("profile_image")
-          .getPublicUrl(fileName);
-        const imageUrl = data?.publicUrl;
-        updateUserProfile({ profile_image_url: imageUrl });
+      if (uploadError) {
+        throw new Error(`Error uploading image: ${uploadError.message}`);
       }
+
+      const { data } = supabase.storage
+        .from("profile_image")
+        .getPublicUrl(fileName);
+
+      const imageUrl = data?.publicUrl;
+      if (!imageUrl) {
+        throw new Error("Error getting public URL");
+      }
+
+      updateUserProfile({ profile_image_url: imageUrl });
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -94,10 +103,10 @@ export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
     });
 
     try {
+      await uploadImageToSupabase();
       await axios.post(`${baseURL}/api/profile/${currentUser.id}`, {
         values: userProfile,
       });
-      await uploadImageToSupabase();
       setIsVisible(false);
       getProfileMutate();
       getPostsForUserMutate();
