@@ -60,7 +60,6 @@ const NewUserPage: NextPage = () => {
   useEffect(() => {
     if (session?.user?.id) {
       updateUserProfile({
-        ...session.user,
         profile_image_url: session.user.image,
       });
     }
