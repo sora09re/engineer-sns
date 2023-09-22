@@ -25,7 +25,7 @@ export const useGetCurrentUser = () => {
     router.push("/auth/signin");
   }
 
-  if (status === "unauthenticated" && !isLoading && !data) {
+  if (status === "authenticated" && !isLoading && !data) {
     router.push("/auth/new-user");
   }
 
