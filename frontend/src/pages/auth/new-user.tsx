@@ -16,6 +16,7 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
+import { CenteredLoader } from "@/components/CenteredLoader/CenteredLoader";
 import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
 import { baseURL } from "@/utils/baseUrl";
 
@@ -65,6 +66,10 @@ const NewUserPage: NextPage = () => {
     }
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
+
+  if (status === "loading") {
+    <CenteredLoader />;
+  }
 
   if (status === "unauthenticated" || !session) {
     return <div>再ログインしてください。</div>;
