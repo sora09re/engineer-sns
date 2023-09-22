@@ -37,7 +37,7 @@ const useUserProfile = (sessionUser: any) => {
     bio: "",
     email: sessionUser?.email ?? "",
     location: "",
-    name: sessionUser?.name ?? "",
+    name: "",
     profile_image_url: sessionUser?.image ?? "",
     username: "",
     website: "",
@@ -71,7 +71,7 @@ const NewUserPage: NextPage = () => {
     <CenteredLoader />;
   }
 
-  if (status === "unauthenticated" || !session) {
+  if (status === "unauthenticated") {
     return <div>再ログインしてください。</div>;
   }
 
