@@ -16,6 +16,7 @@ import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
 import { useGetPostsForUser } from "@/hooks/useGetPostsForUser";
 import { useGetProfile } from "@/hooks/useGetProfile";
 import { useModal } from "@/hooks/useModal";
+import { useUserProfile } from "@/hooks/useUserProfile";
 import type { User } from "@/types/user";
 import { baseURL } from "@/utils/baseUrl";
 import { supabase } from "@/utils/supabase";
@@ -24,71 +25,50 @@ interface EditProfileModalProps {
   currentUser: User;
 }
 
-export interface UserProfile {
-  bio?: string;
-  location?: string;
-  name: string;
-  profile_image_url?: string;
-  username: string;
-  website?: string;
-}
-
-const useUserProfile = (currentUser: User) => {
-  const [userProfile, setUserProfile] = useState<UserProfile>({
-    bio: currentUser.bio,
-    location: currentUser.location,
-    name: currentUser.name,
-    profile_image_url: currentUser.profile_image_url,
-    username: currentUser.username,
-    website: currentUser.website,
-  });
-
-  const updateUserProfile = (newUserProfile: Partial<UserProfile>) => {
-    setUserProfile((prev) => {
-      return { ...prev, ...newUserProfile };
-    });
-  };
-
-  return { updateUserProfile, userProfile };
-};
-
 export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
   const marginTopPx = 10;
   const { updateUserProfile, userProfile } = useUserProfile(currentUser);
   const { mutate: getProfileMutate } = useGetProfile(currentUser.id);
   const { mutate: getPostsForUserMutate } = useGetPostsForUser(currentUser.id);
-
   const [isVisible, setIsVisible] = useModal("editProfile");
+  const [tempImage, setTempImage] = useState<string | null>(null);
+
+  const handleDrop = (acceptedFiles: File[]) => {
+    const file = acceptedFiles[0];
+    const objectURL = URL.createObjectURL(file);
+    setTempImage(objectURL);
+  };
 
   const uploadImageToSupabase = async () => {
-    if (!userProfile.profile_image_url) {
-      return;
+    if (!tempImage) {
+      return null;
     }
     try {
-      const response = await fetch(userProfile.profile_image_url);
+      const response = await fetch(tempImage);
       const file = await response.blob();
-      const fileName = `${currentUser.id}.jpg`;
+      const filePath = `${currentUser.id}.jpg`;
 
+      // 画像のアップロード
       const { error: uploadError } = await supabase.storage
         .from("profile_image")
-        .upload(fileName, file, { upsert: true });
-
+        .upload(filePath, file, { upsert: true });
       if (uploadError) {
         throw new Error(`Error uploading image: ${uploadError.message}`);
       }
 
+      // 画像のURLを取得
       const { data } = supabase.storage
         .from("profile_image")
-        .getPublicUrl(fileName);
-
+        .getPublicUrl(filePath);
       const imageUrl = data?.publicUrl;
       if (!imageUrl) {
         throw new Error("Error getting public URL");
       }
 
-      updateUserProfile({ profile_image_url: imageUrl });
+      return imageUrl;
     } catch (error) {
       console.error(error);
+      return null;
     }
   };
 
@@ -103,7 +83,11 @@ export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
     });
 
     try {
-      await uploadImageToSupabase();
+      const imageUrl = await uploadImageToSupabase();
+      if (imageUrl) {
+        updateUserProfile({ profile_image_url: imageUrl });
+      }
+
       await axios.post(`${baseURL}/api/profile/${currentUser.id}`, {
         values: userProfile,
       });
@@ -144,8 +128,8 @@ export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
           <Grid.Col span={4}>
             <Center>
               <ImageUpload
-                userProfileImage={userProfile.profile_image_url}
-                setUserProfileImage={updateUserProfile}
+                onDrop={handleDrop}
+                imageUrl={tempImage || userProfile.profile_image_url}
               />
             </Center>
             <TextInput
