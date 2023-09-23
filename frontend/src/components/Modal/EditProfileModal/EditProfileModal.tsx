@@ -19,7 +19,7 @@ import { useModal } from "@/hooks/useModal";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import type { User } from "@/types/user";
 import { baseURL } from "@/utils/baseUrl";
-import { supabase } from "@/utils/supabase";
+import { uploadImageToSupabase } from "@/utils/uploadImageToSupabase";
 
 interface EditProfileModalProps {
   currentUser: User;
@@ -39,39 +39,6 @@ export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
     setTempImage(objectURL);
   };
 
-  const uploadImageToSupabase = async () => {
-    if (!tempImage) {
-      return null;
-    }
-    try {
-      const response = await fetch(tempImage);
-      const file = await response.blob();
-      const filePath = `${currentUser.id}.jpg`;
-
-      // 画像のアップロード
-      const { error: uploadError } = await supabase.storage
-        .from("profile_image")
-        .upload(filePath, file, { upsert: true });
-      if (uploadError) {
-        throw new Error(`Error uploading image: ${uploadError.message}`);
-      }
-
-      // 画像のURLを取得
-      const { data } = supabase.storage
-        .from("profile_image")
-        .getPublicUrl(filePath);
-      const imageUrl = data?.publicUrl;
-      if (!imageUrl) {
-        throw new Error("Error getting public URL");
-      }
-
-      return imageUrl;
-    } catch (error) {
-      console.error(error);
-      return null;
-    }
-  };
-
   const editProfile = async () => {
     notifications.show({
       id: "updateProfile",
@@ -83,7 +50,7 @@ export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
     });
 
     try {
-      const imageUrl = await uploadImageToSupabase();
+      const imageUrl = await uploadImageToSupabase(tempImage, currentUser.id);
       if (imageUrl) {
         updateUserProfile({ profile_image_url: imageUrl });
       }

@@ -18,49 +18,29 @@ import { useEffect, useState } from "react";
 
 import { CenteredLoader } from "@/components/CenteredLoader/CenteredLoader";
 import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
+import {
+  type NewUserValues,
+  useNewUserProfile,
+} from "@/hooks/useNewUserProfile";
 import { baseURL } from "@/utils/baseUrl";
-
-interface NewUserValues {
-  id: string;
-  bio: string;
-  email: string;
-  location: string;
-  name: string;
-  profile_image_url: string;
-  username: string;
-  website: string;
-}
-
-const useUserProfile = (sessionUser: any) => {
-  const [userProfile, setUserProfile] = useState<NewUserValues>({
-    id: sessionUser?.id ?? "",
-    bio: "",
-    email: sessionUser?.email ?? "",
-    location: "",
-    name: "",
-    profile_image_url: sessionUser?.image ?? "",
-    username: "",
-    website: "",
-  });
-
-  const updateUserProfile = (newUserProfile: Partial<NewUserValues>) => {
-    setUserProfile((prev) => {
-      return { ...prev, ...newUserProfile };
-    });
-  };
-
-  return { updateUserProfile, userProfile };
-};
+import { uploadImageToSupabase } from "@/utils/uploadImageToSupabase";
 
 const NewUserPage: NextPage = () => {
   const { data: session, status } = useSession();
-  const { updateUserProfile, userProfile } = useUserProfile(session?.user);
+  const { updateUserProfile, userProfile } = useNewUserProfile(session?.user);
   const router = useRouter();
+  const [tempImage, setTempImage] = useState<string | null>(null);
+
+  const handleDrop = (acceptedFiles: File[]) => {
+    const file = acceptedFiles[0];
+    const objectURL = URL.createObjectURL(file);
+    setTempImage(objectURL);
+  };
 
   useEffect(() => {
     if (session?.user?.id) {
       updateUserProfile({
-        email:session.user.email,
+        email: session.user.email,
         profile_image_url: session.user.image,
       });
     }
@@ -77,6 +57,13 @@ const NewUserPage: NextPage = () => {
 
   const postNewUser = async (values: NewUserValues) => {
     try {
+      const imageUrl = await uploadImageToSupabase(
+        tempImage,
+        session?.user?.id
+      );
+      if (imageUrl) {
+        updateUserProfile({ profile_image_url: imageUrl });
+      }
       const res = await axios.post(`${baseURL}/api/auth/signup`, values);
       if (res.status === 200) {
         // ステータスが200の場合
@@ -101,8 +88,8 @@ const NewUserPage: NextPage = () => {
         >
           <Flex justify="center">
             <ImageUpload
-              userProfileImage={userProfile.profile_image_url}
-              setUserProfileImage={updateUserProfile}
+              onDrop={handleDrop}
+              imageUrl={tempImage || userProfile.profile_image_url}
             />
           </Flex>
           <Grid>
