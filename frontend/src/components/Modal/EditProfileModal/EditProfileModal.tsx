@@ -13,6 +13,7 @@ import axios from "axios";
 import { useState } from "react";
 
 import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
+import { useGetCurrentUser } from "@/hooks/useGetCurrentUser";
 import { useGetPostsForUser } from "@/hooks/useGetPostsForUser";
 import { useGetProfile } from "@/hooks/useGetProfile";
 import { useModal } from "@/hooks/useModal";
@@ -28,6 +29,7 @@ interface EditProfileModalProps {
 export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
   const marginTopPx = 10;
   const { updateUserProfile, userProfile } = useUserProfile(currentUser);
+  const { mutate: getCurrentUserMutate } = useGetCurrentUser();
   const { mutate: getProfileMutate } = useGetProfile(currentUser.id);
   const { mutate: getPostsForUserMutate } = useGetPostsForUser(currentUser.id);
   const [isVisible, setIsVisible] = useModal("editProfile");
@@ -50,15 +52,22 @@ export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
     });
 
     try {
-      const imageUrl = await uploadImageToSupabase(tempImage, currentUser.id);
-      if (imageUrl) {
-        updateUserProfile({ profile_image_url: imageUrl });
-      }
+      const imageUrl = tempImage
+        ? await uploadImageToSupabase(tempImage, currentUser.id)
+        : null;
+      const updatedProfile = imageUrl
+        ? { ...userProfile, profile_image_url: imageUrl }
+        : { ...userProfile };
 
+      if (imageUrl) {
+        updateUserProfile(updatedProfile);
+      }
+      
       await axios.post(`${baseURL}/api/profile/${currentUser.id}`, {
-        values: userProfile,
+        values: updatedProfile,
       });
       setIsVisible(false);
+      getCurrentUserMutate?.();
       getProfileMutate();
       getPostsForUserMutate();
       notifications.update({

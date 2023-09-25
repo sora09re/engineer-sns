@@ -10,7 +10,7 @@ export const useGetCurrentUser = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
   const currentUserId = session?.user.id;
-  const { data, error, isLoading } = useSWR<User>(
+  const { data, error, isLoading, mutate } = useSWR<User>(
     currentUserId
       ? `${baseURL}/api/users/current?currentUserId=${currentUserId}`
       : null,
@@ -37,5 +37,6 @@ export const useGetCurrentUser = () => {
     data,
     error,
     isLoading,
+    mutate,
   };
 };

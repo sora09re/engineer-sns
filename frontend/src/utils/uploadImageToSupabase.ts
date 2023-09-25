@@ -10,7 +10,7 @@ export const uploadImageToSupabase = async (
   try {
     const response = await fetch(tempImage);
     const file = await response.blob();
-    const filePath = `${userId}.jpg`;
+    const filePath = `${userId}_${Date.now()}.jpg`;
 
     const { error: uploadError } = await supabase.storage
       .from("profile_image")
