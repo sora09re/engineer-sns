@@ -4,6 +4,7 @@ import { IconCheck, IconX } from "@tabler/icons-react";
 import axios from "axios";
 import { useState } from "react";
 
+import { useGetPostsForUser } from "@/hooks/useGetPostsForUser";
 import { useGetTimelinePosts } from "@/hooks/useGetTimelinePosts";
 import { useModal } from "@/hooks/useModal";
 import type { User } from "@/types/user";
@@ -16,7 +17,10 @@ interface NewPostFormProps {
 export const NewPostForm = ({ currentUser }: NewPostFormProps) => {
   const [postContent, setPostContent] = useState("");
   const [, setIsVisiblePostModal] = useModal("post");
-  const { mutate } = useGetTimelinePosts(currentUser.id);
+  const { mutate: getTimelinePostsMutate } = useGetTimelinePosts(
+    currentUser.id
+  );
+  const { mutate: getPostsForUserMutate } = useGetPostsForUser(currentUser.id);
 
   const fetchPost = async () => {
     notifications.show({
@@ -35,7 +39,8 @@ export const NewPostForm = ({ currentUser }: NewPostFormProps) => {
       });
       setPostContent("");
       setIsVisiblePostModal(false);
-      mutate();
+      getTimelinePostsMutate();
+      getPostsForUserMutate();
       notifications.update({
         id: "post-data",
         autoClose: 2000,
