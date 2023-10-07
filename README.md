@@ -2,8 +2,8 @@
 コードスニペットを投稿することができるSNSアプリ<br>
 https://engineer-sns.vercel.app/
 
-【ログイン情報 (採用担当者用)】
-ユーザー名：Engineer-1234
+【ログイン情報 (採用担当者用)】<br>
+ユーザー名：Engineer-1234<br>
 パスワード：EngineerTestUser1234
 
 # 機能一覧
