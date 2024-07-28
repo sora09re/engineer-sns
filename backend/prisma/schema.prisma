@@ -42,6 +42,8 @@ model Posts {
 
   user         Users    @relation(fields: [userId], references: [id])
   likes        Likes[]
+  comments     Posts[]   @relation("CommentRelation")
+  parentPost   Posts?    @relation("CommentRelation", fields: [parentPostId], references: [id])
 }
 
 model Follows {
