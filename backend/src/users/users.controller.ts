@@ -6,10 +6,8 @@ import { UsersService } from 'src/users/users.service';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Get('current')
-  async getCurrentUser(
-    @Query('currentUserId') currentUserId: string,
-  ): Promise<Users | null> {
-    return this.usersService.getCurrentUser(currentUserId);
+  @Get()
+  async getUser(@Query('userId') userId: string): Promise<Users | null> {
+    return this.usersService.getUser(userId);
   }
 }
