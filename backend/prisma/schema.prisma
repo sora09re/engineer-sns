@@ -16,11 +16,12 @@ datasource db {
 model Users {
   id              String   @id @default(uuid())
   bio             String?
-  email           String
+  email           String   @unique
+  password        String
   location        String?
   name            String
   profileImageUrl String?
-  username        String
+  username        String   @unique
   website         String?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
