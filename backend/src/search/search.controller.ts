@@ -7,7 +7,9 @@ export class SearchController {
   constructor(private readonly searchService: SearchService) {}
 
   @Get('users')
-  async searchUsers(@Query('keyword') keyword: string): Promise<Users[]> {
+  async searchUsers(
+    @Query('keyword') keyword: string,
+  ): Promise<Omit<Users, 'password'>[]> {
     return await this.searchService.searchUsers(keyword);
   }
 
