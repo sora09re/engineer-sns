@@ -8,11 +8,11 @@ export class SearchController {
 
   @Get('users')
   async searchUsers(@Query('keyword') keyword: string): Promise<Users[]> {
-    return this.searchService.searchUsers(keyword);
+    return await this.searchService.searchUsers(keyword);
   }
 
   @Get('posts')
   async searchPosts(@Query('keyword') keyword: string): Promise<Posts[]> {
-    return this.searchService.searchPosts(keyword);
+    return await this.searchService.searchPosts(keyword);
   }
 }

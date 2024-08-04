@@ -8,6 +8,6 @@ export class UsersController {
 
   @Get()
   async getUser(@Query('userId') userId: string): Promise<Users | null> {
-    return this.usersService.getUser(userId);
+    return await this.usersService.getUser(userId);
   }
 }
