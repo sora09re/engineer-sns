@@ -1,10 +1,10 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { Users } from '@prisma/client';
-import { SignupInput } from 'src/auth/dto/signup.input';
-import { JwtPayload } from 'src/auth/types/jwtPayload.type';
+import { SignupInput } from 'src/modules/auth/dto/signup.input';
+import { JwtPayload } from 'src/modules/auth/types/jwtPayload.type';
 import { JwtService } from '@nestjs/jwt';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from 'src/modules/prisma/prisma.service';
 
 @Injectable()
 export class AuthService {

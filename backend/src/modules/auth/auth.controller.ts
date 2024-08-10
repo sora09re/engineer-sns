@@ -1,7 +1,7 @@
 import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
-import { AuthService } from 'src/auth/auth.service';
-import { SignupInput } from 'src/auth/dto/signup.input';
-import { LocalAuthGuard } from 'src/auth/guards/local.guard';
+import { AuthService } from 'src/modules/auth/auth.service';
+import { SignupInput } from 'src/modules/auth/dto/signup.input';
+import { LocalAuthGuard } from 'src/modules/auth/guards/local.guard';
 
 @Controller('auth')
 export class AuthController {
