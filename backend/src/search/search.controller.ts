@@ -1,5 +1,6 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { Posts, Users } from '@prisma/client';
+import { SearchInput } from 'src/search/dto/search.input';
 import { SearchService } from 'src/search/search.service';
 
 @Controller('search')
@@ -8,13 +9,15 @@ export class SearchController {
 
   @Get('users')
   async searchUsers(
-    @Query('keyword') keyword: string,
+    @Query() searchInput: SearchInput,
   ): Promise<Omit<Users, 'password'>[]> {
+    const { keyword } = searchInput;
     return await this.searchService.searchUsers(keyword);
   }
 
   @Get('posts')
-  async searchPosts(@Query('keyword') keyword: string): Promise<Posts[]> {
+  async searchPosts(@Query() searchInput: SearchInput): Promise<Posts[]> {
+    const { keyword } = searchInput;
     return await this.searchService.searchPosts(keyword);
   }
 }
