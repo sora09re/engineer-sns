@@ -1,7 +1,6 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { Users } from '@prisma/client';
-import { SignupInput } from 'src/modules/auth/dto/signup.input';
 import { JwtPayload } from 'src/modules/auth/types/jwtPayload.type';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
@@ -13,9 +12,12 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async signup(signupInput: SignupInput): Promise<Users> {
-    const { email, password } = signupInput;
-
+  async signup(
+    email: string,
+    password: string,
+    name: string,
+    username: string,
+  ): Promise<Users> {
     // 既にメールアドレスが使用されていないかチェック
     const existingUser = await this.prisma.users.findUnique({
       where: { email },
@@ -29,8 +31,10 @@ export class AuthService {
 
     return await this.prisma.users.create({
       data: {
-        ...signupInput,
+        email,
         password: hashedPassword,
+        name,
+        username,
       },
     });
   }

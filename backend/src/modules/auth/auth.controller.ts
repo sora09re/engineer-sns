@@ -9,7 +9,8 @@ export class AuthController {
 
   @Post('signup')
   async signup(@Body() signupInput: SignupInput) {
-    return await this.authService.signup(signupInput);
+    const { email, password, name, username } = signupInput;
+    return await this.authService.signup(email, password, name, username);
   }
 
   @UseGuards(LocalAuthGuard)
