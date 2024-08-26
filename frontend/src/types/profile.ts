@@ -11,7 +11,7 @@ export type ProfileType = {
   location?: string;
   name: string;
   posts: PostType[];
-  profile_image_url?: string;
+  profileImageUrl?: string;
   updated_at: string;
   username: string;
   website?: string;

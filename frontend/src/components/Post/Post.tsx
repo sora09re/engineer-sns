@@ -54,7 +54,7 @@ export const Post = ({ currentUserId, keyword, post }: PostProps) => {
         <Box>
           <Link href={`/profile/${post.user_id}`}>
             <Avatar
-              src={post.users.profile_image_url}
+              src={post.users.profileImageUrl}
               alt="投稿したユーザーのプロフィール画像"
             />
           </Link>

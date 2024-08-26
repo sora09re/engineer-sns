@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import type { User } from "@/types/user";
 
 interface AccountButtonProps {
-  currentUser: Pick<User, "name" | "username" | "profile_image_url">;
+  currentUser: Pick<User, "name" | "username" | "profileImageUrl">;
 }
 
 export const AccountButton = ({ currentUser }: AccountButtonProps) => {
@@ -14,7 +14,7 @@ export const AccountButton = ({ currentUser }: AccountButtonProps) => {
     return (
       <UnstyledButton>
         <Group>
-          <Avatar src={currentUser.profile_image_url} size={40} />
+          <Avatar src={currentUser.profileImageUrl} size={40} />
           <div>
             <Text>{currentUser.name}</Text>
             <Text size="xs" color="dimmed">

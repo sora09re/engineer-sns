@@ -6,7 +6,7 @@ export interface NewUserValues {
   email: string;
   location: string;
   name: string;
-  profile_image_url: string;
+  profileImageUrl: string;
   username: string;
   website: string;
 }
@@ -18,7 +18,7 @@ export const useNewUserProfile = (sessionUser: any) => {
     email: sessionUser?.email ?? "",
     location: "",
     name: "",
-    profile_image_url: sessionUser?.image ?? "",
+    profileImageUrl: sessionUser?.image ?? "",
     username: "",
     website: "",
   });

@@ -41,7 +41,7 @@ const NewUserPage: NextPage = () => {
     if (session?.user?.id) {
       updateUserProfile({
         email: session.user.email,
-        profile_image_url: session.user.image,
+        profileImageUrl: session.user.image,
       });
     }
     //eslint-disable-next-line react-hooks/exhaustive-deps
@@ -62,7 +62,7 @@ const NewUserPage: NextPage = () => {
         session?.user?.id
       );
       if (imageUrl) {
-        updateUserProfile({ profile_image_url: imageUrl });
+        updateUserProfile({ profileImageUrl: imageUrl });
       }
       const res = await axios.post(`${baseURL}/api/auth/signup`, values);
       if (res.status === 200) {
@@ -89,7 +89,7 @@ const NewUserPage: NextPage = () => {
           <Flex justify="center">
             <ImageUpload
               onDrop={handleDrop}
-              imageUrl={tempImage || userProfile.profile_image_url}
+              imageUrl={tempImage || userProfile.profileImageUrl}
             />
           </Flex>
           <Grid>

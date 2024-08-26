@@ -56,13 +56,13 @@ export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
         ? await uploadImageToSupabase(tempImage, currentUser.id)
         : null;
       const updatedProfile = imageUrl
-        ? { ...userProfile, profile_image_url: imageUrl }
+        ? { ...userProfile, profileImageUrl: imageUrl }
         : { ...userProfile };
 
       if (imageUrl) {
         updateUserProfile(updatedProfile);
       }
-      
+
       await axios.post(`${baseURL}/api/profile/${currentUser.id}`, {
         values: updatedProfile,
       });
@@ -105,7 +105,7 @@ export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
             <Center>
               <ImageUpload
                 onDrop={handleDrop}
-                imageUrl={tempImage || userProfile.profile_image_url}
+                imageUrl={tempImage || userProfile.profileImageUrl}
               />
             </Center>
             <TextInput

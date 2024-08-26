@@ -6,7 +6,7 @@ interface UserProfile {
   bio?: string;
   location?: string;
   name: string;
-  profile_image_url?: string;
+  profileImageUrl?: string;
   username: string;
   website?: string;
 }
@@ -16,7 +16,7 @@ export const useUserProfile = (currentUser: User) => {
     bio: currentUser.bio,
     location: currentUser.location,
     name: currentUser.name,
-    profile_image_url: currentUser.profile_image_url,
+    profileImageUrl: currentUser.profileImageUrl,
     username: currentUser.username,
     website: currentUser.website,
   });

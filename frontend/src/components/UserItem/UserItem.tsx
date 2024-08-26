@@ -25,7 +25,7 @@ export const UserItem = ({ currentUserId, propsUser }: UserItemProps) => {
     >
       <Flex>
         <Link href={`/profile/${propsUser.id}`}>
-          <Avatar src={propsUser.profile_image_url} alt="プロフィール画像" />
+          <Avatar src={propsUser.profileImageUrl} alt="プロフィール画像" />
         </Link>
         <Space w="1rem" />
         <Box w="100%">

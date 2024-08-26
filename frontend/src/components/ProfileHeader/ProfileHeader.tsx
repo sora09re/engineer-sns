@@ -11,11 +11,7 @@ export const ProfileHeader = ({ user }: ProfileHeaderProps) => {
   return (
     <>
       <Center>
-        <Avatar
-          src={user.profile_image_url}
-          alt="プロフィール画像"
-          size={120}
-        />
+        <Avatar src={user.profileImageUrl} alt="プロフィール画像" size={120} />
       </Center>
       <Text size="xl" fw="bold" align="center" mt="md">
         {user.name}

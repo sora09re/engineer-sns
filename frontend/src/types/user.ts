@@ -5,7 +5,7 @@ export type User = {
   email: string;
   location?: string;
   name: string;
-  profile_image_url?: string;
+  profileImageUrl?: string;
   updated_at: string;
   username: string;
   website?: string;
