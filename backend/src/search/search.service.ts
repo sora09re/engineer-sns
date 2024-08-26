@@ -6,7 +6,7 @@ import { PrismaService } from 'src/modules/prisma/prisma.service';
 export class SearchService {
   constructor(private prisma: PrismaService) {}
 
-  async searchUsers(keyword: string): Promise<Omit<Users, 'password'>[]> {
+  async searchUsers(keyword: string): Promise<Users[]> {
     return await this.prisma.users.findMany({
       where: {
         OR: [

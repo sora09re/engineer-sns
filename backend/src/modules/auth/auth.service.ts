@@ -1,7 +1,5 @@
 import { ConflictException, Injectable } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
 import { Users } from '@prisma/client';
-import { JwtPayload } from 'src/modules/auth/types/jwtPayload.type';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
 
@@ -13,10 +11,14 @@ export class AuthService {
   ) {}
 
   async signup(
+    id: string,
+    bio: string,
     email: string,
-    password: string,
+    location: string,
     name: string,
+    profileImageUrl: string,
     username: string,
+    website: string,
   ): Promise<Users> {
     // 既にメールアドレスが使用されていないかチェック
     const existingUser = await this.prisma.users.findUnique({
@@ -26,36 +28,17 @@ export class AuthService {
       throw new ConflictException('Email already in use');
     }
 
-    // パスワードのハッシュ化
-    const hashedPassword = await bcrypt.hash(password, 10);
-
     return await this.prisma.users.create({
       data: {
+        id,
+        bio,
         email,
-        password: hashedPassword,
+        location,
         name,
+        profileImageUrl,
         username,
+        website,
       },
     });
-  }
-
-  async validateUser(email: string, password: string): Promise<any> {
-    const user = await await this.prisma.users.findUnique({
-      omit: {
-        password: false,
-      },
-      where: { email },
-    });
-
-    if (user && (await bcrypt.compare(password, user.password))) {
-      return user;
-    }
-
-    return null;
-  }
-
-  async login(user: any) {
-    const payload: JwtPayload = { email: user.email, sub: user.id };
-    return { accessToken: this.jwtService.sign(payload) };
   }
 }

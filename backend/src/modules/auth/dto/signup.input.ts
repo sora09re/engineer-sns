@@ -1,20 +1,41 @@
-import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsUrl,
+} from 'class-validator';
 
-export class SignupInput {
+export class UserCreateDto {
+  @IsString()
+  @IsNotEmpty({ message: 'Id is required' })
+  id: string;
+
+  @IsOptional()
+  @IsString()
+  bio?: string;
+
   @IsEmail({}, { message: 'Email must be a valid email address' })
   @IsNotEmpty({ message: 'Email is required' })
   email: string;
 
+  @IsOptional()
   @IsString()
-  @IsNotEmpty({ message: 'Password is required' })
-  @MinLength(8, { message: 'Password must be at least 8 characters long' })
-  password: string;
+  location?: string;
 
   @IsString()
   @IsNotEmpty({ message: 'Name is required' })
   name: string;
 
+  @IsOptional()
+  @IsUrl()
+  profileImageUrl?: string;
+
   @IsString()
   @IsNotEmpty({ message: 'Username is required' })
   username: string;
+
+  @IsOptional()
+  @IsString()
+  website?: string;
 }

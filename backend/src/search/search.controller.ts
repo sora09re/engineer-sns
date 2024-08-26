@@ -10,9 +10,7 @@ export class SearchController {
 
   @UseGuards(JwtAuthGuard)
   @Get('users')
-  async searchUsers(
-    @Query() searchInput: SearchInput,
-  ): Promise<Omit<Users, 'password'>[]> {
+  async searchUsers(@Query() searchInput: SearchInput): Promise<Users[]> {
     const { keyword } = searchInput;
     return await this.searchService.searchUsers(keyword);
   }
