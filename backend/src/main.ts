@@ -10,6 +10,14 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
+
+  // CORSの有効化
+  app.enableCors({
+    origin: process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
+
   await app.listen(4000);
 }
 bootstrap();
