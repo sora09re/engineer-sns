@@ -66,8 +66,7 @@ const NewUserPage: NextPage = () => {
       }
       const res = await axios.post(`${baseURL}/api/auth/signup`, values);
       if (res.status === 200) {
-        // ステータスが200の場合
-        router.push("/"); // ページ"/"に遷移
+        router.push("/");
       }
     } catch (error) {
       console.error("Error creating user:", error);
