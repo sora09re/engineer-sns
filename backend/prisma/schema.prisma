@@ -16,12 +16,13 @@ datasource db {
 
 model Users {
   id              String   @id @default(uuid())
+  githubId        String   @unique
   bio             String?
   email           String   @unique
   location        String?
   name            String
   profileImageUrl String?
-  username        String   @unique
+  username        String?  @unique
   website         String?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
