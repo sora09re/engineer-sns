@@ -1,7 +1,9 @@
-import { SupabaseAdapter } from "@next-auth/supabase-adapter";
+import axios from "axios";
 import type { NextAuthOptions } from "next-auth";
 import NextAuth from "next-auth";
 import GithubProvider from "next-auth/providers/github";
+
+import { apiUrl } from "@/utils/baseUrl";
 
 if (
   !process.env.SUPABASE_SERVICE_ROLE_KEY ||
@@ -11,19 +13,47 @@ if (
 ) {
   throw new Error("Environment variables are not set");
 }
-
 export const authOptions: NextAuthOptions = {
-  adapter: SupabaseAdapter({
-    secret: process.env.SUPABASE_SERVICE_ROLE_KEY,
-    url: process.env.NEXT_PUBLIC_SUPABASE_URL,
-  }),
   callbacks: {
-    async session({ session, user }) {
+    async jwt({ token, user }) {
       if (user) {
-        session.user.id = user.id as string;
+        const currentUser = await axios.get(
+          `${apiUrl}/auth/current?email=${user.email}`
+        );
+
+        if (currentUser) {
+          token.id = currentUser.data.id;
+        }
       }
+      return token;
+    },
+    async session({ session, token }) {
+      session.user.id = token.id;
 
       return session;
+    },
+    async signIn({ account, user }) {
+      if (!account) {
+        return false;
+      }
+
+      const data = {
+        email: user.email,
+        githubId: account.providerAccountId,
+        name: user.name,
+      };
+
+      const response = await axios.post(`${apiUrl}/auth/github`, data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.status === 200 || response.status === 201) {
+        return true;
+      }
+
+      return false;
     },
   },
   pages: {
@@ -35,6 +65,7 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GITHUB_SECRET,
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET,
   theme: {
     colorScheme: "light",
   },

@@ -3,7 +3,7 @@ import { useSession } from "next-auth/react";
 import useSWR from "swr";
 
 import type { User } from "@/types/user";
-import { baseURL } from "@/utils/baseUrl";
+import { apiUrl } from "@/utils/baseUrl";
 import { fetcher } from "@/utils/fetcher";
 
 export const useGetCurrentUser = () => {
@@ -11,9 +11,7 @@ export const useGetCurrentUser = () => {
   const { data: session, status } = useSession();
   const currentUserId = session?.user.id;
   const { data, error, isLoading, mutate } = useSWR<User>(
-    currentUserId
-      ? `${baseURL}/api/users/current?currentUserId=${currentUserId}`
-      : null,
+    currentUserId ? `${apiUrl}/users?userId=${currentUserId}` : null,
     fetcher
   );
 
@@ -25,7 +23,7 @@ export const useGetCurrentUser = () => {
     router.push("/auth/signin");
   }
 
-  if (status === "authenticated" && !isLoading && !data) {
+  if ((status === "authenticated" && !isLoading && !data) || !data?.username) {
     router.push("/auth/new-user");
   }
 

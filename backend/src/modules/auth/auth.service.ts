@@ -1,5 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
-import { Users } from '@prisma/client';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
 
@@ -10,35 +9,27 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async signup(
-    id: string,
-    bio: string,
-    email: string,
-    location: string,
-    name: string,
-    profileImageUrl: string,
-    username: string,
-    website: string,
-  ): Promise<Users> {
-    // 既にメールアドレスが使用されていないかチェック
-    const existingUser = await this.prisma.users.findUnique({
-      where: { email },
+  async validateGithubUser(email: string, name: string, githubId: string) {
+    let user = await this.prisma.users.findUnique({
+      where: { githubId: githubId },
     });
-    if (existingUser) {
-      throw new ConflictException('Email already in use');
+
+    if (!user) {
+      user = await this.prisma.users.create({
+        data: {
+          email: email,
+          name: name,
+          githubId: githubId,
+        },
+      });
     }
 
-    return await this.prisma.users.create({
-      data: {
-        id,
-        bio,
-        email,
-        location,
-        name,
-        profileImageUrl,
-        username,
-        website,
-      },
+    return user;
+  }
+
+  async getUserByEmail(email: string) {
+    return await this.prisma.users.findUnique({
+      where: { email: email },
     });
   }
 }
