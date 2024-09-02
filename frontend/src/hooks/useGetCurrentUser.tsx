@@ -17,12 +17,9 @@ export const useGetCurrentUser = () => {
   );
 
   useEffect(() => {
-    if (
-      typeof window !== "undefined" &&
-      status === "unauthenticated" &&
-      !session
-    ) {
+    if (status === "unauthenticated" && !session) {
       router.push("/auth/signin");
+      return;
     }
 
     if (
@@ -30,6 +27,7 @@ export const useGetCurrentUser = () => {
       (data && !data?.username)
     ) {
       router.push("/auth/new-user");
+      return;
     }
   }, [router, data, status, isLoading, session]);
 
