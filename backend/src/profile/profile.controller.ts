@@ -21,12 +21,12 @@ export class ProfileController {
 
     await this.profileService.updateProfile(
       id,
-      bio,
       email,
-      location,
       name,
       profileImageUrl,
       username,
+      location,
+      bio,
       website,
     );
   }
