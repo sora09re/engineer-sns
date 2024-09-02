@@ -10,6 +10,8 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
+import { IconCheck, IconX } from "@tabler/icons";
 import axios from "axios";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -22,7 +24,7 @@ import {
   type NewUserValues,
   useNewUserProfile,
 } from "@/hooks/useNewUserProfile";
-import { baseURL } from "@/utils/baseUrl";
+import { apiUrl } from "@/utils/baseUrl";
 import { uploadImageToSupabase } from "@/utils/uploadImageToSupabase";
 
 const NewUserPage: NextPage = () => {
@@ -41,6 +43,7 @@ const NewUserPage: NextPage = () => {
     if (session?.user?.id) {
       updateUserProfile({
         email: session.user.email,
+        name: session.user.name,
         profileImageUrl: session.user.image,
       });
     }
@@ -56,6 +59,14 @@ const NewUserPage: NextPage = () => {
   }
 
   const postNewUser = async (values: NewUserValues) => {
+    notifications.show({
+      id: "createProfile",
+      autoClose: false,
+      loading: true,
+      message: "しばらくお待ちください。",
+      title: "ユーザー作成中...",
+      withCloseButton: false,
+    });
     try {
       const imageUrl = await uploadImageToSupabase(
         tempImage,
@@ -64,12 +75,28 @@ const NewUserPage: NextPage = () => {
       if (imageUrl) {
         updateUserProfile({ profileImageUrl: imageUrl });
       }
-      const res = await axios.post(`${baseURL}/api/auth/signup`, values);
-      if (res.status === 200) {
+      const result = await axios.post(`${apiUrl}/profile`, values);
+      notifications.update({
+        id: "createProfile",
+        autoClose: 2000,
+        color: "green",
+        icon: <IconCheck size="1rem" />,
+        message: "ユーザー作成に成功しました！",
+        title: "成功",
+      });
+      if (result.status === 201) {
         router.push("/");
       }
     } catch (error) {
       console.error("Error creating user:", error);
+      notifications.update({
+        id: "createProfile",
+        autoClose: 2000,
+        color: "red",
+        icon: <IconX size="1rem" />,
+        message: "ユーザー作成に失敗しました。",
+        title: "エラー",
+      });
     }
   };
 
