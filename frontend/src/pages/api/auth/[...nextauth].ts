@@ -15,20 +15,22 @@ if (
 }
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ account, token, user }) {
       if (user) {
         const currentUser = await axios.get(
           `${apiUrl}/auth/current?email=${user.email}`
         );
 
-        if (currentUser) {
+        if (currentUser && account) {
           token.id = currentUser.data.id;
+          token.accessToken = account.access_token;
         }
       }
       return token;
     },
     async session({ session, token }) {
       session.user.id = token.id;
+      session.accessToken = token.accessToken as string;
 
       return session;
     },
@@ -65,7 +67,7 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GITHUB_SECRET,
     }),
   ],
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.JWT_SECRET,
   theme: {
     colorScheme: "light",
   },
