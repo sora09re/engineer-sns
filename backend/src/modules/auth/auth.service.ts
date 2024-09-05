@@ -1,12 +1,13 @@
-import { Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { HttpService } from '@nestjs/axios';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { lastValueFrom } from 'rxjs';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly jwtService: JwtService,
+    private readonly httpService: HttpService,
   ) {}
 
   async validateGithubUser(email: string, name: string, githubId: string) {
@@ -31,5 +32,20 @@ export class AuthService {
     return await this.prisma.users.findUnique({
       where: { email: email },
     });
+  }
+
+  async validateGithubToken(token: string): Promise<any> {
+    const url = 'https://api.github.com/user';
+
+    try {
+      const response = await lastValueFrom(
+        this.httpService.get(url, {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+      );
+      return response.data;
+    } catch (error) {
+      throw new UnauthorizedException('Invalid GitHub token');
+    }
   }
 }
