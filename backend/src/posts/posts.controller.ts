@@ -22,7 +22,7 @@ export class PostsController {
   @UseGuards(GithubAuthGuard)
   @Post()
   async createPost(@Body() createPostInput: CreatePostInput) {
-    const { postContent, userId } = createPostInput;
-    await this.postsService.createPost(postContent, userId);
+    const { postContent, currentUserId } = createPostInput;
+    await this.postsService.createPost(postContent, currentUserId);
   }
 }

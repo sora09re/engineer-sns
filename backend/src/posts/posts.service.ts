@@ -39,12 +39,12 @@ export class PostsService {
     return posts;
   }
 
-  async createPost(postContent: string, userId: string) {
+  async createPost(postContent: string, currentUserId: string) {
     const data = {
       content: postContent,
       isDeleted: false,
       parentPostId: null,
-      userId: userId,
+      userId: currentUserId,
       createdAt: new Date(),
       updatedAt: new Date(),
     };

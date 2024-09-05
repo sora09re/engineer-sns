@@ -13,5 +13,5 @@ export class CreatePostInput {
 
   @IsString()
   @IsNotEmpty({ message: 'UserId is required' })
-  userId: string;
+  currentUserId: string;
 }
