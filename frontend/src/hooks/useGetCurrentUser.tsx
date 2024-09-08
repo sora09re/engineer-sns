@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import useSWR from "swr";
 
 import type { User } from "@/types/user";
-import { apiUrl } from "@/utils/baseUrl";
 import { fetcher } from "@/utils/fetcher";
 
 export const useGetCurrentUser = () => {
@@ -12,7 +11,7 @@ export const useGetCurrentUser = () => {
   const { data: session, status } = useSession();
   const currentUserId = session?.user.id;
   const { data, error, isLoading, mutate } = useSWR<User>(
-    currentUserId ? `${apiUrl}/users?userId=${currentUserId}` : null,
+    currentUserId ? `/users?userId=${currentUserId}` : null,
     fetcher
   );
 
