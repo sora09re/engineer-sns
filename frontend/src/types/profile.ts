@@ -4,10 +4,10 @@ import type { PostType } from "@/types/post";
 export type ProfileType = {
   id: string;
   bio?: string;
-  created_at: string;
+  createdAt: string;
   email: string;
-  follower_user_id: Follow[];
-  following_user_id: Follow[];
+  followers: Follow[];
+  followings: Follow[];
   location?: string;
   name: string;
   posts: PostType[];

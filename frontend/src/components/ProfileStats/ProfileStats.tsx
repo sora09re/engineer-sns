@@ -9,8 +9,8 @@ interface ProfileStatsProps {
 
 export const ProfileStats = ({ user }: ProfileStatsProps) => {
   const stats = [
-    { label: "フォロー中", value: user.following_user_id.length },
-    { label: "フォロワー", value: user.follower_user_id.length },
+    { label: "フォロー中", value: user.followings.length },
+    { label: "フォロワー", value: user.followers.length },
   ];
 
   return (
