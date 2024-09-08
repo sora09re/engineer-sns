@@ -1,3 +1,5 @@
+import { Flex } from "@mantine/core";
+
 import { Post } from "@/components/Post/Post";
 import type { PostType } from "@/types/post";
 
@@ -14,6 +16,14 @@ export const PostsList = ({
 }: PostsListProps) => {
   if (!posts) {
     return <></>;
+  }
+
+  if (posts.length === 0) {
+    return (
+      <Flex h="100%" justify="center" align="center">
+        検索結果が見つかりませんでした。
+      </Flex>
+    );
   }
 
   return (

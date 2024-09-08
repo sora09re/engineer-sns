@@ -1,13 +1,11 @@
 import { Box, Center, Loader, Tabs, TextInput } from "@mantine/core";
 import { IconSearch } from "@tabler/icons";
 import { useState } from "react";
-import useSWR from "swr";
 
 import { PostsList } from "@/components/PostsList/PostsList";
 import { UsersList } from "@/components/UsersList/UsersList";
-import { useSearchPosts } from "@/hooks/useSearchPosts";
+import { useSearch } from "@/hooks/useSearch";
 import type { User } from "@/types/user";
-import { fetcher } from "@/utils/fetcher";
 
 interface SearchProps {
   currentUser: User;
@@ -20,21 +18,23 @@ export const Search = ({ currentUser }: SearchProps) => {
     data: searchUserResults,
     error: searchUserError,
     isLoading: isLoadingSearchUser,
-  } = useSWR(`/api/search/users?keyword=${keyword}`, fetcher);
+  } = useSearch(keyword, "users");
 
   const {
     data: searchPostResults,
     error: searchPostError,
     isLoading: isLoadingSearchPost,
-  } = useSearchPosts(keyword);
+  } = useSearch(keyword, "posts");
 
-  if (searchUserError || searchPostError) {
+  if (searchUserError) {
     console.error("Error fetching search user results:", searchUserError);
+  }
+  if (searchPostError) {
     console.error("Error fetching search post results:", searchPostError);
   }
 
   return (
-    <Box p="md">
+    <Box p="md" style={{ height: "100vh" }}>
       <TextInput
         icon={<IconSearch />}
         placeholder="キーワード検索"
@@ -43,12 +43,12 @@ export const Search = ({ currentUser }: SearchProps) => {
           return setKeyword(e.target.value);
         }}
       />
-      <Tabs defaultValue="post" mt="md">
+      <Tabs defaultValue="post" mt="md" style={{ height: "100%" }}>
         <Tabs.List grow position="center">
           <Tabs.Tab value="post">投稿</Tabs.Tab>
           <Tabs.Tab value="account">アカウント</Tabs.Tab>
         </Tabs.List>
-        <Tabs.Panel value="post">
+        <Tabs.Panel value="post" style={{ height: "80vh" }}>
           {isLoadingSearchPost ? (
             <Center mt={300}>
               <Loader />
