@@ -5,13 +5,13 @@ export type PostType = {
   id: string;
   comments: PostType[];
   content: string;
-  created_at: Date;
-  is_deleted: boolean;
+  createdAt: Date;
+  isDeleted: boolean;
   likes: Like[];
-  parent_post_id?: string | null;
-  updated_at: Date;
-  user_id: string;
-  users: User;
+  parentPostId?: string | null;
+  updatedAt: Date;
+  user: User;
+  userId: string;
 };
 
 export type PostProps = {
