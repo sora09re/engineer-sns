@@ -61,7 +61,7 @@ export const Search = ({ currentUser }: SearchProps) => {
             />
           )}
         </Tabs.Panel>
-        <Tabs.Panel value="account">
+        <Tabs.Panel value="account" style={{ height: "80vh" }}>
           {isLoadingSearchUser ? (
             <Center mt={300}>
               <Loader />
