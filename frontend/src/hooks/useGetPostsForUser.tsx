@@ -1,12 +1,16 @@
 import useSWR from "swr";
 
-import { fetcher } from "@/utils/fetcher";
+import { useGetToken } from "@/hooks/useGetToken";
+import { tokenFetcher } from "@/utils/fetcher";
 
 export const useGetPostsForUser = (userId: string | undefined) => {
+  const token = useGetToken();
+
   const shouldFetch = userId !== undefined;
   const { data, error, isLoading, mutate } = useSWR(
-    shouldFetch ? `/profile/posts/${userId}` : null,
-    fetcher
+    shouldFetch ? { token, url: `/profile/posts/${userId}` } : null,
+    tokenFetcher
   );
+
   return { data, error, isLoading, mutate };
 };

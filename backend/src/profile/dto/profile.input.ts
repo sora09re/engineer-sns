@@ -1,10 +1,4 @@
-import {
-  IsEmail,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  IsUrl,
-} from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsUrl } from 'class-validator';
 
 export class ProfileUpdateDto {
   @IsString()
@@ -14,10 +8,6 @@ export class ProfileUpdateDto {
   @IsOptional()
   @IsString()
   bio?: string;
-
-  @IsEmail({}, { message: 'Email must be a valid email address' })
-  @IsNotEmpty({ message: 'Email is required' })
-  email: string;
 
   @IsOptional()
   @IsString()

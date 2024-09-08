@@ -3,6 +3,7 @@ import { useState } from "react";
 import type { User } from "@/types/user";
 
 interface UserProfile {
+  id: string;
   bio?: string;
   location?: string;
   name: string;
@@ -13,6 +14,7 @@ interface UserProfile {
 
 export const useUserProfile = (currentUser: User) => {
   const [userProfile, setUserProfile] = useState<UserProfile>({
+    id: currentUser.id,
     bio: currentUser.bio,
     location: currentUser.location,
     name: currentUser.name,

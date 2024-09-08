@@ -9,17 +9,17 @@ import {
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons";
-import axios from "axios";
 import { useState } from "react";
 
 import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
 import { useGetCurrentUser } from "@/hooks/useGetCurrentUser";
 import { useGetPostsForUser } from "@/hooks/useGetPostsForUser";
 import { useGetProfile } from "@/hooks/useGetProfile";
+import { useGetToken } from "@/hooks/useGetToken";
 import { useModal } from "@/hooks/useModal";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import type { User } from "@/types/user";
-import { baseURL } from "@/utils/baseUrl";
+import { callPostApi } from "@/utils/callApi";
 import { uploadImageToSupabase } from "@/utils/uploadImageToSupabase";
 
 interface EditProfileModalProps {
@@ -34,6 +34,7 @@ export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
   const { mutate: getPostsForUserMutate } = useGetPostsForUser(currentUser.id);
   const [isVisible, setIsVisible] = useModal("editProfile");
   const [tempImage, setTempImage] = useState<string | null>(null);
+  const token = useGetToken();
 
   const handleDrop = (acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
@@ -63,9 +64,7 @@ export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
         updateUserProfile(updatedProfile);
       }
 
-      await axios.post(`${baseURL}/api/profile/${currentUser.id}`, {
-        values: updatedProfile,
-      });
+      await callPostApi(`/profile`, updatedProfile, token);
       setIsVisible(false);
       getCurrentUserMutate?.();
       getProfileMutate();
@@ -79,6 +78,8 @@ export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
         title: "成功",
       });
     } catch (error) {
+      console.error("更新処理に失敗しました。", error);
+
       notifications.update({
         id: "updateProfile",
         autoClose: 2000,
