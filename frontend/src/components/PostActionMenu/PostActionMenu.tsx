@@ -6,7 +6,7 @@ import { useState } from "react";
 
 import { useGetPostsForUser } from "@/hooks/useGetPostsForUser";
 import { useGetTimelinePosts } from "@/hooks/useGetTimelinePosts";
-import { useSearchPosts } from "@/hooks/useSearchPosts";
+import { useSearch } from "@/hooks/useSearch";
 import { baseURL } from "@/utils/baseUrl";
 
 interface PostActionMenuProps {
@@ -25,7 +25,7 @@ export const PostActionMenu = ({
   const [opened, setOpened] = useState(false);
   const { mutate: getTimelinePostsMutate } = useGetTimelinePosts(currentUserId);
   const { mutate: getPostsForUserMutate } = useGetPostsForUser(postUserId);
-  const { mutate: getSearchPostsMutate } = useSearchPosts(keyword);
+  const { mutate: getSearchPostsMutate } = useSearch(keyword, "posts");
 
   const deletePost = async () => {
     notifications.show({

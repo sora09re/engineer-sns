@@ -1,6 +1,6 @@
-import axios from "axios";
+import { callGetApi } from "@/utils/callApi";
 
 export const fetcher = async (url: string) => {
-  const response = await axios.get(url);
-  return response.data;
+  const result = await callGetApi(url);
+  return result;
 };

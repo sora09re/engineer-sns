@@ -20,7 +20,7 @@ interface PostProps {
 export const Post = ({ currentUserId, keyword, post }: PostProps) => {
   const parsedContent = parseContent(post.content);
   const router = useRouter();
-  const isPostByCurrentUser = post.user_id === currentUserId;
+  const isPostByCurrentUser = post.userId === currentUserId;
 
   if (!post) {
     return null;
@@ -44,7 +44,7 @@ export const Post = ({ currentUserId, keyword, post }: PostProps) => {
         <PostActionMenu
           postId={post.id}
           currentUserId={currentUserId}
-          postUserId={post.user_id}
+          postUserId={post.userId}
           keyword={keyword}
         />
       ) : (
@@ -52,9 +52,9 @@ export const Post = ({ currentUserId, keyword, post }: PostProps) => {
       )}
       <Group align="start">
         <Box>
-          <Link href={`/profile/${post.user_id}`}>
+          <Link href={`/profile/${post.userId}`}>
             <Avatar
-              src={post.users.profileImageUrl}
+              src={post.user.profileImageUrl}
               alt="投稿したユーザーのプロフィール画像"
             />
           </Link>
@@ -62,16 +62,16 @@ export const Post = ({ currentUserId, keyword, post }: PostProps) => {
         <Box>
           <Group spacing="xs">
             <Link
-              href={`/profile/${post.user_id}`}
+              href={`/profile/${post.userId}`}
               style={{ textDecoration: "none" }}
             >
               <Text fw={700} color="black">
-                {post.users.name}
+                {post.user.name}
               </Text>
             </Link>
-            <Text color="dimmed">@{post.users.username}</Text>
+            <Text color="dimmed">@{post.user.username}</Text>
             <Text color="dimmed">
-              <DateFormat props={post.created_at} />
+              <DateFormat props={post.createdAt} />
             </Text>
           </Group>
           {parsedContent.map((part, index) => {
