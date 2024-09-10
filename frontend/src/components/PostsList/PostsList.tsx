@@ -18,7 +18,7 @@ export const PostsList = ({
     return <></>;
   }
 
-  if (posts.length === 0) {
+  if (keyword && posts.length === 0) {
     return (
       <Flex h="100%" justify="center" align="center">
         検索結果が見つかりませんでした。

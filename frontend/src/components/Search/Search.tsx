@@ -69,6 +69,7 @@ export const Search = ({ currentUser }: SearchProps) => {
           ) : (
             <UsersList
               users={searchUserResults}
+              keyword={keyword}
               currentUserId={currentUser.id}
             />
           )}
