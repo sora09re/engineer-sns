@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
 
 @Injectable()
@@ -39,6 +39,23 @@ export class PostsService {
     return posts;
   }
 
+  async getPostById(postId: string) {
+    const post = await this.prisma.posts.findUnique({
+      where: { id: postId },
+      include: {
+        user: true,
+        comments: true,
+        likes: true,
+      },
+    });
+
+    if (!post) {
+      throw new NotFoundException(`Post with ID ${postId} not found`);
+    }
+
+    return post;
+  }
+
   async createPost(postContent: string, currentUserId: string) {
     const data = {
       content: postContent,
@@ -52,5 +69,13 @@ export class PostsService {
     await this.prisma.posts.create({
       data,
     });
+  }
+
+  async deletePost(postId: string) {
+    const post = await this.prisma.posts.delete({
+      where: { id: postId },
+    });
+
+    return post;
   }
 }
