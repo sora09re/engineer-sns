@@ -18,7 +18,7 @@ export class ProfileController {
     const { id, bio, location, name, profileImageUrl, username, website } =
       profileUpdateDto;
 
-    await this.profileService.updateProfile(
+    return await this.profileService.updateProfile(
       id,
       name,
       profileImageUrl,
