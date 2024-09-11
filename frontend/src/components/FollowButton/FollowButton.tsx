@@ -1,10 +1,9 @@
 import { Button } from "@mantine/core";
-import axios from "axios";
 import { useState } from "react";
 import useSWR from "swr";
 
 import { useGetProfile } from "@/hooks/useGetProfile";
-import { baseURL } from "@/utils/baseUrl";
+import { callDeleteApi, callPostApi } from "@/utils/callApi";
 import { fetcher } from "@/utils/fetcher";
 
 interface FollowButtonProps {
@@ -14,7 +13,7 @@ interface FollowButtonProps {
 
 export const FollowButton = ({ currentUserId, userId }: FollowButtonProps) => {
   const [label, setLabel] = useState("フォロー中");
-  const endpoint = `${baseURL}/api/users/${userId}/follow`;
+  const endpoint = `/users/${userId}/follow`;
   const { mutate: getProfileMutate } = useGetProfile(userId);
 
   const {
@@ -30,17 +29,14 @@ export const FollowButton = ({ currentUserId, userId }: FollowButtonProps) => {
   const isFollowing = data && data.isFollowing;
 
   const handleFollow = async () => {
-    await axios.post(`${endpoint}?currentUserId=${currentUserId}`);
+    // await axios.post(`${endpoint}?currentUserId=${currentUserId}`);
+    await callPostApi(endpoint, { currentUserId });
     fetchFollowMutate();
     getProfileMutate();
   };
 
   const handleRemoveFollow = async () => {
-    await axios.delete(`${endpoint}`, {
-      params: {
-        currentUserId,
-      },
-    });
+    await callDeleteApi(`${endpoint}?currentUserId=${currentUserId}`);
     fetchFollowMutate();
     getProfileMutate();
   };

@@ -37,3 +37,20 @@ export const callPostApi = async (
   });
   return response.data;
 };
+
+export const callDeleteApi = async (
+  endpoint: string,
+  token?: string,
+  options?: AxiosRequestConfig
+) => {
+  const response = await axios.delete(endpoint, {
+    ...options,
+    baseURL: apiUrl,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      ...options?.headers,
+    },
+  });
+
+  return response.data;
+};

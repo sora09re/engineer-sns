@@ -4,7 +4,6 @@ import useSWR from "swr";
 import { CenteredLoader } from "@/components/CenteredLoader/CenteredLoader";
 import { UsersList } from "@/components/UsersList/UsersList";
 import type { User } from "@/types/user";
-import { baseURL } from "@/utils/baseUrl";
 import { fetcher } from "@/utils/fetcher";
 
 interface FollowsProps {
@@ -17,13 +16,13 @@ export const Follows = ({ currentUserId, userId }: FollowsProps) => {
     data: followers,
     error: getFollowersError,
     isLoading: getFollowersIsLoading,
-  } = useSWR<User[]>(`${baseURL}/api/users/${userId}/followers`, fetcher);
+  } = useSWR<User[]>(`/users/${userId}/followers`, fetcher);
 
   const {
     data: followingUsers,
     error: getFollowingUsersError,
     isLoading: getFollowingUsersIsLoading,
-  } = useSWR<User[]>(`${baseURL}/api/users/${userId}/following`, fetcher);
+  } = useSWR<User[]>(`/users/${userId}/followings`, fetcher);
 
   if (
     getFollowersIsLoading ||
