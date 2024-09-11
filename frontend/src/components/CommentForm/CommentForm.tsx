@@ -1,13 +1,12 @@
 import { Box, Button, Space, Textarea } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons";
-import axios from "axios";
 import { useState } from "react";
 
 import { useGetCommentsForPost } from "@/hooks/useGetCommentsForPost";
 import { useGetPostDetail } from "@/hooks/useGetPostDetail";
 import type { User } from "@/types/user";
-import { baseURL } from "@/utils/baseUrl";
+import { callPostApi } from "@/utils/callApi";
 
 interface CommentFormProps {
   currentUser: Pick<User, "id">;
@@ -30,7 +29,7 @@ export const CommentForm = ({ currentUser, postId }: CommentFormProps) => {
     });
 
     try {
-      await axios.post(`${baseURL}/api/posts/${postId}/comments`, {
+      await callPostApi(`/posts/${postId}/comments`, {
         commentContent: commentContent,
         currentUserId: currentUser.id,
       });

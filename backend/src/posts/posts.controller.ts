@@ -33,11 +33,29 @@ export class PostsController {
     return await this.postsService.getPostById(postId);
   }
 
+  @Get(':postId/comments')
+  async getComments(@Param('postId') postId: string) {
+    return await this.postsService.getCommentsByPostId(postId);
+  }
+
   @UseGuards(GithubAuthGuard)
   @Post()
   async createPost(@Body() createPostInput: CreatePostInput) {
     const { postContent, currentUserId } = createPostInput;
     await this.postsService.createPost(postContent, currentUserId);
+  }
+
+  @Post(':postId/comments')
+  async addComment(
+    @Param('postId') postId: string,
+    @Body('commentContent') commentContent: string,
+    @Body('currentUserId') currentUserId: string,
+  ) {
+    return await this.postsService.addComment(
+      commentContent,
+      currentUserId,
+      postId,
+    );
   }
 
   @Delete(':postId')

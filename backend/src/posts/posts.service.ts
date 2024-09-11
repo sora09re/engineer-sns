@@ -56,6 +56,31 @@ export class PostsService {
     return post;
   }
 
+  async getCommentsByPostId(postId: string) {
+    const comments = await this.prisma.posts.findMany({
+      where: { parentPostId: postId },
+      include: {
+        user: true,
+        likes: true,
+        comments: {
+          include: {
+            user: true,
+            likes: true,
+          },
+        },
+      },
+      orderBy: { updatedAt: 'desc' },
+    });
+
+    if (!comments) {
+      throw new NotFoundException(
+        `No comments found for post with ID ${postId}`,
+      );
+    }
+
+    return comments;
+  }
+
   async createPost(postContent: string, currentUserId: string) {
     const data = {
       content: postContent,
@@ -69,6 +94,21 @@ export class PostsService {
     await this.prisma.posts.create({
       data,
     });
+  }
+
+  async addComment(content: string, userId: string, postId: string) {
+    const newComment = await this.prisma.posts.create({
+      data: {
+        content,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isDeleted: false,
+        parentPostId: postId,
+        userId: userId,
+      },
+    });
+
+    return newComment;
   }
 
   async deletePost(postId: string) {
