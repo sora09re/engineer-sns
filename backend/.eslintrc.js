@@ -17,6 +17,15 @@ module.exports = {
   },
   ignorePatterns: ['.eslintrc.js'],
   rules: {
+    // ブロックの中括弧（{}）を省略しない
+    curly: 'error',
+    // console.log をエラーにする
+    'no-console': [
+      'error',
+      {
+        allow: ['warn', 'info', 'error'],
+      },
+    ],
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
