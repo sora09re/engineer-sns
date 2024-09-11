@@ -5,6 +5,7 @@ import type { User } from "@/types/user";
 interface UserProfile {
   id: string;
   bio?: string;
+  email: string;
   location?: string;
   name: string;
   profileImageUrl?: string;
@@ -16,6 +17,7 @@ export const useUserProfile = (currentUser: User) => {
   const [userProfile, setUserProfile] = useState<UserProfile>({
     id: currentUser.id,
     bio: currentUser.bio,
+    email: currentUser.email,
     location: currentUser.location,
     name: currentUser.name,
     profileImageUrl: currentUser.profileImageUrl,
