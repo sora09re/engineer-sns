@@ -14,46 +14,48 @@ interface MainLinksProps {
 
 const MainLink = ({ href, icon, label }: MainLinkProps) => {
   return (
-    <UnstyledButton
-      component={Link}
-      href={href}
-      sx={(theme) => {
-        return {
-          "&:hover": {
-            backgroundColor:
-              theme.colorScheme === "dark"
-                ? theme.colors.dark[6]
-                : theme.colors.gray[0],
-          },
-          borderRadius: theme.radius.sm,
-          color:
-            theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
-          display: "block",
-          padding: theme.spacing.xs,
-          width: "100%",
-        };
-      }}
-    >
-      <Group>
-        <ThemeIcon
-          color="white"
-          sx={(theme) => {
-            return {
-              "&:hover": {
-                color:
-                  theme.colorScheme === "dark"
-                    ? theme.colors.dark[6]
-                    : theme.colors.gray[0],
-              },
-            };
-          }}
-        >
-          {icon}
-        </ThemeIcon>
+    <Link href={href} passHref legacyBehavior>
+      <UnstyledButton
+        component="a"
+        href={href}
+        sx={(theme) => {
+          return {
+            "&:hover": {
+              backgroundColor:
+                theme.colorScheme === "dark"
+                  ? theme.colors.dark[6]
+                  : theme.colors.gray[0],
+            },
+            borderRadius: theme.radius.sm,
+            color:
+              theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
+            display: "block",
+            padding: theme.spacing.xs,
+            width: "100%",
+          };
+        }}
+      >
+        <Group>
+          <ThemeIcon
+            color="white"
+            sx={(theme) => {
+              return {
+                "&:hover": {
+                  color:
+                    theme.colorScheme === "dark"
+                      ? theme.colors.dark[6]
+                      : theme.colors.gray[0],
+                },
+              };
+            }}
+          >
+            {icon}
+          </ThemeIcon>
 
-        <Text size="lg">{label}</Text>
-      </Group>
-    </UnstyledButton>
+          <Text size="lg">{label}</Text>
+        </Group>
+      </UnstyledButton>
+    </Link>
   );
 };
 
