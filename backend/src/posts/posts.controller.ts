@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -61,5 +62,41 @@ export class PostsController {
   @Delete(':postId')
   async deletePost(@Param('postId') postId: string) {
     return await this.postsService.deletePost(postId);
+  }
+
+  @Get(':postId/likes')
+  async findLike(
+    @Param('postId') postId: string,
+    @Query('currentUserId') currentUserId: string,
+  ) {
+    if (!postId || !currentUserId) {
+      throw new BadRequestException();
+    }
+
+    return await this.postsService.findLikeByPostAndUser(postId, currentUserId);
+  }
+
+  @Post(':postId/likes')
+  async createLike(
+    @Param('postId') postId: string,
+    @Body('currentUserId') currentUserId: string,
+  ) {
+    if (!postId || !currentUserId) {
+      throw new BadRequestException();
+    }
+
+    return await this.postsService.createLike(postId, currentUserId);
+  }
+
+  @Delete(':postId/likes')
+  async deleteLike(
+    @Param('postId') postId: string,
+    @Query('currentUserId') currentUserId: string,
+  ) {
+    if (!postId || !currentUserId) {
+      throw new BadRequestException();
+    }
+
+    return await this.postsService.deleteLike(postId, currentUserId);
   }
 }

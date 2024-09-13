@@ -2,12 +2,11 @@ import { Group, Text, Tooltip, UnstyledButton } from "@mantine/core";
 import { useHover } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { IconMessageCircle2, IconThumbUp, IconX } from "@tabler/icons";
-import axios from "axios";
 import Link from "next/link";
 import { useState } from "react";
 
 import type { PostType } from "@/types/post";
-import { baseURL } from "@/utils/baseUrl";
+import { callDeleteApi, callPostApi } from "@/utils/callApi";
 
 interface PostActionsButtonGroupProps {
   currentUserId: string;
@@ -40,16 +39,12 @@ export const PostActionsButtonGroup = ({
     const newLikeStatus = !isLikedByCurrentUser;
     setIsLikedByCurrentUser(newLikeStatus);
     setLikeCount(likeCount + (newLikeStatus ? 1 : -1));
-    
+
     try {
-      const endpoint = `${baseURL}/api/posts/${postId}/likes`;
+      const endpoint = `/posts/${postId}/likes`;
       newLikeStatus
-        ? await axios.post(endpoint, { currentUserId })
-        : await axios.delete(endpoint, {
-            params: {
-              currentUserId,
-            },
-          });
+        ? await callPostApi(endpoint, { currentUserId })
+        : await callDeleteApi(`${endpoint}?currentUserId=${currentUserId}`);
     } catch (error) {
       notifications.show({
         id: "click-likes",

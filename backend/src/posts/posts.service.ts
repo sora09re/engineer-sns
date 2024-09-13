@@ -118,4 +118,44 @@ export class PostsService {
 
     return post;
   }
+
+  // GET: 特定のユーザーが特定の投稿に「いいね」を押しているか確認
+  async findLikeByPostAndUser(postId: string, userId: string) {
+    const like = await this.prisma.likes.findFirst({
+      where: {
+        postId: postId,
+        userId: userId,
+      },
+    });
+
+    if (!like) {
+      throw new NotFoundException('Like not found');
+    }
+
+    return like;
+  }
+
+  // POST: 新しい「いいね」を作成
+  async createLike(postId: string, userId: string) {
+    const like = await this.prisma.likes.create({
+      data: {
+        postId,
+        userId,
+      },
+    });
+
+    return like;
+  }
+
+  // DELETE: 「いいね」を削除
+  async deleteLike(postId: string, userId: string) {
+    const like = await this.prisma.likes.deleteMany({
+      where: {
+        postId: postId,
+        userId: userId,
+      },
+    });
+
+    return like;
+  }
 }
