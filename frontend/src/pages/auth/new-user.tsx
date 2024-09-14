@@ -15,11 +15,11 @@ import { IconCheck, IconX } from "@tabler/icons";
 import axios from "axios";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import { CenteredLoader } from "@/components/CenteredLoader/CenteredLoader";
 import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
+import { useHandleNewUser } from "@/hooks/useHandleNewUser";
 import {
   type NewUserValues,
   useNewUserProfile,
@@ -28,7 +28,7 @@ import { apiUrl } from "@/utils/baseUrl";
 import { uploadImageToSupabase } from "@/utils/uploadImageToSupabase";
 
 const NewUserPage: NextPage = () => {
-  const { data: session, status } = useSession();
+  const { session, status } = useHandleNewUser();
   const { updateUserProfile, userProfile } = useNewUserProfile(session?.user);
   const router = useRouter();
   const [tempImage, setTempImage] = useState<string | null>(null);
@@ -55,7 +55,7 @@ const NewUserPage: NextPage = () => {
   }
 
   if (status === "unauthenticated") {
-    return <div>再ログインしてください。</div>;
+    router.push("/auth/signin");
   }
 
   const postNewUser = async (values: NewUserValues) => {
