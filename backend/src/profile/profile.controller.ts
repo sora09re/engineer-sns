@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { GithubAuthGuard } from 'src/modules/auth/guards/github.guard';
 import { ProfileUpdateDto } from 'src/profile/dto/profile.input';
 import { ProfileService } from 'src/profile/profile.service';
 
@@ -6,6 +7,7 @@ import { ProfileService } from 'src/profile/profile.service';
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
 
+  @UseGuards(GithubAuthGuard)
   @Get(':userId')
   async getProfile(@Param('userId') userId: string) {
     return await this.profileService.getProfileWithFollowersAndFollowing(
@@ -13,6 +15,7 @@ export class ProfileController {
     );
   }
 
+  @UseGuards(GithubAuthGuard)
   @Post()
   async updateProfile(@Body() profileUpdateDto: ProfileUpdateDto) {
     const { id, bio, location, name, profileImageUrl, username, website } =
@@ -29,6 +32,7 @@ export class ProfileController {
     );
   }
 
+  @UseGuards(GithubAuthGuard)
   @Get('posts/:userId')
   async getPosts(@Param('userId') userId: string) {
     return await this.profileService.getPostsByUserId(userId);

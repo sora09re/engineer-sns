@@ -6,8 +6,10 @@ import {
   Param,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { Users } from '@prisma/client';
+import { GithubAuthGuard } from 'src/modules/auth/guards/github.guard';
 import { GetUserInput } from 'src/users/dto/users.input';
 import { UsersService } from 'src/users/users.service';
 
@@ -40,6 +42,7 @@ export class UsersController {
     return await this.usersService.getFollowingUsers(userId);
   }
 
+  @UseGuards(GithubAuthGuard)
   @Post(':userId/follow')
   async followUser(
     @Param('userId') userId: string,
@@ -48,6 +51,7 @@ export class UsersController {
     return await this.usersService.followUser(userId, currentUserId);
   }
 
+  @UseGuards(GithubAuthGuard)
   @Delete(':userId/follow')
   async unfollowUser(
     @Param('userId') userId: string,

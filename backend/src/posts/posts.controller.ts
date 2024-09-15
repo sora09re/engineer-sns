@@ -29,11 +29,13 @@ export class PostsController {
     return await this.postsService.getTimelinePosts(currentUserId);
   }
 
+  @UseGuards(GithubAuthGuard)
   @Get(':postId')
   async getPost(@Param('postId') postId: string) {
     return await this.postsService.getPostById(postId);
   }
 
+  @UseGuards(GithubAuthGuard)
   @Get(':postId/comments')
   async getComments(@Param('postId') postId: string) {
     return await this.postsService.getCommentsByPostId(postId);
@@ -46,6 +48,7 @@ export class PostsController {
     await this.postsService.createPost(postContent, currentUserId);
   }
 
+  @UseGuards(GithubAuthGuard)
   @Post(':postId/comments')
   async addComment(
     @Param('postId') postId: string,
@@ -59,11 +62,13 @@ export class PostsController {
     );
   }
 
+  @UseGuards(GithubAuthGuard)
   @Delete(':postId')
   async deletePost(@Param('postId') postId: string) {
     return await this.postsService.deletePost(postId);
   }
 
+  @UseGuards(GithubAuthGuard)
   @Get(':postId/likes')
   async findLike(
     @Param('postId') postId: string,
@@ -76,6 +81,7 @@ export class PostsController {
     return await this.postsService.findLikeByPostAndUser(postId, currentUserId);
   }
 
+  @UseGuards(GithubAuthGuard)
   @Post(':postId/likes')
   async createLike(
     @Param('postId') postId: string,
@@ -88,6 +94,7 @@ export class PostsController {
     return await this.postsService.createLike(postId, currentUserId);
   }
 
+  @UseGuards(GithubAuthGuard)
   @Delete(':postId/likes')
   async deleteLike(
     @Param('postId') postId: string,
