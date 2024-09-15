@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import { useGetPostsForUser } from "@/hooks/useGetPostsForUser";
 import { useGetTimelinePosts } from "@/hooks/useGetTimelinePosts";
+import { useGetToken } from "@/hooks/useGetToken";
 import { useSearch } from "@/hooks/useSearch";
 import { callDeleteApi } from "@/utils/callApi";
 
@@ -25,6 +26,7 @@ export const PostActionMenu = ({
   const { mutate: getTimelinePostsMutate } = useGetTimelinePosts(currentUserId);
   const { mutate: getPostsForUserMutate } = useGetPostsForUser(postUserId);
   const { mutate: getSearchPostsMutate } = useSearch(keyword, "posts");
+  const token = useGetToken();
 
   const deletePost = async () => {
     notifications.show({
@@ -36,7 +38,7 @@ export const PostActionMenu = ({
       withCloseButton: false,
     });
     try {
-      await callDeleteApi(`/posts/${postId}`);
+      await callDeleteApi(`/posts/${postId}`, token);
       notifications.update({
         id: "deletePost",
         autoClose: 2000,

@@ -3,8 +3,9 @@ import useSWR from "swr";
 
 import { CenteredLoader } from "@/components/CenteredLoader/CenteredLoader";
 import { UsersList } from "@/components/UsersList/UsersList";
+import { useGetToken } from "@/hooks/useGetToken";
 import type { User } from "@/types/user";
-import { fetcher } from "@/utils/fetcher";
+import { tokenFetcher } from "@/utils/fetcher";
 
 interface FollowsProps {
   currentUserId: string;
@@ -12,17 +13,25 @@ interface FollowsProps {
 }
 
 export const Follows = ({ currentUserId, userId }: FollowsProps) => {
+  const token = useGetToken();
+
   const {
     data: followers,
     error: getFollowersError,
     isLoading: getFollowersIsLoading,
-  } = useSWR<User[]>(`/users/${userId}/followers`, fetcher);
+  } = useSWR<User[]>(
+    { token, url: `/users/${userId}/followers` },
+    tokenFetcher
+  );
 
   const {
     data: followingUsers,
     error: getFollowingUsersError,
     isLoading: getFollowingUsersIsLoading,
-  } = useSWR<User[]>(`/users/${userId}/followings`, fetcher);
+  } = useSWR<User[]>(
+    { token, url: `/users/${userId}/followings` },
+    tokenFetcher
+  );
 
   if (
     getFollowersIsLoading ||

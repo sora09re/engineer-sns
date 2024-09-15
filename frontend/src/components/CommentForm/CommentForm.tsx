@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import { useGetCommentsForPost } from "@/hooks/useGetCommentsForPost";
 import { useGetPostDetail } from "@/hooks/useGetPostDetail";
+import { useGetToken } from "@/hooks/useGetToken";
 import type { User } from "@/types/user";
 import { callPostApi } from "@/utils/callApi";
 
@@ -17,6 +18,7 @@ export const CommentForm = ({ currentUser, postId }: CommentFormProps) => {
   const [commentContent, setCommentContent] = useState("");
   const { mutate: getPostDetailMutate } = useGetPostDetail(postId);
   const { mutate: getCommentsForPostMutate } = useGetCommentsForPost(postId);
+  const token = useGetToken();
 
   const fetchComment = async () => {
     notifications.show({
@@ -29,10 +31,14 @@ export const CommentForm = ({ currentUser, postId }: CommentFormProps) => {
     });
 
     try {
-      await callPostApi(`/posts/${postId}/comments`, {
-        commentContent: commentContent,
-        currentUserId: currentUser.id,
-      });
+      await callPostApi(
+        `/posts/${postId}/comments`,
+        {
+          commentContent: commentContent,
+          currentUserId: currentUser.id,
+        },
+        token
+      );
       setCommentContent("");
       getPostDetailMutate();
       getCommentsForPostMutate();

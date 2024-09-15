@@ -3,8 +3,9 @@ import { useState } from "react";
 import useSWR from "swr";
 
 import { useGetProfile } from "@/hooks/useGetProfile";
+import { useGetToken } from "@/hooks/useGetToken";
 import { callDeleteApi, callPostApi } from "@/utils/callApi";
-import { fetcher } from "@/utils/fetcher";
+import { tokenFetcher } from "@/utils/fetcher";
 
 interface FollowButtonProps {
   currentUserId: string;
@@ -15,12 +16,16 @@ export const FollowButton = ({ currentUserId, userId }: FollowButtonProps) => {
   const [label, setLabel] = useState("フォロー中");
   const endpoint = `/users/${userId}/follow`;
   const { mutate: getProfileMutate } = useGetProfile(userId);
+  const token = useGetToken();
 
   const {
     data,
     error,
     mutate: fetchFollowMutate,
-  } = useSWR(`${endpoint}?currentUserId=${currentUserId}`, fetcher);
+  } = useSWR(
+    { token, url: `${endpoint}?currentUserId=${currentUserId}}` },
+    tokenFetcher
+  );
 
   if (error) {
     return <div>エラーが発生しました: {error.message}</div>;
@@ -29,14 +34,13 @@ export const FollowButton = ({ currentUserId, userId }: FollowButtonProps) => {
   const isFollowing = data && data.isFollowing;
 
   const handleFollow = async () => {
-    // await axios.post(`${endpoint}?currentUserId=${currentUserId}`);
-    await callPostApi(endpoint, { currentUserId });
+    await callPostApi(endpoint, { currentUserId }, token);
     fetchFollowMutate();
     getProfileMutate();
   };
 
   const handleRemoveFollow = async () => {
-    await callDeleteApi(`${endpoint}?currentUserId=${currentUserId}`);
+    await callDeleteApi(`${endpoint}?currentUserId=${currentUserId}`, token);
     fetchFollowMutate();
     getProfileMutate();
   };

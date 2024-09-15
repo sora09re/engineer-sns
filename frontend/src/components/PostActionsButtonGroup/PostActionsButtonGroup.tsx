@@ -5,6 +5,7 @@ import { IconMessageCircle2, IconThumbUp, IconX } from "@tabler/icons";
 import Link from "next/link";
 import { useState } from "react";
 
+import { useGetToken } from "@/hooks/useGetToken";
 import type { PostType } from "@/types/post";
 import { callDeleteApi, callPostApi } from "@/utils/callApi";
 
@@ -17,6 +18,7 @@ export const PostActionsButtonGroup = ({
   currentUserId,
   post,
 }: PostActionsButtonGroupProps) => {
+  const token = useGetToken();
   const { hovered: hoveredComments, ref: refComments } = useHover();
   const { hovered: hoveredLikes, ref: refLikes } = useHover();
 
@@ -43,8 +45,11 @@ export const PostActionsButtonGroup = ({
     try {
       const endpoint = `/posts/${postId}/likes`;
       newLikeStatus
-        ? await callPostApi(endpoint, { currentUserId })
-        : await callDeleteApi(`${endpoint}?currentUserId=${currentUserId}`);
+        ? await callPostApi(endpoint, { currentUserId }, token)
+        : await callDeleteApi(
+            `${endpoint}?currentUserId=${currentUserId}`,
+            token
+          );
     } catch (error) {
       notifications.show({
         id: "click-likes",

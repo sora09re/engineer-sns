@@ -12,19 +12,19 @@ import {
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons";
-import axios from "axios";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { CenteredLoader } from "@/components/CenteredLoader/CenteredLoader";
 import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
+import { useGetToken } from "@/hooks/useGetToken";
 import { useHandleNewUser } from "@/hooks/useHandleNewUser";
 import {
   type NewUserValues,
   useNewUserProfile,
 } from "@/hooks/useNewUserProfile";
-import { apiUrl } from "@/utils/baseUrl";
+import { callPostApi } from "@/utils/callApi";
 import { uploadImageToSupabase } from "@/utils/uploadImageToSupabase";
 
 const NewUserPage: NextPage = () => {
@@ -32,6 +32,7 @@ const NewUserPage: NextPage = () => {
   const { updateUserProfile, userProfile } = useNewUserProfile(session?.user);
   const router = useRouter();
   const [tempImage, setTempImage] = useState<string | null>(null);
+  const token = useGetToken();
 
   const handleDrop = (acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
@@ -75,7 +76,7 @@ const NewUserPage: NextPage = () => {
       if (imageUrl) {
         updateUserProfile({ profileImageUrl: imageUrl });
       }
-      const result = await axios.post(`${apiUrl}/profile`, values);
+      const result = await callPostApi("/profile", values, token);
       notifications.update({
         id: "createProfile",
         autoClose: 2000,

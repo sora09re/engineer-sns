@@ -1,14 +1,16 @@
 import useSWR from "swr";
 
+import { useGetToken } from "@/hooks/useGetToken";
 import type { PostType } from "@/types/post";
-import { fetcher } from "@/utils/fetcher";
+import { tokenFetcher } from "@/utils/fetcher";
 
 export const useGetCommentsForPost = (postId: string | null | undefined) => {
-  const shouldFetch = postId != null; // nullまたはundefinedでない場合にtrue
+  const token = useGetToken();
+  const shouldFetch = postId != null;
 
   const { data, error, isLoading, mutate } = useSWR<PostType[]>(
-    shouldFetch ? `/posts/${postId}/comments` : null, // 条件に応じてkeyをnullにする
-    fetcher
+    shouldFetch ? { token, url: `/posts/${postId}/comments` } : null,
+    tokenFetcher
   );
 
   return { data, error, isLoading, mutate };
