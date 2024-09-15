@@ -13,6 +13,10 @@ export const fetcher = async (url: string) => {
 export const tokenFetcher = async (props: TokenFetcherProps) => {
   const { token, url } = props;
 
-  const result = await callGetApi(url, token);
+  let result;
+  if (token) {
+    result = await callGetApi(url, token);
+  }
+
   return result;
 };
