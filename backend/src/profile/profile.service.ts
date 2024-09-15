@@ -61,6 +61,11 @@ export class ProfileService {
         user: true,
         likes: true,
         comments: true,
+        parentPost: {
+          include: {
+            user: true,
+          },
+        },
       },
       orderBy: {
         createdAt: 'desc',

@@ -1,4 +1,4 @@
-import { Box, Space } from "@mantine/core";
+import { Box } from "@mantine/core";
 import type { User } from "next-auth";
 
 import { Post } from "@/components/Post/Post";
@@ -16,7 +16,6 @@ export const CommentList = ({ comments, currentUser }: CommentListProps) => {
         return (
           <div key={comment.id}>
             <Post post={comment} currentUserId={currentUser.id} />
-            <Space h={20} />
           </div>
         );
       })}

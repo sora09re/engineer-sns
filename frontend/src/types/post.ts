@@ -8,6 +8,7 @@ export type PostType = {
   createdAt: Date;
   isDeleted: boolean;
   likes: Like[];
+  parentPost?: PostType;
   parentPostId?: string | null;
   updatedAt: Date;
   user: User;

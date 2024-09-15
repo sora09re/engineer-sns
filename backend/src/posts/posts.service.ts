@@ -46,6 +46,11 @@ export class PostsService {
         user: true,
         comments: true,
         likes: true,
+        parentPost: {
+          include: {
+            user: true,
+          },
+        },
       },
     });
 
@@ -66,6 +71,16 @@ export class PostsService {
           include: {
             user: true,
             likes: true,
+            parentPost: {
+              include: {
+                user: true,
+              },
+            },
+          },
+        },
+        parentPost: {
+          include: {
+            user: true,
           },
         },
       },

@@ -1,4 +1,4 @@
-import { Avatar, Box, Group, Space, Text } from "@mantine/core";
+import { Anchor, Avatar, Box, Group, Space, Text } from "@mantine/core";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -21,6 +21,7 @@ export const Post = ({ currentUserId, keyword, post }: PostProps) => {
   const parsedContent = parseContent(post.content);
   const router = useRouter();
   const isPostByCurrentUser = post.userId === currentUserId;
+  const isComment = post.parentPostId;
 
   if (!post) {
     return null;
@@ -74,6 +75,24 @@ export const Post = ({ currentUserId, keyword, post }: PostProps) => {
               <DateFormat props={post.createdAt} />
             </Text>
           </Group>
+          {isComment && (
+            <Text color="dimmed">
+              返信先:
+              <Anchor
+                component={Link}
+                href={`/profile/${post.parentPost?.userId}`}
+                sx={{
+                  textDecoration: "none",
+                }}
+                onClick={(event) => {
+                  return event.stopPropagation();
+                }}
+              >
+                @{post.parentPost?.user.username}
+              </Anchor>
+              <br />
+            </Text>
+          )}
           {parsedContent.map((part, index) => {
             return <ContentPart key={index} part={part} />;
           })}
