@@ -19,7 +19,7 @@ export const useHandleNewUser = () => {
     fetcher
   );
 
-  if (user) {
+  if (user?.username) {
     router.push("/");
   }
 
