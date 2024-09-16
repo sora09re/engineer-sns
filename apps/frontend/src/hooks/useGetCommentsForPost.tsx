@@ -9,7 +9,7 @@ export const useGetCommentsForPost = (postId: string | null | undefined) => {
   const shouldFetch = postId != null;
 
   const { data, error, isLoading, mutate } = useSWR<PostType[]>(
-    shouldFetch ? { token, url: `/posts/${postId}/comments` } : null,
+    shouldFetch ? `/posts/${postId}/comments?token=${token}` : null,
     tokenFetcher
   );
 

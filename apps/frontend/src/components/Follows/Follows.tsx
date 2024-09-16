@@ -19,17 +19,14 @@ export const Follows = ({ currentUserId, userId }: FollowsProps) => {
     data: followers,
     error: getFollowersError,
     isLoading: getFollowersIsLoading,
-  } = useSWR<User[]>(
-    { token, url: `/users/${userId}/followers` },
-    tokenFetcher
-  );
+  } = useSWR<User[]>(`/users/${userId}/followers?token=${token}`, tokenFetcher);
 
   const {
     data: followingUsers,
     error: getFollowingUsersError,
     isLoading: getFollowingUsersIsLoading,
   } = useSWR<User[]>(
-    { token, url: `/users/${userId}/followings` },
+    `/users/${userId}/followings?token=${token}`,
     tokenFetcher
   );
 

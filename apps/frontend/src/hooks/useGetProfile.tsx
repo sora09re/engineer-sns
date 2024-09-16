@@ -8,9 +8,8 @@ export const useGetProfile = (userId: string) => {
   const token = useGetToken();
   const shouldFetch = userId !== undefined;
   const { data, error, isLoading, mutate } = useSWR<ProfileType>(
-    shouldFetch ? { token, url: `/profile/${userId}` } : null,
+    shouldFetch ? `/profile/${userId}?token=${token}` : null,
     tokenFetcher
   );
   return { data, error, isLoading, mutate };
 };
-

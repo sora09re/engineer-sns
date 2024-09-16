@@ -23,7 +23,7 @@ export const FollowButton = ({ currentUserId, userId }: FollowButtonProps) => {
     error,
     mutate: fetchFollowMutate,
   } = useSWR(
-    { token, url: `${endpoint}?currentUserId=${currentUserId}}` },
+    `${endpoint}?currentUserId=${currentUserId}?token=${token}`,
     tokenFetcher
   );
 

@@ -8,7 +8,7 @@ export const useGetPostDetail = (postId: string | undefined) => {
   const token = useGetToken();
   const shouldFetch = postId !== undefined;
   const { data, error, isLoading, mutate } = useSWR<PostType>(
-    shouldFetch ? { token, url: `/posts/${postId}` } : null,
+    shouldFetch ? `/posts/${postId}?token=${token}` : null,
     tokenFetcher
   );
   return { data, error, isLoading, mutate };

@@ -8,7 +8,7 @@ export const useGetPostsForUser = (userId: string | undefined) => {
 
   const shouldFetch = userId !== undefined;
   const { data, error, isLoading, mutate } = useSWR(
-    shouldFetch ? { token, url: `/profile/posts/${userId}` } : null,
+    shouldFetch ? `/profile/posts/${userId}?token=${token}` : null,
     tokenFetcher
   );
 
