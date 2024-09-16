@@ -76,7 +76,7 @@ const NewUserPage: NextPage = () => {
       if (imageUrl) {
         updateUserProfile({ profileImageUrl: imageUrl });
       }
-      const result = await callPostApi("/profile", values, token);
+      await callPostApi("/profile", values, token);
       notifications.update({
         id: "createProfile",
         autoClose: 2000,
@@ -85,9 +85,8 @@ const NewUserPage: NextPage = () => {
         message: "ユーザー作成に成功しました！",
         title: "成功",
       });
-      if (result.status === 201) {
-        router.push("/");
-      }
+
+      router.push("/");
     } catch (error) {
       console.error("Error creating user:", error);
       notifications.update({
