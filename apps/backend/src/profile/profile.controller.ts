@@ -1,7 +1,12 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { GithubAuthGuard } from 'src/modules/auth/guards/github.guard';
-import { ProfileUpdateDto } from 'src/profile/dto/profile.input';
 import { ProfileService } from 'src/profile/profile.service';
+import {
+  validateWithSchema,
+  userIdSchema,
+  ProfileUpdateInput,
+  profileUpdateSchema,
+} from 'validation';
 
 @Controller('profile')
 export class ProfileController {
@@ -10,6 +15,8 @@ export class ProfileController {
   @UseGuards(GithubAuthGuard)
   @Get(':userId')
   async getProfile(@Param('userId') userId: string) {
+    validateWithSchema(userIdSchema, userId);
+
     return await this.profileService.getProfileWithFollowersAndFollowing(
       userId,
     );
@@ -17,7 +24,9 @@ export class ProfileController {
 
   @UseGuards(GithubAuthGuard)
   @Post()
-  async updateProfile(@Body() profileUpdateDto: ProfileUpdateDto) {
+  async updateProfile(@Body() profileUpdateDto: ProfileUpdateInput) {
+    validateWithSchema(profileUpdateSchema, profileUpdateDto);
+
     const { id, bio, location, name, profileImageUrl, username, website } =
       profileUpdateDto;
 
@@ -35,6 +44,8 @@ export class ProfileController {
   @UseGuards(GithubAuthGuard)
   @Get('posts/:userId')
   async getPosts(@Param('userId') userId: string) {
+    validateWithSchema(userIdSchema, userId);
+
     return await this.profileService.getPostsByUserId(userId);
   }
 }
