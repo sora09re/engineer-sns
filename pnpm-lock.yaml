@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
     devDependencies:
       turbo:
         specifier: ^2.1.2
@@ -71,6 +75,9 @@ importers:
       rxjs:
         specifier: ^7.8.1
         version: 7.8.1
+      validation:
+        specifier: workspace:*
+        version: link:../../packages/validation
     devDependencies:
       '@nestjs/cli':
         specifier: ^10.0.0
@@ -328,6 +335,19 @@ importers:
       typescript:
         specifier: 4.9.4
         version: 4.9.4
+
+  packages/validation:
+    dependencies:
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
+    devDependencies:
+      '@nestjs/common':
+        specifier: ^10.0.0
+        version: 10.4.1(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      typescript:
+        specifier: ^5.6.2
+        version: 5.6.2
 
 packages:
 
@@ -15697,3 +15717,7 @@ packages:
     resolution: {integrity: sha512-b4JR1PFR10y1mKjhHY9LaGo6tmrgjit7hxVIeAmyMw3jegXR4dhYqLaQF5zMXZxY7tLpMyJeLjr1C4rLmkVe8g==}
     engines: {node: '>=12.20'}
     dev: true
+
+  /zod@3.23.8:
+    resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
+    dev: false

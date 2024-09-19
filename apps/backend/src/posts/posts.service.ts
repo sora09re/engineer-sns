@@ -61,41 +61,6 @@ export class PostsService {
     return post;
   }
 
-  async getCommentsByPostId(postId: string) {
-    const comments = await this.prisma.posts.findMany({
-      where: { parentPostId: postId },
-      include: {
-        user: true,
-        likes: true,
-        comments: {
-          include: {
-            user: true,
-            likes: true,
-            parentPost: {
-              include: {
-                user: true,
-              },
-            },
-          },
-        },
-        parentPost: {
-          include: {
-            user: true,
-          },
-        },
-      },
-      orderBy: { updatedAt: 'desc' },
-    });
-
-    if (!comments) {
-      throw new NotFoundException(
-        `No comments found for post with ID ${postId}`,
-      );
-    }
-
-    return comments;
-  }
-
   async createPost(postContent: string, currentUserId: string) {
     const data = {
       content: postContent,
@@ -111,66 +76,11 @@ export class PostsService {
     });
   }
 
-  async addComment(content: string, userId: string, postId: string) {
-    const newComment = await this.prisma.posts.create({
-      data: {
-        content,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        isDeleted: false,
-        parentPostId: postId,
-        userId: userId,
-      },
-    });
-
-    return newComment;
-  }
-
   async deletePost(postId: string) {
     const post = await this.prisma.posts.delete({
       where: { id: postId },
     });
 
     return post;
-  }
-
-  // GET: 特定のユーザーが特定の投稿に「いいね」を押しているか確認
-  async findLikeByPostAndUser(postId: string, userId: string) {
-    const like = await this.prisma.likes.findFirst({
-      where: {
-        postId: postId,
-        userId: userId,
-      },
-    });
-
-    if (!like) {
-      throw new NotFoundException('Like not found');
-    }
-
-    return like;
-  }
-
-  // POST: 新しい「いいね」を作成
-  async createLike(postId: string, userId: string) {
-    const like = await this.prisma.likes.create({
-      data: {
-        postId,
-        userId,
-      },
-    });
-
-    return like;
-  }
-
-  // DELETE: 「いいね」を削除
-  async deleteLike(postId: string, userId: string) {
-    const like = await this.prisma.likes.deleteMany({
-      where: {
-        postId: postId,
-        userId: userId,
-      },
-    });
-
-    return like;
   }
 }

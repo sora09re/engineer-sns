@@ -10,16 +10,22 @@ import {
 } from '@nestjs/common';
 import { Users } from '@prisma/client';
 import { GithubAuthGuard } from 'src/modules/auth/guards/github.guard';
-import { GetUserInput } from 'src/users/dto/users.input';
 import { UsersService } from 'src/users/users.service';
+import {
+  currentUserIdSchema,
+  getUserInputSchema,
+  userIdSchema,
+  validateWithSchema,
+} from 'validation';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  async getUser(@Query() getUserInput: GetUserInput): Promise<Users | null> {
-    const { userId } = getUserInput;
+  async getUser(@Query() userId: string): Promise<Users | null> {
+    validateWithSchema(getUserInputSchema, userId);
+
     return await this.usersService.getUserByUserId(userId);
   }
 
@@ -28,17 +34,24 @@ export class UsersController {
     @Param('userId') userId: string,
     @Query('currentUserId') currentUserId: string,
   ) {
+    validateWithSchema(userIdSchema, userId);
+    validateWithSchema(currentUserIdSchema, currentUserId);
+
     const follow = await this.usersService.isFollowing(userId, currentUserId);
     return { isFollowing: !!follow };
   }
 
   @Get(':userId/followers')
   async getFollowers(@Param('userId') userId: string) {
+    validateWithSchema(userIdSchema, userId);
+
     return await this.usersService.getFollowers(userId);
   }
 
   @Get(':userId/followings')
   async getFollowings(@Param('userId') userId: string) {
+    validateWithSchema(userIdSchema, userId);
+
     return await this.usersService.getFollowingUsers(userId);
   }
 
@@ -48,6 +61,9 @@ export class UsersController {
     @Param('userId') userId: string,
     @Body('currentUserId') currentUserId: string,
   ) {
+    validateWithSchema(userIdSchema, userId);
+    validateWithSchema(currentUserIdSchema, currentUserId);
+
     return await this.usersService.followUser(userId, currentUserId);
   }
 
@@ -57,6 +73,9 @@ export class UsersController {
     @Param('userId') userId: string,
     @Query('currentUserId') currentUserId: string,
   ) {
+    validateWithSchema(userIdSchema, userId);
+    validateWithSchema(currentUserIdSchema, currentUserId);
+
     return await this.usersService.unfollowUser(userId, currentUserId);
   }
 }
