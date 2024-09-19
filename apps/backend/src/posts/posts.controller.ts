@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -10,11 +9,18 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { GithubAuthGuard } from 'src/modules/auth/guards/github.guard';
-import {
-  CreatePostInput,
-  GetTimelinePostsInput,
-} from 'src/posts/dto/posts.input';
+
 import { PostsService } from 'src/posts/posts.service';
+import {
+  validateWithSchema,
+  currentUserIdSchema,
+  postIdSchema,
+  addCommentSchema,
+  createPostInputSchema,
+  CreatePostInput,
+  getTimelinePostsInputSchema,
+  GetTimelinePostsInput,
+} from 'validation';
 
 @Controller('posts')
 export class PostsController {
@@ -25,6 +31,8 @@ export class PostsController {
   async getTimelinePosts(
     @Query() getTimelinePostsInput: GetTimelinePostsInput,
   ) {
+    validateWithSchema(getTimelinePostsInputSchema, getTimelinePostsInput);
+
     const { currentUserId } = getTimelinePostsInput;
     return await this.postsService.getTimelinePosts(currentUserId);
   }
@@ -32,18 +40,24 @@ export class PostsController {
   @UseGuards(GithubAuthGuard)
   @Get(':postId')
   async getPost(@Param('postId') postId: string) {
+    validateWithSchema(postIdSchema, postId);
+
     return await this.postsService.getPostById(postId);
   }
 
   @UseGuards(GithubAuthGuard)
   @Get(':postId/comments')
   async getComments(@Param('postId') postId: string) {
+    validateWithSchema(postIdSchema, postId);
+
     return await this.postsService.getCommentsByPostId(postId);
   }
 
   @UseGuards(GithubAuthGuard)
   @Post()
   async createPost(@Body() createPostInput: CreatePostInput) {
+    validateWithSchema(createPostInputSchema, createPostInput);
+
     const { postContent, currentUserId } = createPostInput;
     await this.postsService.createPost(postContent, currentUserId);
   }
@@ -52,9 +66,13 @@ export class PostsController {
   @Post(':postId/comments')
   async addComment(
     @Param('postId') postId: string,
-    @Body('commentContent') commentContent: string,
-    @Body('currentUserId') currentUserId: string,
+    @Body() addCommentInput: { commentContent: string; currentUserId: string },
   ) {
+    validateWithSchema(postIdSchema, postId);
+    validateWithSchema(addCommentSchema, addCommentInput);
+
+    const { commentContent, currentUserId } = addCommentInput;
+
     return await this.postsService.addComment(
       commentContent,
       currentUserId,
@@ -65,6 +83,8 @@ export class PostsController {
   @UseGuards(GithubAuthGuard)
   @Delete(':postId')
   async deletePost(@Param('postId') postId: string) {
+    validateWithSchema(postIdSchema, postId);
+
     return await this.postsService.deletePost(postId);
   }
 
@@ -74,9 +94,8 @@ export class PostsController {
     @Param('postId') postId: string,
     @Query('currentUserId') currentUserId: string,
   ) {
-    if (!postId || !currentUserId) {
-      throw new BadRequestException();
-    }
+    validateWithSchema(postIdSchema, postId);
+    validateWithSchema(currentUserIdSchema, currentUserId);
 
     return await this.postsService.findLikeByPostAndUser(postId, currentUserId);
   }
@@ -87,9 +106,8 @@ export class PostsController {
     @Param('postId') postId: string,
     @Body('currentUserId') currentUserId: string,
   ) {
-    if (!postId || !currentUserId) {
-      throw new BadRequestException();
-    }
+    validateWithSchema(postIdSchema, postId);
+    validateWithSchema(currentUserIdSchema, currentUserId);
 
     return await this.postsService.createLike(postId, currentUserId);
   }
@@ -100,9 +118,8 @@ export class PostsController {
     @Param('postId') postId: string,
     @Query('currentUserId') currentUserId: string,
   ) {
-    if (!postId || !currentUserId) {
-      throw new BadRequestException();
-    }
+    validateWithSchema(postIdSchema, postId);
+    validateWithSchema(currentUserIdSchema, currentUserId);
 
     return await this.postsService.deleteLike(postId, currentUserId);
   }
