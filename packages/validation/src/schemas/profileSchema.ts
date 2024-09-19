@@ -1,16 +1,16 @@
 import { z } from "zod";
 
 export const profileUpdateSchema = z.object({
-  id: z.string().min(1, { message: "Id is required" }),
+  id: z.string().min(1, { message: "IDは必須です。" }),
   email: z
     .string()
-    .email({ message: "Email must be a valid email address" })
-    .min(1, { message: "Email is required" }),
+    .email({ message: "有効なメールアドレスを入力してください。" })
+    .min(1, { message: "メールアドレスは必須です。" }),
   bio: z.string().optional(),
   location: z.string().optional(),
-  name: z.string().min(1, { message: "Name is required" }),
-  profileImageUrl: z.string().url().optional(),
-  username: z.string().min(1, { message: "Username is required" }),
+  name: z.string().min(1, { message: "名前は必須です。" }),
+  profileImageUrl: z.string().url({ message: "有効なURLを入力してください。" }).optional(),
+  username: z.string().min(1, { message: "ユーザー名は必須です。" }),
   website: z.string().optional(),
 });
 
