@@ -13,9 +13,7 @@ import { GithubAuthGuard } from 'src/modules/auth/guards/github.guard';
 import { PostsService } from 'src/posts/posts.service';
 import {
   validateWithSchema,
-  currentUserIdSchema,
   postIdSchema,
-  addCommentSchema,
   createPostInputSchema,
   CreatePostInput,
   getTimelinePostsInputSchema,
@@ -38,22 +36,6 @@ export class PostsController {
   }
 
   @UseGuards(GithubAuthGuard)
-  @Get(':postId')
-  async getPost(@Param('postId') postId: string) {
-    validateWithSchema(postIdSchema, postId);
-
-    return await this.postsService.getPostById(postId);
-  }
-
-  @UseGuards(GithubAuthGuard)
-  @Get(':postId/comments')
-  async getComments(@Param('postId') postId: string) {
-    validateWithSchema(postIdSchema, postId);
-
-    return await this.postsService.getCommentsByPostId(postId);
-  }
-
-  @UseGuards(GithubAuthGuard)
   @Post()
   async createPost(@Body() createPostInput: CreatePostInput) {
     validateWithSchema(createPostInputSchema, createPostInput);
@@ -63,21 +45,11 @@ export class PostsController {
   }
 
   @UseGuards(GithubAuthGuard)
-  @Post(':postId/comments')
-  async addComment(
-    @Param('postId') postId: string,
-    @Body() addCommentInput: { commentContent: string; currentUserId: string },
-  ) {
+  @Get(':postId')
+  async getPost(@Param('postId') postId: string) {
     validateWithSchema(postIdSchema, postId);
-    validateWithSchema(addCommentSchema, addCommentInput);
 
-    const { commentContent, currentUserId } = addCommentInput;
-
-    return await this.postsService.addComment(
-      commentContent,
-      currentUserId,
-      postId,
-    );
+    return await this.postsService.getPostById(postId);
   }
 
   @UseGuards(GithubAuthGuard)
@@ -86,41 +58,5 @@ export class PostsController {
     validateWithSchema(postIdSchema, postId);
 
     return await this.postsService.deletePost(postId);
-  }
-
-  @UseGuards(GithubAuthGuard)
-  @Get(':postId/likes')
-  async findLike(
-    @Param('postId') postId: string,
-    @Query('currentUserId') currentUserId: string,
-  ) {
-    validateWithSchema(postIdSchema, postId);
-    validateWithSchema(currentUserIdSchema, currentUserId);
-
-    return await this.postsService.findLikeByPostAndUser(postId, currentUserId);
-  }
-
-  @UseGuards(GithubAuthGuard)
-  @Post(':postId/likes')
-  async createLike(
-    @Param('postId') postId: string,
-    @Body('currentUserId') currentUserId: string,
-  ) {
-    validateWithSchema(postIdSchema, postId);
-    validateWithSchema(currentUserIdSchema, currentUserId);
-
-    return await this.postsService.createLike(postId, currentUserId);
-  }
-
-  @UseGuards(GithubAuthGuard)
-  @Delete(':postId/likes')
-  async deleteLike(
-    @Param('postId') postId: string,
-    @Query('currentUserId') currentUserId: string,
-  ) {
-    validateWithSchema(postIdSchema, postId);
-    validateWithSchema(currentUserIdSchema, currentUserId);
-
-    return await this.postsService.deleteLike(postId, currentUserId);
   }
 }
