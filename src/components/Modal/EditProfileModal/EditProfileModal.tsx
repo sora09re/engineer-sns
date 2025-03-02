@@ -62,7 +62,7 @@ export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
       if (imageUrl) {
         updateUserProfile(updatedProfile);
       }
-      
+
       await axios.post(`${baseURL}/api/profile/${currentUser.id}`, {
         values: updatedProfile,
       });
@@ -78,7 +78,7 @@ export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
         message: "更新に成功しました！",
         title: "成功",
       });
-    } catch (error) {
+    } catch (_error) {
       notifications.update({
         id: "updateProfile",
         autoClose: 2000,

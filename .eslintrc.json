@@ -89,7 +89,8 @@
       "error",
       {
         "varsIgnorePattern": "^_",
-        "argsIgnorePattern": "^_"
+        "argsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
       }
     ],
     /* others */

@@ -49,7 +49,7 @@ export const NewPostForm = ({ currentUser }: NewPostFormProps) => {
         message: "投稿に成功しました！",
         title: "成功",
       });
-    } catch (error) {
+    } catch (_error) {
       notifications.update({
         id: "post-data",
         autoClose: 2000,

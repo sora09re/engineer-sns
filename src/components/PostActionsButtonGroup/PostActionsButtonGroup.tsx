@@ -40,17 +40,17 @@ export const PostActionsButtonGroup = ({
     const newLikeStatus = !isLikedByCurrentUser;
     setIsLikedByCurrentUser(newLikeStatus);
     setLikeCount(likeCount + (newLikeStatus ? 1 : -1));
-    
+
     try {
       const endpoint = `${baseURL}/api/posts/${postId}/likes`;
-      newLikeStatus
-        ? await axios.post(endpoint, { currentUserId })
-        : await axios.delete(endpoint, {
-            params: {
-              currentUserId,
-            },
-          });
-    } catch (error) {
+      if (newLikeStatus) {
+        await axios.post(endpoint, { currentUserId });
+      } else {
+        await axios.delete(endpoint, {
+          params: { currentUserId },
+        });
+      }
+    } catch (_error) {
       notifications.show({
         id: "click-likes",
         autoClose: 2000,
