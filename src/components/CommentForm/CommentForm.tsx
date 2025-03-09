@@ -45,7 +45,7 @@ export const CommentForm = ({ currentUser, postId }: CommentFormProps) => {
         message: "コメントに成功しました！",
         title: "成功",
       });
-    } catch (error) {
+    } catch (_error) {
       notifications.update({
         id: "fetchComment",
         autoClose: 2000,
