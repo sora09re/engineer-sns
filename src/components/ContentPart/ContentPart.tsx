@@ -26,15 +26,16 @@ export const parseContent = (content: string): ParsedContent[] => {
 	return parts.map((part, index) => {
 		if (index % 2 !== 0) {
 			const match = part.match(/^([a-zA-Z0-9]+)\n/);
+			let updatedPart = part;
 			if (match) {
 				currentLanguage = match[1];
-				part = part.replace(match[0], "");
+				updatedPart = updatedPart.replace(match[0], "");
 			}
 		}
 
 		return {
 			content: part,
-			language: currentLanguage, // 追加: コードブロックの言語を保存
+			language: currentLanguage,
 			type: index % 2 === 0 ? "text" : "code",
 		};
 	});

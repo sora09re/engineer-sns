@@ -69,9 +69,9 @@ export default async function handler(
 		if (error instanceof Error) {
 			console.error("API Error:", error);
 			return res.status(500).json({ error: error.message });
-		} else {
-			console.error("An unknown error occurred:", error);
-			return res.status(500).json({ error: "An unknown error occurred" });
 		}
+
+		console.error("An unknown error occurred:", error);
+		return res.status(500).json({ error: "An unknown error occurred" });
 	}
 }

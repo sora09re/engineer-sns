@@ -27,7 +27,7 @@ export const FollowButton = ({ currentUserId, userId }: FollowButtonProps) => {
 		return <div>エラーが発生しました: {error.message}</div>;
 	}
 
-	const isFollowing = data && data.isFollowing;
+	const isFollowing = data?.isFollowing;
 
 	const handleFollow = async () => {
 		await axios.post(`${endpoint}?currentUserId=${currentUserId}`);

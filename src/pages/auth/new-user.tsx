@@ -44,8 +44,7 @@ const NewUserPage: NextPage = () => {
 				profile_image_url: session.user.image,
 			});
 		}
-		//eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [session]);
+	}, [session, updateUserProfile]);
 
 	if (status === "loading") {
 		<CenteredLoader />;

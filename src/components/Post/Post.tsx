@@ -75,6 +75,7 @@ export const Post = ({ currentUserId, keyword, post }: PostProps) => {
 						</Text>
 					</Group>
 					{parsedContent.map((part, index) => {
+						// biome-ignore lint/suspicious/noArrayIndexKey:
 						return <ContentPart key={index} part={part} />;
 					})}
 					<Space h="md" />

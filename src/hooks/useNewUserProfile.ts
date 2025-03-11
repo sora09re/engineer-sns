@@ -1,3 +1,4 @@
+import type { Session } from "next-auth";
 import { useState } from "react";
 
 export interface NewUserValues {
@@ -11,7 +12,7 @@ export interface NewUserValues {
 	website: string;
 }
 
-export const useNewUserProfile = (sessionUser: any) => {
+export const useNewUserProfile = (sessionUser: Session["user"]) => {
 	const [userProfile, setUserProfile] = useState<NewUserValues>({
 		id: sessionUser?.id ?? "",
 		bio: "",

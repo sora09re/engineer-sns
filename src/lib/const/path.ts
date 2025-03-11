@@ -22,5 +22,5 @@ export const getPath = (pathKey: keyof typeof PATH, ...args: string[]) => {
 		return dir;
 	});
 
-	return "/" + newPath.join("/");
+	return `/${newPath.join("/")}`;
 };
