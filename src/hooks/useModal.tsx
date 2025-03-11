@@ -7,9 +7,9 @@ import { ModalVisibilityState } from "@/types/modal";
 type Response = [boolean, SetterOrUpdater<boolean>];
 
 export const useModal = (modalType: ModalType): Response => {
-  const [isVisible, setIsVisible] = useRecoilState(
-    ModalVisibilityState(modalType)
-  );
+	const [isVisible, setIsVisible] = useRecoilState(
+		ModalVisibilityState(modalType),
+	);
 
-  return [isVisible, setIsVisible];
+	return [isVisible, setIsVisible];
 };

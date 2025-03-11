@@ -1,29 +1,29 @@
 {
-  "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.addMissingImports": "explicit",
-      "source.fixAll.eslint": "explicit"
-    }
-  },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.addMissingImports": "explicit",
-      "source.fixAll.eslint": "explicit"
-    }
-  },
-  "python.formatting.provider": "none",
-  "emmet.includeLanguages": {
-    "javascript": "javascriptreact"
-  },
-  "eslint.workingDirectories": [{ "mode": "auto" }],
-  "editor.stickyScroll.enabled": true,
-  "editor.inlineSuggest.enabled": true,
-  "editor.formatOnSave": true,
-  "editor.formatOnSaveMode": "modifications",
-  "typescript.tsdk": "../frontend/node_modules/typescript/lib",
-  "typescript.preferences.importModuleSpecifier": "non-relative"
+	"[typescript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnSave": true,
+		"editor.codeActionsOnSave": {
+			"source.addMissingImports": "explicit",
+			"source.fixAll.eslint": "explicit"
+		}
+	},
+	"[typescriptreact]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnSave": true,
+		"editor.codeActionsOnSave": {
+			"source.addMissingImports": "explicit",
+			"source.fixAll.eslint": "explicit"
+		}
+	},
+	"python.formatting.provider": "none",
+	"emmet.includeLanguages": {
+		"javascript": "javascriptreact"
+	},
+	"eslint.workingDirectories": [{ "mode": "auto" }],
+	"editor.stickyScroll.enabled": true,
+	"editor.inlineSuggest.enabled": true,
+	"editor.formatOnSave": true,
+	"editor.formatOnSaveMode": "modifications",
+	"typescript.tsdk": "../frontend/node_modules/typescript/lib",
+	"typescript.preferences.importModuleSpecifier": "non-relative"
 }
