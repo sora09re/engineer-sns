@@ -8,28 +8,28 @@ import { useGetCurrentUser } from "@/hooks/useGetCurrentUser";
 import { sideBarWidthBase } from "@/utils/sideBarWidth";
 
 const SearchPage: NextPage = () => {
-  const {
-    data: currentUser,
-    error: getCurrentUserError,
-    isLoading: getCurrentUserIsLoading,
-  } = useGetCurrentUser();
+	const {
+		data: currentUser,
+		error: getCurrentUserError,
+		isLoading: getCurrentUserIsLoading,
+	} = useGetCurrentUser();
 
-  if (!currentUser || getCurrentUserIsLoading) {
-    return <CenteredLoader />;
-  }
+	if (!currentUser || getCurrentUserIsLoading) {
+		return <CenteredLoader />;
+	}
 
-  if (getCurrentUserError) {
-    return <div>エラーが発生しました。再度、更新を行ってください。</div>;
-  }
+	if (getCurrentUserError) {
+		return <div>エラーが発生しました。再度、更新を行ってください。</div>;
+	}
 
-  return (
-    <Flex>
-      <Sidebar currentUser={currentUser} />
-      <Box w="100%" ml={sideBarWidthBase}>
-        <Search currentUser={currentUser} />
-      </Box>
-    </Flex>
-  );
+	return (
+		<Flex>
+			<Sidebar currentUser={currentUser} />
+			<Box w="100%" ml={sideBarWidthBase}>
+				<Search currentUser={currentUser} />
+			</Box>
+		</Flex>
+	);
 };
 
 export default SearchPage;

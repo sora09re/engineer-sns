@@ -5,9 +5,9 @@ import { Follows } from "@/components/Follows/Follows";
 //import rest from "react-syntax-highlighter/dist/esm/languages/prism/rest";
 
 const meta: Meta<typeof Follows> = {
-  component: Follows,
-  tags: ["autodocs"],
-  title: "Follows",
+	component: Follows,
+	tags: ["autodocs"],
+	title: "Follows",
 };
 
 export default meta;

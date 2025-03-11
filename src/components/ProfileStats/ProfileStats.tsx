@@ -4,33 +4,33 @@ import Link from "next/link";
 import type { ProfileType } from "@/types/profile";
 
 interface ProfileStatsProps {
-  user: ProfileType;
+	user: ProfileType;
 }
 
 export const ProfileStats = ({ user }: ProfileStatsProps) => {
-  const stats = [
-    { label: "フォロー中", value: user.following_user_id.length },
-    { label: "フォロワー", value: user.follower_user_id.length },
-  ];
+	const stats = [
+		{ label: "フォロー中", value: user.following_user_id.length },
+		{ label: "フォロワー", value: user.follower_user_id.length },
+	];
 
-  return (
-    <Group my="md" position="center" spacing={30}>
-      {stats.map((stat) => {
-        return (
-          <Link
-            key={stat.label}
-            href={`/profile/${user.id}/follows`}
-            style={{ color: "inherit", textDecoration: "none" }}
-          >
-            <Text ta="center" fz="lg" fw={500}>
-              {stat.value}
-            </Text>
-            <Text ta="center" fz="sm" c="dimmed">
-              {stat.label}
-            </Text>
-          </Link>
-        );
-      })}
-    </Group>
-  );
+	return (
+		<Group my="md" position="center" spacing={30}>
+			{stats.map((stat) => {
+				return (
+					<Link
+						key={stat.label}
+						href={`/profile/${user.id}/follows`}
+						style={{ color: "inherit", textDecoration: "none" }}
+					>
+						<Text ta="center" fz="lg" fw={500}>
+							{stat.value}
+						</Text>
+						<Text ta="center" fz="sm" c="dimmed">
+							{stat.label}
+						</Text>
+					</Link>
+				);
+			})}
+		</Group>
+	);
 };

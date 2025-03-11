@@ -3,9 +3,9 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Search } from "@/components/Search/Search";
 
 const meta: Meta<typeof Search> = {
-  component: Search,
-  tags: ["autodocs"],
-  title: "Search",
+	component: Search,
+	tags: ["autodocs"],
+	title: "Search",
 };
 
 export default meta;

@@ -5,63 +5,64 @@ import { monokaiSublime } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 import { CopyButton } from "@/components/CopyButton/CopyButton";
 
 type ParsedContent = {
-  content: string;
-  language?: string;
-  type: "text" | "code"; // 追加: コードブロックの言語
+	content: string;
+	language?: string;
+	type: "text" | "code"; // 追加: コードブロックの言語
 };
 
 type ContentPartProps = {
-  part: ParsedContent;
+	part: ParsedContent;
 };
 
 const COMPONENT_MAP = {
-  code: SyntaxHighlighter,
-  text: Text,
+	code: SyntaxHighlighter,
+	text: Text,
 };
 
 export const parseContent = (content: string): ParsedContent[] => {
-  const parts = content.split("```");
-  let currentLanguage = "";
+	const parts = content.split("```");
+	let currentLanguage = "";
 
-  return parts.map((part, index) => {
-    if (index % 2 !== 0) {
-      const match = part.match(/^([a-zA-Z0-9]+)\n/);
-      if (match) {
-        currentLanguage = match[1];
-        part = part.replace(match[0], "");
-      }
-    }
+	return parts.map((part, index) => {
+		if (index % 2 !== 0) {
+			const match = part.match(/^([a-zA-Z0-9]+)\n/);
+			let updatedPart = part;
+			if (match) {
+				currentLanguage = match[1];
+				updatedPart = updatedPart.replace(match[0], "");
+			}
+		}
 
-    return {
-      content: part,
-      language: currentLanguage, // 追加: コードブロックの言語を保存
-      type: index % 2 === 0 ? "text" : "code",
-    };
-  });
+		return {
+			content: part,
+			language: currentLanguage,
+			type: index % 2 === 0 ? "text" : "code",
+		};
+	});
 };
 
 export const ContentPart: React.FC<ContentPartProps> = ({ part }) => {
-  const Component = COMPONENT_MAP[part.type];
-  const value = part.content.trim();
+	const Component = COMPONENT_MAP[part.type];
+	const value = part.content.trim();
 
-  if (part.type === "code") {
-    return (
-      <Box sx={{ cursor: "auto", position: "relative" }}>
-        <Box sx={{ position: "absolute", right: 10, top: 10 }}>
-          <CopyButton value={value} />
-        </Box>
-        <Component
-          language={part.language || "htmlbars"} // 更新: 言語を動的に設定
-          style={monokaiSublime}
-          onClick={(event) => {
-            event.stopPropagation();
-          }}
-        >
-          {value}
-        </Component>
-      </Box>
-    );
-  }
+	if (part.type === "code") {
+		return (
+			<Box sx={{ cursor: "auto", position: "relative" }}>
+				<Box sx={{ position: "absolute", right: 10, top: 10 }}>
+					<CopyButton value={value} />
+				</Box>
+				<Component
+					language={part.language || "htmlbars"} // 更新: 言語を動的に設定
+					style={monokaiSublime}
+					onClick={(event) => {
+						event.stopPropagation();
+					}}
+				>
+					{value}
+				</Component>
+			</Box>
+		);
+	}
 
-  return <Component>{value}</Component>;
+	return <Component>{value}</Component>;
 };

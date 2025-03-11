@@ -5,22 +5,22 @@ import { useModal } from "@/hooks/useModal";
 import type { User } from "@/types/user";
 
 interface PostModalProps {
-  currentUser: User;
+	currentUser: User;
 }
 
 export const PostModal = ({ currentUser }: PostModalProps) => {
-  const [isVisible, setIsVisible] = useModal("post");
+	const [isVisible, setIsVisible] = useModal("post");
 
-  return (
-    <Modal
-      size={800}
-      opened={isVisible}
-      onClose={() => {
-        return setIsVisible(false);
-      }}
-      withCloseButton
-    >
-      <NewPostForm currentUser={currentUser} />
-    </Modal>
-  );
+	return (
+		<Modal
+			size={800}
+			opened={isVisible}
+			onClose={() => {
+				return setIsVisible(false);
+			}}
+			withCloseButton
+		>
+			<NewPostForm currentUser={currentUser} />
+		</Modal>
+	);
 };

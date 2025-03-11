@@ -10,70 +10,70 @@ import type { User } from "@/types/user";
 import { fetcher } from "@/utils/fetcher";
 
 interface SearchProps {
-  currentUser: User;
+	currentUser: User;
 }
 
 export const Search = ({ currentUser }: SearchProps) => {
-  const [keyword, setKeyword] = useState("");
+	const [keyword, setKeyword] = useState("");
 
-  const {
-    data: searchUserResults,
-    error: searchUserError,
-    isLoading: isLoadingSearchUser,
-  } = useSWR(`/api/search/users?keyword=${keyword}`, fetcher);
+	const {
+		data: searchUserResults,
+		error: searchUserError,
+		isLoading: isLoadingSearchUser,
+	} = useSWR(`/api/search/users?keyword=${keyword}`, fetcher);
 
-  const {
-    data: searchPostResults,
-    error: searchPostError,
-    isLoading: isLoadingSearchPost,
-  } = useSearchPosts(keyword);
+	const {
+		data: searchPostResults,
+		error: searchPostError,
+		isLoading: isLoadingSearchPost,
+	} = useSearchPosts(keyword);
 
-  if (searchUserError || searchPostError) {
-    console.error("Error fetching search user results:", searchUserError);
-    console.error("Error fetching search post results:", searchPostError);
-  }
+	if (searchUserError || searchPostError) {
+		console.error("Error fetching search user results:", searchUserError);
+		console.error("Error fetching search post results:", searchPostError);
+	}
 
-  return (
-    <Box p="md">
-      <TextInput
-        icon={<IconSearch />}
-        placeholder="キーワード検索"
-        value={keyword}
-        onChange={(e) => {
-          return setKeyword(e.target.value);
-        }}
-      />
-      <Tabs defaultValue="post" mt="md">
-        <Tabs.List grow position="center">
-          <Tabs.Tab value="post">投稿</Tabs.Tab>
-          <Tabs.Tab value="account">アカウント</Tabs.Tab>
-        </Tabs.List>
-        <Tabs.Panel value="post">
-          {isLoadingSearchPost ? (
-            <Center mt={300}>
-              <Loader />
-            </Center>
-          ) : (
-            <PostsList
-              currentUserId={currentUser.id}
-              posts={searchPostResults}
-              keyword={keyword}
-            />
-          )}
-        </Tabs.Panel>
-        <Tabs.Panel value="account">
-          {isLoadingSearchUser ? (
-            <Center mt={300}>
-              <Loader />
-            </Center>
-          ) : (
-            <UsersList
-              users={searchUserResults}
-              currentUserId={currentUser.id}
-            />
-          )}
-        </Tabs.Panel>
-      </Tabs>
-    </Box>
-  );
+	return (
+		<Box p="md">
+			<TextInput
+				icon={<IconSearch />}
+				placeholder="キーワード検索"
+				value={keyword}
+				onChange={(e) => {
+					return setKeyword(e.target.value);
+				}}
+			/>
+			<Tabs defaultValue="post" mt="md">
+				<Tabs.List grow position="center">
+					<Tabs.Tab value="post">投稿</Tabs.Tab>
+					<Tabs.Tab value="account">アカウント</Tabs.Tab>
+				</Tabs.List>
+				<Tabs.Panel value="post">
+					{isLoadingSearchPost ? (
+						<Center mt={300}>
+							<Loader />
+						</Center>
+					) : (
+						<PostsList
+							currentUserId={currentUser.id}
+							posts={searchPostResults}
+							keyword={keyword}
+						/>
+					)}
+				</Tabs.Panel>
+				<Tabs.Panel value="account">
+					{isLoadingSearchUser ? (
+						<Center mt={300}>
+							<Loader />
+						</Center>
+					) : (
+						<UsersList
+							users={searchUserResults}
+							currentUserId={currentUser.id}
+						/>
+					)}
+				</Tabs.Panel>
+			</Tabs>
+		</Box>
+	);
 };
