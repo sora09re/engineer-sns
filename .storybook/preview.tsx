@@ -1,13 +1,10 @@
 import { MantineProvider } from "@mantine/core";
-import { rest } from "msw";
+import { http, HttpResponse } from "msw";
 import { initialize, mswLoader } from "msw-storybook-addon";
+import type { Session } from "next-auth";
+import { SessionProvider } from "next-auth/react";
 import React from "react";
 import { RecoilRoot } from "recoil";
-import { CommentModal } from "../src/components/Modal/CommentModal/CommentModal";
-import { EditProfileModal } from "../src/components/Modal/EditProfileModal/EditProfileModal";
-import { LoginModal } from "../src/components/Modal/LoginModal/LoginModal";
-import { PostModal } from "../src/components/Modal/PostModal/PostModal";
-import { SignupModal } from "../src/components/Modal/SignupModal/SignupModal";
 import { testPost1, testPost2, testPost3 } from "../src/test/testPost";
 import { testUser1, testUser2, testUser3 } from "../src/test/testUser";
 
@@ -15,28 +12,37 @@ import { testUser1, testUser2, testUser3 } from "../src/test/testUser";
 initialize();
 
 const mswHandlers = [
-	rest.get("/api/current", (_, res, ctx) => {
-		return res(ctx.status(200), ctx.json({ testUser1 }));
+	http.get("/api/current", () => {
+		return HttpResponse.json({ testUser1 });
 	}),
-	rest.get("/users/followers", (_, res, ctx) => {
-		return res(ctx.status(200), ctx.json([testUser2, testUser3]));
+	http.get("/users/followers", () => {
+		return HttpResponse.json([testUser2, testUser3]);
 	}),
-	rest.get("/users/following", (_, res, ctx) => {
-		return res(ctx.status(200), ctx.json([testUser2, testUser3]));
+	http.get("/users/following", () => {
+		return HttpResponse.json([testUser2, testUser3]);
 	}),
-	rest.get("/search/posts?query={query}", (_, res, ctx) => {
-		return res(ctx.status(200), ctx.json([testPost1, testPost2, testPost3]));
+	http.get("/search/posts?query={query}", () => {
+		return HttpResponse.json([testPost1, testPost2, testPost3]);
 	}),
-	rest.get("/search/users?query={query}", (_, res, ctx) => {
-		return res(ctx.status(200), ctx.json([testUser2, testUser3]));
+	http.get("/search/users?query={query}", () => {
+		return HttpResponse.json([testUser2, testUser3]);
 	}),
 ];
 
+const mockSession: Session = {
+	user: {
+		name: "John Doe",
+	},
+	expires: "2025-12-31T23:59:59.999Z",
+};
+
 const withProviders = (Story) => (
 	<RecoilRoot>
-		<MantineProvider withGlobalStyles withNormalizeCSS>
-			<Story />
-		</MantineProvider>
+		<SessionProvider session={mockSession}>
+			<MantineProvider withGlobalStyles withNormalizeCSS>
+				<Story />
+			</MantineProvider>
+		</SessionProvider>
 	</RecoilRoot>
 );
 
