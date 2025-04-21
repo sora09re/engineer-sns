@@ -1,12 +1,11 @@
-import { Box, Space } from "@mantine/core";
-import type { User } from "next-auth";
-
 import { Post } from "@/components/Post/Post";
 import type { PostType } from "@/types/post";
+import type { User } from "@auth/core/types";
+import { Box, Space } from "@mantine/core";
 
 interface CommentListProps {
 	comments: PostType[];
-	currentUser: Pick<User, "id">;
+	currentUser: User;
 }
 
 export const CommentList = ({ comments, currentUser }: CommentListProps) => {
