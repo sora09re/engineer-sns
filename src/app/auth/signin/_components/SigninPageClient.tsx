@@ -1,19 +1,9 @@
+"use client";
+
 import { Box, Button, Paper, Text, Title } from "@mantine/core";
-import type { NextPage } from "next";
-import { signIn, useSession } from "next-auth/react";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { signIn } from "next-auth/react";
 
-const SigninPage: NextPage = () => {
-	const { data: session } = useSession();
-	const router = useRouter();
-
-	useEffect(() => {
-		if (session) {
-			router.push("/");
-		}
-	}, [session, router]);
-
+export default function SigninPageClient() {
 	return (
 		<Box
 			sx={{
@@ -54,6 +44,4 @@ const SigninPage: NextPage = () => {
 			</Paper>
 		</Box>
 	);
-};
-
-export default SigninPage;
+}
