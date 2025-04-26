@@ -1,15 +1,12 @@
-import type { SetterOrUpdater } from "recoil";
-import { useRecoilState } from "recoil";
+import { atom, useAtom } from "jotai";
+import { atomFamily } from "jotai/utils";
 
-import type { ModalType } from "@/types/modal";
-import { ModalVisibilityState } from "@/types/modal";
+type ModalType = "post" | "editProfile";
 
-type Response = [boolean, SetterOrUpdater<boolean>];
+const modalVisibilityFamily = atomFamily(() => atom(false));
 
-export const useModal = (modalType: ModalType): Response => {
-	const [isVisible, setIsVisible] = useRecoilState(
-		ModalVisibilityState(modalType),
-	);
+export const useModal = (modalType: ModalType) => {
+	const [isVisible, setIsVisible] = useAtom(modalVisibilityFamily(modalType));
 
-	return [isVisible, setIsVisible];
+	return [isVisible, setIsVisible] as const;
 };

@@ -1,9 +1,9 @@
 import { MantineProvider } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
+import { Provider } from "jotai";
 import type { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import type { CustomAppPage } from "next/app";
-import { RecoilRoot } from "recoil";
 
 const App: CustomAppPage<{ session: Session | null | undefined }> = ({
 	Component,
@@ -11,12 +11,12 @@ const App: CustomAppPage<{ session: Session | null | undefined }> = ({
 }) => {
 	return (
 		<SessionProvider session={session}>
-			<RecoilRoot>
+			<Provider>
 				<MantineProvider withGlobalStyles withNormalizeCSS>
 					<Notifications />
 					<Component {...pageProps} />
 				</MantineProvider>
-			</RecoilRoot>
+			</Provider>
 		</SessionProvider>
 	);
 };

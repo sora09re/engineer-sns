@@ -1,14 +1,14 @@
 import { act, renderHook } from "@testing-library/react";
+import { Provider } from "jotai";
 // biome-ignore lint/style/useImportType:
 import React from "react";
-import { RecoilRoot } from "recoil";
 import { describe, expect, it } from "vitest";
 
 import { useModal } from "./useModal";
 
 // テスト用のラッパーコンポーネント
 const wrapper = ({ children }: { children: React.ReactNode }) => (
-	<RecoilRoot>{children}</RecoilRoot>
+	<Provider>{children}</Provider>
 );
 
 describe("useModal", () => {
