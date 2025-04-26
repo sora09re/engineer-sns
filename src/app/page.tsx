@@ -1,18 +1,11 @@
 import TopPageClient from "@/app/TopPageClient";
 import { api } from "@/lib/api-client";
-import { auth } from "@/lib/auth";
+import { getCurrentUserId } from "@/lib/getCurrentUserId";
 import type { PostType } from "@/types/post";
 import type { User } from "@/types/user";
-import { redirect } from "next/navigation";
 
 export default async function TopPage() {
-	const session = await auth();
-
-	const currentUserId = session?.user.id;
-
-	if (!currentUserId) {
-		redirect("/auth/signin");
-	}
+	const currentUserId = await getCurrentUserId();
 
 	const [currentUser, timelinePosts] = await Promise.all([
 		api.get<User>("/api/users/current", {
