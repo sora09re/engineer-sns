@@ -17,14 +17,20 @@
 		"baseUrl": "./",
 		"paths": {
 			"@/*": ["./src/*"]
-		}
+		},
+		"plugins": [
+			{
+				"name": "next"
+			}
+		]
 	},
 	"include": [
-		"next-env.d.ts",
 		"**/*.ts",
 		"**/*.tsx",
+		"next-env.d.ts",
 		"public/mockServiceWorker.js",
-		"src/pages/api/auth/[...nextauth].ts"
+		"src/pages/api/auth/[...nextauth].ts",
+		".next/types/**/*.ts"
 	],
 	"exclude": ["node_modules"]
 }
