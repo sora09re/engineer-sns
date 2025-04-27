@@ -1,4 +1,4 @@
-import TopPageClient from "@/app/TopPageClient";
+import TopPageClient from "@/app/_components/TopPageClient";
 import { api } from "@/lib/api-client";
 import { getCurrentUserId } from "@/lib/getCurrentUserId";
 import type { PostType } from "@/types/post";

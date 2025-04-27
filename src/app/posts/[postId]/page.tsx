@@ -1,4 +1,4 @@
-import PostDetailPageClient from "@/app/posts/PostDetailPageClient";
+import PostDetailPageClient from "@/app/posts/[postId]/_components/PostDetailPageClient";
 import { api } from "@/lib/api-client";
 import { getCurrentUserId } from "@/lib/getCurrentUserId";
 import type { PostType } from "@/types/post";
