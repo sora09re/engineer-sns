@@ -1,3 +1,12 @@
+"use client";
+
+import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
+import {
+	type NewUserValues,
+	useNewUserProfile,
+} from "@/hooks/useNewUserProfile";
+import { baseURL } from "@/utils/baseUrl";
+import { uploadImageToSupabase } from "@/utils/uploadImageToSupabase";
 import {
 	Button,
 	Col,
@@ -11,22 +20,15 @@ import {
 	Title,
 } from "@mantine/core";
 import axios from "axios";
-import type { NextPage } from "next";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+import type { Session } from "next-auth";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { CenteredLoader } from "@/components/CenteredLoader/CenteredLoader";
-import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
-import {
-	type NewUserValues,
-	useNewUserProfile,
-} from "@/hooks/useNewUserProfile";
-import { baseURL } from "@/utils/baseUrl";
-import { uploadImageToSupabase } from "@/utils/uploadImageToSupabase";
+interface NewUserPageClientProps {
+	session: Session;
+}
 
-const NewUserPage: NextPage = () => {
-	const { data: session, status } = useSession();
+export default function NewUserPageClient({ session }: NewUserPageClientProps) {
 	const { updateUserProfile, userProfile } = useNewUserProfile(session?.user);
 	const router = useRouter();
 	const [tempImage, setTempImage] = useState<string | null>(null);
@@ -45,14 +47,6 @@ const NewUserPage: NextPage = () => {
 			});
 		}
 	}, [session, updateUserProfile]);
-
-	if (status === "loading") {
-		<CenteredLoader />;
-	}
-
-	if (status === "unauthenticated") {
-		return <div>再ログインしてください。</div>;
-	}
 
 	const postNewUser = async (values: NewUserValues) => {
 		try {
@@ -172,6 +166,4 @@ const NewUserPage: NextPage = () => {
 			</Paper>
 		</Container>
 	);
-};
-
-export default NewUserPage;
+}
