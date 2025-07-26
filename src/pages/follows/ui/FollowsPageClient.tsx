@@ -1,7 +1,6 @@
 "use client";
 
-import { Follows } from "@/shared/components/Follows/Follows";
-import { Sidebar } from "@/shared/components/Sidebar/Sidebar";
+import { Follows, Sidebar } from "@/shared/components";
 import type { User } from "@/shared/types/user";
 import { sideBarWidthBase } from "@/shared/utils/sideBarWidth";
 import { Box, Flex } from "@mantine/core";

@@ -1,17 +1,5 @@
-✅ `app` フォルダ内の _components フォルダを `src/pages/〇〇/ui` へ移動する。
-
-例:
-
-1. export default から 通常の export に修正する。
-2. `app/search/_components/SearchPageClient.tsx` を `src/pages/search/ui` へ移動する。
-3. その Export を `src/pages/search/index.ts` へ追加する。
-4. コミットする。
-
-完了したコンポーネント:
-- ✅ SearchPageClient
-- ✅ TopPageClient  
-- ✅ NewUserPageClient
-- ✅ SigninPageClient
-- ✅ PostDetailPageClient
-- ✅ ProfilePageClient
-- ✅ FollowsPageClient
+Steiger はFeature-Sliced Designのルールセットを持つアーキテクチャリンターです。
+`npx steiger ./src` を実行し、`This segment is missing a public API.` エラーを段階的に１つずつ解消してください。
+解消の際にワイルドカードでのエクスポートは行わないこと。
+shared フォルダ直下には index.ts は作成しないこと。
+１つ解消する事にコミットすること。(plan.md はコミットしない)
