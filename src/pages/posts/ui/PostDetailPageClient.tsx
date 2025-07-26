@@ -17,7 +17,7 @@ interface PostDetailPageClientProps {
 	comments: PostType[];
 }
 
-export default function PostDetailPageClient({
+export function PostDetailPageClient({
 	currentUser,
 	post,
 	comments,

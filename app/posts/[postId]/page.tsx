@@ -1,8 +1,8 @@
+import { PostDetailPageClient } from "@/pages/posts";
 import { api } from "@/shared/lib/api-client";
 import { getCurrentUserId } from "@/shared/lib/getCurrentUserId";
 import type { PostType } from "@/shared/types/post";
 import type { User } from "@/shared/types/user";
-import PostDetailPageClient from "./_components/PostDetailPageClient";
 
 interface PostDetailPageProps {
 	params: Promise<{ postId: string }>;
