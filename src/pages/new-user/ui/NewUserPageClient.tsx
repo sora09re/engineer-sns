@@ -28,7 +28,7 @@ interface NewUserPageClientProps {
 	session: Session;
 }
 
-export default function NewUserPageClient({ session }: NewUserPageClientProps) {
+export function NewUserPageClient({ session }: NewUserPageClientProps) {
 	const { updateUserProfile, userProfile } = useNewUserProfile(session?.user);
 	const router = useRouter();
 	const [tempImage, setTempImage] = useState<string | null>(null);
