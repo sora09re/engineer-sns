@@ -4,9 +4,9 @@ import { IconCheck, IconX } from "@tabler/icons-react";
 import axios from "axios";
 import { useState } from "react";
 
-import { useGetPostsForUser } from "@/shared/hooks/useGetPostsForUser";
-import { useGetTimelinePosts } from "@/shared/hooks/useGetTimelinePosts";
-import { useModal } from "@/shared/hooks/useModal";
+import { useGetPostsForUser } from "@/shared/api";
+import { useGetTimelinePosts } from "@/shared/api";
+import { useModal } from "@/shared/model";
 import type { User } from "@/shared/types/user";
 import { baseURL } from "@/shared/utils/baseUrl";
 

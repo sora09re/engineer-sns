@@ -12,12 +12,12 @@ import { IconCheck, IconX } from "@tabler/icons";
 import axios from "axios";
 import { useState } from "react";
 
+import { useGetCurrentUser } from "@/shared/api";
+import { useGetPostsForUser } from "@/shared/api";
+import { useGetProfile } from "@/shared/api";
 import { ImageUpload } from "@/shared/components/ImageUpload/ImageUpload";
-import { useGetCurrentUser } from "@/shared/hooks/useGetCurrentUser";
-import { useGetPostsForUser } from "@/shared/hooks/useGetPostsForUser";
-import { useGetProfile } from "@/shared/hooks/useGetProfile";
-import { useModal } from "@/shared/hooks/useModal";
-import { useUserProfile } from "@/shared/hooks/useUserProfile";
+import { useModal } from "@/shared/model";
+import { useUserProfile } from "@/shared/model";
 import type { User } from "@/shared/types/user";
 import { baseURL } from "@/shared/utils/baseUrl";
 import { uploadImageToSupabase } from "@/shared/utils/uploadImageToSupabase";

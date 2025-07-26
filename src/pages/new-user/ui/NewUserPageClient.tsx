@@ -1,6 +1,6 @@
 "use client";
 
-import { type NewUserValues, useNewUserProfile } from "@/shared/hooks";
+import { type NewUserValues, useNewUserProfile } from "@/shared/model";
 import { ImageUpload } from "@/shared/ui";
 import { baseURL, uploadImageToSupabase } from "@/shared/utils";
 import {

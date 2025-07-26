@@ -3,7 +3,7 @@ import axios from "axios";
 import { useState } from "react";
 import useSWR from "swr";
 
-import { useGetProfile } from "@/shared/hooks/useGetProfile";
+import { useGetProfile } from "@/shared/api";
 import { baseURL } from "@/shared/utils/baseUrl";
 import { fetcher } from "@/shared/utils/fetcher";
 

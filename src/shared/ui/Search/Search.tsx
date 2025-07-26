@@ -3,9 +3,9 @@ import { IconSearch } from "@tabler/icons";
 import { useState } from "react";
 import useSWR from "swr";
 
+import { useSearchPosts } from "@/shared/api";
 import { PostsList } from "@/shared/components/PostsList/PostsList";
 import { UsersList } from "@/shared/components/UsersList/UsersList";
-import { useSearchPosts } from "@/shared/hooks/useSearchPosts";
 import type { User } from "@/shared/types/user";
 import { fetcher } from "@/shared/utils/fetcher";
 

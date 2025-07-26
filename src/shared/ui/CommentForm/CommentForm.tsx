@@ -4,8 +4,8 @@ import { IconCheck, IconX } from "@tabler/icons";
 import axios from "axios";
 import { useState } from "react";
 
-import { useGetCommentsForPost } from "@/shared/hooks/useGetCommentsForPost";
-import { useGetPostDetail } from "@/shared/hooks/useGetPostDetail";
+import { useGetCommentsForPost } from "@/shared/api";
+import { useGetPostDetail } from "@/shared/api";
 import type { User } from "@/shared/types/user";
 import { baseURL } from "@/shared/utils/baseUrl";
 
