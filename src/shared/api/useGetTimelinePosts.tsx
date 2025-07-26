@@ -1,7 +1,7 @@
 import useSWR from "swr";
 
 import type { PostType } from "@/shared/entities";
-import { fetcher } from "@/shared/utils/fetcher";
+import { fetcher } from "@/shared/lib";
 
 export const useGetTimelinePosts = (currentUserId: string | undefined) => {
 	const shouldFetch = currentUserId !== undefined;

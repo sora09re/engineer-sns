@@ -1,8 +1,8 @@
 "use client";
 
 import type { PostType, User } from "@/shared/entities";
+import { sideBarWidthBase } from "@/shared/lib/const";
 import { NewPostForm, PostsList, Sidebar } from "@/shared/ui";
-import { sideBarWidthBase } from "@/shared/utils";
 import { Box, Flex } from "@mantine/core";
 
 interface TopPageClientProps {

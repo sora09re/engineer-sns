@@ -1,8 +1,9 @@
 "use client";
 
+import { uploadImageToSupabase } from "@/shared/lib";
+import { baseURL } from "@/shared/lib/const";
 import { type NewUserValues, useNewUserProfile } from "@/shared/model";
 import { ImageUpload } from "@/shared/ui";
-import { baseURL, uploadImageToSupabase } from "@/shared/utils";
 import {
 	Button,
 	Col,

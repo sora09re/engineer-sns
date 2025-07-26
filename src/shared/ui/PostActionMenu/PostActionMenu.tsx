@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useGetPostsForUser } from "@/shared/api";
 import { useGetTimelinePosts } from "@/shared/api";
 import { useSearchPosts } from "@/shared/api";
-import { baseURL } from "@/shared/utils/baseUrl";
+import { baseURL } from "@/shared/lib/const";
 
 interface PostActionMenuProps {
 	currentUserId: string;

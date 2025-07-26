@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useGetCommentsForPost } from "@/shared/api";
 import { useGetPostDetail } from "@/shared/api";
 import type { User } from "@/shared/entities";
-import { baseURL } from "@/shared/utils/baseUrl";
+import { baseURL } from "@/shared/lib/const";
 
 interface CommentFormProps {
 	currentUser: Pick<User, "id">;

@@ -1,6 +1,7 @@
 "use client";
 
 import type { PostType, User } from "@/shared/entities";
+import { sideBarWidthBase } from "@/shared/lib/const";
 import {
 	CommentForm,
 	CommentList,
@@ -8,7 +9,6 @@ import {
 	PreviousPageHeader,
 	Sidebar,
 } from "@/shared/ui";
-import { sideBarWidthBase } from "@/shared/utils";
 import { Box, Flex, Space } from "@mantine/core";
 import { useRouter } from "next/navigation";
 

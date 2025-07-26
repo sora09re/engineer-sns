@@ -4,8 +4,8 @@ import { useState } from "react";
 import useSWR from "swr";
 
 import { useGetProfile } from "@/shared/api";
-import { baseURL } from "@/shared/utils/baseUrl";
-import { fetcher } from "@/shared/utils/fetcher";
+import { fetcher } from "@/shared/lib";
+import { baseURL } from "@/shared/lib/const";
 
 interface FollowButtonProps {
 	currentUserId: string;

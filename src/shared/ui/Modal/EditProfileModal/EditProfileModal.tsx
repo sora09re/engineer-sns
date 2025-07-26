@@ -17,10 +17,10 @@ import { useGetPostsForUser } from "@/shared/api";
 import { useGetProfile } from "@/shared/api";
 import { ImageUpload } from "@/shared/components/ImageUpload/ImageUpload";
 import type { User } from "@/shared/entities";
+import { uploadImageToSupabase } from "@/shared/lib";
+import { baseURL } from "@/shared/lib/const";
 import { useModal } from "@/shared/model";
 import { useUserProfile } from "@/shared/model";
-import { baseURL } from "@/shared/utils/baseUrl";
-import { uploadImageToSupabase } from "@/shared/utils/uploadImageToSupabase";
 
 interface EditProfileModalProps {
 	currentUser: User;

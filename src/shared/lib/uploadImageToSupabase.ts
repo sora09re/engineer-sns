@@ -1,4 +1,4 @@
-import { supabase } from "@/shared/utils/supabase";
+import { supabase } from "./supabase";
 
 export const uploadImageToSupabase = async (
 	tempImage: string | null,

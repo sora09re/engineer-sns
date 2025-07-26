@@ -1,8 +1,7 @@
 import useSWR from "swr";
 
 import type { PostType } from "@/shared/entities";
-import { baseURL } from "@/shared/utils/baseUrl";
-import { fetcher } from "@/shared/utils/fetcher";
+import { baseURL, fetcher } from "@/shared/lib";
 
 export const useGetPostDetail = (postId: string | undefined) => {
 	const shouldFetch = postId !== undefined;

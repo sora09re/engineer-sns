@@ -1,4 +1,4 @@
-import { baseURL } from "@/shared/utils/baseUrl";
+import { baseURL } from "@/shared/lib/const";
 import { notifications } from "@mantine/notifications";
 import { IconX } from "@tabler/icons";
 

@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 import type { PostType } from "@/shared/entities";
-import { baseURL } from "@/shared/utils/baseUrl";
+import { baseURL } from "@/shared/lib/const";
 
 interface PostActionsButtonGroupProps {
 	currentUserId: string;

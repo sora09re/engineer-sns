@@ -1,8 +1,8 @@
 "use client";
 
 import type { PostType, ProfileType, User } from "@/shared/entities";
+import { sideBarWidthBase } from "@/shared/lib/const";
 import { EditProfileModal, PostsList, Profile, Sidebar } from "@/shared/ui";
-import { sideBarWidthBase } from "@/shared/utils";
 import { Box, Flex } from "@mantine/core";
 
 interface ProfilePageClientProps {
