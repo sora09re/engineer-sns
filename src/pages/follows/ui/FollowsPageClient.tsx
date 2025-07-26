@@ -2,7 +2,7 @@
 
 import { Follows, Sidebar } from "@/shared/components";
 import type { User } from "@/shared/types";
-import { sideBarWidthBase } from "@/shared/utils/sideBarWidth";
+import { sideBarWidthBase } from "@/shared/utils";
 import { Box, Flex } from "@mantine/core";
 
 interface FollowsPageClientProps {
