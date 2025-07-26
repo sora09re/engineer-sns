@@ -1,13 +1,8 @@
 import { MantineProvider } from "@mantine/core";
+import { Provider } from "jotai";
 import { rest } from "msw";
 import { initialize, mswLoader } from "msw-storybook-addon";
 import React from "react";
-import { RecoilRoot } from "recoil";
-import { CommentModal } from "../src/components/Modal/CommentModal/CommentModal";
-import { EditProfileModal } from "../src/components/Modal/EditProfileModal/EditProfileModal";
-import { LoginModal } from "../src/components/Modal/LoginModal/LoginModal";
-import { PostModal } from "../src/components/Modal/PostModal/PostModal";
-import { SignupModal } from "../src/components/Modal/SignupModal/SignupModal";
 import { testPost1, testPost2, testPost3 } from "../src/test/testPost";
 import { testUser1, testUser2, testUser3 } from "../src/test/testUser";
 
@@ -33,11 +28,11 @@ const mswHandlers = [
 ];
 
 const withProviders = (Story) => (
-	<RecoilRoot>
+	<Provider>
 		<MantineProvider withGlobalStyles withNormalizeCSS>
 			<Story />
 		</MantineProvider>
-	</RecoilRoot>
+	</Provider>
 );
 
 const preview = {

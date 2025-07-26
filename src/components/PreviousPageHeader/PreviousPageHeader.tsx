@@ -1,9 +1,9 @@
+import type { AppRouter } from "@/types/appRouter";
 import { Flex, Space, Text } from "@mantine/core";
 import { IconArrowLeft } from "@tabler/icons";
-import type { NextRouter } from "next/router";
 
 interface PreviousPageHeaderProps {
-	router: NextRouter;
+	router: AppRouter;
 }
 
 export const PreviousPageHeader = ({ router }: PreviousPageHeaderProps) => {

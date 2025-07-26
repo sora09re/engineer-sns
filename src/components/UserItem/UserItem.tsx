@@ -1,6 +1,6 @@
 import { Avatar, Box, Flex, Space, Text } from "@mantine/core";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 import { FollowButton } from "@/components/FollowButton/FollowButton";
 import type { User } from "@/types/user";
