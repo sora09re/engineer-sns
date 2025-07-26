@@ -1,13 +1,13 @@
 "use client";
 
-import { EditProfileModal } from "@/shared/components/Modal/EditProfileModal/EditProfileModal";
-import { PostsList } from "@/shared/components/PostsList/PostsList";
-import { Profile } from "@/shared/components/Profile/Profile";
-import { Sidebar } from "@/shared/components/Sidebar/Sidebar";
-import type { PostType } from "@/shared/types/post";
-import type { ProfileType } from "@/shared/types/profile";
-import type { User } from "@/shared/types/user";
-import { sideBarWidthBase } from "@/shared/utils/sideBarWidth";
+import {
+	EditProfileModal,
+	PostsList,
+	Profile,
+	Sidebar,
+} from "@/shared/components";
+import type { PostType, ProfileType, User } from "@/shared/types";
+import { sideBarWidthBase } from "@/shared/utils";
 import { Box, Flex } from "@mantine/core";
 
 interface ProfilePageClientProps {
