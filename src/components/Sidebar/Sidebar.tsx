@@ -5,7 +5,7 @@ import { LoginButton } from "@/components/LoginButton/LoginButton";
 import { MainLinks } from "@/components/MainLinks/MainLinks";
 import { PostModal } from "@/components/Modal/PostModal/PostModal";
 import { useModal } from "@/hooks/useModal";
-import type { User } from "@/types/user";
+import type { User } from "@/shared/types/user";
 import { sideBarWidthBase } from "@/utils/sideBarWidth";
 
 interface SidebarProps {

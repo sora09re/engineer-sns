@@ -1,6 +1,6 @@
 import useSWR from "swr";
 
-import type { PostType } from "@/types/post";
+import type { PostType } from "@/shared/types/post";
 import { baseURL } from "@/utils/baseUrl";
 import { fetcher } from "@/utils/fetcher";
 

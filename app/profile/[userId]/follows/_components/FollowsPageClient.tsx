@@ -2,7 +2,7 @@
 
 import { Follows } from "@/components/Follows/Follows";
 import { Sidebar } from "@/components/Sidebar/Sidebar";
-import type { User } from "@/types/user";
+import type { User } from "@/shared/types/user";
 import { sideBarWidthBase } from "@/utils/sideBarWidth";
 import { Box, Flex } from "@mantine/core";
 

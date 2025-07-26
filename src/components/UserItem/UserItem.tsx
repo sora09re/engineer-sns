@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { FollowButton } from "@/components/FollowButton/FollowButton";
-import type { User } from "@/types/user";
+import type { User } from "@/shared/types/user";
 
 type UserItemProps = {
 	currentUserId: string;

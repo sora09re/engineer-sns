@@ -1,6 +1,6 @@
 import { api } from "@/lib/api-client";
 import { getCurrentUserId } from "@/lib/getCurrentUserId";
-import type { User } from "@/types/user";
+import type { User } from "@/shared/types/user";
 import FollowsPageClient from "./_components/FollowsPageClient";
 
 interface FollowsPageProps {

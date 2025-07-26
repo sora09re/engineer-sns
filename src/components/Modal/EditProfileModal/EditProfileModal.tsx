@@ -18,7 +18,7 @@ import { useGetPostsForUser } from "@/hooks/useGetPostsForUser";
 import { useGetProfile } from "@/hooks/useGetProfile";
 import { useModal } from "@/hooks/useModal";
 import { useUserProfile } from "@/hooks/useUserProfile";
-import type { User } from "@/types/user";
+import type { User } from "@/shared/types/user";
 import { baseURL } from "@/utils/baseUrl";
 import { uploadImageToSupabase } from "@/utils/uploadImageToSupabase";
 

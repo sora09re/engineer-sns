@@ -1,4 +1,4 @@
-import type { User } from "@/types/user";
+import type { User } from "@/shared/types/user";
 
 export const testUser1: User = {
 	id: "a1b2c3d4-e5f6-7g8h-9i0j-k1l2m3n4o5p6",

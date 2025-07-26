@@ -1,6 +1,6 @@
 import useSWR from "swr";
 
-import type { ProfileType } from "@/types/profile";
+import type { ProfileType } from "@/shared/types/profile";
 import { baseURL } from "@/utils/baseUrl";
 import { fetcher } from "@/utils/fetcher";
 

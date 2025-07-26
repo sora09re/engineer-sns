@@ -1,5 +1,5 @@
 import { UserItem } from "@/components/UserItem/UserItem";
-import type { User } from "@/types/user";
+import type { User } from "@/shared/types/user";
 
 interface PostsListProps {
 	currentUserId: string;

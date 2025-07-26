@@ -4,9 +4,9 @@ import { EditProfileModal } from "@/components/Modal/EditProfileModal/EditProfil
 import { PostsList } from "@/components/PostsList/PostsList";
 import { Profile } from "@/components/Profile/Profile";
 import { Sidebar } from "@/components/Sidebar/Sidebar";
-import type { PostType } from "@/types/post";
-import type { ProfileType } from "@/types/profile";
-import type { User } from "@/types/user";
+import type { PostType } from "@/shared/types/post";
+import type { ProfileType } from "@/shared/types/profile";
+import type { User } from "@/shared/types/user";
 import { sideBarWidthBase } from "@/utils/sideBarWidth";
 import { Box, Flex } from "@mantine/core";
 

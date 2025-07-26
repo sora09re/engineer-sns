@@ -1,7 +1,7 @@
 import { api } from "@/lib/api-client";
 import { getCurrentUserId } from "@/lib/getCurrentUserId";
-import type { PostType } from "@/types/post";
-import type { User } from "@/types/user";
+import type { PostType } from "@/shared/types/post";
+import type { User } from "@/shared/types/user";
 import PostDetailPageClient from "./_components/PostDetailPageClient";
 
 interface PostDetailPageProps {

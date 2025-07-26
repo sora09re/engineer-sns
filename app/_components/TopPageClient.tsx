@@ -3,8 +3,8 @@
 import { NewPostForm } from "@/components/NewPostForm/NewPostForm";
 import { PostsList } from "@/components/PostsList/PostsList";
 import { Sidebar } from "@/components/Sidebar/Sidebar";
-import type { PostType } from "@/types/post";
-import type { User } from "@/types/user";
+import type { PostType } from "@/shared/types/post";
+import type { User } from "@/shared/types/user";
 import { sideBarWidthBase } from "@/utils/sideBarWidth";
 import { Box, Flex } from "@mantine/core";
 

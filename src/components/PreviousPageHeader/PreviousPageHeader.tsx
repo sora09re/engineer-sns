@@ -1,4 +1,4 @@
-import type { AppRouter } from "@/types/appRouter";
+import type { AppRouter } from "@/shared/types/appRouter";
 import { Flex, Space, Text } from "@mantine/core";
 import { IconArrowLeft } from "@tabler/icons";
 

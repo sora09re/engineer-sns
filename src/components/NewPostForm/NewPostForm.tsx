@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useGetPostsForUser } from "@/hooks/useGetPostsForUser";
 import { useGetTimelinePosts } from "@/hooks/useGetTimelinePosts";
 import { useModal } from "@/hooks/useModal";
-import type { User } from "@/types/user";
+import type { User } from "@/shared/types/user";
 import { baseURL } from "@/utils/baseUrl";
 
 interface NewPostFormProps {
