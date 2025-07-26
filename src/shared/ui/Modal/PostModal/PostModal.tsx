@@ -1,8 +1,8 @@
 import { Modal } from "@mantine/core";
 
-import { NewPostForm } from "@/shared/components/NewPostForm/NewPostForm";
 import type { User } from "@/shared/entities";
 import { useModal } from "@/shared/model";
+import { NewPostForm } from "@/shared/ui/NewPostForm/NewPostForm";
 
 interface PostModalProps {
 	currentUser: User;

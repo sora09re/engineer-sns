@@ -1,11 +1,11 @@
 import { Box, Tabs } from "@mantine/core";
 import useSWR from "swr";
 
-import { CenteredLoader } from "@/shared/components/CenteredLoader/CenteredLoader";
-import { UsersList } from "@/shared/components/UsersList/UsersList";
 import type { User } from "@/shared/entities";
 import { fetcher } from "@/shared/lib";
 import { baseURL } from "@/shared/lib/const";
+import { CenteredLoader } from "@/shared/ui/CenteredLoader/CenteredLoader";
+import { UsersList } from "@/shared/ui/UsersList/UsersList";
 
 interface FollowsProps {
 	currentUserId: string;

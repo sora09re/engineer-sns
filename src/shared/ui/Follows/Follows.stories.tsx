@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { Follows } from "@/shared/components/Follows/Follows";
+import { Follows } from "@/shared/ui/Follows/Follows";
 
 //import rest from "react-syntax-highlighter/dist/esm/languages/prism/rest";
 

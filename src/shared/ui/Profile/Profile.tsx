@@ -1,10 +1,10 @@
 import { Box } from "@mantine/core";
 
-import { CenteredLoader } from "@/shared/components/CenteredLoader/CenteredLoader";
-import { ProfileActionsButton } from "@/shared/components/ProfileActionsButton/ProfileActionsButton";
-import { ProfileHeader } from "@/shared/components/ProfileHeader/ProfileHeader";
-import { ProfileStats } from "@/shared/components/ProfileStats/ProfileStats";
 import type { ProfileType } from "@/shared/entities";
+import { CenteredLoader } from "@/shared/ui/CenteredLoader/CenteredLoader";
+import { ProfileActionsButton } from "@/shared/ui/ProfileActionsButton/ProfileActionsButton";
+import { ProfileHeader } from "@/shared/ui/ProfileHeader/ProfileHeader";
+import { ProfileStats } from "@/shared/ui/ProfileStats/ProfileStats";
 
 interface ProfileProps {
 	currentUserId: string;

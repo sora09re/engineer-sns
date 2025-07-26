@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { PostModal } from "@/shared/components/Modal/PostModal/PostModal";
+import { PostModal } from "@/shared/ui/Modal/PostModal/PostModal";
 
 const meta: Meta<typeof PostModal> = {
 	component: PostModal,

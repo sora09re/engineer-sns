@@ -2,14 +2,11 @@ import { Avatar, Box, Group, Space, Text } from "@mantine/core";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import {
-	ContentPart,
-	parseContent,
-} from "@/shared/components/ContentPart/ContentPart";
-import { DateFormat } from "@/shared/components/DateFormat/DateFormat";
-import { PostActionMenu } from "@/shared/components/PostActionMenu/PostActionMenu";
-import { PostActionsButtonGroup } from "@/shared/components/PostActionsButtonGroup/PostActionsButtonGroup";
 import type { PostType } from "@/shared/entities";
+import { ContentPart, parseContent } from "@/shared/ui/ContentPart/ContentPart";
+import { DateFormat } from "@/shared/ui/DateFormat/DateFormat";
+import { PostActionMenu } from "@/shared/ui/PostActionMenu/PostActionMenu";
+import { PostActionsButtonGroup } from "@/shared/ui/PostActionsButtonGroup/PostActionsButtonGroup";
 
 interface PostProps {
 	currentUserId: string;

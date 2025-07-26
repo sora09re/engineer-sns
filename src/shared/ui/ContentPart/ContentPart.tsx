@@ -2,7 +2,7 @@ import { Box, Text } from "@mantine/core";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { monokaiSublime } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 
-import { CopyButton } from "@/shared/components/CopyButton/CopyButton";
+import { CopyButton } from "@/shared/ui/CopyButton/CopyButton";
 
 type ParsedContent = {
 	content: string;

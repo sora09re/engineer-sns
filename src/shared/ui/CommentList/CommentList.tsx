@@ -1,5 +1,5 @@
-import { Post } from "@/shared/components/Post/Post";
 import type { PostType } from "@/shared/entities";
+import { Post } from "@/shared/ui/Post/Post";
 import type { User } from "@auth/core/types";
 import { Box, Space } from "@mantine/core";
 

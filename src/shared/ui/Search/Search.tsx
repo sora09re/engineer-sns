@@ -4,10 +4,10 @@ import { useState } from "react";
 import useSWR from "swr";
 
 import { useSearchPosts } from "@/shared/api";
-import { PostsList } from "@/shared/components/PostsList/PostsList";
-import { UsersList } from "@/shared/components/UsersList/UsersList";
 import type { User } from "@/shared/entities";
 import { fetcher } from "@/shared/lib";
+import { PostsList } from "@/shared/ui/PostsList/PostsList";
+import { UsersList } from "@/shared/ui/UsersList/UsersList";
 
 interface SearchProps {
 	currentUser: User;

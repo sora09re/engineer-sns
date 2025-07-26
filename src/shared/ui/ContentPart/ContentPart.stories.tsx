@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { ContentPart } from "@/shared/components/ContentPart/ContentPart";
+import { ContentPart } from "@/shared/ui/ContentPart/ContentPart";
 
 const meta: Meta<typeof ContentPart> = {
 	component: ContentPart,
