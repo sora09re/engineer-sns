@@ -1,6 +1,6 @@
+import { SigninPageClient } from "@/pages/signin";
 import { auth } from "@/shared/lib/auth";
 import { redirect } from "next/navigation";
-import SigninPageClient from "./_components/SigninPageClient";
 
 export default async function SigninPage() {
 	const session = await auth();

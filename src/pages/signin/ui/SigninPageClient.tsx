@@ -3,7 +3,7 @@
 import { Box, Button, Paper, Text, Title } from "@mantine/core";
 import { signIn } from "next-auth/react";
 
-export default function SigninPageClient() {
+export function SigninPageClient() {
 	return (
 		<Box
 			sx={{
