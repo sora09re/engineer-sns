@@ -10,9 +10,7 @@ interface SearchPageClientProps {
 	currentUser: User;
 }
 
-export default function SearchPageClient({
-	currentUser,
-}: SearchPageClientProps) {
+export function SearchPageClient({ currentUser }: SearchPageClientProps) {
 	return (
 		<Flex>
 			<Sidebar currentUser={currentUser} />
