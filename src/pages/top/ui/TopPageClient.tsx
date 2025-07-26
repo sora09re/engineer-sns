@@ -1,7 +1,7 @@
 "use client";
 
-import { NewPostForm, PostsList, Sidebar } from "@/shared/components";
 import type { PostType, User } from "@/shared/types";
+import { NewPostForm, PostsList, Sidebar } from "@/shared/ui";
 import { sideBarWidthBase } from "@/shared/utils";
 import { Box, Flex } from "@mantine/core";
 

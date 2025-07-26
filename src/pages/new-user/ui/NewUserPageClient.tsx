@@ -1,7 +1,7 @@
 "use client";
 
-import { ImageUpload } from "@/shared/components";
 import { type NewUserValues, useNewUserProfile } from "@/shared/hooks";
+import { ImageUpload } from "@/shared/ui";
 import { baseURL, uploadImageToSupabase } from "@/shared/utils";
 import {
 	Button,

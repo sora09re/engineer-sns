@@ -1,7 +1,7 @@
 "use client";
 
-import { Search, Sidebar } from "@/shared/components";
 import type { User } from "@/shared/types";
+import { Search, Sidebar } from "@/shared/ui";
 import { sideBarWidthBase } from "@/shared/utils";
 import { Box, Flex } from "@mantine/core";
 
