@@ -1,7 +1,7 @@
-import FollowsPageClient from "@/app/profile/[userId]/follows/_components/FollowsPageClient";
 import { api } from "@/lib/api-client";
 import { getCurrentUserId } from "@/lib/getCurrentUserId";
 import type { User } from "@/types/user";
+import FollowsPageClient from "./_components/FollowsPageClient";
 
 interface FollowsPageProps {
 	params: Promise<{ userId: string }>;

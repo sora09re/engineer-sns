@@ -1,8 +1,8 @@
-import PostDetailPageClient from "@/app/posts/[postId]/_components/PostDetailPageClient";
 import { api } from "@/lib/api-client";
 import { getCurrentUserId } from "@/lib/getCurrentUserId";
 import type { PostType } from "@/types/post";
 import type { User } from "@/types/user";
+import PostDetailPageClient from "./_components/PostDetailPageClient";
 
 interface PostDetailPageProps {
 	params: Promise<{ postId: string }>;

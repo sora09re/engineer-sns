@@ -1,9 +1,9 @@
-import ProfilePageClient from "@/app/profile/[userId]/_components/ProfilePageClient";
 import { api } from "@/lib/api-client";
 import { getCurrentUserId } from "@/lib/getCurrentUserId";
 import type { PostType } from "@/types/post";
 import type { ProfileType } from "@/types/profile";
 import type { User } from "@/types/user";
+import ProfilePageClient from "./_components/ProfilePageClient";
 
 interface ProfilePageProps {
 	params: Promise<{ userId: string }>;

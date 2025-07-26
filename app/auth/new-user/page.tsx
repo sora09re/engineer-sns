@@ -1,6 +1,6 @@
-import NewUserPageClient from "@/app/auth/new-user/_components/NewUserPageClient";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import NewUserPageClient from "./_components/NewUserPageClient";
 
 export default async function NewUserPage() {
 	const session = await auth();
