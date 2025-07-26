@@ -1,13 +1,14 @@
 "use client";
 
-import { CommentForm } from "@/shared/components/CommentForm/CommentForm";
-import { CommentList } from "@/shared/components/CommentList/CommentList";
-import { Post } from "@/shared/components/Post/Post";
-import { PreviousPageHeader } from "@/shared/components/PreviousPageHeader/PreviousPageHeader";
-import { Sidebar } from "@/shared/components/Sidebar/Sidebar";
-import type { PostType } from "@/shared/types/post";
-import type { User } from "@/shared/types/user";
-import { sideBarWidthBase } from "@/shared/utils/sideBarWidth";
+import {
+	CommentForm,
+	CommentList,
+	Post,
+	PreviousPageHeader,
+	Sidebar,
+} from "@/shared/components";
+import type { PostType, User } from "@/shared/types";
+import { sideBarWidthBase } from "@/shared/utils";
 import { Box, Flex, Space } from "@mantine/core";
 import { useRouter } from "next/navigation";
 
