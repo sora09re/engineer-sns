@@ -4,7 +4,7 @@ import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
 import {
 	type NewUserValues,
 	useNewUserProfile,
-} from "@/hooks/useNewUserProfile";
+} from "@/shared/hooks/useNewUserProfile";
 import { baseURL } from "@/shared/utils/baseUrl";
 import { uploadImageToSupabase } from "@/shared/utils/uploadImageToSupabase";
 import {

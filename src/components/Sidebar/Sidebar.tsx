@@ -4,7 +4,7 @@ import { AccountButton } from "@/components/AccountButton/AccountButton";
 import { LoginButton } from "@/components/LoginButton/LoginButton";
 import { MainLinks } from "@/components/MainLinks/MainLinks";
 import { PostModal } from "@/components/Modal/PostModal/PostModal";
-import { useModal } from "@/hooks/useModal";
+import { useModal } from "@/shared/hooks/useModal";
 import type { User } from "@/shared/types/user";
 import { sideBarWidthBase } from "@/shared/utils/sideBarWidth";
 

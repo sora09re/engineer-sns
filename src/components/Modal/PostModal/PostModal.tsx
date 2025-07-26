@@ -1,7 +1,7 @@
 import { Modal } from "@mantine/core";
 
 import { NewPostForm } from "@/components/NewPostForm/NewPostForm";
-import { useModal } from "@/hooks/useModal";
+import { useModal } from "@/shared/hooks/useModal";
 import type { User } from "@/shared/types/user";
 
 interface PostModalProps {

@@ -1,7 +1,7 @@
 import { Button, Center } from "@mantine/core";
 
 import { FollowButton } from "@/components/FollowButton/FollowButton";
-import { useModal } from "@/hooks/useModal";
+import { useModal } from "@/shared/hooks/useModal";
 
 interface ProfileActionsButtonProps {
 	currentUserId: string;

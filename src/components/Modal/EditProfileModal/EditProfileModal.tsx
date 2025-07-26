@@ -13,11 +13,11 @@ import axios from "axios";
 import { useState } from "react";
 
 import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
-import { useGetCurrentUser } from "@/hooks/useGetCurrentUser";
-import { useGetPostsForUser } from "@/hooks/useGetPostsForUser";
-import { useGetProfile } from "@/hooks/useGetProfile";
-import { useModal } from "@/hooks/useModal";
-import { useUserProfile } from "@/hooks/useUserProfile";
+import { useGetCurrentUser } from "@/shared/hooks/useGetCurrentUser";
+import { useGetPostsForUser } from "@/shared/hooks/useGetPostsForUser";
+import { useGetProfile } from "@/shared/hooks/useGetProfile";
+import { useModal } from "@/shared/hooks/useModal";
+import { useUserProfile } from "@/shared/hooks/useUserProfile";
 import type { User } from "@/shared/types/user";
 import { baseURL } from "@/shared/utils/baseUrl";
 import { uploadImageToSupabase } from "@/shared/utils/uploadImageToSupabase";

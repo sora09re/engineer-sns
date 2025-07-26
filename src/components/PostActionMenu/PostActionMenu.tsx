@@ -4,9 +4,9 @@ import { IconCheck, IconDots, IconTrash, IconX } from "@tabler/icons";
 import axios from "axios";
 import { useState } from "react";
 
-import { useGetPostsForUser } from "@/hooks/useGetPostsForUser";
-import { useGetTimelinePosts } from "@/hooks/useGetTimelinePosts";
-import { useSearchPosts } from "@/hooks/useSearchPosts";
+import { useGetPostsForUser } from "@/shared/hooks/useGetPostsForUser";
+import { useGetTimelinePosts } from "@/shared/hooks/useGetTimelinePosts";
+import { useSearchPosts } from "@/shared/hooks/useSearchPosts";
 import { baseURL } from "@/shared/utils/baseUrl";
 
 interface PostActionMenuProps {
