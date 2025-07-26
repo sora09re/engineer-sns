@@ -4,7 +4,7 @@ import { Provider } from "jotai";
 import React from "react";
 import { describe, expect, it } from "vitest";
 
-import { useModal } from "./useModal";
+import { useModal } from "../useModal";
 
 // テスト用のラッパーコンポーネント
 const wrapper = ({ children }: { children: React.ReactNode }) => (
