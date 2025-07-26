@@ -1,10 +1,10 @@
 "use client";
 
-import { CommentForm } from "@/components/CommentForm/CommentForm";
-import { CommentList } from "@/components/CommentList/CommentList";
-import { Post } from "@/components/Post/Post";
-import { PreviousPageHeader } from "@/components/PreviousPageHeader/PreviousPageHeader";
-import { Sidebar } from "@/components/Sidebar/Sidebar";
+import { CommentForm } from "@/shared/components/CommentForm/CommentForm";
+import { CommentList } from "@/shared/components/CommentList/CommentList";
+import { Post } from "@/shared/components/Post/Post";
+import { PreviousPageHeader } from "@/shared/components/PreviousPageHeader/PreviousPageHeader";
+import { Sidebar } from "@/shared/components/Sidebar/Sidebar";
 import type { PostType } from "@/shared/types/post";
 import type { User } from "@/shared/types/user";
 import { sideBarWidthBase } from "@/shared/utils/sideBarWidth";

@@ -1,6 +1,6 @@
 "use client";
 
-import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
+import { ImageUpload } from "@/shared/components/ImageUpload/ImageUpload";
 import {
 	type NewUserValues,
 	useNewUserProfile,

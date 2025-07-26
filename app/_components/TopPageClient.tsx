@@ -1,8 +1,8 @@
 "use client";
 
-import { NewPostForm } from "@/components/NewPostForm/NewPostForm";
-import { PostsList } from "@/components/PostsList/PostsList";
-import { Sidebar } from "@/components/Sidebar/Sidebar";
+import { NewPostForm } from "@/shared/components/NewPostForm/NewPostForm";
+import { PostsList } from "@/shared/components/PostsList/PostsList";
+import { Sidebar } from "@/shared/components/Sidebar/Sidebar";
 import type { PostType } from "@/shared/types/post";
 import type { User } from "@/shared/types/user";
 import { sideBarWidthBase } from "@/shared/utils/sideBarWidth";
