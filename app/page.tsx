@@ -1,8 +1,8 @@
+import { TopPageClient } from "@/pages/top";
 import { api } from "@/shared/lib/api-client";
 import { getCurrentUserId } from "@/shared/lib/getCurrentUserId";
 import type { PostType } from "@/shared/types/post";
 import type { User } from "@/shared/types/user";
-import TopPageClient from "./_components/TopPageClient";
 
 export default async function TopPage() {
 	const currentUserId = await getCurrentUserId();

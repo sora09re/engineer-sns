@@ -13,7 +13,7 @@ interface TopPageClientProps {
 	timelinePosts: PostType[];
 }
 
-export default function TopPageClient({
+export function TopPageClient({
 	currentUser,
 	timelinePosts,
 }: TopPageClientProps) {
