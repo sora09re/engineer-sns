@@ -1,6 +1,6 @@
 import useSWR from "swr";
 
-import { fetcher } from "@/utils/fetcher";
+import { fetcher } from "@/shared/utils/fetcher";
 
 export const useSearchPosts = (keyword: string | undefined) => {
 	const shouldFetch = keyword !== undefined;

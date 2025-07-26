@@ -19,8 +19,8 @@ import { useGetProfile } from "@/hooks/useGetProfile";
 import { useModal } from "@/hooks/useModal";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import type { User } from "@/shared/types/user";
-import { baseURL } from "@/utils/baseUrl";
-import { uploadImageToSupabase } from "@/utils/uploadImageToSupabase";
+import { baseURL } from "@/shared/utils/baseUrl";
+import { uploadImageToSupabase } from "@/shared/utils/uploadImageToSupabase";
 
 interface EditProfileModalProps {
 	currentUser: User;

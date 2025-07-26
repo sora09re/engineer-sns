@@ -1,8 +1,8 @@
 import useSWR from "swr";
 
 import type { ProfileType } from "@/shared/types/profile";
-import { baseURL } from "@/utils/baseUrl";
-import { fetcher } from "@/utils/fetcher";
+import { baseURL } from "@/shared/utils/baseUrl";
+import { fetcher } from "@/shared/utils/fetcher";
 
 export const useGetProfile = (userId: string) => {
 	const shouldFetch = userId !== undefined;

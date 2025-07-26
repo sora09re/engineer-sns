@@ -6,7 +6,7 @@ import { MainLinks } from "@/components/MainLinks/MainLinks";
 import { PostModal } from "@/components/Modal/PostModal/PostModal";
 import { useModal } from "@/hooks/useModal";
 import type { User } from "@/shared/types/user";
-import { sideBarWidthBase } from "@/utils/sideBarWidth";
+import { sideBarWidthBase } from "@/shared/utils/sideBarWidth";
 
 interface SidebarProps {
 	currentUser: User;

@@ -1,8 +1,8 @@
 import useSWR from "swr";
 
 import type { PostType } from "@/shared/types/post";
-import { baseURL } from "@/utils/baseUrl";
-import { fetcher } from "@/utils/fetcher";
+import { baseURL } from "@/shared/utils/baseUrl";
+import { fetcher } from "@/shared/utils/fetcher";
 
 export const useGetCommentsForPost = (postId: string | null | undefined) => {
 	const shouldFetch = postId != null; // nullまたはundefinedでない場合にtrue

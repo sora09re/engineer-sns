@@ -5,7 +5,7 @@ import { PostsList } from "@/components/PostsList/PostsList";
 import { Sidebar } from "@/components/Sidebar/Sidebar";
 import type { PostType } from "@/shared/types/post";
 import type { User } from "@/shared/types/user";
-import { sideBarWidthBase } from "@/utils/sideBarWidth";
+import { sideBarWidthBase } from "@/shared/utils/sideBarWidth";
 import { Box, Flex } from "@mantine/core";
 
 interface TopPageClientProps {

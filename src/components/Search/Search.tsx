@@ -7,7 +7,7 @@ import { PostsList } from "@/components/PostsList/PostsList";
 import { UsersList } from "@/components/UsersList/UsersList";
 import { useSearchPosts } from "@/hooks/useSearchPosts";
 import type { User } from "@/shared/types/user";
-import { fetcher } from "@/utils/fetcher";
+import { fetcher } from "@/shared/utils/fetcher";
 
 interface SearchProps {
 	currentUser: User;

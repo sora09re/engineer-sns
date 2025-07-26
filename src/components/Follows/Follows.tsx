@@ -4,8 +4,8 @@ import useSWR from "swr";
 import { CenteredLoader } from "@/components/CenteredLoader/CenteredLoader";
 import { UsersList } from "@/components/UsersList/UsersList";
 import type { User } from "@/shared/types/user";
-import { baseURL } from "@/utils/baseUrl";
-import { fetcher } from "@/utils/fetcher";
+import { baseURL } from "@/shared/utils/baseUrl";
+import { fetcher } from "@/shared/utils/fetcher";
 
 interface FollowsProps {
 	currentUserId: string;

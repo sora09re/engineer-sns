@@ -5,8 +5,8 @@ import {
 	type NewUserValues,
 	useNewUserProfile,
 } from "@/hooks/useNewUserProfile";
-import { baseURL } from "@/utils/baseUrl";
-import { uploadImageToSupabase } from "@/utils/uploadImageToSupabase";
+import { baseURL } from "@/shared/utils/baseUrl";
+import { uploadImageToSupabase } from "@/shared/utils/uploadImageToSupabase";
 import {
 	Button,
 	Col,

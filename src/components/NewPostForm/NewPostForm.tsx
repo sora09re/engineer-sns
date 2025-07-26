@@ -8,7 +8,7 @@ import { useGetPostsForUser } from "@/hooks/useGetPostsForUser";
 import { useGetTimelinePosts } from "@/hooks/useGetTimelinePosts";
 import { useModal } from "@/hooks/useModal";
 import type { User } from "@/shared/types/user";
-import { baseURL } from "@/utils/baseUrl";
+import { baseURL } from "@/shared/utils/baseUrl";
 
 interface NewPostFormProps {
 	currentUser: Pick<User, "id">;
