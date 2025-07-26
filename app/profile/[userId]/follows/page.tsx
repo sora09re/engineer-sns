@@ -1,5 +1,5 @@
-import { api } from "@/lib/api-client";
-import { getCurrentUserId } from "@/lib/getCurrentUserId";
+import { api } from "@/shared/lib/api-client";
+import { getCurrentUserId } from "@/shared/lib/getCurrentUserId";
 import type { User } from "@/shared/types/user";
 import FollowsPageClient from "./_components/FollowsPageClient";
 
