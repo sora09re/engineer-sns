@@ -11,7 +11,7 @@ interface FollowsPageClientProps {
 	userId: string;
 }
 
-export default function FollowsPageClient({
+export function FollowsPageClient({
 	currentUser,
 	userId,
 }: FollowsPageClientProps) {
