@@ -52,6 +52,7 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
+		"@feature-sliced/cli": "^1.0.0",
 		"@feature-sliced/steiger-plugin": "^0.5.7",
 		"@storybook/addon-essentials": "^7.0.12",
 		"@storybook/addon-interactions": "^7.0.12",
