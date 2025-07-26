@@ -16,7 +16,7 @@ interface ProfilePageClientProps {
 	postsForUser: PostType[];
 }
 
-export default function ProfilePageClient({
+export function ProfilePageClient({
 	currentUser,
 	user,
 	postsForUser,
