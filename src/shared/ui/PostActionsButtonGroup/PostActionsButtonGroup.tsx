@@ -6,7 +6,7 @@ import axios from "axios";
 import Link from "next/link";
 import { useState } from "react";
 
-import type { PostType } from "@/shared/types/post";
+import type { PostType } from "@/shared/entities";
 import { baseURL } from "@/shared/utils/baseUrl";
 
 interface PostActionsButtonGroupProps {

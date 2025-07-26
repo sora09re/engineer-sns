@@ -9,7 +9,7 @@ import {
 import { DateFormat } from "@/shared/components/DateFormat/DateFormat";
 import { PostActionMenu } from "@/shared/components/PostActionMenu/PostActionMenu";
 import { PostActionsButtonGroup } from "@/shared/components/PostActionsButtonGroup/PostActionsButtonGroup";
-import type { PostType } from "@/shared/types/post";
+import type { PostType } from "@/shared/entities";
 
 interface PostProps {
 	currentUserId: string;

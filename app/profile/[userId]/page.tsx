@@ -1,9 +1,7 @@
 import { ProfilePageClient } from "@/pages/profile";
+import type { PostType, ProfileType, User } from "@/shared/entities";
 import { api } from "@/shared/lib/api-client";
 import { getCurrentUserId } from "@/shared/lib/getCurrentUserId";
-import type { PostType } from "@/shared/types/post";
-import type { ProfileType } from "@/shared/types/profile";
-import type { User } from "@/shared/types/user";
 
 interface ProfilePageProps {
 	params: Promise<{ userId: string }>;

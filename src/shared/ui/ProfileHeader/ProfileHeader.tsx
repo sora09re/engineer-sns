@@ -1,7 +1,7 @@
 import { Avatar, Center, Flex, Space, Text } from "@mantine/core";
 import { IconLink, IconMapPinPin } from "@tabler/icons-react";
 
-import type { ProfileType } from "@/shared/types/profile";
+import type { ProfileType } from "@/shared/entities";
 
 interface ProfileHeaderProps {
 	user: ProfileType;

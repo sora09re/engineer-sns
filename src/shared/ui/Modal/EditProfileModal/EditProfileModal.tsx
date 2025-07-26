@@ -16,9 +16,9 @@ import { useGetCurrentUser } from "@/shared/api";
 import { useGetPostsForUser } from "@/shared/api";
 import { useGetProfile } from "@/shared/api";
 import { ImageUpload } from "@/shared/components/ImageUpload/ImageUpload";
+import type { User } from "@/shared/entities";
 import { useModal } from "@/shared/model";
 import { useUserProfile } from "@/shared/model";
-import type { User } from "@/shared/types/user";
 import { baseURL } from "@/shared/utils/baseUrl";
 import { uploadImageToSupabase } from "@/shared/utils/uploadImageToSupabase";
 

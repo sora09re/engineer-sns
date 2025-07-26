@@ -4,8 +4,8 @@ import { AccountButton } from "@/shared/components/AccountButton/AccountButton";
 import { LoginButton } from "@/shared/components/LoginButton/LoginButton";
 import { MainLinks } from "@/shared/components/MainLinks/MainLinks";
 import { PostModal } from "@/shared/components/Modal/PostModal/PostModal";
+import type { User } from "@/shared/entities";
 import { useModal } from "@/shared/model";
-import type { User } from "@/shared/types/user";
 import { sideBarWidthBase } from "@/shared/utils/sideBarWidth";
 
 interface SidebarProps {

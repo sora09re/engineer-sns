@@ -3,7 +3,7 @@ import useSWR from "swr";
 
 import { CenteredLoader } from "@/shared/components/CenteredLoader/CenteredLoader";
 import { UsersList } from "@/shared/components/UsersList/UsersList";
-import type { User } from "@/shared/types/user";
+import type { User } from "@/shared/entities";
 import { baseURL } from "@/shared/utils/baseUrl";
 import { fetcher } from "@/shared/utils/fetcher";
 

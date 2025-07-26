@@ -1,7 +1,7 @@
 import { FollowsPageClient } from "@/pages/follows";
+import type { User } from "@/shared/entities";
 import { api } from "@/shared/lib/api-client";
 import { getCurrentUserId } from "@/shared/lib/getCurrentUserId";
-import type { User } from "@/shared/types/user";
 
 interface FollowsPageProps {
 	params: Promise<{ userId: string }>;

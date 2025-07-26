@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import type { User } from "@/shared/types/user";
+import type { User } from "@/shared/entities";
 
 interface UserProfile {
 	bio?: string;

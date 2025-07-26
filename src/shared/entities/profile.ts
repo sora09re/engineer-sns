@@ -1,5 +1,5 @@
-import type { Follow } from "@/shared/types/follow";
-import type { PostType } from "@/shared/types/post";
+import type { Follow } from "./follow";
+import type { PostType } from "./post";
 
 export type ProfileType = {
 	id: string;

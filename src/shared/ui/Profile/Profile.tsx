@@ -4,7 +4,7 @@ import { CenteredLoader } from "@/shared/components/CenteredLoader/CenteredLoade
 import { ProfileActionsButton } from "@/shared/components/ProfileActionsButton/ProfileActionsButton";
 import { ProfileHeader } from "@/shared/components/ProfileHeader/ProfileHeader";
 import { ProfileStats } from "@/shared/components/ProfileStats/ProfileStats";
-import type { ProfileType } from "@/shared/types/profile";
+import type { ProfileType } from "@/shared/entities";
 
 interface ProfileProps {
 	currentUserId: string;

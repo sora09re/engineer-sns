@@ -6,8 +6,8 @@ import { useState } from "react";
 
 import { useGetPostsForUser } from "@/shared/api";
 import { useGetTimelinePosts } from "@/shared/api";
+import type { User } from "@/shared/entities";
 import { useModal } from "@/shared/model";
-import type { User } from "@/shared/types/user";
 import { baseURL } from "@/shared/utils/baseUrl";
 
 interface NewPostFormProps {

@@ -1,5 +1,5 @@
 import { Post } from "@/shared/components/Post/Post";
-import type { PostType } from "@/shared/types/post";
+import type { PostType } from "@/shared/entities";
 
 interface PostsListProps {
 	currentUserId: string;

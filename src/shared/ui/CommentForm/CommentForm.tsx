@@ -6,7 +6,7 @@ import { useState } from "react";
 
 import { useGetCommentsForPost } from "@/shared/api";
 import { useGetPostDetail } from "@/shared/api";
-import type { User } from "@/shared/types/user";
+import type { User } from "@/shared/entities";
 import { baseURL } from "@/shared/utils/baseUrl";
 
 interface CommentFormProps {

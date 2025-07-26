@@ -2,7 +2,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import useSWR from "swr";
 
-import type { User } from "@/shared/types/user";
+import type { User } from "@/shared/entities";
 import { baseURL } from "@/shared/utils/baseUrl";
 import { fetcher } from "@/shared/utils/fetcher";
 

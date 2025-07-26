@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import type { PostType } from "@/shared/types/post";
+import type { PostType } from "@/shared/entities";
 import { supabase } from "@/shared/utils/supabase";
 
 export default async function handler(

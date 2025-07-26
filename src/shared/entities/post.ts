@@ -1,5 +1,5 @@
-import type { Like } from "@/shared/types/like";
-import type { User } from "@/shared/types/user";
+import type { Like } from "./like";
+import type { User } from "./user";
 
 export type PostType = {
 	id: string;

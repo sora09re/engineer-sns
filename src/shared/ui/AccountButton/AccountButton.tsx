@@ -1,7 +1,7 @@
 import { Avatar, Group, Text, UnstyledButton } from "@mantine/core";
 import { useSession } from "next-auth/react";
 
-import type { User } from "@/shared/types/user";
+import type { User } from "@/shared/entities";
 
 interface AccountButtonProps {
 	currentUser: Pick<User, "name" | "username" | "profile_image_url">;

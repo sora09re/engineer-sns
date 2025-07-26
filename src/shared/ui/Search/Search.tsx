@@ -6,7 +6,7 @@ import useSWR from "swr";
 import { useSearchPosts } from "@/shared/api";
 import { PostsList } from "@/shared/components/PostsList/PostsList";
 import { UsersList } from "@/shared/components/UsersList/UsersList";
-import type { User } from "@/shared/types/user";
+import type { User } from "@/shared/entities";
 import { fetcher } from "@/shared/utils/fetcher";
 
 interface SearchProps {

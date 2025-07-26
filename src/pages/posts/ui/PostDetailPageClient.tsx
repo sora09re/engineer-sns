@@ -1,6 +1,6 @@
 "use client";
 
-import type { PostType, User } from "@/shared/types";
+import type { PostType, User } from "@/shared/entities";
 import {
 	CommentForm,
 	CommentList,
