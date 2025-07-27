@@ -3,13 +3,11 @@
 import { Box } from "@mantine/core";
 
 import type { ProfileType } from "@/shared/entities";
-import {
-	CenteredLoader,
-	ProfileActionsButton,
-	ProfileStats,
-} from "@/shared/ui";
+import { CenteredLoader } from "@/shared/ui";
 
+import { ProfileActionsButton } from "./ProfileActionsButton";
 import { ProfileHeader } from "./ProfileHeader";
+import { ProfileStats } from "./ProfileStats";
 
 interface ProfileProps {
 	currentUserId: string;

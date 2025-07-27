@@ -1,14 +1,9 @@
 export { Sidebar } from "./Sidebar/Sidebar";
 export { ImageUpload } from "./ImageUpload/ImageUpload";
-export { CommentForm } from "./CommentForm/CommentForm";
-export { CommentList } from "./CommentList/CommentList";
 export { Post } from "./Post/Post";
-export { PreviousPageHeader } from "./PreviousPageHeader/PreviousPageHeader";
 export { EditProfileModal } from "./Modal/EditProfileModal/EditProfileModal";
 export { PostsList } from "./PostsList/PostsList";
 export { UsersList } from "./UsersList/UsersList";
 export { NewPostForm } from "./NewPostForm/NewPostForm";
-export { Follows } from "./Follows/Follows";
 export { CenteredLoader } from "./CenteredLoader/CenteredLoader";
-export { ProfileActionsButton } from "./ProfileActionsButton/ProfileActionsButton";
-export { ProfileStats } from "./ProfileStats/ProfileStats";
+export { FollowButton } from "./FollowButton/FollowButton";

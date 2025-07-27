@@ -2,8 +2,10 @@
 
 import type { User } from "@/shared/entities";
 import { sideBarWidthBase } from "@/shared/lib/const";
-import { Follows, Sidebar } from "@/shared/ui";
+import { Sidebar } from "@/shared/ui";
 import { Box, Flex } from "@mantine/core";
+
+import { Follows } from "./Follows";
 
 interface FollowsPageClientProps {
 	currentUser: User;

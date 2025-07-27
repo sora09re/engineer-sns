@@ -1,3 +1,5 @@
+"use client";
+
 import { Box, Button, Space, Textarea } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons";

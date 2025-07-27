@@ -2,15 +2,13 @@
 
 import type { PostType, User } from "@/shared/entities";
 import { sideBarWidthBase } from "@/shared/lib/const";
-import {
-	CommentForm,
-	CommentList,
-	Post,
-	PreviousPageHeader,
-	Sidebar,
-} from "@/shared/ui";
+import { Post, Sidebar } from "@/shared/ui";
 import { Box, Flex, Space } from "@mantine/core";
 import { useRouter } from "next/navigation";
+
+import { CommentForm } from "./CommentForm";
+import { CommentList } from "./CommentList";
+import { PreviousPageHeader } from "./PreviousPageHeader";
 
 interface PostDetailPageClientProps {
 	currentUser: User;
