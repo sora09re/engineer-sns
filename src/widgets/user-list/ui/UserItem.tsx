@@ -2,8 +2,8 @@ import { Avatar, Box, Flex, Space, Text } from "@mantine/core";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+import { FollowButton } from "@/features/follow";
 import type { User } from "@/shared/entities";
-import { FollowButton } from "@/shared/ui/FollowButton/FollowButton";
 
 type UserItemProps = {
 	currentUserId: string;

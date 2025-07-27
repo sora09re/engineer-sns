@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { UserItem } from "@/shared/ui/UserItem/UserItem";
+import { UserItem } from "./UserItem";
 
 const meta: Meta<typeof UserItem> = {
 	component: UserItem,

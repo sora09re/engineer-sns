@@ -3,7 +3,5 @@ export { ImageUpload } from "./ImageUpload/ImageUpload";
 export { Post } from "./Post/Post";
 export { EditProfileModal } from "./Modal/EditProfileModal/EditProfileModal";
 export { PostsList } from "./PostsList/PostsList";
-export { UsersList } from "./UsersList/UsersList";
 export { NewPostForm } from "./NewPostForm/NewPostForm";
 export { CenteredLoader } from "./CenteredLoader/CenteredLoader";
-export { FollowButton } from "./FollowButton/FollowButton";

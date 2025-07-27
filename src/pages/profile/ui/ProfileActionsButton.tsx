@@ -2,8 +2,8 @@
 
 import { Button, Center } from "@mantine/core";
 
+import { FollowButton } from "@/features/follow";
 import { useModal } from "@/shared/model";
-import { FollowButton } from "@/shared/ui";
 
 interface ProfileActionsButtonProps {
 	currentUserId: string;

@@ -6,7 +6,8 @@ import useSWR from "swr";
 import type { User } from "@/shared/entities";
 import { fetcher } from "@/shared/lib";
 import { baseURL } from "@/shared/lib/const";
-import { CenteredLoader, UsersList } from "@/shared/ui";
+import { CenteredLoader } from "@/shared/ui";
+import { UsersList } from "@/widgets/user-list";
 
 interface FollowsProps {
 	currentUserId: string;

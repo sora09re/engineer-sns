@@ -1,5 +1,5 @@
 import type { User } from "@/shared/entities";
-import { UserItem } from "@/shared/ui/UserItem/UserItem";
+import { UserItem } from "./UserItem";
 
 interface PostsListProps {
 	currentUserId: string;
