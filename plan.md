@@ -1,1 +1,1 @@
-`src/shared/ui/Search` を `src/pages/search/ui` へ移動する
+`src/shared/ui/Profile` を `src/pages/profile/ui` へ移動する

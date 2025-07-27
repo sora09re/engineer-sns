@@ -2,8 +2,10 @@
 
 import type { PostType, ProfileType, User } from "@/shared/entities";
 import { sideBarWidthBase } from "@/shared/lib/const";
-import { EditProfileModal, PostsList, Profile, Sidebar } from "@/shared/ui";
+import { EditProfileModal, PostsList, Sidebar } from "@/shared/ui";
 import { Box, Flex } from "@mantine/core";
+
+import { Profile } from "./Profile";
 
 interface ProfilePageClientProps {
 	currentUser: User;

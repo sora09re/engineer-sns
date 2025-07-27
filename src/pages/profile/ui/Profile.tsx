@@ -1,10 +1,14 @@
+"use client";
+
 import { Box } from "@mantine/core";
 
 import type { ProfileType } from "@/shared/entities";
-import { CenteredLoader } from "@/shared/ui/CenteredLoader/CenteredLoader";
-import { ProfileActionsButton } from "@/shared/ui/ProfileActionsButton/ProfileActionsButton";
-import { ProfileHeader } from "@/shared/ui/ProfileHeader/ProfileHeader";
-import { ProfileStats } from "@/shared/ui/ProfileStats/ProfileStats";
+import {
+	CenteredLoader,
+	ProfileActionsButton,
+	ProfileHeader,
+	ProfileStats,
+} from "@/shared/ui";
 
 interface ProfileProps {
 	currentUserId: string;
