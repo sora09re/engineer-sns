@@ -2,7 +2,8 @@
 
 import type { PostType, ProfileType, User } from "@/shared/entities";
 import { sideBarWidthBase } from "@/shared/lib/const";
-import { EditProfileModal, PostsList, Sidebar } from "@/shared/ui";
+import { EditProfileModal, Sidebar } from "@/shared/ui";
+import { PostsList } from "@/widgets/posts-list";
 import { Box, Flex } from "@mantine/core";
 
 import { Profile } from "./Profile";

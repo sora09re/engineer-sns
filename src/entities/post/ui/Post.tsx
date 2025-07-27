@@ -3,10 +3,13 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import type { PostType } from "@/shared/entities";
-import { ContentPart, parseContent } from "@/shared/ui/ContentPart/ContentPart";
-import { DateFormat } from "@/shared/ui/DateFormat/DateFormat";
-import { PostActionMenu } from "@/shared/ui/PostActionMenu/PostActionMenu";
-import { PostActionsButtonGroup } from "@/shared/ui/PostActionsButtonGroup/PostActionsButtonGroup";
+import {
+	ContentPart,
+	DateFormat,
+	PostActionMenu,
+	PostActionsButtonGroup,
+	parseContent,
+} from "@/shared/ui";
 
 interface PostProps {
 	currentUserId: string;
