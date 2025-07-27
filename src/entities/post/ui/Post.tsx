@@ -6,10 +6,10 @@ import type { PostType } from "@/shared/entities";
 import {
 	ContentPart,
 	DateFormat,
-	PostActionMenu,
 	PostActionsButtonGroup,
 	parseContent,
 } from "@/shared/ui";
+import { PostActionMenu } from "./PostActionMenu";
 
 interface PostProps {
 	currentUserId: string;

@@ -1,1 +1,1 @@
-export { Post } from "./ui";
+export { Post, PostActionMenu } from "./ui";
