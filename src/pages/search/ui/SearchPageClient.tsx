@@ -2,8 +2,10 @@
 
 import type { User } from "@/shared/entities";
 import { sideBarWidthBase } from "@/shared/lib/const";
-import { Search, Sidebar } from "@/shared/ui";
+import { Sidebar } from "@/shared/ui";
 import { Box, Flex } from "@mantine/core";
+
+import { Search } from "./Search";
 
 interface SearchPageClientProps {
 	currentUser: User;

@@ -1,4 +1,3 @@
-export { Search } from "./Search/Search";
 export { Sidebar } from "./Sidebar/Sidebar";
 export { ImageUpload } from "./ImageUpload/ImageUpload";
 export { CommentForm } from "./CommentForm/CommentForm";

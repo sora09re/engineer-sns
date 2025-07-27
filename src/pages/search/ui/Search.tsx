@@ -1,3 +1,5 @@
+"use client";
+
 import { Box, Center, Loader, Tabs, TextInput } from "@mantine/core";
 import { IconSearch } from "@tabler/icons";
 import { useState } from "react";
@@ -6,8 +8,7 @@ import useSWR from "swr";
 import { useSearchPosts } from "@/shared/api";
 import type { User } from "@/shared/entities";
 import { fetcher } from "@/shared/lib";
-import { PostsList } from "@/shared/ui/PostsList/PostsList";
-import { UsersList } from "@/shared/ui/UsersList/UsersList";
+import { PostsList, UsersList } from "@/shared/ui";
 
 interface SearchProps {
 	currentUser: User;

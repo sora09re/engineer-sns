@@ -1,3 +1,1 @@
-Steiger はFeature-Sliced Designのルールセットを持つアーキテクチャリンターです。
-`npx steiger ./src` を実行し、エラーを段階的に１つずつ解消してください。
-１つ解消する事にコミットすること。
+`src/shared/ui/Search` を `src/pages/search/ui` へ移動する
