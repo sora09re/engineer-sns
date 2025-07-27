@@ -1,5 +1,6 @@
+import type { ProfileType } from "@/entities/profile";
 import { ProfilePageClient } from "@/pages/profile";
-import type { PostType, ProfileType, User } from "@/shared/entities";
+import type { PostType, User } from "@/shared/entities";
 import { api } from "@/shared/lib/api-client";
 import { getCurrentUserId } from "@/shared/lib/getCurrentUserId";
 

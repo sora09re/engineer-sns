@@ -1,6 +1,7 @@
 "use client";
 
-import type { PostType, ProfileType, User } from "@/shared/entities";
+import type { ProfileType } from "@/entities/profile";
+import type { PostType, User } from "@/shared/entities";
 import { sideBarWidthBase } from "@/shared/lib/const";
 import { PostsList } from "@/widgets/posts-list";
 import { Sidebar } from "@/widgets/sidebar";

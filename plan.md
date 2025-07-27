@@ -10,4 +10,5 @@
 ✅ `src/shared/ui/Modal/PostModal` を `src/features/create-post/ui` へ移動する
 ✅ `src/shared/ui/NewPostForm/NewPostForm.tsx` を `src/features/create-post/ui` へ移動する
 ✅ `src/shared/ui/PostActionsButtonGroup` を `src/entities/post/ui` へ移動する
+- [ ] `src/shared/entities/profile.ts` を `src/entities/profile/model` に移動する
 - [ ] 

@@ -2,7 +2,7 @@
 
 import { Box } from "@mantine/core";
 
-import type { ProfileType } from "@/shared/entities";
+import type { ProfileType } from "@/entities/profile";
 import { CenteredLoader } from "@/shared/ui";
 
 import { ProfileActionsButton } from "./ProfileActionsButton";

@@ -1,7 +1,7 @@
 import { Group, Text } from "@mantine/core";
 import Link from "next/link";
 
-import type { ProfileType } from "@/shared/entities";
+import type { ProfileType } from "@/entities/profile";
 
 interface ProfileStatsProps {
 	user: ProfileType;
