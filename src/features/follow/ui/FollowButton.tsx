@@ -3,7 +3,7 @@ import axios from "axios";
 import { useState } from "react";
 import useSWR from "swr";
 
-import { useGetProfile } from "@/shared/api";
+import { useGetProfile } from "@/entities/profile";
 import { fetcher } from "@/shared/lib";
 import { baseURL } from "@/shared/lib/const";
 

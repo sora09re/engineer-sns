@@ -1,7 +1,7 @@
 import useSWR from "swr";
 
-import type { ProfileType } from "@/shared/entities";
 import { baseURL, fetcher } from "@/shared/lib";
+import type { ProfileType } from "../model/types";
 
 export const useGetProfile = (userId: string) => {
 	const shouldFetch = userId !== undefined;
