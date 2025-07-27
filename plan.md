@@ -3,3 +3,4 @@
 - [x] `src/shared/ui/UsersList` を `src/widgets/user-list` へ移動する
 - [x] `src/shared/ui/Post/Post.tsx` を `src/entities/post` へ移動する
 ✅ `src/shared/ui/PostActionMenu` を `src/entities/post` へ移動する
+✅ entities や features などの ui フォルダ直下の index.ts を削除する。
