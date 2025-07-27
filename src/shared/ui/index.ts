@@ -7,4 +7,3 @@ export { PostActionsButtonGroup } from "./PostActionsButtonGroup/PostActionsButt
 export { AccountButton } from "./AccountButton/AccountButton";
 export { LoginButton } from "./LoginButton/LoginButton";
 export { MainLinks } from "./MainLinks/MainLinks";
-export { PostModal } from "./Modal/PostModal/PostModal";

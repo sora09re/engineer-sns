@@ -7,4 +7,4 @@
 ✅ `src/shared/ui` 内のファイルで特定のページからしか使用されていないコンポーネントを `src/pages/〇〇/ui` へ移動する
 
 ✅ `src/shared/ui/Sidebar` を `src/widgets` へ移動する
-- [ ] `
+✅ `src/shared/ui/Modal/PostModal` を `src/features/create-post/ui` へ移動する
