@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { NewPostForm } from "@/shared/ui/NewPostForm/NewPostForm";
+import { NewPostForm } from "./NewPostForm";
 
 const meta: Meta<typeof NewPostForm> = {
 	component: NewPostForm,
