@@ -1,3 +1,5 @@
+"use client";
+
 import {
 	Button,
 	Center,
@@ -20,7 +22,7 @@ import { uploadImageToSupabase } from "@/shared/lib";
 import { baseURL } from "@/shared/lib/const";
 import { useModal } from "@/shared/model";
 import { useUserProfile } from "@/shared/model";
-import { ImageUpload } from "@/shared/ui/ImageUpload/ImageUpload";
+import { ImageUpload } from "@/shared/ui";
 
 interface EditProfileModalProps {
 	currentUser: User;

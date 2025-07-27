@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { EditProfileModal } from "@/shared/ui/Modal/EditProfileModal/EditProfileModal";
+import { EditProfileModal } from "./EditProfileModal";
 
 const meta: Meta<typeof EditProfileModal> = {
 	component: EditProfileModal,
