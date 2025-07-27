@@ -2,8 +2,9 @@
 
 import type { PostType, User } from "@/shared/entities";
 import { sideBarWidthBase } from "@/shared/lib/const";
-import { NewPostForm, Sidebar } from "@/shared/ui";
+import { NewPostForm } from "@/shared/ui";
 import { PostsList } from "@/widgets/posts-list";
+import { Sidebar } from "@/widgets/sidebar";
 import { Box, Flex } from "@mantine/core";
 
 interface TopPageClientProps {

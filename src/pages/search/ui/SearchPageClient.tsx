@@ -2,7 +2,7 @@
 
 import type { User } from "@/shared/entities";
 import { sideBarWidthBase } from "@/shared/lib/const";
-import { Sidebar } from "@/shared/ui";
+import { Sidebar } from "@/widgets/sidebar";
 import { Box, Flex } from "@mantine/core";
 
 import { Search } from "./Search";

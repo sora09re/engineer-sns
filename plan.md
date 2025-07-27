@@ -5,3 +5,6 @@
 ✅ `src/shared/ui/PostActionMenu` を `src/entities/post` へ移動する
 ✅ entities や features などの ui フォルダ直下の index.ts を削除する。
 ✅ `src/shared/ui` 内のファイルで特定のページからしか使用されていないコンポーネントを `src/pages/〇〇/ui` へ移動する
+
+✅ `src/shared/ui/Sidebar` を `src/widgets` へ移動する
+- [ ] `

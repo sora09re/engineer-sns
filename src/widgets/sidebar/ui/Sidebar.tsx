@@ -3,10 +3,7 @@ import { Button, Navbar, Space } from "@mantine/core";
 import type { User } from "@/shared/entities";
 import { sideBarWidthBase } from "@/shared/lib/const";
 import { useModal } from "@/shared/model";
-import { AccountButton } from "@/shared/ui/AccountButton/AccountButton";
-import { LoginButton } from "@/shared/ui/LoginButton/LoginButton";
-import { MainLinks } from "@/shared/ui/MainLinks/MainLinks";
-import { PostModal } from "@/shared/ui/Modal/PostModal/PostModal";
+import { AccountButton, LoginButton, MainLinks, PostModal } from "@/shared/ui";
 
 interface SidebarProps {
 	currentUser: User;
