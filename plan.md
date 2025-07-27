@@ -9,3 +9,5 @@
 ✅ `src/shared/ui/Sidebar` を `src/widgets` へ移動する
 ✅ `src/shared/ui/Modal/PostModal` を `src/features/create-post/ui` へ移動する
 ✅ `src/shared/ui/NewPostForm/NewPostForm.tsx` を `src/features/create-post/ui` へ移動する
+✅ `src/shared/ui/PostActionsButtonGroup` を `src/entities/post/ui` へ移動する
+- [ ] 
