@@ -11,5 +11,4 @@ export { NewPostForm } from "./NewPostForm/NewPostForm";
 export { Follows } from "./Follows/Follows";
 export { CenteredLoader } from "./CenteredLoader/CenteredLoader";
 export { ProfileActionsButton } from "./ProfileActionsButton/ProfileActionsButton";
-export { ProfileHeader } from "./ProfileHeader/ProfileHeader";
 export { ProfileStats } from "./ProfileStats/ProfileStats";

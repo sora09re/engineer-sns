@@ -6,9 +6,10 @@ import type { ProfileType } from "@/shared/entities";
 import {
 	CenteredLoader,
 	ProfileActionsButton,
-	ProfileHeader,
 	ProfileStats,
 } from "@/shared/ui";
+
+import { ProfileHeader } from "./ProfileHeader";
 
 interface ProfileProps {
 	currentUserId: string;
