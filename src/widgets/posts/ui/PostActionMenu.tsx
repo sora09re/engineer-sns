@@ -5,7 +5,7 @@ import axios from "axios";
 import { useState } from "react";
 
 import { useGetPostsForUser } from "@/entities/post";
-import { useGetTimelinePosts } from "@/shared/api";
+import { useGetTimelinePosts } from "@/entities/post";
 import { useSearchPosts } from "@/shared/api";
 import { baseURL } from "@/shared/lib/const";
 
