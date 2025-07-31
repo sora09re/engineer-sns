@@ -8,7 +8,7 @@ import useSWR from "swr";
 import { useSearchPosts } from "@/shared/api";
 import type { User } from "@/shared/entities";
 import { fetcher } from "@/shared/lib";
-import { PostsList } from "@/widgets/posts-list";
+import { PostsList } from "@/widgets/posts";
 import { UsersList } from "@/widgets/user-list";
 
 interface SearchProps {

@@ -3,7 +3,7 @@
 import { NewPostForm } from "@/features/create-post";
 import type { PostType, User } from "@/shared/entities";
 import { sideBarWidthBase } from "@/shared/lib/const";
-import { PostsList } from "@/widgets/posts-list";
+import { PostsList } from "@/widgets/posts";
 import { Sidebar } from "@/widgets/sidebar";
 import { Box, Flex } from "@mantine/core";
 
