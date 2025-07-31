@@ -6,10 +6,10 @@ import { IconCheck, IconX } from "@tabler/icons";
 import axios from "axios";
 import { useState } from "react";
 
-import { useGetCommentsForPost } from "@/shared/api";
 import { useGetPostDetail } from "@/shared/api";
 import type { User } from "@/shared/entities";
 import { baseURL } from "@/shared/lib/const";
+import { useGetCommentsForPost } from "../api/useGetCommentsForPost";
 
 interface CommentFormProps {
 	currentUser: Pick<User, "id">;

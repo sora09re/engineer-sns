@@ -12,3 +12,6 @@
 ✅ `src/shared/ui/PostActionsButtonGroup` を `src/entities/post/ui` へ移動する
 ✅ `src/shared/entities/profile.ts` を `src/entities/profile/model` に移動する
 ✅ `src/shared/api/useGetProfile.tsx` を `src/entities/profile/api` に移動する
+
+- [ ] `src/shared/api/useGetCommentsForPost.tsx` を `src/pages/posts/api` に移動する
+- [ ] `src/shared/api/useGetPostDetail.tsx` を `src/pages/posts/api` に移動する
