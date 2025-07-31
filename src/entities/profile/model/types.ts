@@ -1,4 +1,3 @@
-import type { Follow } from "@/shared/entities";
 import type { PostType } from "@/shared/entities";
 
 export type ProfileType = {
@@ -15,4 +14,10 @@ export type ProfileType = {
 	updated_at: string;
 	username: string;
 	website?: string;
+};
+
+export type Follow = {
+	id: string;
+	follower_id: string;
+	following_id: string;
 };

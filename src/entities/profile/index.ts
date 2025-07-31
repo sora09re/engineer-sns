@@ -1,2 +1,2 @@
-export type { ProfileType } from "./model/types";
+export type { ProfileType, Follow } from "./model/types";
 export { useGetProfile } from "./api/useGetProfile";
