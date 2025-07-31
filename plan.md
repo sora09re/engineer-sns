@@ -15,3 +15,7 @@
 
 ✅ `src/shared/api/useGetCommentsForPost.tsx` を `src/pages/posts/api` に移動する
 ✅ `src/shared/api/useGetPostDetail.tsx` を `src/pages/posts/api` に移動する
+
+
+- `src/entities/post/ui/Post.tsx` を `src/widgets/posts/ui` に移動する
+- `src/entities/post/ui/PostActionMenu.tsx` を `src/widgets/posts/ui` に移動する

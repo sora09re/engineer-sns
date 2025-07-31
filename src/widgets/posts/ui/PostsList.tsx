@@ -1,5 +1,5 @@
-import { Post } from "@/entities/post";
 import type { PostType } from "@/shared/entities";
+import { Post } from "./Post";
 
 interface PostsListProps {
 	currentUserId: string;

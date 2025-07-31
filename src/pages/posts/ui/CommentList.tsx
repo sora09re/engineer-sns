@@ -1,7 +1,7 @@
 "use client";
 
-import { Post } from "@/entities/post";
 import type { PostType } from "@/shared/entities";
+import { Post } from "@/widgets/posts";
 import type { User } from "@auth/core/types";
 import { Box, Space } from "@mantine/core";
 
