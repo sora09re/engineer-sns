@@ -19,3 +19,4 @@
 
 - `src/entities/post/ui/Post.tsx` を `src/widgets/posts/ui` に移動する
 - `src/entities/post/ui/PostActionMenu.tsx` を `src/widgets/posts/ui` に移動する
+- src/shared/api/useGetCurrentUser.tsx を src/entities/user/api に移動する

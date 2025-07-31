@@ -15,7 +15,7 @@ import axios from "axios";
 import { useState } from "react";
 
 import { useGetProfile } from "@/entities/profile";
-import { useGetCurrentUser } from "@/shared/api";
+import { useGetCurrentUser } from "@/entities/user";
 import { useGetPostsForUser } from "@/shared/api";
 import type { User } from "@/shared/entities";
 import { uploadImageToSupabase } from "@/shared/lib";
