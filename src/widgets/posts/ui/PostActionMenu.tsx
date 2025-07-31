@@ -6,7 +6,7 @@ import { useState } from "react";
 
 import { useGetPostsForUser } from "@/entities/post";
 import { useGetTimelinePosts } from "@/entities/post";
-import { useSearchPosts } from "@/shared/api";
+import { useSearchPosts } from "@/features/search-post";
 import { baseURL } from "@/shared/lib/const";
 
 interface PostActionMenuProps {

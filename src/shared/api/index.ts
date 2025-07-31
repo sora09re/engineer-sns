@@ -1,1 +1,0 @@
-export { useSearchPosts } from "./useSearchPosts";

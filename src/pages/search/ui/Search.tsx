@@ -5,7 +5,7 @@ import { IconSearch } from "@tabler/icons";
 import { useState } from "react";
 import useSWR from "swr";
 
-import { useSearchPosts } from "@/shared/api";
+import { useSearchPosts } from "@/features/search-post";
 import type { User } from "@/shared/entities";
 import { fetcher } from "@/shared/lib";
 import { PostsList } from "@/widgets/posts";
