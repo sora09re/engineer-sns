@@ -4,7 +4,7 @@ import { IconCheck, IconDots, IconTrash, IconX } from "@tabler/icons";
 import axios from "axios";
 import { useState } from "react";
 
-import { useGetPostsForUser } from "@/shared/api";
+import { useGetPostsForUser } from "@/entities/post";
 import { useGetTimelinePosts } from "@/shared/api";
 import { useSearchPosts } from "@/shared/api";
 import { baseURL } from "@/shared/lib/const";

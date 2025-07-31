@@ -14,10 +14,10 @@ import { IconCheck, IconX } from "@tabler/icons";
 import axios from "axios";
 import { useState } from "react";
 
+import { useGetPostsForUser } from "@/entities/post";
 import { useGetProfile } from "@/entities/profile";
 import { useGetCurrentUser } from "@/entities/user";
 import { useUserProfile } from "@/entities/user";
-import { useGetPostsForUser } from "@/shared/api";
 import type { User } from "@/shared/entities";
 import { uploadImageToSupabase } from "@/shared/lib";
 import { baseURL } from "@/shared/lib/const";

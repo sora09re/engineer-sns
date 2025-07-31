@@ -4,7 +4,7 @@ import { IconCheck, IconX } from "@tabler/icons-react";
 import axios from "axios";
 import { useState } from "react";
 
-import { useGetPostsForUser } from "@/shared/api";
+import { useGetPostsForUser } from "@/entities/post";
 import { useGetTimelinePosts } from "@/shared/api";
 import type { User } from "@/shared/entities";
 import { baseURL } from "@/shared/lib/const";
