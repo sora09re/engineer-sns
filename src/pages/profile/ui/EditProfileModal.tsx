@@ -16,12 +16,12 @@ import { useState } from "react";
 
 import { useGetProfile } from "@/entities/profile";
 import { useGetCurrentUser } from "@/entities/user";
+import { useUserProfile } from "@/entities/user";
 import { useGetPostsForUser } from "@/shared/api";
 import type { User } from "@/shared/entities";
 import { uploadImageToSupabase } from "@/shared/lib";
 import { baseURL } from "@/shared/lib/const";
 import { useModal } from "@/shared/model";
-import { useUserProfile } from "@/shared/model";
 import { ImageUpload } from "@/shared/ui";
 
 interface EditProfileModalProps {

@@ -17,8 +17,8 @@
 ✅ `src/shared/api/useGetPostDetail.tsx` を `src/pages/posts/api` に移動する
 
 
-- `src/entities/post/ui/Post.tsx` を `src/widgets/posts/ui` に移動する
-- `src/entities/post/ui/PostActionMenu.tsx` を `src/widgets/posts/ui` に移動する
-- src/shared/api/useGetCurrentUser.tsx を src/entities/user/api に移動する
-- src/shared/ui/AccountButton/AccountButton.tsx を src/entities/user/ui に移動する
-- src/shared/model/useUserProfile.ts を src/entities/user/ui に移動する
+✅ `src/entities/post/ui/Post.tsx` を `src/widgets/posts/ui` に移動する
+✅ `src/entities/post/ui/PostActionMenu.tsx` を `src/widgets/posts/ui` に移動する
+✅ src/shared/api/useGetCurrentUser.tsx を src/entities/user/api に移動する
+✅ src/shared/ui/AccountButton/AccountButton.tsx を src/entities/user/ui に移動する
+✅ src/shared/model/useUserProfile.ts を src/entities/user/model に移動する
