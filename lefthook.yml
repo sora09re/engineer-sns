@@ -6,3 +6,5 @@ pre-commit:
       stage_fixed: true
     lint-fsd:
       run: yarn lint:fsd
+    typecheck:
+      run: yarn typecheck
