@@ -1,0 +1,5 @@
+Feature-Sliced Design に従ってディレクトリ構成を変更する。
+
+- [x] src/shared/api/useGetPostsForUser.tsx を src/entities/post/api へ移動する
+- [x] src/shared/api/useGetTimelinePosts.tsx を src/entities/post/api へ移動する
+- [x] src/shared/api/useSearchPosts.tsx を src/features/search-post/api へ移動する
