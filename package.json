@@ -4,10 +4,11 @@
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
-		"lint": "next lint",
+		"check": "vp check",
+		"fix": "vp check --fix",
+		"test": "vp test",
 		"storybook": "storybook dev -p 6006",
-		"build-storybook": "storybook build",
-		"test": "vitest"
+		"build-storybook": "storybook build"
 	},
 	"dependencies": {
 		"@auth/core": "^0.41.0",
@@ -52,7 +53,6 @@
 		"zod": "^3.24.3"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "1.9.4",
 		"@storybook/addon-essentials": "^7.0.12",
 		"@storybook/addon-interactions": "^7.0.12",
 		"@storybook/addon-links": "^7.0.12",
@@ -67,22 +67,24 @@
 		"@types/node": "22.13.10",
 		"@types/react": "18.3.18",
 		"@types/react-syntax-highlighter": "^15.5.13",
+		"@voidzero-dev/vite-plus-core": "^0.1.11",
 		"jsdom": "^26.0.0",
 		"lefthook": "^1.11.3",
 		"msw": "^1.2.2",
 		"msw-storybook-addon": "^1.8.0",
 		"storybook": "^7.0.12",
 		"typescript": "5.8.2",
-		"vite": "^7.3.1",
+		"vite": "^8.0.0",
+		"vite-plus": "^0.1.11",
 		"vitest": "^3.0.8"
-	},
-	"msw": {
-		"workerDirectory": "public"
 	},
 	"packageManager": "pnpm@10.32.1",
 	"pnpm": {
 		"overrides": {
 			"@types/react": "18.3.18"
 		}
+	},
+	"msw": {
+		"workerDirectory": "public"
 	}
 }
