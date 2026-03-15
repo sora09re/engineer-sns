@@ -14,7 +14,7 @@ export const CommentList = ({ comments, currentUser }: CommentListProps) => {
 			{comments.map((comment) => {
 				return (
 					<div key={comment.id}>
-						<Post post={comment} currentUserId={currentUser.id} />
+						<Post post={comment} currentUserId={currentUser.id ?? ""} />
 						<Space h={20} />
 					</div>
 				);
