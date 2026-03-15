@@ -30,4 +30,8 @@ export default defineConfig({
 		useTabs: true,
 		singleQuote: false,
 	},
+	// pre-commit フック（lefthook から移行）
+	staged: {
+		"*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": "vp check --fix",
+	},
 });
