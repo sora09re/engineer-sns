@@ -24,6 +24,7 @@ export default defineConfig({
 		ignorePatterns: ["public/**", ".next/**", "node_modules/**"],
 	},
 	fmt: {
+		ignorePatterns: ["public/**", ".next/**", "node_modules/**"],
 		useTabs: true,
 		singleQuote: false,
 	},
