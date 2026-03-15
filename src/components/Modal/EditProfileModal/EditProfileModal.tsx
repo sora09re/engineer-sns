@@ -68,7 +68,7 @@ export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
 				message: "更新に成功しました！",
 				title: "成功",
 			});
-		} catch (_error) {
+		} catch {
 			notifications.update({
 				id: "updateProfile",
 				autoClose: 2000,

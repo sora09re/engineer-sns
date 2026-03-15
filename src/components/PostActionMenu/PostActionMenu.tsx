@@ -49,7 +49,7 @@ export const PostActionMenu = ({
 			getTimelinePostsMutate();
 			getPostsForUserMutate();
 			getSearchPostsMutate();
-		} catch (_error) {
+		} catch {
 			notifications.update({
 				id: "deletePost",
 				autoClose: 2000,

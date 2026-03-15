@@ -43,7 +43,7 @@ export const PostActionsButtonGroup = ({ currentUserId, post }: PostActionsButto
 					params: { currentUserId },
 				});
 			}
-		} catch (_error) {
+		} catch {
 			notifications.show({
 				id: "click-likes",
 				autoClose: 2000,
