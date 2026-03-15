@@ -6,10 +6,7 @@ interface ImageUploadProps {
 	onDrop: (acceptedFiles: File[]) => void;
 }
 
-export const ImageUpload: React.FC<ImageUploadProps> = ({
-	imageUrl,
-	onDrop,
-}) => {
+export const ImageUpload: React.FC<ImageUploadProps> = ({ imageUrl, onDrop }) => {
 	return (
 		<Dropzone
 			onDrop={onDrop}

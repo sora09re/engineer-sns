@@ -24,17 +24,17 @@ export const parseContent = (content: string): ParsedContent[] => {
 	let currentLanguage = "";
 
 	return parts.map((part, index) => {
+		let content = part;
 		if (index % 2 !== 0) {
 			const match = part.match(/^([a-zA-Z0-9]+)\n/);
-			let updatedPart = part;
 			if (match) {
 				currentLanguage = match[1];
-				updatedPart = updatedPart.replace(match[0], "");
+				content = part.replace(match[0], "");
 			}
 		}
 
 		return {
-			content: part,
+			content,
 			language: currentLanguage,
 			type: index % 2 === 0 ? "text" : "code",
 		};

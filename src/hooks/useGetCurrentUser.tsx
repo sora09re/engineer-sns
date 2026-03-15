@@ -11,17 +11,11 @@ export const useGetCurrentUser = () => {
 	const { data: session, status } = useSession();
 	const currentUserId = session?.user.id;
 	const { data, error, isLoading, mutate } = useSWR<User>(
-		currentUserId
-			? `${baseURL}/api/users/current?currentUserId=${currentUserId}`
-			: null,
+		currentUserId ? `${baseURL}/api/users/current?currentUserId=${currentUserId}` : null,
 		fetcher,
 	);
 
-	if (
-		typeof window !== "undefined" &&
-		status === "unauthenticated" &&
-		!session
-	) {
+	if (typeof window !== "undefined" && status === "unauthenticated" && !session) {
 		router.push("/auth/signin");
 	}
 

@@ -2,10 +2,7 @@ import { Avatar, Box, Group, Space, Text } from "@mantine/core";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import {
-	ContentPart,
-	parseContent,
-} from "@/components/ContentPart/ContentPart";
+import { ContentPart, parseContent } from "@/components/ContentPart/ContentPart";
 import { DateFormat } from "@/components/DateFormat/DateFormat";
 import { PostActionMenu } from "@/components/PostActionMenu/PostActionMenu";
 import { PostActionsButtonGroup } from "@/components/PostActionsButtonGroup/PostActionsButtonGroup";
@@ -53,18 +50,12 @@ export const Post = ({ currentUserId, keyword, post }: PostProps) => {
 			<Group align="start">
 				<Box>
 					<Link href={`/profile/${post.user_id}`}>
-						<Avatar
-							src={post.users.profile_image_url}
-							alt="投稿したユーザーのプロフィール画像"
-						/>
+						<Avatar src={post.users.profile_image_url} alt="投稿したユーザーのプロフィール画像" />
 					</Link>
 				</Box>
 				<Box>
 					<Group spacing="xs">
-						<Link
-							href={`/profile/${post.user_id}`}
-							style={{ textDecoration: "none" }}
-						>
+						<Link href={`/profile/${post.user_id}`} style={{ textDecoration: "none" }}>
 							<Text fw={700} color="black">
 								{post.users.name}
 							</Text>

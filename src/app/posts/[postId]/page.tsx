@@ -20,11 +20,5 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
 		api.get<PostType[]>(`/api/posts/${postId}/comments`),
 	]);
 
-	return (
-		<PostDetailPageClient
-			currentUser={currentUser}
-			post={post}
-			comments={comments}
-		/>
-	);
+	return <PostDetailPageClient currentUser={currentUser} post={post} comments={comments} />;
 }

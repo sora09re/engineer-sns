@@ -21,13 +21,10 @@ const MainLink = ({ href, icon, label }: MainLinkProps) => {
 				return {
 					"&:hover": {
 						backgroundColor:
-							theme.colorScheme === "dark"
-								? theme.colors.dark[6]
-								: theme.colors.gray[0],
+							theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0],
 					},
 					borderRadius: theme.radius.sm,
-					color:
-						theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
+					color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
 					display: "block",
 					padding: theme.spacing.xs,
 					width: "100%",
@@ -40,10 +37,7 @@ const MainLink = ({ href, icon, label }: MainLinkProps) => {
 					sx={(theme) => {
 						return {
 							"&:hover": {
-								color:
-									theme.colorScheme === "dark"
-										? theme.colors.dark[6]
-										: theme.colors.gray[0],
+								color: theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0],
 							},
 						};
 					}}

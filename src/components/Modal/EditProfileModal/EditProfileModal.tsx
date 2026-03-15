@@ -1,12 +1,4 @@
-import {
-	Button,
-	Center,
-	Grid,
-	Modal,
-	Paper,
-	TextInput,
-	Textarea,
-} from "@mantine/core";
+import { Button, Center, Grid, Modal, Paper, TextInput, Textarea } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons";
 import axios from "axios";
@@ -52,9 +44,7 @@ export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
 		});
 
 		try {
-			const imageUrl = tempImage
-				? await uploadImageToSupabase(tempImage, currentUser.id)
-				: null;
+			const imageUrl = tempImage ? await uploadImageToSupabase(tempImage, currentUser.id) : null;
 			const updatedProfile = imageUrl
 				? { ...userProfile, profile_image_url: imageUrl }
 				: { ...userProfile };
@@ -78,7 +68,7 @@ export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
 				message: "更新に成功しました！",
 				title: "成功",
 			});
-		} catch (_error) {
+		} catch {
 			notifications.update({
 				id: "updateProfile",
 				autoClose: 2000,

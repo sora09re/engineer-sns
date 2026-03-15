@@ -1,9 +1,6 @@
 import { supabase } from "@/utils/supabase";
 
-export const uploadImageToSupabase = async (
-	tempImage: string | null,
-	userId: string,
-) => {
+export const uploadImageToSupabase = async (tempImage: string | null, userId: string) => {
 	if (!tempImage) {
 		return null;
 	}
@@ -19,9 +16,7 @@ export const uploadImageToSupabase = async (
 			throw new Error(`Error uploading image: ${uploadError.message}`);
 		}
 
-		const { data } = supabase.storage
-			.from("profile_image")
-			.getPublicUrl(filePath);
+		const { data } = supabase.storage.from("profile_image").getPublicUrl(filePath);
 		const imageUrl = data?.publicUrl;
 		if (!imageUrl) {
 			throw new Error("Error getting public URL");

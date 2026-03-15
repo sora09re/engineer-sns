@@ -25,12 +25,7 @@ export const Follows = ({ currentUserId, userId }: FollowsProps) => {
 		isLoading: getFollowingUsersIsLoading,
 	} = useSWR<User[]>(`${baseURL}/api/users/${userId}/following`, fetcher);
 
-	if (
-		getFollowersIsLoading ||
-		getFollowingUsersIsLoading ||
-		!followers ||
-		!followingUsers
-	) {
+	if (getFollowersIsLoading || getFollowingUsersIsLoading || !followers || !followingUsers) {
 		return <CenteredLoader />;
 	}
 

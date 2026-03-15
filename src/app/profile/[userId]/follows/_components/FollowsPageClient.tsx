@@ -11,10 +11,7 @@ interface FollowsPageClientProps {
 	userId: string;
 }
 
-export default function FollowsPageClient({
-	currentUser,
-	userId,
-}: FollowsPageClientProps) {
+export default function FollowsPageClient({ currentUser, userId }: FollowsPageClientProps) {
 	return (
 		<Flex>
 			<Sidebar currentUser={currentUser} />

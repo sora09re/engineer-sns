@@ -2,7 +2,7 @@ import path from "node:path";
 import type { StorybookConfig } from "@storybook/nextjs";
 
 const config: StorybookConfig = {
-	webpackFinal: async (config, { configType }) => {
+	webpackFinal: async (config, { configType: _configType }) => {
 		config.resolve = config.resolve || {};
 		config.resolve.alias = {
 			...config.resolve.alias,
