@@ -15,22 +15,18 @@ export default defineConfig({
 			"@": path.resolve(__dirname, "./src"),
 		},
 	},
-	// Vitest（vitest.config.ts から移行）
 	test: {
 		globals: true,
 		environment: "jsdom",
 		setupFiles: ["./vitest-setup.ts"],
 	},
-	// Oxlint（Biome linting の置き換え）
 	lint: {
 		ignorePatterns: ["public/**", ".next/**", "node_modules/**"],
 	},
-	// Oxfmt（Biome formatting の置き換え）
 	fmt: {
 		useTabs: true,
 		singleQuote: false,
 	},
-	// pre-commit フック（lefthook から移行）
 	staged: {
 		"*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": "vp check --fix",
 	},
