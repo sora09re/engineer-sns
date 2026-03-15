@@ -54,11 +54,7 @@ export const Search = ({ currentUser }: SearchProps) => {
 							<Loader />
 						</Center>
 					) : (
-						<PostsList
-							currentUserId={currentUser.id}
-							posts={searchPostResults}
-							keyword={keyword}
-						/>
+						<PostsList currentUserId={currentUser.id} posts={searchPostResults} keyword={keyword} />
 					)}
 				</Tabs.Panel>
 				<Tabs.Panel value="account">
@@ -67,10 +63,7 @@ export const Search = ({ currentUser }: SearchProps) => {
 							<Loader />
 						</Center>
 					) : (
-						<UsersList
-							users={searchUserResults}
-							currentUserId={currentUser.id}
-						/>
+						<UsersList users={searchUserResults} currentUserId={currentUser.id} />
 					)}
 				</Tabs.Panel>
 			</Tabs>

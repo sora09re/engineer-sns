@@ -14,13 +14,7 @@ export const UsersList = ({ currentUserId, users }: PostsListProps) => {
 	return (
 		<>
 			{users.map((user) => {
-				return (
-					<UserItem
-						key={user.id}
-						propsUser={user}
-						currentUserId={currentUserId}
-					/>
-				);
+				return <UserItem key={user.id} propsUser={user} currentUserId={currentUserId} />;
 			})}
 		</>
 	);

@@ -2,10 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import { supabase } from "@/utils/supabase";
 
-export default async function handler(
-	req: NextApiRequest,
-	res: NextApiResponse,
-) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	if (req.method !== "POST" && req.method !== "GET") {
 		return res.status(405).json({ error: "Method not allowed" });
 	}
@@ -47,9 +44,7 @@ export default async function handler(
 			const { postId } = req.query;
 
 			if (!commentContent || !currentUserId || !postId) {
-				return res
-					.status(400)
-					.json({ error: "Content, User ID and Post Id are required" });
+				return res.status(400).json({ error: "Content, User ID and Post Id are required" });
 			}
 
 			const { data, error } = await supabase.from("posts").insert([

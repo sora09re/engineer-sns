@@ -16,7 +16,5 @@ export default async function TopPage() {
 		}),
 	]);
 
-	return (
-		<TopPageClient currentUser={currentUser} timelinePosts={timelinePosts} />
-	);
+	return <TopPageClient currentUser={currentUser} timelinePosts={timelinePosts} />;
 }

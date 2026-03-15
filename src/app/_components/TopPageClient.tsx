@@ -13,10 +13,7 @@ interface TopPageClientProps {
 	timelinePosts: PostType[];
 }
 
-export default function TopPageClient({
-	currentUser,
-	timelinePosts,
-}: TopPageClientProps) {
+export default function TopPageClient({ currentUser, timelinePosts }: TopPageClientProps) {
 	return (
 		<Flex>
 			<Sidebar currentUser={currentUser} />

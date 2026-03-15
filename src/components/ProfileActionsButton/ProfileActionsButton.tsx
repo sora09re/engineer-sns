@@ -8,10 +8,7 @@ interface ProfileActionsButtonProps {
 	userId: string;
 }
 
-export const ProfileActionsButton = ({
-	currentUserId,
-	userId,
-}: ProfileActionsButtonProps) => {
+export const ProfileActionsButton = ({ currentUserId, userId }: ProfileActionsButtonProps) => {
 	const [, setIsVisible] = useModal("editProfile");
 	const isCurrentUser = currentUserId === userId;
 

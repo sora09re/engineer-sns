@@ -31,10 +31,7 @@ export const UserItem = ({ currentUserId, propsUser }: UserItemProps) => {
 				<Box w="100%">
 					<Flex justify="space-between">
 						<Box>
-							<Link
-								href={`/profile/${propsUser.id}`}
-								style={{ textDecoration: "none" }}
-							>
+							<Link href={`/profile/${propsUser.id}`} style={{ textDecoration: "none" }}>
 								<Text fw={700} color="black">
 									{propsUser.name}
 								</Text>
@@ -48,10 +45,7 @@ export const UserItem = ({ currentUserId, propsUser }: UserItemProps) => {
 						{isCurrentUser ? (
 							<></>
 						) : (
-							<FollowButton
-								userId={propsUser.id}
-								currentUserId={currentUserId}
-							/>
+							<FollowButton userId={propsUser.id} currentUserId={currentUserId} />
 						)}
 					</Flex>
 					<Text variant="h5">{propsUser.bio}</Text>

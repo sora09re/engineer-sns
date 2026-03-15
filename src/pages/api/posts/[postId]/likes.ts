@@ -2,15 +2,8 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import { supabase } from "@/utils/supabase";
 
-export default async function handler(
-	req: NextApiRequest,
-	res: NextApiResponse,
-) {
-	if (
-		req.method !== "GET" &&
-		req.method !== "POST" &&
-		req.method !== "DELETE"
-	) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+	if (req.method !== "GET" && req.method !== "POST" && req.method !== "DELETE") {
 		return res.status(405).json({ error: "Method not allowed" });
 	}
 
@@ -19,9 +12,7 @@ export default async function handler(
 			const { currentUserId, postId } = req.query;
 
 			if (!postId || !currentUserId) {
-				return res
-					.status(400)
-					.json({ error: "postId or currentUserId is required" });
+				return res.status(400).json({ error: "postId or currentUserId is required" });
 			}
 
 			const { data, error } = await supabase
@@ -42,9 +33,7 @@ export default async function handler(
 			const { currentUserId } = req.body;
 
 			if (!postId || !currentUserId) {
-				return res
-					.status(400)
-					.json({ error: "postId or currentUserId is required" });
+				return res.status(400).json({ error: "postId or currentUserId is required" });
 			}
 
 			const { data, error } = await supabase.from("likes").insert([
@@ -65,9 +54,7 @@ export default async function handler(
 			const { currentUserId, postId } = req.query;
 
 			if (!postId || !currentUserId) {
-				return res
-					.status(400)
-					.json({ error: "postId or currentUserId is required" });
+				return res.status(400).json({ error: "postId or currentUserId is required" });
 			}
 
 			const { data, error } = await supabase

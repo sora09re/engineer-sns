@@ -2,15 +2,8 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import { supabase } from "@/utils/supabase";
 
-export default async function handler(
-	req: NextApiRequest,
-	res: NextApiResponse,
-) {
-	if (
-		req.method !== "GET" &&
-		req.method !== "POST" &&
-		req.method !== "DELETE"
-	) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+	if (req.method !== "GET" && req.method !== "POST" && req.method !== "DELETE") {
 		return res.status(405).json({ error: "Method not allowed" });
 	}
 

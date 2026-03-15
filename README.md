@@ -1,4 +1,5 @@
 # アプリケーション概要
+
 コードスニペットを投稿することができるエンジニア向けSNSアプリ<br>
 https://engineer-sns.vercel.app/
 
@@ -7,6 +8,7 @@ https://engineer-sns.vercel.app/
 パスワード：EngineerTestUser1234
 
 # 機能一覧
+
 - ユーザー認証(Auth(旧 NextAuth))
 - プロフィール作成/編集
 - 投稿
@@ -16,6 +18,7 @@ https://engineer-sns.vercel.app/
 - ユーザーのフォロー
 
 # 使用技術 / ツール
+
 - Next.js
 - TypeScript
 - Mantine

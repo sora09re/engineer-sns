@@ -17,9 +17,7 @@ interface NewPostFormProps {
 export const NewPostForm = ({ currentUser }: NewPostFormProps) => {
 	const [postContent, setPostContent] = useState("");
 	const [, setIsVisiblePostModal] = useModal("post");
-	const { mutate: getTimelinePostsMutate } = useGetTimelinePosts(
-		currentUser.id,
-	);
+	const { mutate: getTimelinePostsMutate } = useGetTimelinePosts(currentUser.id);
 	const { mutate: getPostsForUserMutate } = useGetPostsForUser(currentUser.id);
 
 	const fetchPost = async () => {

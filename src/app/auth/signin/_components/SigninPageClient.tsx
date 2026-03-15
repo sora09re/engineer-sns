@@ -19,9 +19,7 @@ export default function SigninPageClient() {
 				</Title>
 				<Box sx={{ marginBottom: 40 }}>
 					<Text>このアプリはエンジニア向けのSNSアプリです。</Text>
-					<Text>
-						そのため、ログイン方法はGithub でのログインのみになります。
-					</Text>
+					<Text>そのため、ログイン方法はGithub でのログインのみになります。</Text>
 				</Box>
 				<Text sx={{ marginBottom: 20 }}>
 					採用担当の方は「Githubでログイン」ボタン押下後に表示されるGithubログイン画面にて下記の情報をご入力ください。

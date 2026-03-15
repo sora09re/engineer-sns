@@ -1,10 +1,7 @@
 "use client";
 
 import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
-import {
-	type NewUserValues,
-	useNewUserProfile,
-} from "@/hooks/useNewUserProfile";
+import { type NewUserValues, useNewUserProfile } from "@/hooks/useNewUserProfile";
 import { baseURL } from "@/utils/baseUrl";
 import { uploadImageToSupabase } from "@/utils/uploadImageToSupabase";
 import {
@@ -50,10 +47,7 @@ export default function NewUserPageClient({ session }: NewUserPageClientProps) {
 
 	const postNewUser = async (values: NewUserValues) => {
 		try {
-			const imageUrl = await uploadImageToSupabase(
-				tempImage,
-				session?.user?.id,
-			);
+			const imageUrl = await uploadImageToSupabase(tempImage, session?.user?.id);
 			if (imageUrl) {
 				updateUserProfile({ profile_image_url: imageUrl });
 			}

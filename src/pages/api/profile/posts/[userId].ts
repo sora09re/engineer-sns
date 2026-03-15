@@ -3,10 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import type { PostType } from "@/types/post";
 import { supabase } from "@/utils/supabase";
 
-export default async function handler(
-	req: NextApiRequest,
-	res: NextApiResponse,
-) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	if (req.method !== "POST" && req.method !== "GET") {
 		return res.status(405).json({ error: "Method not allowed" });
 	}
@@ -22,9 +19,7 @@ export default async function handler(
 
 			if (posts) {
 				posts.sort((a: PostType, b: PostType) => {
-					return (
-						new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-					);
+					return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
 				});
 			}
 

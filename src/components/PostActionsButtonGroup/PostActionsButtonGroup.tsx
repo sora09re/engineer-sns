@@ -14,10 +14,7 @@ interface PostActionsButtonGroupProps {
 	post: PostType;
 }
 
-export const PostActionsButtonGroup = ({
-	currentUserId,
-	post,
-}: PostActionsButtonGroupProps) => {
+export const PostActionsButtonGroup = ({ currentUserId, post }: PostActionsButtonGroupProps) => {
 	const { hovered: hoveredComments, ref: refComments } = useHover();
 	const { hovered: hoveredLikes, ref: refLikes } = useHover();
 
@@ -30,11 +27,7 @@ export const PostActionsButtonGroup = ({
 	const [likeCount, setLikeCount] = useState(post.likes.length);
 
 	const commentsColor = hoveredComments ? "#228be6" : "black";
-	const likesColor = hoveredLikes
-		? "#37B24D"
-		: isLikedByCurrentUser
-			? "#37B24D"
-			: "black";
+	const likesColor = hoveredLikes ? "#37B24D" : isLikedByCurrentUser ? "#37B24D" : "black";
 
 	const handleLikeClick = async (postId: string) => {
 		const newLikeStatus = !isLikedByCurrentUser;
@@ -69,9 +62,7 @@ export const PostActionsButtonGroup = ({
 					<Tooltip label="コメント" position="bottom" withArrow>
 						<Group ref={refComments} align="center" spacing="sm">
 							<IconMessageCircle2 size="1.2rem" color={commentsColor} />
-							<Text color={commentsColor}>
-								{post.comments ? post.comments.length : 0}
-							</Text>
+							<Text color={commentsColor}>{post.comments ? post.comments.length : 0}</Text>
 						</Group>
 					</Tooltip>
 				</Link>

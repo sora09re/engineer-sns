@@ -21,11 +21,5 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
 		api.get<PostType[]>(`/api/profile/posts/${userId}`),
 	]);
 
-	return (
-		<ProfilePageClient
-			currentUser={currentUser}
-			user={user}
-			postsForUser={postsForUser}
-		/>
-	);
+	return <ProfilePageClient currentUser={currentUser} user={user} postsForUser={postsForUser} />;
 }

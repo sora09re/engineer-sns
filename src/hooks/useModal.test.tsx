@@ -7,9 +7,7 @@ import { describe, expect, it } from "vitest";
 import { useModal } from "./useModal";
 
 // テスト用のラッパーコンポーネント
-const wrapper = ({ children }: { children: React.ReactNode }) => (
-	<Provider>{children}</Provider>
-);
+const wrapper = ({ children }: { children: React.ReactNode }) => <Provider>{children}</Provider>;
 
 describe("useModal", () => {
 	it("初期状態ではモーダルは非表示", () => {
@@ -46,10 +44,9 @@ describe("useModal", () => {
 		const { result: postModalResult } = renderHook(() => useModal("post"), {
 			wrapper,
 		});
-		const { result: editProfileModalResult } = renderHook(
-			() => useModal("editProfile"),
-			{ wrapper },
-		);
+		const { result: editProfileModalResult } = renderHook(() => useModal("editProfile"), {
+			wrapper,
+		});
 
 		// 初期状態を確認
 		expect(postModalResult.current[0]).toBe(false);
