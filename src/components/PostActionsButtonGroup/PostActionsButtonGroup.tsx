@@ -1,7 +1,7 @@
 import { Group, Text, Tooltip, UnstyledButton } from "@mantine/core";
 import { useHover } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
-import { IconMessageCircle2, IconThumbUp, IconX } from "@tabler/icons";
+import { IconMessageCircle2, IconThumbUp, IconX } from "@tabler/icons-react";
 import axios from "axios";
 import Link from "next/link";
 import { useState } from "react";

@@ -1,6 +1,6 @@
 import { Button, Center, Grid, Modal, Paper, TextInput, Textarea } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
-import { IconCheck, IconX } from "@tabler/icons";
+import { IconCheck, IconX } from "@tabler/icons-react";
 import axios from "axios";
 import { useState } from "react";
 
