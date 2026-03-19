@@ -1,6 +1,6 @@
 import type { AppRouter } from "@/types/appRouter";
 import { Flex, Space, Text } from "@mantine/core";
-import { IconArrowLeft } from "@tabler/icons";
+import { IconArrowLeft } from "@tabler/icons-react";
 
 interface PreviousPageHeaderProps {
 	router: AppRouter;

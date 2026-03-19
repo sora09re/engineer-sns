@@ -1,5 +1,5 @@
 import { Group, Text, ThemeIcon, UnstyledButton } from "@mantine/core";
-import { IconHome2, IconSearch, IconUserCircle } from "@tabler/icons";
+import { IconHome2, IconSearch, IconUserCircle } from "@tabler/icons-react";
 import Link from "next/link";
 
 interface MainLinkProps {

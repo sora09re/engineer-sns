@@ -1,6 +1,6 @@
 import { Box, Menu } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
-import { IconCheck, IconDots, IconTrash, IconX } from "@tabler/icons";
+import { IconCheck, IconDots, IconTrash, IconX } from "@tabler/icons-react";
 import axios from "axios";
 import { useState } from "react";
 

@@ -1,5 +1,5 @@
 import { ActionIcon, CopyButton as MantineCopyButton, Tooltip } from "@mantine/core";
-import { IconCheck, IconCopy } from "@tabler/icons";
+import { IconCheck, IconCopy } from "@tabler/icons-react";
 
 interface CopyButtonProps {
 	value: string;

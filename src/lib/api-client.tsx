@@ -1,6 +1,6 @@
 import { baseURL } from "@/utils/baseUrl";
 import { notifications } from "@mantine/notifications";
-import { IconX } from "@tabler/icons";
+import { IconX } from "@tabler/icons-react";
 
 type RequestOptions = {
 	method?: string;

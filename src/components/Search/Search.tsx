@@ -1,5 +1,5 @@
 import { Box, Center, Loader, Tabs, TextInput } from "@mantine/core";
-import { IconSearch } from "@tabler/icons";
+import { IconSearch } from "@tabler/icons-react";
 import { useState } from "react";
 import useSWR from "swr";
 
