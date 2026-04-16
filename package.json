@@ -26,7 +26,6 @@
 		"@next-auth/supabase-adapter": "^0.2.1",
 		"@supabase/supabase-js": "^2.99.2",
 		"@tabler/icons-react": "^2.47.0",
-		"axios": "^1.13.6",
 		"date-fns": "^2.30.0",
 		"dayjs": "^1.11.7",
 		"jotai": "^2.12.3",

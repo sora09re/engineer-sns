@@ -1,7 +1,6 @@
 import { Box, Button, Space, Textarea } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
-import axios from "axios";
 import { useState } from "react";
 
 import { useGetPostsForUser } from "@/hooks/useGetPostsForUser";
@@ -9,6 +8,7 @@ import { useGetTimelinePosts } from "@/hooks/useGetTimelinePosts";
 import { useModal } from "@/hooks/useModal";
 import type { User } from "@/types/user";
 import { baseURL } from "@/utils/baseUrl";
+import { api } from "@/utils/fetcher";
 
 interface NewPostFormProps {
 	currentUser: Pick<User, "id">;
@@ -31,7 +31,7 @@ export const NewPostForm = ({ currentUser }: NewPostFormProps) => {
 		});
 
 		try {
-			await axios.post(`${baseURL}/api/posts`, {
+			await api.post(`${baseURL}/api/posts`, {
 				currentUserId: currentUser.id,
 				postContent: postContent,
 			});

@@ -1,13 +1,13 @@
 import { Box, Menu } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconDots, IconTrash, IconX } from "@tabler/icons-react";
-import axios from "axios";
 import { useState } from "react";
 
 import { useGetPostsForUser } from "@/hooks/useGetPostsForUser";
 import { useGetTimelinePosts } from "@/hooks/useGetTimelinePosts";
 import { useSearchPosts } from "@/hooks/useSearchPosts";
 import { baseURL } from "@/utils/baseUrl";
+import { api } from "@/utils/fetcher";
 
 interface PostActionMenuProps {
 	currentUserId: string;
@@ -37,7 +37,7 @@ export const PostActionMenu = ({
 			withCloseButton: false,
 		});
 		try {
-			await axios.delete(`${baseURL}/api/posts/${postId}`);
+			await api.delete(`${baseURL}/api/posts/${postId}`);
 			notifications.update({
 				id: "deletePost",
 				autoClose: 2000,
