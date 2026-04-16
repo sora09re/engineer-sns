@@ -7,7 +7,7 @@ import { useState } from "react";
 
 import type { PostType } from "@/types/post";
 import { baseURL } from "@/utils/baseUrl";
-import { api } from "@/utils/fetcher";
+import { api } from "@/utils/api";
 
 interface PostActionsButtonGroupProps {
 	currentUserId: string;

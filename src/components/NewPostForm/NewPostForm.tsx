@@ -8,7 +8,7 @@ import { useGetTimelinePosts } from "@/hooks/useGetTimelinePosts";
 import { useModal } from "@/hooks/useModal";
 import type { User } from "@/types/user";
 import { baseURL } from "@/utils/baseUrl";
-import { api } from "@/utils/fetcher";
+import { api } from "@/utils/api";
 
 interface NewPostFormProps {
 	currentUser: Pick<User, "id">;

@@ -3,7 +3,7 @@
 import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
 import { type NewUserValues, useNewUserProfile } from "@/hooks/useNewUserProfile";
 import { baseURL } from "@/utils/baseUrl";
-import { api } from "@/utils/fetcher";
+import { api } from "@/utils/api";
 import { uploadImageToSupabase } from "@/utils/uploadImageToSupabase";
 import {
 	Button,

@@ -6,7 +6,7 @@ import useSWR from "swr";
 
 import { useGetProfile } from "@/hooks/useGetProfile";
 import { baseURL } from "@/utils/baseUrl";
-import { api, fetcher } from "@/utils/fetcher";
+import { api, fetcher } from "@/utils/api";
 
 interface FollowButtonProps {
 	currentUserId: string;

@@ -7,7 +7,7 @@ import { useGetPostsForUser } from "@/hooks/useGetPostsForUser";
 import { useGetTimelinePosts } from "@/hooks/useGetTimelinePosts";
 import { useSearchPosts } from "@/hooks/useSearchPosts";
 import { baseURL } from "@/utils/baseUrl";
-import { api } from "@/utils/fetcher";
+import { api } from "@/utils/api";
 
 interface PostActionMenuProps {
 	currentUserId: string;

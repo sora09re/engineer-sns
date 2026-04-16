@@ -11,7 +11,7 @@ import { useModal } from "@/hooks/useModal";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import type { User } from "@/types/user";
 import { baseURL } from "@/utils/baseUrl";
-import { api } from "@/utils/fetcher";
+import { api } from "@/utils/api";
 import { uploadImageToSupabase } from "@/utils/uploadImageToSupabase";
 
 interface EditProfileModalProps {

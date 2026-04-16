@@ -4,7 +4,7 @@ import useSWR from "swr";
 
 import type { User } from "@/types/user";
 import { baseURL } from "@/utils/baseUrl";
-import { fetcher } from "@/utils/fetcher";
+import { fetcher } from "@/utils/api";
 
 export const useGetCurrentUser = () => {
 	const router = useRouter();

@@ -7,7 +7,7 @@ import { useGetCommentsForPost } from "@/hooks/useGetCommentsForPost";
 import { useGetPostDetail } from "@/hooks/useGetPostDetail";
 import type { User } from "@/types/user";
 import { baseURL } from "@/utils/baseUrl";
-import { api } from "@/utils/fetcher";
+import { api } from "@/utils/api";
 
 interface CommentFormProps {
 	currentUser: Pick<User, "id">;
