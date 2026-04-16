@@ -2,12 +2,12 @@ import { Group, Text, Tooltip, UnstyledButton } from "@mantine/core";
 import { useHover } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { IconMessageCircle2, IconThumbUp, IconX } from "@tabler/icons-react";
-import axios from "axios";
 import Link from "next/link";
 import { useState } from "react";
 
 import type { PostType } from "@/types/post";
 import { baseURL } from "@/utils/baseUrl";
+import { api } from "@/utils/api";
 
 interface PostActionsButtonGroupProps {
 	currentUserId: string;
@@ -37,11 +37,9 @@ export const PostActionsButtonGroup = ({ currentUserId, post }: PostActionsButto
 		try {
 			const endpoint = `${baseURL}/api/posts/${postId}/likes`;
 			if (newLikeStatus) {
-				await axios.post(endpoint, { currentUserId });
+				await api.post(endpoint, { currentUserId });
 			} else {
-				await axios.delete(endpoint, {
-					params: { currentUserId },
-				});
+				await api.delete(endpoint, { currentUserId });
 			}
 		} catch {
 			notifications.show({

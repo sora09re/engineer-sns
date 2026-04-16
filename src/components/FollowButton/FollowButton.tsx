@@ -1,11 +1,12 @@
 import { Button } from "@mantine/core";
-import axios from "axios";
+import { notifications } from "@mantine/notifications";
+import { IconX } from "@tabler/icons-react";
 import { useState } from "react";
 import useSWR from "swr";
 
 import { useGetProfile } from "@/hooks/useGetProfile";
 import { baseURL } from "@/utils/baseUrl";
-import { fetcher } from "@/utils/fetcher";
+import { api, fetcher } from "@/utils/api";
 
 interface FollowButtonProps {
 	currentUserId: string;
@@ -30,19 +31,37 @@ export const FollowButton = ({ currentUserId, userId }: FollowButtonProps) => {
 	const isFollowing = data?.isFollowing;
 
 	const handleFollow = async () => {
-		await axios.post(`${endpoint}?currentUserId=${currentUserId}`);
-		fetchFollowMutate();
-		getProfileMutate();
+		try {
+			await api.post(`${endpoint}?currentUserId=${currentUserId}`);
+			fetchFollowMutate();
+			getProfileMutate();
+		} catch {
+			notifications.show({
+				id: "follow-error",
+				autoClose: 2000,
+				color: "red",
+				icon: <IconX size="1rem" />,
+				message: "フォローに失敗しました。",
+				title: "エラー",
+			});
+		}
 	};
 
 	const handleRemoveFollow = async () => {
-		await axios.delete(`${endpoint}`, {
-			params: {
-				currentUserId,
-			},
-		});
-		fetchFollowMutate();
-		getProfileMutate();
+		try {
+			await api.delete(endpoint, { currentUserId });
+			fetchFollowMutate();
+			getProfileMutate();
+		} catch {
+			notifications.show({
+				id: "unfollow-error",
+				autoClose: 2000,
+				color: "red",
+				icon: <IconX size="1rem" />,
+				message: "フォロー解除に失敗しました。",
+				title: "エラー",
+			});
+		}
 	};
 
 	return (

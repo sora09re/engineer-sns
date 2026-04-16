@@ -2,7 +2,7 @@ import useSWR from "swr";
 
 import type { ProfileType } from "@/types/profile";
 import { baseURL } from "@/utils/baseUrl";
-import { fetcher } from "@/utils/fetcher";
+import { fetcher } from "@/utils/api";
 
 export const useGetProfile = (userId: string) => {
 	const shouldFetch = userId !== undefined;

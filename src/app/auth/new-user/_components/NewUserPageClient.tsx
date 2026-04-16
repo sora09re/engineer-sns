@@ -3,6 +3,7 @@
 import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
 import { type NewUserValues, useNewUserProfile } from "@/hooks/useNewUserProfile";
 import { baseURL } from "@/utils/baseUrl";
+import { api } from "@/utils/api";
 import { uploadImageToSupabase } from "@/utils/uploadImageToSupabase";
 import {
 	Button,
@@ -16,7 +17,6 @@ import {
 	Textarea,
 	Title,
 } from "@mantine/core";
-import axios from "axios";
 import type { Session } from "next-auth";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -51,11 +51,8 @@ export default function NewUserPageClient({ session }: NewUserPageClientProps) {
 			if (imageUrl) {
 				updateUserProfile({ profile_image_url: imageUrl });
 			}
-			const res = await axios.post(`${baseURL}/api/auth/signup`, values);
-			if (res.status === 200) {
-				// ステータスが200の場合
-				router.push("/"); // ページ"/"に遷移
-			}
+			await api.post(`${baseURL}/api/auth/signup`, values);
+			router.push("/");
 		} catch (error) {
 			console.error("Error creating user:", error);
 		}

@@ -1,7 +1,7 @@
 import useSWR from "swr";
 
 import { baseURL } from "@/utils/baseUrl";
-import { fetcher } from "@/utils/fetcher";
+import { fetcher } from "@/utils/api";
 
 export const useGetPostsForUser = (userId: string | undefined) => {
 	const shouldFetch = userId !== undefined;

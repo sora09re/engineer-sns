@@ -1,7 +1,6 @@
 import { Button, Center, Grid, Modal, Paper, TextInput, Textarea } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
-import axios from "axios";
 import { useState } from "react";
 
 import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
@@ -12,6 +11,7 @@ import { useModal } from "@/hooks/useModal";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import type { User } from "@/types/user";
 import { baseURL } from "@/utils/baseUrl";
+import { api } from "@/utils/api";
 import { uploadImageToSupabase } from "@/utils/uploadImageToSupabase";
 
 interface EditProfileModalProps {
@@ -53,7 +53,7 @@ export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
 				updateUserProfile(updatedProfile);
 			}
 
-			await axios.post(`${baseURL}/api/profile/${currentUser.id}`, {
+			await api.post(`${baseURL}/api/profile/${currentUser.id}`, {
 				values: updatedProfile,
 			});
 			setIsVisible(false);
