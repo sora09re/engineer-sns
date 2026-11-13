@@ -1,4 +1,4 @@
-INSERT INTO users (
+INSERT INTO public.users (
     id,
     bio,
     created_at,
