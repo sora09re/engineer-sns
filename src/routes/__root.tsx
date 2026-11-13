@@ -19,6 +19,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 /**
  * 最も深いルートの head().meta.title を document.title に反映する。
  * React 18 は <title> を <head> へ巻き上げないため、HeadContent の代わりに使う。
+ * TODO: React 19 に上げたら、このフックを消して RootComponent で <HeadContent /> を描画する。
  */
 const useDocumentTitle = () => {
 	const title = useRouterState({
