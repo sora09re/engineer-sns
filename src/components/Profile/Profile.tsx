@@ -1,6 +1,5 @@
 import { Box } from "@mantine/core";
 
-import { CenteredLoader } from "@/components/CenteredLoader/CenteredLoader";
 import { ProfileActionsButton } from "@/components/ProfileActionsButton/ProfileActionsButton";
 import { ProfileHeader } from "@/components/ProfileHeader/ProfileHeader";
 import { ProfileStats } from "@/components/ProfileStats/ProfileStats";
@@ -8,14 +7,10 @@ import type { ProfileType } from "@/types/profile";
 
 interface ProfileProps {
 	currentUserId: string;
-	user: ProfileType | undefined;
+	user: ProfileType;
 }
 
 export const Profile = ({ currentUserId, user }: ProfileProps) => {
-	if (!user) {
-		return <CenteredLoader />;
-	}
-
 	return (
 		<Box
 			p="xl"

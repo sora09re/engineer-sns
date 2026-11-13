@@ -3,24 +3,15 @@ import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { useState } from "react";
 
-import { useGetPostsForUser } from "@/hooks/useGetPostsForUser";
-import { useGetTimelinePosts } from "@/hooks/useGetTimelinePosts";
+import { useCreatePost } from "@/hooks/mutations";
 import { useModal } from "@/hooks/useModal";
-import type { User } from "@/types/user";
-import { baseURL } from "@/utils/baseUrl";
-import { api } from "@/utils/api";
 
-interface NewPostFormProps {
-	currentUser: Pick<User, "id">;
-}
-
-export const NewPostForm = ({ currentUser }: NewPostFormProps) => {
+export const NewPostForm = () => {
 	const [postContent, setPostContent] = useState("");
 	const [, setIsVisiblePostModal] = useModal("post");
-	const { mutate: getTimelinePostsMutate } = useGetTimelinePosts(currentUser.id);
-	const { mutate: getPostsForUserMutate } = useGetPostsForUser(currentUser.id);
+	const createPost = useCreatePost();
 
-	const fetchPost = async () => {
+	const fetchPost = () => {
 		notifications.show({
 			id: "post-data",
 			autoClose: false,
@@ -30,33 +21,30 @@ export const NewPostForm = ({ currentUser }: NewPostFormProps) => {
 			withCloseButton: false,
 		});
 
-		try {
-			await api.post(`${baseURL}/api/posts`, {
-				currentUserId: currentUser.id,
-				postContent: postContent,
-			});
-			setPostContent("");
-			setIsVisiblePostModal(false);
-			getTimelinePostsMutate();
-			getPostsForUserMutate();
-			notifications.update({
-				id: "post-data",
-				autoClose: 2000,
-				color: "green",
-				icon: <IconCheck size="1rem" />,
-				message: "投稿に成功しました！",
-				title: "成功",
-			});
-		} catch {
-			notifications.update({
-				id: "post-data",
-				autoClose: 2000,
-				color: "red",
-				icon: <IconX size="1rem" />,
-				message: "投稿に失敗しました。",
-				title: "エラー",
-			});
-		}
+		createPost.mutate(postContent, {
+			onSuccess: () => {
+				setPostContent("");
+				setIsVisiblePostModal(false);
+				notifications.update({
+					id: "post-data",
+					autoClose: 2000,
+					color: "green",
+					icon: <IconCheck size="1rem" />,
+					message: "投稿に成功しました！",
+					title: "成功",
+				});
+			},
+			onError: () => {
+				notifications.update({
+					id: "post-data",
+					autoClose: 2000,
+					color: "red",
+					icon: <IconX size="1rem" />,
+					message: "投稿に失敗しました。",
+					title: "エラー",
+				});
+			},
+		});
 	};
 
 	return (
@@ -67,7 +55,7 @@ export const NewPostForm = ({ currentUser }: NewPostFormProps) => {
 				autosize
 				minRows={5}
 				maxRows={20}
-				value={postContent || ""}
+				value={postContent}
 				onChange={(e) => {
 					return setPostContent(e.currentTarget.value);
 				}}
@@ -76,7 +64,8 @@ export const NewPostForm = ({ currentUser }: NewPostFormProps) => {
 			<Button
 				fullWidth
 				onClick={fetchPost}
-				disabled={postContent ? postContent.trim() === "" : true}
+				loading={createPost.isPending}
+				disabled={postContent.trim() === ""}
 			>
 				投稿する
 			</Button>

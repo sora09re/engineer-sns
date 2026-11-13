@@ -3,31 +3,17 @@ import { notifications } from "@mantine/notifications";
 import { IconCheck, IconDots, IconTrash, IconX } from "@tabler/icons-react";
 import { useState } from "react";
 
-import { useGetPostsForUser } from "@/hooks/useGetPostsForUser";
-import { useGetTimelinePosts } from "@/hooks/useGetTimelinePosts";
-import { useSearchPosts } from "@/hooks/useSearchPosts";
-import { baseURL } from "@/utils/baseUrl";
-import { api } from "@/utils/api";
+import { useDeletePost } from "@/hooks/mutations";
 
 interface PostActionMenuProps {
-	currentUserId: string;
-	keyword?: string;
 	postId: string;
-	postUserId: string;
 }
 
-export const PostActionMenu = ({
-	currentUserId,
-	keyword,
-	postId,
-	postUserId,
-}: PostActionMenuProps) => {
+export const PostActionMenu = ({ postId }: PostActionMenuProps) => {
 	const [opened, setOpened] = useState(false);
-	const { mutate: getTimelinePostsMutate } = useGetTimelinePosts(currentUserId);
-	const { mutate: getPostsForUserMutate } = useGetPostsForUser(postUserId);
-	const { mutate: getSearchPostsMutate } = useSearchPosts(keyword);
+	const removePost = useDeletePost();
 
-	const deletePost = async () => {
+	const deletePost = () => {
 		notifications.show({
 			id: "deletePost",
 			autoClose: false,
@@ -36,29 +22,28 @@ export const PostActionMenu = ({
 			title: "削除中...",
 			withCloseButton: false,
 		});
-		try {
-			await api.delete(`${baseURL}/api/posts/${postId}`);
-			notifications.update({
-				id: "deletePost",
-				autoClose: 2000,
-				color: "green",
-				icon: <IconCheck size="1rem" />,
-				message: "削除しました。",
-				title: "成功",
-			});
-			getTimelinePostsMutate();
-			getPostsForUserMutate();
-			getSearchPostsMutate();
-		} catch {
-			notifications.update({
-				id: "deletePost",
-				autoClose: 2000,
-				color: "red",
-				icon: <IconX size="1rem" />,
-				message: "削除失敗しました。",
-				title: "エラー",
-			});
-		}
+		removePost.mutate(postId, {
+			onSuccess: () => {
+				notifications.update({
+					id: "deletePost",
+					autoClose: 2000,
+					color: "green",
+					icon: <IconCheck size="1rem" />,
+					message: "削除しました。",
+					title: "成功",
+				});
+			},
+			onError: () => {
+				notifications.update({
+					id: "deletePost",
+					autoClose: 2000,
+					color: "red",
+					icon: <IconX size="1rem" />,
+					message: "削除失敗しました。",
+					title: "エラー",
+				});
+			},
+		});
 	};
 
 	return (

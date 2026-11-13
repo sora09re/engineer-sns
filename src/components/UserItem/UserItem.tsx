@@ -1,6 +1,5 @@
 import { Avatar, Box, Flex, Space, Text } from "@mantine/core";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { Link, useNavigate } from "@tanstack/react-router";
 
 import { FollowButton } from "@/components/FollowButton/FollowButton";
 import type { User } from "@/types/user";
@@ -11,7 +10,7 @@ type UserItemProps = {
 };
 
 export const UserItem = ({ currentUserId, propsUser }: UserItemProps) => {
-	const router = useRouter();
+	const navigate = useNavigate();
 	const isCurrentUser = currentUserId === propsUser.id;
 
 	return (
@@ -20,18 +19,22 @@ export const UserItem = ({ currentUserId, propsUser }: UserItemProps) => {
 			w="100%"
 			sx={{ borderBottom: "1px solid #E9ECEF", cursor: "pointer" }}
 			onClick={() => {
-				return router.push(`/profile/${propsUser.id}`);
+				return navigate({ to: "/profile/$userId", params: { userId: propsUser.id } });
 			}}
 		>
 			<Flex>
-				<Link href={`/profile/${propsUser.id}`}>
+				<Link to="/profile/$userId" params={{ userId: propsUser.id }}>
 					<Avatar src={propsUser.profile_image_url} alt="プロフィール画像" />
 				</Link>
 				<Space w="1rem" />
 				<Box w="100%">
 					<Flex justify="space-between">
 						<Box>
-							<Link href={`/profile/${propsUser.id}`} style={{ textDecoration: "none" }}>
+							<Link
+								to="/profile/$userId"
+								params={{ userId: propsUser.id }}
+								style={{ textDecoration: "none" }}
+							>
 								<Text fw={700} color="black">
 									{propsUser.name}
 								</Text>
@@ -42,11 +45,7 @@ export const UserItem = ({ currentUserId, propsUser }: UserItemProps) => {
                 <Badge color="gray">フォローされています</Badge> */}
 							</Text>
 						</Box>
-						{isCurrentUser ? (
-							<></>
-						) : (
-							<FollowButton userId={propsUser.id} currentUserId={currentUserId} />
-						)}
+						{isCurrentUser ? <></> : <FollowButton userId={propsUser.id} />}
 					</Flex>
 					<Text variant="h5">{propsUser.bio}</Text>
 				</Box>

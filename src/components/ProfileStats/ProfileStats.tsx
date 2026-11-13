@@ -1,5 +1,5 @@
 import { Group, Text } from "@mantine/core";
-import Link from "next/link";
+import { Link } from "@tanstack/react-router";
 
 import type { ProfileType } from "@/types/profile";
 
@@ -9,8 +9,8 @@ interface ProfileStatsProps {
 
 export const ProfileStats = ({ user }: ProfileStatsProps) => {
 	const stats = [
-		{ label: "フォロー中", value: user.following_user_id.length },
-		{ label: "フォロワー", value: user.follower_user_id.length },
+		{ label: "フォロー中", value: user.followee_count },
+		{ label: "フォロワー", value: user.follower_count },
 	];
 
 	return (
@@ -19,7 +19,8 @@ export const ProfileStats = ({ user }: ProfileStatsProps) => {
 				return (
 					<Link
 						key={stat.label}
-						href={`/profile/${user.id}/follows`}
+						to="/profile/$userId/follows"
+						params={{ userId: user.id }}
 						style={{ color: "inherit", textDecoration: "none" }}
 					>
 						<Text ta="center" fz="lg" fw={500}>

@@ -1,17 +1,17 @@
-import { addHours, format } from "date-fns";
+import { format } from "date-fns";
 import { ja } from "date-fns/locale";
 
 interface DateFormatProps {
-	props: Date;
+	props: Date | string;
 }
 
+/** ブラウザのローカルタイムで表示する（timestamptz を受け取る前提） */
 export const DateFormat = ({ props }: DateFormatProps) => {
 	const date = new Date(props);
-	const jaDateTime = addHours(date, 9);
 
 	return (
-		<time dateTime={new Date(date).toISOString()}>
-			{format(jaDateTime, "yyyy年MM月dd日 HH:mm", { locale: ja })}
+		<time dateTime={date.toISOString()}>
+			{format(date, "yyyy年MM月dd日 HH:mm", { locale: ja })}
 		</time>
 	);
 };

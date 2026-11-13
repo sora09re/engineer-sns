@@ -1,18 +1,13 @@
 import { Button, Center, Grid, Modal, Paper, TextInput, Textarea } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
-import { useState } from "react";
 
 import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
-import { useGetCurrentUser } from "@/hooks/useGetCurrentUser";
-import { useGetPostsForUser } from "@/hooks/useGetPostsForUser";
-import { useGetProfile } from "@/hooks/useGetProfile";
+import { useUpdateCurrentUser } from "@/hooks/mutations";
+import { useImageFile } from "@/hooks/useImageFile";
 import { useModal } from "@/hooks/useModal";
-import { useUserProfile } from "@/hooks/useUserProfile";
+import { useUserValues } from "@/hooks/useUserValues";
 import type { User } from "@/types/user";
-import { baseURL } from "@/utils/baseUrl";
-import { api } from "@/utils/api";
-import { uploadImageToSupabase } from "@/utils/uploadImageToSupabase";
 
 interface EditProfileModalProps {
 	currentUser: User;
@@ -20,20 +15,20 @@ interface EditProfileModalProps {
 
 export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
 	const marginTopPx = 10;
-	const { updateUserProfile, userProfile } = useUserProfile(currentUser);
-	const { mutate: getCurrentUserMutate } = useGetCurrentUser();
-	const { mutate: getProfileMutate } = useGetProfile(currentUser.id);
-	const { mutate: getPostsForUserMutate } = useGetPostsForUser(currentUser.id);
+	const { updateValues, values } = useUserValues({
+		bio: currentUser.bio ?? "",
+		email: currentUser.email,
+		location: currentUser.location ?? "",
+		name: currentUser.name,
+		profile_image_url: currentUser.profile_image_url ?? "",
+		username: currentUser.username,
+		website: currentUser.website ?? "",
+	});
+	const { clearImage, imageFile, previewUrl, selectImage } = useImageFile();
 	const [isVisible, setIsVisible] = useModal("editProfile");
-	const [tempImage, setTempImage] = useState<string | null>(null);
+	const updateUser = useUpdateCurrentUser();
 
-	const handleDrop = (acceptedFiles: File[]) => {
-		const file = acceptedFiles[0];
-		const objectURL = URL.createObjectURL(file);
-		setTempImage(objectURL);
-	};
-
-	const editProfile = async () => {
+	const editProfile = () => {
 		notifications.show({
 			id: "updateProfile",
 			autoClose: false,
@@ -43,41 +38,33 @@ export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
 			withCloseButton: false,
 		});
 
-		try {
-			const imageUrl = tempImage ? await uploadImageToSupabase(tempImage, currentUser.id) : null;
-			const updatedProfile = imageUrl
-				? { ...userProfile, profile_image_url: imageUrl }
-				: { ...userProfile };
-
-			if (imageUrl) {
-				updateUserProfile(updatedProfile);
-			}
-
-			await api.post(`${baseURL}/api/profile/${currentUser.id}`, {
-				values: updatedProfile,
-			});
-			setIsVisible(false);
-			getCurrentUserMutate?.();
-			getProfileMutate();
-			getPostsForUserMutate();
-			notifications.update({
-				id: "updateProfile",
-				autoClose: 2000,
-				color: "green",
-				icon: <IconCheck size="1rem" />,
-				message: "更新に成功しました！",
-				title: "成功",
-			});
-		} catch {
-			notifications.update({
-				id: "updateProfile",
-				autoClose: 2000,
-				color: "red",
-				icon: <IconX size="1rem" />,
-				message: "更新に失敗しました。",
-				title: "エラー",
-			});
-		}
+		updateUser.mutate(
+			{ imageFile, values },
+			{
+				onSuccess: () => {
+					setIsVisible(false);
+					clearImage();
+					notifications.update({
+						id: "updateProfile",
+						autoClose: 2000,
+						color: "green",
+						icon: <IconCheck size="1rem" />,
+						message: "更新に成功しました！",
+						title: "成功",
+					});
+				},
+				onError: () => {
+					notifications.update({
+						id: "updateProfile",
+						autoClose: 2000,
+						color: "red",
+						icon: <IconX size="1rem" />,
+						message: "更新に失敗しました。",
+						title: "エラー",
+					});
+				},
+			},
+		);
 	};
 
 	return (
@@ -93,35 +80,32 @@ export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
 				<Grid grow>
 					<Grid.Col span={4}>
 						<Center>
-							<ImageUpload
-								onDrop={handleDrop}
-								imageUrl={tempImage || userProfile.profile_image_url}
-							/>
+							<ImageUpload onDrop={selectImage} imageUrl={previewUrl || values.profile_image_url} />
 						</Center>
 						<TextInput
 							label="名前"
-							placeholder={userProfile.name}
-							value={userProfile.name}
+							placeholder={values.name}
+							value={values.name}
 							onChange={(e) => {
-								return updateUserProfile({ name: e.currentTarget.value });
+								return updateValues({ name: e.currentTarget.value });
 							}}
 							mt={marginTopPx}
 						/>
 						<TextInput
 							label="ユーザー名"
-							placeholder={userProfile.username}
-							value={userProfile.username}
+							placeholder={values.username}
+							value={values.username}
 							onChange={(e) => {
-								return updateUserProfile({ username: e.currentTarget.value });
+								return updateValues({ username: e.currentTarget.value });
 							}}
 							mt={marginTopPx}
 						/>
 						<Textarea
 							label="自己紹介"
-							placeholder={userProfile.bio}
-							value={userProfile.bio}
+							placeholder={values.bio}
+							value={values.bio}
 							onChange={(e) => {
-								return updateUserProfile({ bio: e.currentTarget.value });
+								return updateValues({ bio: e.currentTarget.value });
 							}}
 							maxLength={160}
 							minRows={4}
@@ -129,29 +113,24 @@ export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
 						/>
 						<TextInput
 							label="場所"
-							placeholder={userProfile.location}
-							value={userProfile.location}
+							placeholder={values.location}
+							value={values.location}
 							onChange={(e) => {
-								return updateUserProfile({ location: e.currentTarget.value });
+								return updateValues({ location: e.currentTarget.value });
 							}}
 							mt={marginTopPx}
 						/>
 						<TextInput
 							label="ウェブサイト"
-							placeholder={userProfile.website}
-							value={userProfile.website}
+							placeholder={values.website}
+							value={values.website}
 							onChange={(e) => {
-								return updateUserProfile({ website: e.currentTarget.value });
+								return updateValues({ website: e.currentTarget.value });
 							}}
 							mt={marginTopPx}
 						/>
 
-						<Button
-							onClick={() => {
-								return editProfile();
-							}}
-							mt={marginTopPx}
-						>
+						<Button onClick={editProfile} loading={updateUser.isPending} mt={marginTopPx}>
 							保存
 						</Button>
 					</Grid.Col>

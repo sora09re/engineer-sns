@@ -1,5 +1,7 @@
 import { Group, Image } from "@mantine/core";
-import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
+import { Dropzone } from "@mantine/dropzone";
+
+import { PROFILE_IMAGE_MIME_TYPES } from "@/api/users";
 
 interface ImageUploadProps {
 	imageUrl?: string;
@@ -11,7 +13,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ imageUrl, onDrop }) =>
 		<Dropzone
 			onDrop={onDrop}
 			maxSize={3 * 1024 ** 2}
-			accept={IMAGE_MIME_TYPE}
+			accept={PROFILE_IMAGE_MIME_TYPES}
 			style={{ border: 0, height: 120, padding: 0, width: 120 }}
 		>
 			<Group
