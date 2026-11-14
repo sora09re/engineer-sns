@@ -2,24 +2,9 @@ import { type SQL, and, desc, eq, ilike, inArray, isNull, sql } from "drizzle-or
 
 import type { PostQuery } from "../../application/ports";
 import type { PostSummary } from "../../application/post-summary";
-import type { User } from "../../domain/user";
 import type { Db } from "../db/client";
 import { likes, posts, users } from "../db/schema";
-
-const toUser = (row: typeof users.$inferSelect): User => {
-	return {
-		id: row.id,
-		name: row.name,
-		username: row.username,
-		email: row.email,
-		bio: row.bio ?? undefined,
-		location: row.location ?? undefined,
-		website: row.website ?? undefined,
-		profileImageUrl: row.profileImageUrl ?? undefined,
-		createdAt: row.createdAt,
-		updatedAt: row.updatedAt,
-	};
-};
+import { toUser } from "./to-user";
 
 /** LIKE のパターンで特別な意味を持つ文字（\ % _）を、文字そのものとして一致させる */
 const escapeLike = (value: string) => {
