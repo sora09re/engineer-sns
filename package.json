@@ -2,6 +2,7 @@
 	"name": "engineer-sns",
 	"private": true,
 	"scripts": {
+		"prepare": "vp config --hooks --no-agent",
 		"dev": "pnpm -r --parallel dev",
 		"build": "pnpm --filter @engineer-sns/web build",
 		"check": "vp check",
