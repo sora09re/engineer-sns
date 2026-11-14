@@ -1,4 +1,4 @@
-import { connect, type Db } from "../db/client";
+import { connect, type Db } from "../infrastructure/db/client";
 
 const url = process.env.DATABASE_URL;
 if (!url) {

@@ -2,10 +2,10 @@ import type { PostType } from "@engineer-sns/shared";
 import { describe, expect, test } from "vite-plus/test";
 
 import { createApp } from "../app";
-import type { Db } from "../db/client";
-import { createTestKeys } from "../test/auth";
-import { withRollback } from "../test/db";
-import { createPost, createUser, follow, like } from "../test/fixtures";
+import type { Db } from "../infrastructure/db/client";
+import { createTestKeys } from "./auth";
+import { withRollback } from "./db";
+import { createPost, createUser, follow, like } from "./fixtures";
 
 /** レスポンスの投稿の本文だけを並び順どおりに取り出す */
 const contentsOf = async (res: Response) => {

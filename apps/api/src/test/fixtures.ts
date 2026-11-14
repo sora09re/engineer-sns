@@ -4,8 +4,8 @@
  */
 import { sql } from "drizzle-orm";
 
-import type { Db } from "../db/client";
-import { follows, likes, posts, users } from "../db/schema";
+import type { Db } from "../infrastructure/db/client";
+import { follows, likes, posts, users } from "../infrastructure/db/schema";
 
 /** アカウント（auth.users）とユーザーを作る */
 export const createUser = async (db: Db, username: string) => {

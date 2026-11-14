@@ -1,7 +1,7 @@
 import { createRemoteJWKSet } from "jose";
 
 import { createApp } from "./app";
-import { connect } from "./db/client";
+import { connect } from "./infrastructure/db/client";
 import { readEnv } from "./env";
 
 export type { AppType } from "./app";
