@@ -16,9 +16,10 @@ export default defineConfig({
 		},
 	},
 	server: {
-		// API（apps/api）へは同一オリジンの /api として届ける。本番の Vercel と同じ形
+		// API（apps/api）へは同一オリジンの /api として届ける。本番の Vercel と同じ形。
+		// API のポートは apps/api の server.ts と同じく API_PORT で変えられる
 		proxy: {
-			"/api": "http://localhost:8787",
+			"/api": `http://localhost:${process.env.API_PORT ?? 8787}`,
 		},
 	},
 	test: {

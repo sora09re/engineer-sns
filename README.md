@@ -58,7 +58,7 @@ pnpm test       # 単体テスト。API のテストは apps/api/.env.local の 
 
 # E2E / VRT
 
-ローカルの Supabase を起動した状態で実行する（Playwright。web と API の開発サーバーが動いていなければ自動で起動する）。
+ローカルの Supabase を起動した状態で実行する（Playwright）。web と API は毎回このチェックアウトのものを、開発用とは別のポート（web 5179、API 8788）で起動するので、`pnpm dev` を動かしたままでもよい。そのポートがほかで使われていると、エラーで止まる。
 
 ```sh
 pnpm exec playwright install chromium  # 初回のみ
