@@ -17,7 +17,7 @@ import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
 import { useCreateCurrentUser } from "@/hooks/mutations";
 import { useImageFile } from "@/hooks/useImageFile";
 import { useUserValues } from "@/hooks/useUserValues";
-import type { Account } from "@/types/account";
+import type { Account } from "@engineer-sns/shared";
 
 interface NewUserFormProps {
 	account: Account;

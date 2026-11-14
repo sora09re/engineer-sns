@@ -1,6 +1,7 @@
-import type { PostType } from "@/types/post";
+import type { PostType } from "@engineer-sns/shared";
 
 import { countOf, supabase, throwIfError, unwrap, unwrapMaybe } from "./client";
+import { api, parse } from "./http";
 import { requireAccountId } from "./session";
 import { toUser } from "./users";
 
@@ -29,19 +30,7 @@ const toPost = (row: PostRow): PostType => {
 
 /** タイムライン: 自分とフォローしているユーザーの、コメントでない投稿 */
 export const getTimelinePosts = async (): Promise<PostType[]> => {
-	const accountId = await requireAccountId();
-	const follows = unwrap(
-		await supabase.from("follows").select("followee_id").eq("follower_id", accountId),
-	);
-	const userIds = [accountId, ...follows.map((follow) => follow.followee_id)];
-
-	const rows = unwrap(
-		await selectPosts()
-			.is("parent_post_id", null)
-			.in("user_id", userIds)
-			.order("created_at", { ascending: false }),
-	);
-	return rows.map(toPost);
+	return parse(await api.api.posts.timeline.$get());
 };
 
 export const getPost = async (postId: string): Promise<PostType | null> => {

@@ -5,7 +5,7 @@ import { IconMessageCircle2, IconThumbUp, IconX } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 
 import { useToggleLike } from "@/hooks/mutations";
-import type { PostType } from "@/types/post";
+import type { PostType } from "@engineer-sns/shared";
 
 interface PostActionsButtonGroupProps {
 	currentUserId: string;

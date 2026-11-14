@@ -2,7 +2,7 @@ import { Avatar, Box, Flex, Space, Text } from "@mantine/core";
 import { Link, useNavigate } from "@tanstack/react-router";
 
 import { FollowButton } from "@/components/FollowButton/FollowButton";
-import type { User } from "@/types/user";
+import type { User } from "@engineer-sns/shared";
 
 type UserItemProps = {
 	currentUserId: string;

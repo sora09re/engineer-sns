@@ -6,7 +6,7 @@ import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
 import { useUpdateCurrentUser } from "@/hooks/mutations";
 import { useImageFile } from "@/hooks/useImageFile";
 import { useUserValues } from "@/hooks/useUserValues";
-import type { User } from "@/types/user";
+import type { User } from "@engineer-sns/shared";
 
 interface EditProfileModalProps {
 	currentUser: User;

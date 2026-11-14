@@ -1,5 +1,5 @@
-import type { Like } from "@/types/like";
-import type { User } from "@/types/user";
+import type { Like } from "./like";
+import type { User } from "./user";
 
 /** 投稿。parent_post_id を持つものはコメント */
 export type PostType = {
