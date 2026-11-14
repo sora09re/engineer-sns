@@ -34,3 +34,8 @@ export const contentsOf = async (res: Response) => {
 	const posts = (await res.json()) as PostType[];
 	return posts.map((post) => post.content);
 };
+
+/** シードなど既存の投稿と重ならないキーワード（英小文字だけにして、大文字にしても別の語にならないようにする） */
+export const uniqueWord = () => {
+	return `kw${crypto.randomUUID().replaceAll("-", "").replace(/[0-9]/g, "")}`;
+};

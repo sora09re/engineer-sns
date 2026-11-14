@@ -22,6 +22,11 @@ describe("ログインが必要なエンドポイント", () => {
 		["DELETE", `/api/users/${id}/follow`],
 		["GET", `/api/users/${id}/followers`],
 		["GET", `/api/users/${id}/followees`],
+		["GET", "/api/me"],
+		["POST", "/api/me"],
+		["PATCH", "/api/me"],
+		["GET", `/api/users/${id}`],
+		["GET", "/api/users/search?q=a"],
 	])("%s %s はトークンがなければ 401", async (method, path) => {
 		await withRollback(async (db) => {
 			const { app } = await setupApp(db);

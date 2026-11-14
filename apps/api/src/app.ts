@@ -9,13 +9,18 @@ import { createPost } from "./application/create-post";
 import { deletePost } from "./application/delete-post";
 import { followUser } from "./application/follow-user";
 import { getComments } from "./application/get-comments";
+import { getCurrentUser } from "./application/get-current-user";
 import { getFollowees, getFollowers } from "./application/get-follows";
 import { getPost } from "./application/get-post";
 import { getTimeline } from "./application/get-timeline";
 import { getUserPosts } from "./application/get-user-posts";
+import { getUserProfile } from "./application/get-user-profile";
 import { isFollowing } from "./application/is-following";
 import { likePost } from "./application/like-post";
 import { searchPosts } from "./application/search-posts";
+import { registerUser } from "./application/register-user";
+import { searchUsers } from "./application/search-users";
+import { updateCurrentUser } from "./application/update-current-user";
 import { unfollowUser } from "./application/unfollow-user";
 import { unlikePost } from "./application/unlike-post";
 import { createAccessTokenVerifier } from "./infrastructure/auth/access-token-verifier";
@@ -55,6 +60,11 @@ export const createApp = ({ db, jwks }: AppDeps) => {
 		unfollowUser: unfollowUser({ users, follows }),
 		getFollowers: getFollowers({ userQuery }),
 		getFollowees: getFollowees({ userQuery }),
+		getCurrentUser: getCurrentUser({ userQuery }),
+		getUserProfile: getUserProfile({ userQuery }),
+		searchUsers: searchUsers({ userQuery }),
+		registerUser: registerUser({ users }),
+		updateCurrentUser: updateCurrentUser({ users }),
 	});
 };
 
