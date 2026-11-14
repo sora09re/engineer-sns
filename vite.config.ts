@@ -6,7 +6,6 @@ const ignorePatterns = [
 	"**/dist/**",
 	"**/node_modules/**",
 	"apps/web/src/routeTree.gen.ts",
-	"apps/web/src/api/database.types.ts",
 	"supabase/.temp/**",
 ];
 

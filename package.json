@@ -11,8 +11,7 @@
 		"test": "pnpm -r test",
 		"e2e": "playwright test --project=e2e",
 		"vrt": "playwright test --project=vrt-desktop",
-		"vrt:update": "playwright test --project=vrt-desktop --update-snapshots",
-		"db:types": "node scripts/gen-db-types.mjs"
+		"vrt:update": "playwright test --project=vrt-desktop --update-snapshots"
 	},
 	"dependencies": {
 		"@engineer-sns/api": "workspace:*",
