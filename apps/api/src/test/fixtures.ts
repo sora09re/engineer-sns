@@ -37,8 +37,15 @@ export const createPost = async (
 	return post!;
 };
 
-export const follow = async (db: Db, followerId: string, followeeId: string) => {
-	await db.insert(follows).values({ followerId, followeeId });
+export const follow = async (
+	db: Db,
+	followerId: string,
+	followeeId: string,
+	createdAt?: string,
+) => {
+	await db
+		.insert(follows)
+		.values({ followerId, followeeId, ...(createdAt ? { createdAt: new Date(createdAt) } : {}) });
 };
 
 export const like = async (db: Db, userId: string, postId: string) => {

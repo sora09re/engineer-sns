@@ -7,12 +7,16 @@ import type { JWTVerifyGetKey } from "jose";
 import { createComment } from "./application/create-comment";
 import { createPost } from "./application/create-post";
 import { deletePost } from "./application/delete-post";
+import { followUser } from "./application/follow-user";
 import { getComments } from "./application/get-comments";
+import { getFollowees, getFollowers } from "./application/get-follows";
 import { getPost } from "./application/get-post";
 import { getTimeline } from "./application/get-timeline";
 import { getUserPosts } from "./application/get-user-posts";
+import { isFollowing } from "./application/is-following";
 import { likePost } from "./application/like-post";
 import { searchPosts } from "./application/search-posts";
+import { unfollowUser } from "./application/unfollow-user";
 import { unlikePost } from "./application/unlike-post";
 import { createAccessTokenVerifier } from "./infrastructure/auth/access-token-verifier";
 import type { Db } from "./infrastructure/db/client";
@@ -20,6 +24,7 @@ import { createFollowRepository } from "./infrastructure/repositories/follow-rep
 import { createLikeRepository } from "./infrastructure/repositories/like-repository";
 import { createPostQuery } from "./infrastructure/repositories/post-query";
 import { createPostRepository } from "./infrastructure/repositories/post-repository";
+import { createUserQuery } from "./infrastructure/repositories/user-query";
 import { createUserRepository } from "./infrastructure/repositories/user-repository";
 import { createHttpApp } from "./presentation/http-app";
 
@@ -31,6 +36,7 @@ export const createApp = ({ db, jwks }: AppDeps) => {
 	const postRepository = createPostRepository(db);
 	const users = createUserRepository(db);
 	const likes = createLikeRepository(db);
+	const userQuery = createUserQuery(db);
 
 	return createHttpApp({
 		verifyAccessToken: createAccessTokenVerifier(jwks),
@@ -44,6 +50,11 @@ export const createApp = ({ db, jwks }: AppDeps) => {
 		deletePost: deletePost({ postRepository }),
 		likePost: likePost({ users, likes, postRepository }),
 		unlikePost: unlikePost({ likes, postRepository }),
+		isFollowing: isFollowing({ users, follows }),
+		followUser: followUser({ users, follows }),
+		unfollowUser: unfollowUser({ users, follows }),
+		getFollowers: getFollowers({ userQuery }),
+		getFollowees: getFollowees({ userQuery }),
 	});
 };
 

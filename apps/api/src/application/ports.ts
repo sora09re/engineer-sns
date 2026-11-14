@@ -2,11 +2,18 @@
  * application が外側（infrastructure）に求めるもの。実装は infrastructure に置き、app.ts で組み立てる。
  */
 import type { Post } from "../domain/post";
+import type { User } from "../domain/user";
 import type { PostSummary } from "./post-summary";
 
 export type FollowRepository = {
 	/** followerId のユーザーがフォローしているユーザー（followee）の ID */
 	findFolloweeIds: (followerId: string) => Promise<string[]>;
+	/** followerId のユーザーが followeeId のユーザーをフォローしているか */
+	exists: (values: { followerId: string; followeeId: string }) => Promise<boolean>;
+	/** フォローする。すでにフォローしていれば何もしない */
+	add: (values: { followerId: string; followeeId: string }) => Promise<void>;
+	/** フォローを外す。フォローしていなければ何もしない */
+	remove: (values: { followerId: string; followeeId: string }) => Promise<void>;
 };
 
 export type PostQuery = {
@@ -20,6 +27,13 @@ export type PostQuery = {
 	findByAuthor: (authorId: string) => Promise<PostSummary[]>;
 	/** 本文に keyword を含む（大文字と小文字は区別しない）、コメントでない投稿を新しい順に返す */
 	searchTopLevel: (keyword: string) => Promise<PostSummary[]>;
+};
+
+export type UserQuery = {
+	/** userId のユーザーをフォローしているユーザー。フォローした順（古い順）、同じ時刻ならユーザー名順 */
+	findFollowersOf: (userId: string) => Promise<User[]>;
+	/** userId のユーザーがフォローしているユーザー。並び順は findFollowersOf と同じ */
+	findFolloweesOf: (userId: string) => Promise<User[]>;
 };
 
 export type UserRepository = {

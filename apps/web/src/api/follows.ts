@@ -1,55 +1,31 @@
 import type { User } from "@engineer-sns/shared";
 
-import { supabase, throwIfError, unwrap } from "./client";
-import { requireAccountId } from "./session";
-import { toUser } from "./users";
+import { api, ensureOk, parse } from "./http";
 
 /** ログイン中のユーザーが userId をフォローしているか */
 export const isFollowing = async (userId: string): Promise<boolean> => {
-	const accountId = await requireAccountId();
-	const rows = unwrap(
-		await supabase
-			.from("follows")
-			.select("id")
-			.eq("follower_id", accountId)
-			.eq("followee_id", userId)
-			.limit(1),
+	const { following } = await parse(
+		await api.api.users[":userId"].follow.$get({ param: { userId } }),
 	);
-	return rows.length > 0;
+	return following;
 };
 
+/** フォローする。すでにフォローしていても成功する */
 export const follow = async (userId: string) => {
-	const accountId = await requireAccountId();
-	throwIfError(
-		await supabase.from("follows").insert({ follower_id: accountId, followee_id: userId }),
-	);
+	await ensureOk(await api.api.users[":userId"].follow.$put({ param: { userId } }));
 };
 
+/** フォローを外す。フォローしていなくても成功する */
 export const unfollow = async (userId: string) => {
-	const accountId = await requireAccountId();
-	throwIfError(
-		await supabase.from("follows").delete().eq("follower_id", accountId).eq("followee_id", userId),
-	);
+	await ensureOk(await api.api.users[":userId"].follow.$delete({ param: { userId } }));
 };
 
-/** userId をフォローしているユーザー */
+/** userId をフォローしているユーザー。フォローした順 */
 export const getFollowers = async (userId: string): Promise<User[]> => {
-	const rows = unwrap(
-		await supabase
-			.from("follows")
-			.select("follower:users!follows_follower_id_fkey(*)")
-			.eq("followee_id", userId),
-	);
-	return rows.map((row) => toUser(row.follower));
+	return parse(await api.api.users[":userId"].followers.$get({ param: { userId } }));
 };
 
-/** userId がフォローしているユーザー */
+/** userId がフォローしているユーザー。フォローした順 */
 export const getFollowees = async (userId: string): Promise<User[]> => {
-	const rows = unwrap(
-		await supabase
-			.from("follows")
-			.select("followee:users!follows_followee_id_fkey(*)")
-			.eq("follower_id", userId),
-	);
-	return rows.map((row) => toUser(row.followee));
+	return parse(await api.api.users[":userId"].followees.$get({ param: { userId } }));
 };
