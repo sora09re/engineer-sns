@@ -1,6 +1,7 @@
 /**
  * application が外側（infrastructure）に求めるもの。実装は infrastructure に置き、app.ts で組み立てる。
  */
+import type { Post } from "../domain/post";
 import type { PostSummary } from "./post-summary";
 
 export type FollowRepository = {
@@ -19,6 +20,19 @@ export type PostQuery = {
 	findByAuthor: (authorId: string) => Promise<PostSummary[]>;
 	/** 本文に keyword を含む（大文字と小文字は区別しない）、コメントでない投稿を新しい順に返す */
 	searchTopLevel: (keyword: string) => Promise<PostSummary[]>;
+};
+
+export type UserRepository = {
+	/** そのアカウントがユーザーを持っているか（新規ユーザー登録が済んでいるか） */
+	exists: (userId: string) => Promise<boolean>;
+};
+
+/** 書き込み用。domain の Post を扱う */
+export type PostRepository = {
+	findById: (postId: string) => Promise<Post | null>;
+	create: (values: { authorId: string; content: string; parentPostId?: string }) => Promise<Post>;
+	/** 投稿を削除する。コメントも消える */
+	delete: (postId: string) => Promise<void>;
 };
 
 /** アクセストークンを検証し、アカウント ID を返す。不正なら null */

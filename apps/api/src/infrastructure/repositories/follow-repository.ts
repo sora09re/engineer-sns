@@ -4,7 +4,7 @@ import type { FollowRepository } from "../../application/ports";
 import type { Db } from "../db/client";
 import { follows } from "../db/schema";
 
-export const createDrizzleFollowRepository = (db: Db): FollowRepository => {
+export const createFollowRepository = (db: Db): FollowRepository => {
 	return {
 		findFolloweeIds: async (followerId) => {
 			const rows = await db
