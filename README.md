@@ -43,7 +43,7 @@ pnpm workspace のモノレポ（docs/adr/0002 参照）。
 
 1. GitHub OAuth App を作成し、コールバック URL に `http://127.0.0.1:54321/auth/v1/callback` を設定する
 2. `supabase/.env` に `SUPABASE_AUTH_EXTERNAL_GITHUB_CLIENT_ID` と `SUPABASE_AUTH_EXTERNAL_GITHUB_SECRET` を書く
-3. `pnpm exec supabase gen signing-key --algorithm ES256 > supabase/signing_keys.json` で JWT の署名鍵を作る（初回のみ。中身は `[ ... ]` の配列にする）
+3. `echo '[]' > supabase/signing_keys.json && pnpm exec supabase gen signing-key --algorithm ES256` で JWT の署名鍵を作る（初回のみ。`gen signing-key` は `supabase/signing_keys.json` に直接書き込み、ファイルがないとエラーになる）
 4. `pnpm exec supabase start` でローカルの Supabase を起動する（マイグレーションとシードが適用される）
 5. `apps/web/.env.example` と `apps/api/.env.example` をそれぞれ `.env.local` にコピーし、`supabase status` に表示される値を設定する
 6. `pnpm dev` で web（http://localhost:5173）と API（http://localhost:8787）を起動する。web の `/api` は API に転送される
@@ -71,3 +71,15 @@ pnpm vrt:update  # 見た目の差分を確認したうえで、基準のスク�
 - service role key は `supabase status` から取る。別のディレクトリから起動した Supabase を使うときは `E2E_SUPABASE_WORKDIR=<dir>` を付けるか、`E2E_SUPABASE_SERVICE_ROLE_KEY` で直接渡す
 - ほかのローカル Supabase などで Docker の負荷が高いと、テストが止まることがある。使っていないものは止めてから実行する
 - スクリーンショットはフォントの描画が OS で変わるので、基準は macOS で作っている
+
+# CI
+
+GitHub Actions（`.github/workflows/ci.yml`）で、PR ごとに lint・型チェック・単体テスト・E2E を流す。VRT は手元だけで流す。
+
+ワークフローが使うアクションは `.github/workflows/actions.lock` でコミットに固定している（[workflow dependency lockfiles](https://docs.github.com/ja/actions/concepts/security/workflow-dependency-lockfiles)）。アクションを足したり版を変えたりしたら、ロックファイルを更新してからコミットする。手で編集しない。Dependabot の PR はロックファイルも更新する。
+
+```sh
+gh extension install github/gh-actions-lock  # 初回のみ
+gh actions-lock           # ワークフローのアクションを固定し、ロックファイルを更新する
+gh actions-lock --verify  # 確認だけ（CI でも流している）
+```
