@@ -7,7 +7,7 @@
 		"check": "vp check",
 		"fix": "vp check --fix",
 		"test": "vp test",
-		"db:types": "supabase gen types typescript --local --schema public > src/api/database.types.ts"
+		"db:types": "node scripts/gen-db-types.mjs"
 	},
 	"dependencies": {
 		"@emotion/react": "11.14.0",
