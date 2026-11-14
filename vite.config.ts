@@ -1,4 +1,4 @@
-/// <reference types="vitest" />
+/// <reference types="vite-plus/test" />
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
