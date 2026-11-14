@@ -81,7 +81,7 @@ describe("POST /api/posts/:postId/comments", () => {
 		["content が文字列でない", { content: 42 }],
 	])("本文の形が不正（%s）なら 422", async (_, body) => {
 		await withRollback(async (db) => {
-			const { app, send, sign, me, parent } = await setup(db);
+			const { send, me, parent } = await setup(db);
 
 			const res = await send("POST", `/api/posts/${parent.id}/comments`, me.id, body);
 
@@ -92,7 +92,7 @@ describe("POST /api/posts/:postId/comments", () => {
 
 	test("本文が JSON として読めなければ 400", async () => {
 		await withRollback(async (db) => {
-			const { app, send, sign, me, parent } = await setup(db);
+			const { app, sign, me, parent } = await setup(db);
 
 			const res = await app.request(`/api/posts/${parent.id}/comments`, {
 				method: "POST",

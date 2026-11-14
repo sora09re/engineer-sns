@@ -57,7 +57,7 @@ describe("POST /api/posts", () => {
 		["content が文字列でない", { content: 42 }],
 	])("本文の形が不正（%s）なら 422", async (_, body) => {
 		await withRollback(async (db) => {
-			const { app, send, sign } = await setupApp(db);
+			const { send } = await setupApp(db);
 			const me = await createUser(db, "me");
 
 			const res = await send("POST", "/api/posts", me.id, body);
@@ -69,7 +69,7 @@ describe("POST /api/posts", () => {
 
 	test("本文が JSON として読めなければ 400", async () => {
 		await withRollback(async (db) => {
-			const { app, send, sign } = await setupApp(db);
+			const { app, sign } = await setupApp(db);
 			const me = await createUser(db, "me");
 
 			const res = await app.request("/api/posts", {
