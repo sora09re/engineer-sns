@@ -4,7 +4,11 @@
  */
 import type { JWTVerifyGetKey } from "jose";
 
+import { getComments } from "./application/get-comments";
+import { getPost } from "./application/get-post";
 import { getTimeline } from "./application/get-timeline";
+import { getUserPosts } from "./application/get-user-posts";
+import { searchPosts } from "./application/search-posts";
 import { createJoseAccessTokenVerifier } from "./infrastructure/auth/jose-access-token-verifier";
 import type { Db } from "./infrastructure/db/client";
 import { createDrizzleFollowRepository } from "./infrastructure/repositories/drizzle-follow-repository";
@@ -20,6 +24,10 @@ export const createApp = ({ db, jwks }: AppDeps) => {
 	return createHttpApp({
 		verifyAccessToken: createJoseAccessTokenVerifier(jwks),
 		getTimeline: getTimeline({ follows, posts }),
+		getPost: getPost({ posts }),
+		getComments: getComments({ posts }),
+		getUserPosts: getUserPosts({ posts }),
+		searchPosts: searchPosts({ posts }),
 	});
 };
 
