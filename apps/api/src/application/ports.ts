@@ -35,5 +35,12 @@ export type PostRepository = {
 	delete: (postId: string) => Promise<void>;
 };
 
+export type LikeRepository = {
+	/** userId のユーザーの、postId の投稿へのいいねを付ける。すでにあれば何もしない */
+	add: (values: { postId: string; userId: string }) => Promise<void>;
+	/** userId のユーザーの、postId の投稿へのいいねを外す。なければ何もしない */
+	remove: (values: { postId: string; userId: string }) => Promise<void>;
+};
+
 /** アクセストークンを検証し、アカウント ID を返す。不正なら null */
 export type AccessTokenVerifier = (token: string) => Promise<{ accountId: string } | null>;

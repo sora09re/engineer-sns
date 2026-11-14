@@ -11,10 +11,13 @@ import { getComments } from "./application/get-comments";
 import { getPost } from "./application/get-post";
 import { getTimeline } from "./application/get-timeline";
 import { getUserPosts } from "./application/get-user-posts";
+import { likePost } from "./application/like-post";
 import { searchPosts } from "./application/search-posts";
+import { unlikePost } from "./application/unlike-post";
 import { createAccessTokenVerifier } from "./infrastructure/auth/access-token-verifier";
 import type { Db } from "./infrastructure/db/client";
 import { createFollowRepository } from "./infrastructure/repositories/follow-repository";
+import { createLikeRepository } from "./infrastructure/repositories/like-repository";
 import { createPostQuery } from "./infrastructure/repositories/post-query";
 import { createPostRepository } from "./infrastructure/repositories/post-repository";
 import { createUserRepository } from "./infrastructure/repositories/user-repository";
@@ -27,6 +30,7 @@ export const createApp = ({ db, jwks }: AppDeps) => {
 	const posts = createPostQuery(db);
 	const postRepository = createPostRepository(db);
 	const users = createUserRepository(db);
+	const likes = createLikeRepository(db);
 
 	return createHttpApp({
 		verifyAccessToken: createAccessTokenVerifier(jwks),
@@ -38,6 +42,8 @@ export const createApp = ({ db, jwks }: AppDeps) => {
 		createPost: createPost({ users, postRepository, posts }),
 		createComment: createComment({ users, postRepository, posts }),
 		deletePost: deletePost({ postRepository }),
+		likePost: likePost({ users, likes, postRepository }),
+		unlikePost: unlikePost({ likes, postRepository }),
 	});
 };
 

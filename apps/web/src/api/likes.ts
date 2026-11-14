@@ -1,14 +1,11 @@
-import { supabase, throwIfError } from "./client";
-import { requireAccountId } from "./session";
+import { api, ensureOk } from "./http";
 
+/** いいねする。すでにいいねしていても成功する */
 export const likePost = async (postId: string) => {
-	const accountId = await requireAccountId();
-	throwIfError(await supabase.from("likes").insert({ post_id: postId, user_id: accountId }));
+	await ensureOk(await api.api.posts[":postId"].like.$put({ param: { postId } }));
 };
 
+/** いいねを外す。いいねしていなくても成功する */
 export const unlikePost = async (postId: string) => {
-	const accountId = await requireAccountId();
-	throwIfError(
-		await supabase.from("likes").delete().eq("post_id", postId).eq("user_id", accountId),
-	);
+	await ensureOk(await api.api.posts[":postId"].like.$delete({ param: { postId } }));
 };
