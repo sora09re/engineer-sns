@@ -1,14 +1,7 @@
-import {
-	ActionIcon,
-	Avatar,
-	CloseButton,
-	Menu,
-	createTheme,
-	type MantineColorsTuple,
-} from "@mantine/core";
+import { ActionIcon, Avatar, Menu, createTheme, type MantineColorsTuple } from "@mantine/core";
 
 /**
- * Mantine 6 から 9 で既定値が変わったところを、6 の見た目に戻す。
+ * Mantine 6 から 9 で既定値が変わったところのうち、v6 の見た目を残すもの。
  * 見た目を変えるときは、ここを直してから VRT のベースラインを更新する。
  */
 
@@ -31,15 +24,11 @@ export const theme = createTheme({
 	defaultRadius: "sm",
 	// v9 で xl が 24px → 32px になった
 	spacing: { xl: "1.5rem" },
-	// v9 はサイズごとに行間が違う。v6 はすべて 1.55
-	lineHeights: { xs: "1.55", sm: "1.55", md: "1.55", lg: "1.55", xl: "1.55" },
 	components: {
 		// v6 の既定は subtle
 		ActionIcon: ActionIcon.extend({ defaultProps: { variant: "subtle", color: "gray" } }),
 		// v9 の Avatar は defaultRadius に関係なく丸い。v6 は sm
 		Avatar: Avatar.extend({ defaultProps: { radius: "sm" } }),
-		// v9 で 22px → 28px になった
-		CloseButton: CloseButton.extend({ defaultProps: { size: "sm", iconSize: 16 } }),
 		// v9 はドロップダウンを画面端から 5px 離す。v6 は端まで寄せていた
 		Menu: Menu.extend({ defaultProps: { middlewares: { shift: { padding: 0 } } } }),
 	},
