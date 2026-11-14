@@ -34,7 +34,10 @@ export const createHttpApp = (deps: HttpAppDeps) => {
 		.route("/users", usersRoutes(deps))
 		.onError((error, c) => {
 			if (error instanceof HTTPException) {
-				return c.json({ message: error.message }, error.status);
+				// 400 は Hono が投げる（本文が JSON として読めないなど）。メッセージが英語なので置き換える
+				const message =
+					error.status === 400 ? "リクエストの形式が正しくありません。" : error.message;
+				return c.json({ message }, error.status);
 			}
 			if (error instanceof ValidationError) {
 				return c.json({ message: error.message }, 422);

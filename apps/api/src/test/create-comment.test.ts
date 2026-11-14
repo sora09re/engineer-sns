@@ -75,4 +75,36 @@ describe("POST /api/posts/:postId/comments", () => {
 			expect(await res.json()).toEqual({ message: "新規ユーザー登録が済んでいません。" });
 		});
 	});
+
+	test.each([
+		["content がない", {}],
+		["content が文字列でない", { content: 42 }],
+	])("本文の形が不正（%s）なら 422", async (_, body) => {
+		await withRollback(async (db) => {
+			const { app, send, sign, me, parent } = await setup(db);
+
+			const res = await send("POST", `/api/posts/${parent.id}/comments`, me.id, body);
+
+			expect(res.status).toBe(422);
+			expect(await res.json()).toEqual({ message: "本文を入力してください。" });
+		});
+	});
+
+	test("本文が JSON として読めなければ 400", async () => {
+		await withRollback(async (db) => {
+			const { app, send, sign, me, parent } = await setup(db);
+
+			const res = await app.request(`/api/posts/${parent.id}/comments`, {
+				method: "POST",
+				headers: {
+					Authorization: `Bearer ${await sign({ sub: me.id })}`,
+					"Content-Type": "application/json",
+				},
+				body: "{ content: これは JSON ではない",
+			});
+
+			expect(res.status).toBe(400);
+			expect(await res.json()).toEqual({ message: "リクエストの形式が正しくありません。" });
+		});
+	});
 });
