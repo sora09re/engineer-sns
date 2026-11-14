@@ -14,7 +14,7 @@ export const ProfileStats = ({ user }: ProfileStatsProps) => {
 	];
 
 	return (
-		<Group my="md" position="center" spacing={30}>
+		<Group my="md" justify="center" gap={30}>
 			{stats.map((stat) => {
 				return (
 					<Link

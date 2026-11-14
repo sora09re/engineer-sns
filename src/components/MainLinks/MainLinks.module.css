@@ -1,0 +1,19 @@
+.link {
+	display: block;
+	width: 100%;
+	padding: var(--mantine-spacing-xs);
+	border-radius: var(--mantine-radius-sm);
+	color: var(--mantine-color-black);
+	text-decoration: none;
+}
+
+@media (hover: hover) {
+	.link:hover {
+		background-color: var(--mantine-color-gray-0);
+	}
+}
+
+/* v6 の ThemeIcon は中のアイコンが 24px に収まる大きさだった */
+.icon {
+	--ti-size: 26px;
+}

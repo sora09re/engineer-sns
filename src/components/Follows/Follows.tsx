@@ -17,7 +17,7 @@ export const Follows = ({ userId }: FollowsProps) => {
 	return (
 		<Box p="md">
 			<Tabs defaultValue="followers" mt="md">
-				<Tabs.List grow position="center">
+				<Tabs.List grow justify="center">
 					<Tabs.Tab value="followers">フォロワー</Tabs.Tab>
 					<Tabs.Tab value="following">フォロー中</Tabs.Tab>
 				</Tabs.List>

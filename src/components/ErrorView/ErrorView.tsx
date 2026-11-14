@@ -8,7 +8,7 @@ export const ErrorView = ({ error, reset }: ErrorComponentProps) => {
 		<Center style={{ height: "100vh" }}>
 			<Stack align="center">
 				<Text>エラーが発生しました。</Text>
-				<Text size="sm" color="dimmed">
+				<Text size="sm" c="dimmed">
 					{error instanceof Error ? error.message : String(error)}
 				</Text>
 				<Button

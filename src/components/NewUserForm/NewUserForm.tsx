@@ -1,6 +1,5 @@
 import {
 	Button,
-	Col,
 	Container,
 	Flex,
 	Grid,
@@ -62,7 +61,7 @@ export const NewUserForm = ({ account }: NewUserFormProps) => {
 	return (
 		<Container size={400} p={20}>
 			<Paper p="md">
-				<Title order={4} align="center">
+				<Title order={4} ta="center">
 					ユーザー新規登録
 				</Title>
 				<form
@@ -76,7 +75,7 @@ export const NewUserForm = ({ account }: NewUserFormProps) => {
 						<ImageUpload onDrop={selectImage} imageUrl={previewUrl || values.profile_image_url} />
 					</Flex>
 					<Grid>
-						<Col style={{ marginTop: 5 }}>
+						<Grid.Col style={{ marginTop: 5 }}>
 							<TextInput
 								label="名前"
 								placeholder="Your name"
@@ -86,8 +85,8 @@ export const NewUserForm = ({ account }: NewUserFormProps) => {
 									return updateValues({ name: e.currentTarget.value });
 								}}
 							/>
-						</Col>
-						<Col style={{ marginTop: 5 }}>
+						</Grid.Col>
+						<Grid.Col style={{ marginTop: 5 }}>
 							<TextInput
 								label="ユーザーネーム"
 								placeholder="Your username"
@@ -97,8 +96,8 @@ export const NewUserForm = ({ account }: NewUserFormProps) => {
 									return updateValues({ username: e.currentTarget.value });
 								}}
 							/>
-						</Col>
-						<Col style={{ marginTop: 5 }}>
+						</Grid.Col>
+						<Grid.Col style={{ marginTop: 5 }}>
 							<TextInput
 								label="メールアドレス"
 								placeholder="Your email"
@@ -108,8 +107,8 @@ export const NewUserForm = ({ account }: NewUserFormProps) => {
 									return updateValues({ email: e.currentTarget.value });
 								}}
 							/>
-						</Col>
-						<Col style={{ marginTop: 5 }}>
+						</Grid.Col>
+						<Grid.Col style={{ marginTop: 5 }}>
 							<Textarea
 								label="自己紹介"
 								placeholder="Your bio"
@@ -119,8 +118,8 @@ export const NewUserForm = ({ account }: NewUserFormProps) => {
 								}}
 								maxLength={160}
 							/>
-						</Col>
-						<Col style={{ marginTop: 5 }}>
+						</Grid.Col>
+						<Grid.Col style={{ marginTop: 5 }}>
 							<TextInput
 								label="場所"
 								placeholder="Your location"
@@ -129,8 +128,8 @@ export const NewUserForm = ({ account }: NewUserFormProps) => {
 									return updateValues({ location: e.currentTarget.value });
 								}}
 							/>
-						</Col>
-						<Col style={{ marginTop: 5 }}>
+						</Grid.Col>
+						<Grid.Col style={{ marginTop: 5 }}>
 							<TextInput
 								label="ウェブサイト"
 								placeholder="Your website"
@@ -139,9 +138,9 @@ export const NewUserForm = ({ account }: NewUserFormProps) => {
 									return updateValues({ website: e.currentTarget.value });
 								}}
 							/>
-						</Col>
+						</Grid.Col>
 					</Grid>
-					<Group position="right" style={{ marginTop: 15 }}>
+					<Group justify="flex-end" style={{ marginTop: 15 }}>
 						<Button type="submit" color="blue" loading={createUser.isPending} disabled={!isValid}>
 							送信
 						</Button>

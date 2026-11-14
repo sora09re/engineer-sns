@@ -26,7 +26,7 @@ export const Search = () => {
 	return (
 		<Box p="md">
 			<TextInput
-				icon={<IconSearch />}
+				leftSection={<IconSearch />}
 				placeholder="キーワード検索"
 				value={keyword}
 				onChange={(e) => {
@@ -34,7 +34,7 @@ export const Search = () => {
 				}}
 			/>
 			<Tabs defaultValue="post" mt="md">
-				<Tabs.List grow position="center">
+				<Tabs.List grow justify="center">
 					<Tabs.Tab value="post">投稿</Tabs.Tab>
 					<Tabs.Tab value="account">アカウント</Tabs.Tab>
 				</Tabs.List>

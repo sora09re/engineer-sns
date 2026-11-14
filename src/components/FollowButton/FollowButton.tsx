@@ -7,6 +7,8 @@ import { useState } from "react";
 import { isFollowingQuery } from "@/api/queries";
 import { useToggleFollow } from "@/hooks/mutations";
 
+import classes from "./FollowButton.module.css";
+
 interface FollowButtonProps {
 	userId: string;
 }
@@ -50,17 +52,7 @@ export const FollowButton = ({ userId }: FollowButtonProps) => {
 				variant="outline"
 				color="dark"
 				loading={toggleFollow.isPending}
-				styles={(theme) => {
-					return {
-						root: {
-							"&:not([data-disabled])": theme.fn.hover({
-								backgroundColor: "white",
-								borderColor: "red",
-								color: "red",
-							}),
-						},
-					};
-				}}
+				className={classes.unfollow}
 				onClick={(event) => {
 					event.stopPropagation();
 					handleToggle(false);

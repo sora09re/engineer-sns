@@ -16,7 +16,7 @@ export const Profile = ({ currentUserId, user, onEditProfile }: ProfileProps) =>
 		<Box
 			p="xl"
 			w="100%"
-			sx={{
+			style={{
 				borderBottom: "1px solid #E9ECEF",
 			}}
 		>

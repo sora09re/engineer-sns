@@ -13,7 +13,7 @@ export const AccountButton = ({ currentUser }: AccountButtonProps) => {
 				<Avatar src={currentUser.profile_image_url} size={40} />
 				<div>
 					<Text>{currentUser.name}</Text>
-					<Text size="xs" color="dimmed">
+					<Text size="xs" c="dimmed">
 						@{currentUser.username}
 					</Text>
 				</div>

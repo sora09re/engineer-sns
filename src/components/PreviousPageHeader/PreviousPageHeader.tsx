@@ -6,7 +6,7 @@ export const PreviousPageHeader = () => {
 	const router = useRouter();
 
 	return (
-		<Flex sx={{ borderBottom: "1px solid #E9ECEF" }} p="md">
+		<Flex style={{ borderBottom: "1px solid #E9ECEF" }} p="md">
 			<IconArrowLeft
 				size="1.5rem"
 				cursor="pointer"
