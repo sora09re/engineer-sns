@@ -1,4 +1,4 @@
-import type { User } from "@/types/user";
+import type { User } from "@engineer-sns/shared";
 
 import { supabase, throwIfError, unwrap } from "./client";
 import { requireAccountId } from "./session";

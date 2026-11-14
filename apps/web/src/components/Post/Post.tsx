@@ -5,7 +5,7 @@ import { ContentPart, parseContent } from "@/components/ContentPart/ContentPart"
 import { DateFormat } from "@/components/DateFormat/DateFormat";
 import { PostActionMenu } from "@/components/PostActionMenu/PostActionMenu";
 import { PostActionsButtonGroup } from "@/components/PostActionsButtonGroup/PostActionsButtonGroup";
-import type { PostType } from "@/types/post";
+import type { PostType } from "@engineer-sns/shared";
 
 interface PostProps {
 	currentUserId: string;

@@ -3,7 +3,7 @@ import { Box } from "@mantine/core";
 import { ProfileActionsButton } from "@/components/ProfileActionsButton/ProfileActionsButton";
 import { ProfileHeader } from "@/components/ProfileHeader/ProfileHeader";
 import { ProfileStats } from "@/components/ProfileStats/ProfileStats";
-import type { ProfileType } from "@/types/profile";
+import type { ProfileType } from "@engineer-sns/shared";
 
 interface ProfileProps {
 	currentUserId: string;

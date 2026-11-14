@@ -5,7 +5,7 @@ import { likePost, unlikePost } from "@/api/likes";
 import { createComment, createPost, deletePost } from "@/api/posts";
 import { queryKeys } from "@/api/queries";
 import { createCurrentUser, updateCurrentUser, uploadProfileImage } from "@/api/users";
-import type { UserValues } from "@/types/user";
+import type { UserValues } from "@engineer-sns/shared";
 
 /**
  * 更新系のフック。成功後に関係するクエリを無効化し、再取得が終わるまで pending のままにする。

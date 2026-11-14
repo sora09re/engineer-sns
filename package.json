@@ -6,11 +6,16 @@
 		"build": "pnpm --filter @engineer-sns/web build",
 		"check": "vp check",
 		"fix": "vp check --fix",
-		"test": "vp run -r test",
+		"typecheck": "tsc -p . && pnpm -r typecheck",
+		"test": "pnpm -r test",
 		"e2e": "playwright test --project=e2e",
 		"vrt": "playwright test --project=vrt-desktop",
 		"vrt:update": "playwright test --project=vrt-desktop --update-snapshots",
 		"db:types": "node scripts/gen-db-types.mjs"
+	},
+	"dependencies": {
+		"@engineer-sns/api": "workspace:*",
+		"hono": "^4.13.18"
 	},
 	"devDependencies": {
 		"@playwright/test": "1.64.1",

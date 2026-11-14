@@ -38,9 +38,17 @@ export default defineConfig({
 			use: { ...devices["Desktop Chrome"], viewport: { width: 1280, height: 800 } },
 		},
 	],
-	webServer: {
-		command: "pnpm --filter @engineer-sns/web dev --port 5173 --strictPort",
-		url: "http://localhost:5173",
-		reuseExistingServer: true,
-	},
+	webServer: [
+		{
+			command: "pnpm --filter @engineer-sns/api dev",
+			url: "http://localhost:8787/api/posts/timeline",
+			// トークンなしの 401 が返れば起動している（Playwright は 400〜403 も起動済みとみなす）
+			reuseExistingServer: true,
+		},
+		{
+			command: "pnpm --filter @engineer-sns/web dev --port 5173 --strictPort",
+			url: "http://localhost:5173",
+			reuseExistingServer: true,
+		},
+	],
 });

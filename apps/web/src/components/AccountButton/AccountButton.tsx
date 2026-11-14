@@ -1,6 +1,6 @@
 import { Avatar, Group, Text, UnstyledButton } from "@mantine/core";
 
-import type { User } from "@/types/user";
+import type { User } from "@engineer-sns/shared";
 
 interface AccountButtonProps {
 	currentUser: Pick<User, "name" | "username" | "profile_image_url">;

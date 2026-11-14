@@ -1,7 +1,7 @@
 import { Group, Text } from "@mantine/core";
 import { Link } from "@tanstack/react-router";
 
-import type { ProfileType } from "@/types/profile";
+import type { ProfileType } from "@engineer-sns/shared";
 
 interface ProfileStatsProps {
 	user: ProfileType;

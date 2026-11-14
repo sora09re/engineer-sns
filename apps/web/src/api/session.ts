@@ -1,4 +1,4 @@
-import type { Account } from "@/types/account";
+import type { Account } from "@engineer-sns/shared";
 
 import { supabase } from "./client";
 

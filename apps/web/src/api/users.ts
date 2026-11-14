@@ -1,5 +1,4 @@
-import type { ProfileType } from "@/types/profile";
-import type { User, UserValues } from "@/types/user";
+import type { ProfileType, User, UserValues } from "@engineer-sns/shared";
 
 import { countOf, ilikePattern, supabase, throwIfError, unwrap, unwrapMaybe } from "./client";
 import type { Tables } from "./database.types";

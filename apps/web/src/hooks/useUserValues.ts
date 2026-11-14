@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import type { UserValues } from "@/types/user";
+import type { UserValues } from "@engineer-sns/shared";
 
 /** プロフィール入力フォームの状態 */
 export const useUserValues = (initialValues: UserValues) => {
