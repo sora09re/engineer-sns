@@ -2,7 +2,6 @@ import { MantineProvider } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider } from "@tanstack/react-router";
-import { Provider } from "jotai";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
@@ -22,12 +21,10 @@ if (!rootElement) {
 createRoot(rootElement).render(
 	<StrictMode>
 		<QueryClientProvider client={queryClient}>
-			<Provider>
-				<MantineProvider withGlobalStyles withNormalizeCSS>
-					<Notifications />
-					<RouterProvider router={router} />
-				</MantineProvider>
-			</Provider>
+			<MantineProvider withGlobalStyles withNormalizeCSS>
+				<Notifications />
+				<RouterProvider router={router} />
+			</MantineProvider>
 		</QueryClientProvider>
 	</StrictMode>,
 );

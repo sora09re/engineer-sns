@@ -1,3 +1,4 @@
+import { useDisclosure } from "@mantine/hooks";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, notFound } from "@tanstack/react-router";
 
@@ -27,6 +28,7 @@ function ProfilePage() {
 	const currentUser = useCurrentUser();
 	const { data: profile } = useSuspenseQuery(userProfileQuery(userId));
 	const { data: posts } = useSuspenseQuery(userPostsQuery(userId));
+	const [isEditProfileOpened, editProfileModal] = useDisclosure(false);
 
 	if (!profile) {
 		return null;
@@ -34,9 +36,19 @@ function ProfilePage() {
 
 	return (
 		<>
-			<Profile user={profile} currentUserId={currentUser.id} />
+			<Profile
+				user={profile}
+				currentUserId={currentUser.id}
+				onEditProfile={editProfileModal.open}
+			/>
 			<PostsList posts={posts} currentUserId={currentUser.id} />
-			{currentUser.id === userId && <EditProfileModal currentUser={currentUser} />}
+			{currentUser.id === userId && (
+				<EditProfileModal
+					currentUser={currentUser}
+					opened={isEditProfileOpened}
+					onClose={editProfileModal.close}
+				/>
+			)}
 		</>
 	);
 }

@@ -8,9 +8,10 @@ import type { ProfileType } from "@/types/profile";
 interface ProfileProps {
 	currentUserId: string;
 	user: ProfileType;
+	onEditProfile: () => void;
 }
 
-export const Profile = ({ currentUserId, user }: ProfileProps) => {
+export const Profile = ({ currentUserId, user, onEditProfile }: ProfileProps) => {
 	return (
 		<Box
 			p="xl"
@@ -21,7 +22,11 @@ export const Profile = ({ currentUserId, user }: ProfileProps) => {
 		>
 			<ProfileHeader user={user} />
 			<ProfileStats user={user} />
-			<ProfileActionsButton currentUserId={currentUserId} userId={user.id} />
+			<ProfileActionsButton
+				currentUserId={currentUserId}
+				userId={user.id}
+				onEditProfile={onEditProfile}
+			/>
 		</Box>
 	);
 };

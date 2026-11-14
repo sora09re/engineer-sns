@@ -4,11 +4,14 @@ import { IconCheck, IconX } from "@tabler/icons-react";
 import { useState } from "react";
 
 import { useCreatePost } from "@/hooks/mutations";
-import { useModal } from "@/hooks/useModal";
 
-export const NewPostForm = () => {
+interface NewPostFormProps {
+	/** 投稿に成功したとき（モーダルから使うときに閉じるため） */
+	onPosted?: () => void;
+}
+
+export const NewPostForm = ({ onPosted }: NewPostFormProps) => {
 	const [postContent, setPostContent] = useState("");
-	const [, setIsVisiblePostModal] = useModal("post");
 	const createPost = useCreatePost();
 
 	const fetchPost = () => {
@@ -24,7 +27,7 @@ export const NewPostForm = () => {
 		createPost.mutate(postContent, {
 			onSuccess: () => {
 				setPostContent("");
-				setIsVisiblePostModal(false);
+				onPosted?.();
 				notifications.update({
 					id: "post-data",
 					autoClose: 2000,

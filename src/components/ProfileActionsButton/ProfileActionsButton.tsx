@@ -1,27 +1,24 @@
 import { Button, Center } from "@mantine/core";
 
 import { FollowButton } from "@/components/FollowButton/FollowButton";
-import { useModal } from "@/hooks/useModal";
 
 interface ProfileActionsButtonProps {
 	currentUserId: string;
 	userId: string;
+	onEditProfile: () => void;
 }
 
-export const ProfileActionsButton = ({ currentUserId, userId }: ProfileActionsButtonProps) => {
-	const [, setIsVisible] = useModal("editProfile");
+export const ProfileActionsButton = ({
+	currentUserId,
+	userId,
+	onEditProfile,
+}: ProfileActionsButtonProps) => {
 	const isCurrentUser = currentUserId === userId;
 
 	return (
 		<Center>
 			{isCurrentUser ? (
-				<Button
-					variant="outline"
-					color="dark"
-					onClick={() => {
-						return setIsVisible(true);
-					}}
-				>
+				<Button variant="outline" color="dark" onClick={onEditProfile}>
 					プロフィールを編集
 				</Button>
 			) : (

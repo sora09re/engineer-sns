@@ -5,15 +5,16 @@ import { IconCheck, IconX } from "@tabler/icons-react";
 import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
 import { useUpdateCurrentUser } from "@/hooks/mutations";
 import { useImageFile } from "@/hooks/useImageFile";
-import { useModal } from "@/hooks/useModal";
 import { useUserValues } from "@/hooks/useUserValues";
 import type { User } from "@/types/user";
 
 interface EditProfileModalProps {
 	currentUser: User;
+	opened: boolean;
+	onClose: () => void;
 }
 
-export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
+export const EditProfileModal = ({ currentUser, opened, onClose }: EditProfileModalProps) => {
 	const marginTopPx = 10;
 	const { updateValues, values } = useUserValues({
 		bio: currentUser.bio ?? "",
@@ -25,7 +26,6 @@ export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
 		website: currentUser.website ?? "",
 	});
 	const { clearImage, imageFile, previewUrl, selectImage } = useImageFile();
-	const [isVisible, setIsVisible] = useModal("editProfile");
 	const updateUser = useUpdateCurrentUser();
 
 	const editProfile = () => {
@@ -42,7 +42,7 @@ export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
 			{ imageFile, values },
 			{
 				onSuccess: () => {
-					setIsVisible(false);
+					onClose();
 					clearImage();
 					notifications.update({
 						id: "updateProfile",
@@ -68,14 +68,7 @@ export const EditProfileModal = ({ currentUser }: EditProfileModalProps) => {
 	};
 
 	return (
-		<Modal
-			opened={isVisible}
-			onClose={() => {
-				return setIsVisible(false);
-			}}
-			title="プロフィールを編集"
-			withCloseButton
-		>
+		<Modal opened={opened} onClose={onClose} title="プロフィールを編集" withCloseButton>
 			<Paper p="md">
 				<Grid grow>
 					<Grid.Col span={4}>
