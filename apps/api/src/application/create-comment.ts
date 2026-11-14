@@ -1,7 +1,7 @@
 import { assertCanWrite } from "./assert-can-write";
-import { NotFoundError } from "./errors";
 import type { PostQuery, PostRepository, UserRepository } from "./ports";
 import type { PostSummary } from "./post-summary";
+import { requirePost } from "./require-post";
 
 /** 投稿にコメントする。コメントは parentPostId を持つ投稿 */
 export const createComment = (deps: {
@@ -15,10 +15,7 @@ export const createComment = (deps: {
 		content: string;
 	}): Promise<PostSummary> => {
 		await assertCanWrite(deps.users, input);
-		const parent = await deps.postRepository.findById(input.postId);
-		if (!parent) {
-			throw new NotFoundError("投稿が見つかりません。");
-		}
+		const parent = await requirePost(deps.postRepository, input.postId);
 		const comment = await deps.postRepository.create({
 			authorId: input.accountId,
 			content: input.content,
