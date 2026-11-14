@@ -1,0 +1,55 @@
+/* Mantine 6 は normalize.css を入れていた。見た目に効いていたものだけ残す */
+button,
+input {
+	line-height: 1.15;
+}
+
+/*
+ * Mantine 6 から 9 で既定のスタイルが変わったところを、6 の見た目に戻す。
+ * theme.ts で戻せないもの（コンポーネント内部の CSS）だけをここに書く。
+ */
+:root[data-mantine-color-scheme="light"] {
+	/* v9 は gray の light / subtle の文字色が gray-9 になった。v6 は gray-6 */
+	--mantine-color-gray-light-color: var(--mantine-color-gray-6);
+}
+
+.mantine-InputWrapper-label {
+	color: var(--mantine-color-gray-9);
+	font-weight: 500;
+}
+
+.mantine-InputWrapper-required {
+	font-weight: 500;
+}
+
+.mantine-Textarea-input {
+	padding-block: 10px;
+}
+
+.mantine-Input-section[data-position="left"] {
+	color: var(--mantine-color-gray-5);
+}
+
+.mantine-Input-input[data-with-left-section] {
+	padding-inline-start: 36px;
+}
+
+.mantine-CloseButton-root {
+	color: var(--mantine-color-gray-6);
+}
+
+.mantine-Menu-item {
+	padding: 10px 12px;
+}
+
+/* v9 は grow のタブでラベルが左寄せになった */
+.mantine-Tabs-tabLabel {
+	text-align: center;
+}
+
+/* v9 はヘッダーの高さが 60px に固定された。v6 は閉じるボタンの高さ + 余白 */
+.mantine-Modal-header {
+	min-height: 0;
+	padding-bottom: 0;
+	margin-bottom: var(--mantine-spacing-md);
+}

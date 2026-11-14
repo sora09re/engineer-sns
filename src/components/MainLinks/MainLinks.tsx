@@ -2,6 +2,8 @@ import { Box, Group, Text, ThemeIcon } from "@mantine/core";
 import { IconHome2, IconSearch, IconUserCircle } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 
+import classes from "./MainLinks.module.css";
+
 interface MainLinkContentProps {
 	icon: React.ReactNode;
 	label: string;
@@ -15,35 +17,11 @@ const linkStyle = { color: "inherit", display: "block", textDecoration: "none" }
 
 const MainLinkContent = ({ icon, label }: MainLinkContentProps) => {
 	return (
-		<Box
-			sx={(theme) => {
-				return {
-					"&:hover": {
-						backgroundColor:
-							theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0],
-					},
-					borderRadius: theme.radius.sm,
-					color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
-					display: "block",
-					padding: theme.spacing.xs,
-					width: "100%",
-				};
-			}}
-		>
+		<Box className={classes.link}>
 			<Group>
-				<ThemeIcon
-					color="white"
-					sx={(theme) => {
-						return {
-							"&:hover": {
-								color: theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0],
-							},
-						};
-					}}
-				>
+				<ThemeIcon color="white" className={classes.icon}>
 					{icon}
 				</ThemeIcon>
-
 				<Text size="lg">{label}</Text>
 			</Group>
 		</Box>

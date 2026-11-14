@@ -51,7 +51,7 @@ export const PostActionsButtonGroup = ({ currentUserId, post }: PostActionsButto
 	};
 
 	return (
-		<Group align="center" spacing={40}>
+		<Group align="center" gap={40}>
 			<UnstyledButton>
 				<Link
 					to="/posts/$postId"
@@ -63,9 +63,9 @@ export const PostActionsButtonGroup = ({ currentUserId, post }: PostActionsButto
 					}}
 				>
 					<Tooltip label="コメント" position="bottom" withArrow>
-						<Group ref={refComments} align="center" spacing="sm">
+						<Group ref={refComments} align="center" gap="sm">
 							<IconMessageCircle2 size="1.2rem" color={commentsColor} />
-							<Text color={commentsColor}>{post.comment_count}</Text>
+							<Text c={commentsColor}>{post.comment_count}</Text>
 						</Group>
 					</Tooltip>
 				</Link>
@@ -83,9 +83,9 @@ export const PostActionsButtonGroup = ({ currentUserId, post }: PostActionsButto
 					position="bottom"
 					withArrow
 				>
-					<Group ref={refLikes} align="center" spacing="sm">
+					<Group ref={refLikes} align="center" gap="sm">
 						<IconThumbUp size="1.2rem" color={likesColor} />
-						<Text color={likesColor}>{likeCount}</Text>
+						<Text c={likesColor}>{likeCount}</Text>
 					</Group>
 				</Tooltip>
 			</UnstyledButton>

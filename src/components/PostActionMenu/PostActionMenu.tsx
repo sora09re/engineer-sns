@@ -52,7 +52,7 @@ export const PostActionMenu = ({ postId }: PostActionMenuProps) => {
 				<Box
 					role="button"
 					aria-label="投稿メニュー"
-					sx={{ position: "absolute", right: 20, top: 10 }}
+					style={{ position: "absolute", right: 20, top: 10 }}
 					onClick={(event) => {
 						event.stopPropagation();
 					}}
@@ -64,7 +64,7 @@ export const PostActionMenu = ({ postId }: PostActionMenuProps) => {
 			<Menu.Dropdown>
 				<Menu.Item
 					color="red"
-					icon={<IconTrash size={14} />}
+					leftSection={<IconTrash size={14} />}
 					fw="bold"
 					onClick={(event) => {
 						event.stopPropagation();

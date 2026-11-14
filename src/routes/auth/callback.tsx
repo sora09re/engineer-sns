@@ -31,7 +31,7 @@ function CallbackErrorPage() {
 			<Stack align="center">
 				<Text>ログインに失敗しました。</Text>
 				{error_description && (
-					<Text size="sm" color="dimmed">
+					<Text size="sm" c="dimmed">
 						{error_description}
 					</Text>
 				)}

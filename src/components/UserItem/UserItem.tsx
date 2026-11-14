@@ -17,7 +17,7 @@ export const UserItem = ({ currentUserId, propsUser }: UserItemProps) => {
 		<Box
 			p="md"
 			w="100%"
-			sx={{ borderBottom: "1px solid #E9ECEF", cursor: "pointer" }}
+			style={{ borderBottom: "1px solid #E9ECEF", cursor: "pointer" }}
 			onClick={() => {
 				return navigate({ to: "/profile/$userId", params: { userId: propsUser.id } });
 			}}
@@ -35,11 +35,11 @@ export const UserItem = ({ currentUserId, propsUser }: UserItemProps) => {
 								params={{ userId: propsUser.id }}
 								style={{ textDecoration: "none" }}
 							>
-								<Text fw={700} color="black">
+								<Text fw={700} c="black">
 									{propsUser.name}
 								</Text>
 							</Link>
-							<Text color="dimmed">
+							<Text c="dimmed">
 								@{propsUser.username}
 								{/* {" "}
                 <Badge color="gray">フォローされています</Badge> */}

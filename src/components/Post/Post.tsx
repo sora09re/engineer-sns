@@ -27,7 +27,7 @@ export const Post = ({ currentUserId, post }: PostProps) => {
 			key={post.id}
 			p="md"
 			w="100%"
-			sx={{
+			style={{
 				borderBottom: "1px solid #E9ECEF",
 				cursor: "pointer",
 				position: "relative",
@@ -50,7 +50,7 @@ export const Post = ({ currentUserId, post }: PostProps) => {
 					</Link>
 				</Box>
 				<Box>
-					<Group spacing="xs">
+					<Group gap="xs">
 						<Link
 							to="/profile/$userId"
 							params={{ userId: post.user_id }}
@@ -59,12 +59,12 @@ export const Post = ({ currentUserId, post }: PostProps) => {
 								event.stopPropagation();
 							}}
 						>
-							<Text fw={700} color="black">
+							<Text fw={700} c="black">
 								{post.users.name}
 							</Text>
 						</Link>
-						<Text color="dimmed">@{post.users.username}</Text>
-						<Text color="dimmed">
+						<Text c="dimmed">@{post.users.username}</Text>
+						<Text c="dimmed">
 							<DateFormat props={post.created_at} />
 						</Text>
 					</Group>

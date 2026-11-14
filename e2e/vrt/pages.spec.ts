@@ -25,8 +25,10 @@ const signInAs = (page: Page, account: { id: string; email: string }) => {
  * タップ位置が別の要素に重なるため、クリックイベントを要素に直接送る。
  * 操作できるかどうかは e2e/flows で確かめる。VRT では見た目だけを記録する。
  */
-const open = (target: ReturnType<Page["locator"]>) => {
-	return target.dispatchEvent("click");
+const open = async (target: ReturnType<Page["locator"]>) => {
+	// Mantine 9 の Popover はトリガーが画面外だとドロップダウンを隠すので、先に画面内へスクロールする
+	await target.scrollIntoViewIfNeeded();
+	await target.dispatchEvent("click");
 };
 
 const capture = async (page: Page, name: string) => {

@@ -47,8 +47,8 @@ export const ContentPart: React.FC<ContentPartProps> = ({ part }) => {
 
 	if (part.type === "code") {
 		return (
-			<Box sx={{ cursor: "auto", position: "relative" }}>
-				<Box sx={{ position: "absolute", right: 10, top: 10 }}>
+			<Box style={{ cursor: "auto", position: "relative" }}>
+				<Box style={{ position: "absolute", right: 10, top: 10 }}>
 					<CopyButton value={value} />
 				</Box>
 				<Component

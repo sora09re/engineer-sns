@@ -13,14 +13,14 @@ export const ProfileHeader = ({ user }: ProfileHeaderProps) => {
 			<Center>
 				<Avatar src={user.profile_image_url} alt="プロフィール画像" size={120} />
 			</Center>
-			<Text size="xl" fw="bold" align="center" mt="md">
+			<Text size="xl" fw="bold" ta="center" mt="md">
 				{user.name}
 			</Text>
-			<Text color="dimmed" align="center">
+			<Text c="dimmed" ta="center">
 				@{user.username}
 			</Text>
 			{user.bio && (
-				<Text align="center" mt="md">
+				<Text ta="center" mt="md">
 					{user.bio}
 				</Text>
 			)}
@@ -28,7 +28,7 @@ export const ProfileHeader = ({ user }: ProfileHeaderProps) => {
 				<Flex justify="center" align="center" mt="sm">
 					<IconMapPinPin size="1.2rem" />
 					<Space w={10} />
-					<Text color="dimmed" align="center">
+					<Text c="dimmed" ta="center">
 						{user.location}
 					</Text>
 				</Flex>

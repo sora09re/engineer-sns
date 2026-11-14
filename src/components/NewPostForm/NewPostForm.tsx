@@ -51,7 +51,7 @@ export const NewPostForm = ({ onPosted }: NewPostFormProps) => {
 	};
 
 	return (
-		<Box p="md" sx={{ borderBottom: "1px solid #E9ECEF" }}>
+		<Box p="md" style={{ borderBottom: "1px solid #E9ECEF" }}>
 			<Textarea
 				placeholder="今どうしてる？"
 				label="投稿内容"

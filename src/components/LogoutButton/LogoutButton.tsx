@@ -28,9 +28,9 @@ export const LogoutButton = () => {
 	};
 
 	return (
-		<Button sx={{ fontSize: "1.0rem", fontWeight: "bold" }} onClick={handleLogout}>
+		<Button style={{ fontSize: "1.0rem", fontWeight: "bold" }} onClick={handleLogout}>
 			<IconLogout size="1.5rem" stroke={1.5} />
-			<Text>ログアウト</Text>
+			<Text fw="bold">ログアウト</Text>
 		</Button>
 	);
 };
