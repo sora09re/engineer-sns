@@ -1,0 +1,80 @@
+# PR とマージのたびに、lint・型チェック・単体テスト・E2E を流す。
+# VRT は macOS で撮ったベースラインと Linux の描画が合わないので、手元だけで流す。
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [master, release/v3]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check
+      - run: pnpm typecheck
+
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      # supabase start が config.toml の env() を読む。E2E は GitHub OAuth を通らないのでダミーでよい
+      SUPABASE_AUTH_EXTERNAL_GITHUB_CLIENT_ID: dummy
+      SUPABASE_AUTH_EXTERNAL_GITHUB_SECRET: dummy
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      - name: ローカルの Supabase を起動する
+        run: |
+          # gen signing-key は supabase/signing_keys.json に直接書く（ファイルがないとエラーになる）
+          echo '[]' > supabase/signing_keys.json
+          pnpm exec supabase gen signing-key --algorithm ES256
+          # 使わないサービスは起動しない
+          pnpm exec supabase start -x studio,imgproxy,mailpit,edge-runtime,logflare,vector,supavisor,postgres-meta,realtime
+
+      - name: .env.local を作る
+        run: |
+          eval "$(pnpm exec supabase status -o env 2>/dev/null)"
+          {
+            echo "DATABASE_URL=$DB_URL"
+            echo "SUPABASE_URL=$API_URL"
+            echo "SUPABASE_SECRET_KEY=$SECRET_KEY"
+          } > apps/api/.env.local
+          {
+            echo "VITE_SUPABASE_URL=$API_URL"
+            echo "VITE_SUPABASE_ANON_KEY=$ANON_KEY"
+          } > apps/web/.env.local
+
+      - run: pnpm test
+
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
