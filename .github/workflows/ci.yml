@@ -1,0 +1,99 @@
+# PR とマージのたびに、lint・型チェック・単体テスト・E2E を流す。
+# VRT は macOS で撮ったベースラインと Linux の描画が合わないので、手元だけで流す。
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [master, release/v3]
+
+# PR は新しい push で古い実行を取り消す。master / release/v3 への push は取り消さず、すべての結果を残す
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+jobs:
+  # アクションの依存（.github/workflows/actions.lock）がワークフローと合っていて、固定したコミットが今も正しいこと。
+  # ワークフローのアクションを変えたら、手元で gh actions-lock を実行してロックファイルを更新する
+  lockfile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - run: gh extension install github/gh-actions-lock --pin v0.4.1
+      - run: gh actions-lock --verify
+
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@v6.1.1
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check
+      - run: pnpm typecheck
+
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      # supabase start が config.toml の env() を読む。E2E は GitHub OAuth を通らないのでダミーでよい
+      SUPABASE_AUTH_EXTERNAL_GITHUB_CLIENT_ID: dummy
+      SUPABASE_AUTH_EXTERNAL_GITHUB_SECRET: dummy
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@v6.1.1
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      - name: ローカルの Supabase を起動する
+        run: |
+          # gen signing-key は supabase/signing_keys.json に直接書く（ファイルがないとエラーになる）
+          echo '[]' > supabase/signing_keys.json
+          pnpm exec supabase gen signing-key --algorithm ES256
+          # 使わないサービスは起動しない
+          pnpm exec supabase start -x studio,imgproxy,mailpit,edge-runtime,logflare,vector,supavisor,postgres-meta,realtime
+
+      - name: .env.local を作る
+        run: |
+          eval "$(pnpm exec supabase status -o env 2>/dev/null)"
+          {
+            echo "DATABASE_URL=$DB_URL"
+            echo "SUPABASE_URL=$API_URL"
+            echo "SUPABASE_SECRET_KEY=$SECRET_KEY"
+          } > apps/api/.env.local
+          {
+            echo "VITE_SUPABASE_URL=$API_URL"
+            echo "VITE_SUPABASE_ANON_KEY=$ANON_KEY"
+          } > apps/web/.env.local
+
+      - run: pnpm test
+
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm e2e
+      - uses: actions/upload-artifact@v7.0.2
+        if: failure()
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
