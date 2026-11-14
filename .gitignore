@@ -37,3 +37,7 @@ pnpm-debug.log*
 
 .env.local
 .vitest/
+
+# Playwright
+/playwright-report/
+/test-results/

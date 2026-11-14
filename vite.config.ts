@@ -27,6 +27,8 @@ export default defineConfig({
 		globals: true,
 		environment: "jsdom",
 		setupFiles: ["./vitest-setup.ts"],
+		// e2e/ は Playwright で動かす
+		exclude: ["**/node_modules/**", "e2e/**"],
 	},
 	lint: {
 		ignorePatterns,

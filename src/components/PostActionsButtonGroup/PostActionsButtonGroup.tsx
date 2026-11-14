@@ -56,6 +56,7 @@ export const PostActionsButtonGroup = ({ currentUserId, post }: PostActionsButto
 				<Link
 					to="/posts/$postId"
 					params={{ postId: post.id }}
+					aria-label="コメント"
 					style={{ textDecoration: "none" }}
 					onClick={(event) => {
 						event.stopPropagation();
@@ -70,6 +71,8 @@ export const PostActionsButtonGroup = ({ currentUserId, post }: PostActionsButto
 				</Link>
 			</UnstyledButton>
 			<UnstyledButton
+				aria-label={!isLikedByCurrentUser ? "いいね" : "いいねを取り消す"}
+				aria-pressed={isLikedByCurrentUser}
 				onClick={(event) => {
 					event.stopPropagation();
 					handleLikeClick();
