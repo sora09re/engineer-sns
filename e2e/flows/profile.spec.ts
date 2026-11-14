@@ -84,11 +84,11 @@ test("プロフィール画像をアップロードできる", async ({ page, cr
 	await dialog.getByRole("button", { name: "保存" }).click();
 	await expect(notification(page, "更新に成功しました！")).toBeVisible();
 
-	// 保存した画像はストレージの {userId}/ 配下に置かれる
+	// 保存した画像はストレージの {userId}/{UUID}.png に置かれる
 	const avatar = page.getByRole("main").getByRole("img", { name: "プロフィール画像" });
 	await expect(avatar).toHaveAttribute(
 		"src",
-		new RegExp(`/storage/v1/object/public/profile_image/${user.id}/\\d+\\.png$`),
+		new RegExp(`/storage/v1/object/public/profile_image/${user.id}/[0-9a-f-]{36}\\.png$`),
 	);
 	await expect
 		.poll(() => {

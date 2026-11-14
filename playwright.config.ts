@@ -5,6 +5,10 @@ import { defineConfig, devices } from "@playwright/test";
  * - e2e: 動きの確認（合否の判定に使う）
  * - vrt-*: 見た目の確認（差分は人が見て判断する）
  */
+/** E2E 専用のポート */
+const WEB_PORT = 5179;
+const API_PORT = 8788;
+
 export default defineConfig({
 	testDir: "./e2e",
 	globalSetup: "./e2e/global-setup.ts",
@@ -13,7 +17,7 @@ export default defineConfig({
 	retries: 0,
 	reporter: [["list"], ["html", { open: "never", outputFolder: "playwright-report" }]],
 	use: {
-		baseURL: "http://localhost:5173",
+		baseURL: `http://localhost:${WEB_PORT}`,
 		locale: "ja-JP",
 		timezoneId: "Asia/Tokyo",
 		trace: "retain-on-failure",
@@ -38,17 +42,22 @@ export default defineConfig({
 			use: { ...devices["Desktop Chrome"], viewport: { width: 1280, height: 800 } },
 		},
 	],
+	// 毎回このチェックアウトのサーバーを、開発用（5173 / 8787）とは別のポートで起動する。
+	// 既存のサーバーを再利用すると、別の worktree のサーバーを試してしまうことがある。
+	// ポートが使われていれば、再利用せずにエラーで止まる
 	webServer: [
 		{
-			command: "pnpm --filter @engineer-sns/api dev",
-			url: "http://localhost:8787/api/posts/timeline",
+			command: `pnpm --filter @engineer-sns/api dev`,
+			env: { API_PORT: String(API_PORT) },
+			url: `http://localhost:${API_PORT}/api/posts/timeline`,
 			// トークンなしの 401 が返れば起動している（Playwright は 400〜403 も起動済みとみなす）
-			reuseExistingServer: true,
+			reuseExistingServer: false,
 		},
 		{
-			command: "pnpm --filter @engineer-sns/web dev --port 5173 --strictPort",
-			url: "http://localhost:5173",
-			reuseExistingServer: true,
+			command: `pnpm --filter @engineer-sns/web dev --port ${WEB_PORT} --strictPort`,
+			env: { API_PORT: String(API_PORT) },
+			url: `http://localhost:${WEB_PORT}`,
+			reuseExistingServer: false,
 		},
 	],
 });
