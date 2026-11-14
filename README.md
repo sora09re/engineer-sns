@@ -71,3 +71,15 @@ pnpm vrt:update  # 見た目の差分を確認したうえで、基準のスク�
 - service role key は `supabase status` から取る。別のディレクトリから起動した Supabase を使うときは `E2E_SUPABASE_WORKDIR=<dir>` を付けるか、`E2E_SUPABASE_SERVICE_ROLE_KEY` で直接渡す
 - ほかのローカル Supabase などで Docker の負荷が高いと、テストが止まることがある。使っていないものは止めてから実行する
 - スクリーンショットはフォントの描画が OS で変わるので、基準は macOS で作っている
+
+# CI
+
+GitHub Actions（`.github/workflows/ci.yml`）で、PR ごとに lint・型チェック・単体テスト・E2E を流す。VRT は手元だけで流す。
+
+ワークフローが使うアクションは `.github/workflows/actions.lock` でコミットに固定している（[workflow dependency lockfiles](https://docs.github.com/ja/actions/concepts/security/workflow-dependency-lockfiles)）。アクションを足したり版を変えたりしたら、ロックファイルを更新してからコミットする。手で編集しない。Dependabot の PR はロックファイルも更新する。
+
+```sh
+gh extension install github/gh-actions-lock  # 初回のみ
+gh actions-lock           # ワークフローのアクションを固定し、ロックファイルを更新する
+gh actions-lock --verify  # 確認だけ（CI でも流している）
+```

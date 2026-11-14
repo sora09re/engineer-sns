@@ -1,4 +1,4 @@
-# ワークフローのアクション（SHA で固定している）を更新する。npm のパッケージは対象にしない
+# ワークフローのアクションを更新する。.github/workflows/actions.lock も同じ PR で更新される。npm のパッケージは対象にしない
 version: 2
 updates:
   - package-ecosystem: github-actions
