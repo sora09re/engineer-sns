@@ -33,4 +33,4 @@ https://engineer-sns.vercel.app/
 4. `.env.example` を `.env.local` にコピーし、`supabase status` に表示される URL と publishable key を設定する
 5. `pnpm dev` で http://localhost:5173 を開く
 
-スキーマを変えたら `pnpm db:types` で `src/api/database.types.ts` を再生成する。
+スキーマを変えたら `pnpm db:types` で `src/api/database.types.ts` を再生成する。生成に失敗したときはファイルを変更しない。追加の引数は `supabase gen types` に渡される（例: `pnpm db:types --workdir <dir>`）。
