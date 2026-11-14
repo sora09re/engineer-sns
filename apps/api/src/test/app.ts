@@ -3,6 +3,7 @@ import type { PostType } from "@engineer-sns/shared";
 import { createApp } from "../app";
 import type { Db } from "../infrastructure/db/client";
 import { createTestKeys } from "./auth";
+import { storageConfig } from "./storage";
 
 /**
  * テスト用の app。get / send でそのアカウントとしてリクエストする。
@@ -10,7 +11,7 @@ import { createTestKeys } from "./auth";
  */
 export const setupApp = async (db: Db) => {
 	const keys = await createTestKeys();
-	const app = createApp({ db, jwks: keys.jwks });
+	const app = createApp({ db, jwks: keys.jwks, storage: storageConfig });
 
 	const get = async (path: string, accountId: string) => {
 		const token = await keys.sign({ sub: accountId });

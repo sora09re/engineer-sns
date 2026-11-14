@@ -5,6 +5,8 @@ const schema = z.object({
 	DATABASE_URL: z.url(),
 	/** Supabase のプロジェクトの URL。アクセストークンの検証に使う JWKS をここから取る */
 	SUPABASE_URL: z.url(),
+	/** Supabase の secret key。Storage の署名付き URL の発行に使う */
+	SUPABASE_SECRET_KEY: z.string().min(1),
 });
 
 export const readEnv = (source: Record<string, string | undefined> = process.env) => {

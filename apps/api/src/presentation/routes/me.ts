@@ -4,6 +4,7 @@ import { HTTPException } from "hono/http-exception";
 import { z } from "zod";
 
 import type { GetCurrentUser } from "../../application/get-current-user";
+import type { IssueProfileImageUpload } from "../../application/issue-profile-image-upload";
 import type { AccessTokenVerifier } from "../../application/ports";
 import type { RegisterUser } from "../../application/register-user";
 import type { UpdateCurrentUser } from "../../application/update-current-user";
@@ -38,6 +39,16 @@ const updateBody = zValidator("json", userValuesSchema.partial(), (result) => {
 	}
 });
 
+const profileImageBody = zValidator(
+	"json",
+	z.object({ content_type: z.string(), size: z.number() }),
+	(result) => {
+		if (!result.success) {
+			throw invalidBody();
+		}
+	},
+);
+
 /** API の項目名（snake_case）を domain の項目名にする */
 const toUserValues = <T extends { profile_image_url?: string }>({
 	profile_image_url,
@@ -52,6 +63,7 @@ export const meRoutes = (deps: {
 	getCurrentUser: GetCurrentUser;
 	registerUser: RegisterUser;
 	updateCurrentUser: UpdateCurrentUser;
+	issueProfileImageUpload: IssueProfileImageUpload;
 }) => {
 	const auth = requireAccount(deps.verifyAccessToken);
 	return new Hono()
@@ -72,5 +84,14 @@ export const meRoutes = (deps: {
 				values: toUserValues(c.req.valid("json")),
 			});
 			return c.json(toUserResponse(user));
+		})
+		.post("/profile-image", auth, profileImageBody, async (c) => {
+			const { content_type, size } = c.req.valid("json");
+			const target = await deps.issueProfileImageUpload({
+				accountId: c.var.accountId,
+				contentType: content_type,
+				size,
+			});
+			return c.json({ upload_url: target.uploadUrl, public_url: target.publicUrl }, 201);
 		});
 };

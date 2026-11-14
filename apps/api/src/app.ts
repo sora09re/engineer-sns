@@ -15,6 +15,7 @@ import { getPost } from "./application/get-post";
 import { getTimeline } from "./application/get-timeline";
 import { getUserPosts } from "./application/get-user-posts";
 import { getUserProfile } from "./application/get-user-profile";
+import { issueProfileImageUpload } from "./application/issue-profile-image-upload";
 import { isFollowing } from "./application/is-following";
 import { likePost } from "./application/like-post";
 import { searchPosts } from "./application/search-posts";
@@ -31,11 +32,15 @@ import { createPostQuery } from "./infrastructure/repositories/post-query";
 import { createPostRepository } from "./infrastructure/repositories/post-repository";
 import { createUserQuery } from "./infrastructure/repositories/user-query";
 import { createUserRepository } from "./infrastructure/repositories/user-repository";
+import {
+	createProfileImageStorage,
+	type StorageConfig,
+} from "./infrastructure/storage/profile-image-storage";
 import { createHttpApp } from "./presentation/http-app";
 
-export type AppDeps = { db: Db; jwks: JWTVerifyGetKey };
+export type AppDeps = { db: Db; jwks: JWTVerifyGetKey; storage: StorageConfig };
 
-export const createApp = ({ db, jwks }: AppDeps) => {
+export const createApp = ({ db, jwks, storage }: AppDeps) => {
 	const follows = createFollowRepository(db);
 	const posts = createPostQuery(db);
 	const postRepository = createPostRepository(db);
@@ -65,6 +70,9 @@ export const createApp = ({ db, jwks }: AppDeps) => {
 		searchUsers: searchUsers({ userQuery }),
 		registerUser: registerUser({ users }),
 		updateCurrentUser: updateCurrentUser({ users }),
+		issueProfileImageUpload: issueProfileImageUpload({
+			storage: createProfileImageStorage(storage),
+		}),
 	});
 };
 

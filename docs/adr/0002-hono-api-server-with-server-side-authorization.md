@@ -30,4 +30,4 @@ ADR 0001 では API サーバーを置かず、クライアントから supabase
 - ローカルでも JWT signing keys が要る。`supabase/signing_keys.json` は各自 `supabase gen signing-key` で作る。本番の Supabase プロジェクトも signing keys に移行しておく必要がある。
 - 読み取りでも層を経由するので、一覧のような単純な取得でもファイルが増える。タイムラインの定義（自分とフォローしているユーザーのコメントでない投稿）はユースケースに書くため、SQL が 1 本から 2 本（フォローの取得と投稿の取得）に増える。
 - API のテストは全層を組み立てた app を HTTP から試すので、層の中を組み替えてもテストは変わらない。
-- プロフィール画像のアップロードは、移行の最後まで Storage への直接アップロード（RLS で保護）のまま残す。
+- プロフィール画像は、API が Storage の署名付きのアップロード URL を発行し、フロントがそこへ直接アップロードする（ファイルは API を通さない）。置き場所（`{accountId}/` 配下）、画像形式、サイズのルールは API に置く。発行には Supabase の secret key が要るので、API の環境変数に `SUPABASE_SECRET_KEY` を置く。Storage は supabase-js を使わず REST で呼び、Supabase に依存する箇所を `infrastructure/storage/` に閉じ込める。
