@@ -16,15 +16,15 @@ export const api = hc<AppType>(window.location.origin, {
 	},
 });
 
+type JsonResponse = { ok: boolean; status: number; json: () => Promise<unknown> };
+
 /** 失敗なら API の message で例外を投げ、成功なら本文を返す */
-export const parse = async <T>(response: {
-	ok: boolean;
-	status: number;
-	json: () => Promise<T>;
-}): Promise<T> => {
+export const parse = async <R extends JsonResponse>(
+	response: R,
+): Promise<Awaited<ReturnType<R["json"]>>> => {
 	if (!response.ok) {
 		const body = (await response.json().catch(() => null)) as { message?: string } | null;
 		throw new Error(body?.message ?? `API がエラーを返しました（${response.status}）。`);
 	}
-	return response.json();
+	return (await response.json()) as Awaited<ReturnType<R["json"]>>;
 };
