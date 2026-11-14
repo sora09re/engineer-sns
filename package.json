@@ -7,6 +7,9 @@
 		"check": "vp check",
 		"fix": "vp check --fix",
 		"test": "vp test",
+		"e2e": "playwright test --project=e2e",
+		"vrt": "playwright test --project=vrt-desktop --project=vrt-mobile",
+		"vrt:update": "playwright test --project=vrt-desktop --project=vrt-mobile --update-snapshots",
 		"db:types": "node scripts/gen-db-types.mjs"
 	},
 	"dependencies": {
@@ -28,6 +31,7 @@
 		"react-syntax-highlighter": "^16.1.2"
 	},
 	"devDependencies": {
+		"@playwright/test": "1.64.1",
 		"@tanstack/router-plugin": "^1.169.0",
 		"@testing-library/dom": "^10.4.2",
 		"@testing-library/jest-dom": "^7.0.1",

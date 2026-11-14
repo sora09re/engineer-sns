@@ -50,6 +50,8 @@ export const PostActionMenu = ({ postId }: PostActionMenuProps) => {
 		<Menu opened={opened} onChange={setOpened} shadow="md" width={200}>
 			<Menu.Target>
 				<Box
+					role="button"
+					aria-label="投稿メニュー"
 					sx={{ position: "absolute", right: 20, top: 10 }}
 					onClick={(event) => {
 						event.stopPropagation();

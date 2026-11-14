@@ -29,7 +29,7 @@ function AuthedLayout() {
 	return (
 		<Flex>
 			<Sidebar />
-			<Box w="100%" ml={sideBarWidthBase}>
+			<Box component="main" w="100%" ml={sideBarWidthBase}>
 				<Outlet />
 			</Box>
 		</Flex>

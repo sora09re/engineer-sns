@@ -23,6 +23,7 @@ export const Post = ({ currentUserId, post }: PostProps) => {
 
 	return (
 		<Box
+			component="article"
 			key={post.id}
 			p="md"
 			w="100%"
