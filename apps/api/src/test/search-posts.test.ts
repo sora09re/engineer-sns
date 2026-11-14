@@ -1,13 +1,8 @@
 import { describe, expect, test } from "vite-plus/test";
 
-import { contentsOf, setupApp } from "./app";
+import { contentsOf, setupApp, uniqueWord } from "./app";
 import { withRollback } from "./db";
 import { createPost, createUser } from "./fixtures";
-
-/** シードなど既存の投稿と重ならないキーワード（英小文字だけにして、大文字にしても別の語にならないようにする） */
-const uniqueWord = () => {
-	return `kw${crypto.randomUUID().replaceAll("-", "").replace(/[0-9]/g, "")}`;
-};
 
 const search = (q: string) => {
 	return `/api/posts/search?${new URLSearchParams({ q })}`;

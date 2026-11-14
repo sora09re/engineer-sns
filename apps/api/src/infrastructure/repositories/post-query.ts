@@ -4,12 +4,8 @@ import type { PostQuery } from "../../application/ports";
 import type { PostSummary } from "../../application/post-summary";
 import type { Db } from "../db/client";
 import { likes, posts, users } from "../db/schema";
+import { escapeLike } from "./escape-like";
 import { toUser } from "./to-user";
-
-/** LIKE のパターンで特別な意味を持つ文字（\ % _）を、文字そのものとして一致させる */
-const escapeLike = (value: string) => {
-	return value.replace(/[\\%_]/g, (char) => `\\${char}`);
-};
 
 /** 条件に合う投稿を、投稿者・いいね・コメント数つきで新しい順に返す */
 const findSummaries = async (db: Db, where: SQL | undefined): Promise<PostSummary[]> => {

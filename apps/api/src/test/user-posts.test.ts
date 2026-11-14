@@ -33,4 +33,16 @@ describe("GET /api/users/:userId/posts", () => {
 			expect(await contentsOf(res)).toEqual(["新しいコメント", "古い投稿"]);
 		});
 	});
+
+	test("UUID の形をしていない ID なら空", async () => {
+		await withRollback(async (db) => {
+			const { get } = await setupApp(db);
+			const me = await createUser(db, "me");
+
+			const res = await get("/api/users/not-a-uuid/posts", me.id);
+
+			expect(res.status).toBe(200);
+			expect(await res.json()).toEqual([]);
+		});
+	});
 });

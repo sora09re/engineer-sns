@@ -12,3 +12,6 @@ export class NotFoundError extends ApplicationError {}
 
 /** その操作をする権限がない */
 export class ForbiddenError extends ApplicationError {}
+
+/** すでにある状態とぶつかる（同じものがすでにあるなど） */
+export class ConflictError extends ApplicationError {}

@@ -7,10 +7,9 @@ import { sql } from "drizzle-orm";
 import type { Db } from "../infrastructure/db/client";
 import { follows, likes, posts, users } from "../infrastructure/db/schema";
 
-/** アカウント（auth.users）とユーザーを作る */
-export const createUser = async (db: Db, username: string) => {
+/** アカウント（auth.users）だけを作る。新規ユーザー登録の前の状態 */
+export const createAccount = async (db: Db, email: string) => {
 	const id = crypto.randomUUID();
-	const email = `${username}@example.com`;
 	await db.execute(sql`
 		insert into auth.users (
 			instance_id, id, aud, role, email, email_confirmed_at,
@@ -21,6 +20,13 @@ export const createUser = async (db: Db, username: string) => {
 			'{}'::jsonb, '{}'::jsonb, now(), now(), '', '', '', ''
 		)
 	`);
+	return id;
+};
+
+/** アカウント（auth.users）とユーザーを作る */
+export const createUser = async (db: Db, username: string) => {
+	const email = `${username}@example.com`;
+	const id = await createAccount(db, email);
 	const [user] = await db.insert(users).values({ id, email, name: username, username }).returning();
 	return user!;
 };

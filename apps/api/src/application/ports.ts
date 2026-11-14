@@ -2,8 +2,9 @@
  * application が外側（infrastructure）に求めるもの。実装は infrastructure に置き、app.ts で組み立てる。
  */
 import type { Post } from "../domain/post";
-import type { User } from "../domain/user";
+import type { User, UserValues } from "../domain/user";
 import type { PostSummary } from "./post-summary";
+import type { UserProfile } from "./user-profile";
 
 export type FollowRepository = {
 	/** followerId のユーザーがフォローしているユーザー（followee）の ID */
@@ -30,8 +31,13 @@ export type PostQuery = {
 };
 
 export type UserQuery = {
+	findById: (userId: string) => Promise<User | null>;
+	/** フォロワー数とフォロー数つきのユーザー。なければ null */
+	findProfile: (userId: string) => Promise<UserProfile | null>;
 	/** userId のユーザーをフォローしているユーザー。フォローした順（古い順）、同じ時刻ならユーザー名順 */
 	findFollowersOf: (userId: string) => Promise<User[]>;
+	/** 名前・ユーザーネーム・自己紹介のどれかに keyword を含む（大文字と小文字は区別しない）ユーザー */
+	search: (keyword: string) => Promise<User[]>;
 	/** userId のユーザーがフォローしているユーザー。並び順は findFollowersOf と同じ */
 	findFolloweesOf: (userId: string) => Promise<User[]>;
 };
@@ -39,6 +45,12 @@ export type UserQuery = {
 export type UserRepository = {
 	/** そのアカウントがユーザーを持っているか（新規ユーザー登録が済んでいるか） */
 	exists: (userId: string) => Promise<boolean>;
+	/** そのユーザーネームを使っているユーザーの ID。いなければ null */
+	findIdByUsername: (username: string) => Promise<string | null>;
+	/** アカウントにユーザーを作る。ユーザーの ID はアカウントの ID と同じ */
+	create: (values: UserValues & { id: string }) => Promise<User>;
+	/** ユーザーの項目を変える。渡された項目だけを変える */
+	update: (userId: string, values: Partial<UserValues>) => Promise<User>;
 };
 
 /** 書き込み用。domain の Post を扱う */
