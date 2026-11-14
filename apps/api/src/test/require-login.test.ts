@@ -15,6 +15,8 @@ describe("ログインが必要なエンドポイント", () => {
 		["POST", "/api/posts"],
 		["POST", `/api/posts/${id}/comments`],
 		["DELETE", `/api/posts/${id}`],
+		["PUT", `/api/posts/${id}/like`],
+		["DELETE", `/api/posts/${id}/like`],
 	])("%s %s はトークンがなければ 401", async (method, path) => {
 		await withRollback(async (db) => {
 			const { app } = await setupApp(db);

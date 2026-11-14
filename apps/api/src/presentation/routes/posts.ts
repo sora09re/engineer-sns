@@ -9,8 +9,10 @@ import type { DeletePost } from "../../application/delete-post";
 import type { GetComments } from "../../application/get-comments";
 import type { GetPost } from "../../application/get-post";
 import type { GetTimeline } from "../../application/get-timeline";
+import type { LikePost } from "../../application/like-post";
 import type { AccessTokenVerifier } from "../../application/ports";
 import type { SearchPosts } from "../../application/search-posts";
+import type { UnlikePost } from "../../application/unlike-post";
 import { requireAccount } from "../middleware/require-account";
 import { toPostType } from "../responses/post-type";
 
@@ -43,6 +45,8 @@ export const postsRoutes = (deps: {
 	createPost: CreatePost;
 	createComment: CreateComment;
 	deletePost: DeletePost;
+	likePost: LikePost;
+	unlikePost: UnlikePost;
 }) => {
 	const auth = requireAccount(deps.verifyAccessToken);
 	// 固定のパス（/timeline など）は /:postId より先に登録する
@@ -84,6 +88,14 @@ export const postsRoutes = (deps: {
 		})
 		.delete("/:postId", auth, postIdParam, async (c) => {
 			await deps.deletePost({ accountId: c.var.accountId, postId: c.req.valid("param").postId });
+			return c.body(null, 204);
+		})
+		.put("/:postId/like", auth, postIdParam, async (c) => {
+			await deps.likePost({ accountId: c.var.accountId, postId: c.req.valid("param").postId });
+			return c.body(null, 204);
+		})
+		.delete("/:postId/like", auth, postIdParam, async (c) => {
+			await deps.unlikePost({ accountId: c.var.accountId, postId: c.req.valid("param").postId });
 			return c.body(null, 204);
 		});
 };

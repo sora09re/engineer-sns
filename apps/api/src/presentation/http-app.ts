@@ -8,9 +8,11 @@ import type { DeletePost } from "../application/delete-post";
 import type { GetComments } from "../application/get-comments";
 import type { GetPost } from "../application/get-post";
 import type { GetTimeline } from "../application/get-timeline";
+import type { LikePost } from "../application/like-post";
 import type { GetUserPosts } from "../application/get-user-posts";
 import type { AccessTokenVerifier } from "../application/ports";
 import type { SearchPosts } from "../application/search-posts";
+import type { UnlikePost } from "../application/unlike-post";
 import { postsRoutes } from "./routes/posts";
 import { usersRoutes } from "./routes/users";
 
@@ -24,6 +26,8 @@ export type HttpAppDeps = {
 	createPost: CreatePost;
 	createComment: CreateComment;
 	deletePost: DeletePost;
+	likePost: LikePost;
+	unlikePost: UnlikePost;
 };
 
 /** HTTP の入口。失敗は { message } とステータスコードで返す */
