@@ -55,12 +55,12 @@ export const supabaseEnv = (): SupabaseEnv => {
 	if (cachedEnv) {
 		return cachedEnv;
 	}
-	const dotEnv = readDotEnv(".env.local");
+	const dotEnv = readDotEnv("apps/web/.env.local");
 	const url = process.env.VITE_SUPABASE_URL ?? dotEnv.VITE_SUPABASE_URL;
 	const anonKey = process.env.VITE_SUPABASE_ANON_KEY ?? dotEnv.VITE_SUPABASE_ANON_KEY;
 	if (!url || !anonKey) {
 		throw new Error(
-			".env.local に VITE_SUPABASE_URL と VITE_SUPABASE_ANON_KEY を設定してください。",
+			"apps/web/.env.local に VITE_SUPABASE_URL と VITE_SUPABASE_ANON_KEY を設定してください。",
 		);
 	}
 	const { hostname } = new URL(url);

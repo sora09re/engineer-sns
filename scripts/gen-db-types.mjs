@@ -1,11 +1,11 @@
-// ローカルの Supabase から src/api/database.types.ts を生成する。
+// ローカルの Supabase から apps/web/src/api/database.types.ts を生成する。
 // シェルの `>` で書き込むと、コマンドが失敗したときに既存のファイルが空になるので、
 // 出力をいったん受け取り、成功したときだけ書き込む。
 // 追加の引数は supabase にそのまま渡す（例: pnpm db:types --workdir <dir>）。
 import { execFileSync } from "node:child_process";
 import { writeFileSync } from "node:fs";
 
-const OUTPUT = "src/api/database.types.ts";
+const OUTPUT = "apps/web/src/api/database.types.ts";
 
 let types;
 try {
