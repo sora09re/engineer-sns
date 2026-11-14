@@ -54,7 +54,7 @@ pnpm typecheck  # 型チェック（全パッケージ）
 pnpm test       # 単体テスト。API のテストは apps/api/.env.local の DATABASE_URL（ローカルの DB のみ）に対して、テストごとにロールバックして動く
 ```
 
-スキーマを変えたら `pnpm db:types` で `apps/web/src/api/database.types.ts` を再生成し、`apps/api/src/db/schema.ts` も合わせて直す。生成に失敗したときはファイルを変更しない。追加の引数は `supabase gen types` に渡される（例: `pnpm db:types --workdir <dir>`）。
+スキーマを変えたら（`supabase/migrations` に SQL を足したら）、`apps/api/src/infrastructure/db/schema.ts` も合わせて手で直す。
 
 # E2E / VRT
 

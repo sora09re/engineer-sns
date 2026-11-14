@@ -12,7 +12,7 @@ ADR 0001 では API サーバーを置かず、クライアントから supabase
   - `presentation`: Hono のルートとミドルウェア。読み取りモデルを API のレスポンスの形（`packages/shared` の `PostType`）に変換する
   - `app.ts`: すべてを組み立てる唯一の場所。ユースケースは `(deps) => (input) => result` の関数で、クラスや DI コンテナは使わない
 - **デプロイ**は SPA と同じ Vercel プロジェクトの Functions（Node.js ランタイム）にする。`/api/*` を同一オリジンで受けるので CORS は要らない。
-- 移行は機能ごとに PR を分けて段階的に進める。移行中は RLS を念のための防御として残し、最後にテーブルへの `authenticated` 権限を外して、フロントから DB に直接アクセスできないようにする。
+- 移行は機能ごとに PR を分けて段階的に進める。移行中は RLS を念のための防御として残し、最後にテーブルへの `anon` / `authenticated` の権限と、Storage への直接アップロードのポリシーを外して、フロントから DB と Storage に直接アクセスできないようにする（`supabase/migrations/20261115000000_revoke_direct_access.sql`）。フロントで supabase-js を使うのはログインだけになる。
 
 ## Considered Options
 
@@ -25,8 +25,9 @@ ADR 0001 では API サーバーを置かず、クライアントから supabase
 
 ## Consequences
 
-- スキーマの正は引き続き `supabase/migrations` の SQL とする。`apps/api/src/db/schema.ts` は手で保つ写しなので、マイグレーションを変えたら合わせて直す。`drizzle-kit pull` の出力は auth スキーマへの参照が壊れるため使わない。
-- 認可のルールは、移行が終わるまで RLS（SQL）と API（TypeScript）の二か所にある。移行した機能から、API 側のテストでルールを押さえる。
+- スキーマの正は引き続き `supabase/migrations` の SQL とする。`apps/api/src/infrastructure/db/schema.ts` は手で保つ写しなので、マイグレーションを変えたら合わせて直す。`drizzle-kit pull` の出力は auth スキーマへの参照が壊れるため使わない。
+- 認可のルールの正は API（TypeScript）で、API 側のテストで押さえる。テーブルの RLS のポリシーは消さずに残す。テーブルの権限がないので普段は使われないが、誤って権限を付け直しても本人の行に絞られる。ポリシーを消すと Supabase の Security Advisor が「RLS Enabled No Policy」と指摘する。ポリシーは移行の時点のまま更新しないので、API のルールと食い違っても直さない。
+- `public` に新しく作るテーブル・シーケンス・関数には、`anon` / `authenticated` の権限が付かない（`postgres` のロールが作るもの。関数は `PUBLIC` の実行権限も付かない）。フロントから直接触れるものを足すときは、明示的に `grant` する。
 - ローカルでも JWT signing keys が要る。`supabase/signing_keys.json` は各自 `supabase gen signing-key` で作る。本番の Supabase プロジェクトも signing keys に移行しておく必要がある。
 - 読み取りでも層を経由するので、一覧のような単純な取得でもファイルが増える。タイムラインの定義（自分とフォローしているユーザーのコメントでない投稿）はユースケースに書くため、SQL が 1 本から 2 本（フォローの取得と投稿の取得）に増える。
 - API のテストは全層を組み立てた app を HTTP から試すので、層の中を組み替えてもテストは変わらない。
