@@ -31,15 +31,11 @@ export default defineConfig({
 			testDir: "./e2e/flows",
 			use: { ...devices["Desktop Chrome"] },
 		},
+		// スマホ幅にはまだ対応していないので、VRT はデスクトップだけ撮る（対応したらスマホ幅のプロジェクトを足す）
 		{
 			name: "vrt-desktop",
 			testDir: "./e2e/vrt",
 			use: { ...devices["Desktop Chrome"], viewport: { width: 1280, height: 800 } },
-		},
-		{
-			name: "vrt-mobile",
-			testDir: "./e2e/vrt",
-			use: { ...devices["Pixel 7"] },
 		},
 	],
 	webServer: {

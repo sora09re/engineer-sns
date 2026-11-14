@@ -20,18 +20,9 @@ const signInAs = (page: Page, account: { id: string; email: string }) => {
 	return signIn(page, { ...account, password: passwordOf(account.email) });
 };
 
-/**
- * モーダルやメニューを開く。今のレイアウトはスマホ幅だと横にはみ出し、
- * タップ位置が別の要素に重なるため、クリックイベントを要素に直接送る。
- * 操作できるかどうかは e2e/flows で確かめる。VRT では見た目だけを記録する。
- */
-const open = async (target: ReturnType<Page["locator"]>) => {
-	// Mantine 9 の Popover はトリガーが画面外だとドロップダウンを隠すので、先に画面内へスクロールする
-	await target.scrollIntoViewIfNeeded();
-	await target.dispatchEvent("click");
-};
-
 const capture = async (page: Page, name: string) => {
+	// クリックしたあとのホバーの見た目が写らないように、マウスを画面の端へ逃がす
+	await page.mouse.move(0, 0);
 	await page.waitForLoadState("networkidle");
 	await expect(page).toHaveScreenshot(`${name}.png`, { fullPage: true });
 };
@@ -96,28 +87,30 @@ test.describe("ログイン済み（Alice）", () => {
 	test("検索（アカウント）", async ({ page }) => {
 		await page.goto("/search");
 		await page.getByPlaceholder("キーワード検索").fill("VRT 用の");
-		await open(page.getByRole("tab", { name: "アカウント" }));
+		await page.getByRole("tab", { name: "アカウント" }).click();
 		await expect(page.getByRole("tabpanel").getByText(`@${BOB.username}`)).toBeVisible();
 		await capture(page, "search-accounts");
 	});
 
 	test("投稿のモーダル", async ({ page }) => {
 		await page.goto("/");
-		await open(page.getByRole("navigation").getByRole("button", { name: "投稿する" }));
+		await page.getByRole("navigation").getByRole("button", { name: "投稿する" }).click();
 		await expect(page.getByRole("dialog")).toBeVisible();
 		await capture(page, "modal-post");
 	});
 
 	test("プロフィール編集のモーダル", async ({ page }) => {
 		await page.goto(`/profile/${ALICE.id}`);
-		await open(page.getByRole("button", { name: "プロフィールを編集" }));
+		await page.getByRole("button", { name: "プロフィールを編集" }).click();
 		await expect(page.getByRole("dialog", { name: "プロフィールを編集" })).toBeVisible();
 		await capture(page, "modal-edit-profile");
 	});
 
 	test("投稿のメニュー", async ({ page }) => {
 		await page.goto(`/profile/${ALICE.id}`);
-		await open(postCard(page, "Alice の投稿です。").getByRole("button", { name: "投稿メニュー" }));
+		await postCard(page, "Alice の投稿です。")
+			.getByRole("button", { name: "投稿メニュー" })
+			.click();
 		await expect(page.getByRole("menuitem", { name: "削除" })).toBeVisible();
 		await capture(page, "menu-post");
 	});

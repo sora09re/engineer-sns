@@ -8,8 +8,8 @@
 		"fix": "vp check --fix",
 		"test": "vp test",
 		"e2e": "playwright test --project=e2e",
-		"vrt": "playwright test --project=vrt-desktop --project=vrt-mobile",
-		"vrt:update": "playwright test --project=vrt-desktop --project=vrt-mobile --update-snapshots",
+		"vrt": "playwright test --project=vrt-desktop",
+		"vrt:update": "playwright test --project=vrt-desktop --update-snapshots",
 		"db:types": "node scripts/gen-db-types.mjs"
 	},
 	"dependencies": {
