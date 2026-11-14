@@ -27,7 +27,8 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ imageUrl, onDrop }) =>
 			>
 				<Dropzone.Idle>
 					<Image
-						src={imageUrl}
+						// React 19 は空文字の src を警告するので、画像がなければ null にしてプレースホルダーを出す
+						src={imageUrl || null}
 						height="120"
 						width="120"
 						alt="Profile image"
