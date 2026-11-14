@@ -1,8 +1,6 @@
 import type { ProfileType, User, UserValues } from "@engineer-sns/shared";
 
-import { supabase } from "./client";
 import { api, parse } from "./http";
-import { requireAccountId } from "./session";
 
 /** ログイン中のアカウントのユーザー。新規ユーザー登録前なら null */
 export const getCurrentUser = async (): Promise<User | null> => {
@@ -33,28 +31,23 @@ export const updateCurrentUser = async (values: Partial<UserValues>): Promise<Us
 	return parse(await api.api.me.$patch({ json: values }));
 };
 
-const IMAGE_EXTENSIONS: Record<string, string> = {
-	"image/gif": "gif",
-	"image/jpeg": "jpg",
-	"image/png": "png",
-	"image/webp": "webp",
-};
+/** ファイルを選ぶときの候補。受け付けるかどうかは API が決める */
+export const PROFILE_IMAGE_MIME_TYPES = ["image/gif", "image/jpeg", "image/png", "image/webp"];
 
-export const PROFILE_IMAGE_MIME_TYPES = Object.keys(IMAGE_EXTENSIONS);
-
-/** プロフィール画像をアップロードし、公開 URL を返す */
+/** プロフィール画像をアップロードし、公開 URL を返す。アップロード先は API が発行する */
 export const uploadProfileImage = async (file: File): Promise<string> => {
-	const accountId = await requireAccountId();
-	const extension = IMAGE_EXTENSIONS[file.type];
-	if (!extension) {
-		throw new Error(`対応していない画像形式です: ${file.type}`);
+	const target = await parse(
+		await api.api.me["profile-image"].$post({
+			json: { content_type: file.type, size: file.size },
+		}),
+	);
+	const response = await fetch(target.upload_url, {
+		method: "PUT",
+		headers: { "Content-Type": file.type },
+		body: file,
+	});
+	if (!response.ok) {
+		throw new Error(`画像をアップロードできませんでした（${response.status}）。`);
 	}
-	const path = `${accountId}/${Date.now()}.${extension}`;
-
-	const bucket = supabase.storage.from("profile_image");
-	const { error } = await bucket.upload(path, file, { contentType: file.type });
-	if (error) {
-		throw error;
-	}
-	return bucket.getPublicUrl(path).data.publicUrl;
+	return target.public_url;
 };

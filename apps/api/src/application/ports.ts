@@ -68,5 +68,11 @@ export type LikeRepository = {
 	remove: (values: { postId: string; userId: string }) => Promise<void>;
 };
 
+/** プロフィール画像の置き場所。アップロードはフロントから直接行う */
+export type ProfileImageStorage = {
+	/** path に 1 回だけアップロードできる URL と、アップロード後に画像を公開する URL */
+	createUploadTarget: (path: string) => Promise<{ uploadUrl: string; publicUrl: string }>;
+};
+
 /** アクセストークンを検証し、アカウント ID を返す。不正なら null */
 export type AccessTokenVerifier = (token: string) => Promise<{ accountId: string } | null>;

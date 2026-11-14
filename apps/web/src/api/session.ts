@@ -23,15 +23,6 @@ export const getSignedInAccount = async (): Promise<Account | null> => {
 	};
 };
 
-/** ログイン中のアカウント ID。未ログインなら例外 */
-export const requireAccountId = async (): Promise<string> => {
-	const account = await getSignedInAccount();
-	if (!account) {
-		throw new Error("ログインしていません。");
-	}
-	return account.id;
-};
-
 export const signInWithGitHub = async () => {
 	const { error } = await supabase.auth.signInWithOAuth({
 		provider: "github",

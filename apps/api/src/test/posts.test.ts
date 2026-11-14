@@ -6,6 +6,7 @@ import type { Db } from "../infrastructure/db/client";
 import { createTestKeys } from "./auth";
 import { withRollback } from "./db";
 import { createPost, createUser, follow, like } from "./fixtures";
+import { storageConfig } from "./storage";
 
 /** レスポンスの投稿の本文だけを並び順どおりに取り出す */
 const contentsOf = async (res: Response) => {
@@ -15,7 +16,7 @@ const contentsOf = async (res: Response) => {
 
 const setup = async (db: Db) => {
 	const keys = await createTestKeys();
-	const app = createApp({ db, jwks: keys.jwks });
+	const app = createApp({ db, jwks: keys.jwks, storage: storageConfig });
 
 	const getTimeline = async (accountId: string) => {
 		const token = await keys.sign({ sub: accountId });

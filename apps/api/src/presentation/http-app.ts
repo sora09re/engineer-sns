@@ -19,6 +19,7 @@ import type { GetTimeline } from "../application/get-timeline";
 import type { LikePost } from "../application/like-post";
 import type { GetUserPosts } from "../application/get-user-posts";
 import type { GetUserProfile } from "../application/get-user-profile";
+import type { IssueProfileImageUpload } from "../application/issue-profile-image-upload";
 import type { IsFollowing } from "../application/is-following";
 import type { AccessTokenVerifier } from "../application/ports";
 import type { RegisterUser } from "../application/register-user";
@@ -53,6 +54,7 @@ export type HttpAppDeps = {
 	searchUsers: SearchUsers;
 	registerUser: RegisterUser;
 	updateCurrentUser: UpdateCurrentUser;
+	issueProfileImageUpload: IssueProfileImageUpload;
 };
 
 /** HTTP の入口。失敗は { message } とステータスコードで返す */
