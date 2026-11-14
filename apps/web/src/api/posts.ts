@@ -1,8 +1,6 @@
 import type { PostType } from "@engineer-sns/shared";
 
-import { supabase, throwIfError } from "./client";
-import { api, parse } from "./http";
-import { requireAccountId } from "./session";
+import { api, ensureOk, parse } from "./http";
 
 /** タイムライン: 自分とフォローしているユーザーの、コメントでない投稿 */
 export const getTimelinePosts = async (): Promise<PostType[]> => {
@@ -32,17 +30,15 @@ export const searchPosts = async (keyword: string): Promise<PostType[]> => {
 };
 
 export const createPost = async (content: string) => {
-	const accountId = await requireAccountId();
-	throwIfError(await supabase.from("posts").insert({ content, user_id: accountId }));
+	await ensureOk(await api.api.posts.$post({ json: { content } }));
 };
 
 export const createComment = async ({ content, postId }: { content: string; postId: string }) => {
-	const accountId = await requireAccountId();
-	throwIfError(
-		await supabase.from("posts").insert({ content, parent_post_id: postId, user_id: accountId }),
+	await ensureOk(
+		await api.api.posts[":postId"].comments.$post({ param: { postId }, json: { content } }),
 	);
 };
 
 export const deletePost = async (postId: string) => {
-	throwIfError(await supabase.from("posts").delete().eq("id", postId));
+	await ensureOk(await api.api.posts[":postId"].$delete({ param: { postId } }));
 };

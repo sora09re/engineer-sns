@@ -4,30 +4,40 @@
  */
 import type { JWTVerifyGetKey } from "jose";
 
+import { createComment } from "./application/create-comment";
+import { createPost } from "./application/create-post";
+import { deletePost } from "./application/delete-post";
 import { getComments } from "./application/get-comments";
 import { getPost } from "./application/get-post";
 import { getTimeline } from "./application/get-timeline";
 import { getUserPosts } from "./application/get-user-posts";
 import { searchPosts } from "./application/search-posts";
-import { createJoseAccessTokenVerifier } from "./infrastructure/auth/jose-access-token-verifier";
+import { createAccessTokenVerifier } from "./infrastructure/auth/access-token-verifier";
 import type { Db } from "./infrastructure/db/client";
-import { createDrizzleFollowRepository } from "./infrastructure/repositories/drizzle-follow-repository";
-import { createDrizzlePostQuery } from "./infrastructure/repositories/drizzle-post-query";
+import { createFollowRepository } from "./infrastructure/repositories/follow-repository";
+import { createPostQuery } from "./infrastructure/repositories/post-query";
+import { createPostRepository } from "./infrastructure/repositories/post-repository";
+import { createUserRepository } from "./infrastructure/repositories/user-repository";
 import { createHttpApp } from "./presentation/http-app";
 
 export type AppDeps = { db: Db; jwks: JWTVerifyGetKey };
 
 export const createApp = ({ db, jwks }: AppDeps) => {
-	const follows = createDrizzleFollowRepository(db);
-	const posts = createDrizzlePostQuery(db);
+	const follows = createFollowRepository(db);
+	const posts = createPostQuery(db);
+	const postRepository = createPostRepository(db);
+	const users = createUserRepository(db);
 
 	return createHttpApp({
-		verifyAccessToken: createJoseAccessTokenVerifier(jwks),
+		verifyAccessToken: createAccessTokenVerifier(jwks),
 		getTimeline: getTimeline({ follows, posts }),
 		getPost: getPost({ posts }),
 		getComments: getComments({ posts }),
 		getUserPosts: getUserPosts({ posts }),
 		searchPosts: searchPosts({ posts }),
+		createPost: createPost({ users, postRepository, posts }),
+		createComment: createComment({ users, postRepository, posts }),
+		deletePost: deletePost({ postRepository }),
 	});
 };
 

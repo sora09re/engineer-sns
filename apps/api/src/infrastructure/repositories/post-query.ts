@@ -68,7 +68,7 @@ const findSummaries = async (db: Db, where: SQL | undefined): Promise<PostSummar
 	});
 };
 
-export const createDrizzlePostQuery = (db: Db): PostQuery => {
+export const createPostQuery = (db: Db): PostQuery => {
 	return {
 		findTopLevelByAuthors: (authorIds) => {
 			return findSummaries(db, and(isNull(posts.parentPostId), inArray(posts.userId, authorIds)));
