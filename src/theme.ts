@@ -1,4 +1,11 @@
-import { ActionIcon, CloseButton, createTheme, type MantineColorsTuple } from "@mantine/core";
+import {
+	ActionIcon,
+	Avatar,
+	CloseButton,
+	Menu,
+	createTheme,
+	type MantineColorsTuple,
+} from "@mantine/core";
 
 /**
  * Mantine 6 から 9 で既定値が変わったところを、6 の見た目に戻す。
@@ -29,7 +36,11 @@ export const theme = createTheme({
 	components: {
 		// v6 の既定は subtle
 		ActionIcon: ActionIcon.extend({ defaultProps: { variant: "subtle", color: "gray" } }),
+		// v9 の Avatar は defaultRadius に関係なく丸い。v6 は sm
+		Avatar: Avatar.extend({ defaultProps: { radius: "sm" } }),
 		// v9 で 22px → 28px になった
 		CloseButton: CloseButton.extend({ defaultProps: { size: "sm", iconSize: 16 } }),
+		// v9 はドロップダウンを画面端から 5px 離す。v6 は端まで寄せていた
+		Menu: Menu.extend({ defaultProps: { middlewares: { shift: { padding: 0 } } } }),
 	},
 });

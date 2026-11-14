@@ -11,6 +11,8 @@ input {
 :root[data-mantine-color-scheme="light"] {
 	/* v9 は gray の light / subtle の文字色が gray-9 になった。v6 は gray-6 */
 	--mantine-color-gray-light-color: var(--mantine-color-gray-6);
+	/* v9 は gray の light の背景が gray-1 寄りになった。v6 は gray-0 */
+	--mantine-color-gray-light: var(--mantine-color-gray-0);
 }
 
 .mantine-InputWrapper-label {
@@ -30,8 +32,8 @@ input {
 	color: var(--mantine-color-gray-5);
 }
 
-.mantine-Input-input[data-with-left-section] {
-	padding-inline-start: 36px;
+.mantine-Input-wrapper[data-with-left-section] {
+	--input-padding-inline-start: 36px;
 }
 
 .mantine-CloseButton-root {

@@ -19,7 +19,7 @@ export const Sidebar = () => {
 			p="xl"
 			style={{
 				backgroundColor: "var(--mantine-color-body)",
-				borderRight: "1px solid var(--mantine-color-gray-3)",
+				borderRight: "1px solid var(--mantine-color-gray-2)",
 				display: "flex",
 				flexDirection: "column",
 				// v6 の Navbar は下端基準（bottom: 0）で、高さは 100vh だった
