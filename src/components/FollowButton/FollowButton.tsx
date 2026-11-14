@@ -1,109 +1,85 @@
 import { Button } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconX } from "@tabler/icons-react";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import useSWR from "swr";
 
-import { useGetProfile } from "@/hooks/useGetProfile";
-import { baseURL } from "@/utils/baseUrl";
-import { api, fetcher } from "@/utils/api";
+import { isFollowingQuery } from "@/api/queries";
+import { useToggleFollow } from "@/hooks/mutations";
 
 interface FollowButtonProps {
-	currentUserId: string;
 	userId: string;
 }
 
-export const FollowButton = ({ currentUserId, userId }: FollowButtonProps) => {
+export const FollowButton = ({ userId }: FollowButtonProps) => {
 	const [label, setLabel] = useState("フォロー中");
-	const endpoint = `${baseURL}/api/users/${userId}/follow`;
-	const { mutate: getProfileMutate } = useGetProfile(userId);
-
-	const {
-		data,
-		error,
-		mutate: fetchFollowMutate,
-	} = useSWR(`${endpoint}?currentUserId=${currentUserId}`, fetcher);
+	const { data: isFollowing, error } = useQuery(isFollowingQuery(userId));
+	const toggleFollow = useToggleFollow();
 
 	if (error) {
 		return <div>エラーが発生しました: {error.message}</div>;
 	}
 
-	const isFollowing = data?.isFollowing;
-
-	const handleFollow = async () => {
-		try {
-			await api.post(`${endpoint}?currentUserId=${currentUserId}`);
-			fetchFollowMutate();
-			getProfileMutate();
-		} catch {
-			notifications.show({
-				id: "follow-error",
-				autoClose: 2000,
-				color: "red",
-				icon: <IconX size="1rem" />,
-				message: "フォローに失敗しました。",
-				title: "エラー",
-			});
-		}
+	const handleToggle = (follow: boolean) => {
+		toggleFollow.mutate(
+			{ follow, userId },
+			{
+				onError: () => {
+					notifications.show({
+						id: follow ? "follow-error" : "unfollow-error",
+						autoClose: 2000,
+						color: "red",
+						icon: <IconX size="1rem" />,
+						message: follow ? "フォローに失敗しました。" : "フォロー解除に失敗しました。",
+						title: "エラー",
+					});
+				},
+			},
+		);
 	};
 
-	const handleRemoveFollow = async () => {
-		try {
-			await api.delete(endpoint, { currentUserId });
-			fetchFollowMutate();
-			getProfileMutate();
-		} catch {
-			notifications.show({
-				id: "unfollow-error",
-				autoClose: 2000,
-				color: "red",
-				icon: <IconX size="1rem" />,
-				message: "フォロー解除に失敗しました。",
-				title: "エラー",
-			});
-		}
-	};
+	if (isFollowing) {
+		return (
+			<Button
+				onMouseEnter={() => {
+					return setLabel("フォロー解除");
+				}}
+				onMouseLeave={() => {
+					return setLabel("フォロー中");
+				}}
+				variant="outline"
+				color="dark"
+				loading={toggleFollow.isPending}
+				styles={(theme) => {
+					return {
+						root: {
+							"&:not([data-disabled])": theme.fn.hover({
+								backgroundColor: "white",
+								borderColor: "red",
+								color: "red",
+							}),
+						},
+					};
+				}}
+				onClick={(event) => {
+					event.stopPropagation();
+					handleToggle(false);
+				}}
+			>
+				{label}
+			</Button>
+		);
+	}
 
 	return (
-		<>
-			{isFollowing ? (
-				<Button
-					onMouseEnter={() => {
-						return setLabel("フォロー解除");
-					}}
-					onMouseLeave={() => {
-						return setLabel("フォロー中");
-					}}
-					variant="outline"
-					color="dark"
-					styles={(theme) => {
-						return {
-							root: {
-								"&:not([data-disabled])": theme.fn.hover({
-									backgroundColor: "white",
-									borderColor: "red",
-									color: "red",
-								}),
-							},
-						};
-					}}
-					onClick={(event) => {
-						event.stopPropagation();
-						return handleRemoveFollow();
-					}}
-				>
-					{label}
-				</Button>
-			) : (
-				<Button
-					onClick={(event) => {
-						event.stopPropagation();
-						return handleFollow();
-					}}
-				>
-					フォロー
-				</Button>
-			)}
-		</>
+		<Button
+			loading={toggleFollow.isPending || isFollowing === undefined}
+			onClick={(event) => {
+				event.stopPropagation();
+				handleToggle(true);
+			}}
+		>
+			フォロー
+		</Button>
 	);
 };

@@ -3,23 +3,17 @@ import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { useState } from "react";
 
-import { useGetCommentsForPost } from "@/hooks/useGetCommentsForPost";
-import { useGetPostDetail } from "@/hooks/useGetPostDetail";
-import type { User } from "@/types/user";
-import { baseURL } from "@/utils/baseUrl";
-import { api } from "@/utils/api";
+import { useCreateComment } from "@/hooks/mutations";
 
 interface CommentFormProps {
-	currentUser: Pick<User, "id">;
 	postId: string;
 }
 
-export const CommentForm = ({ currentUser, postId }: CommentFormProps) => {
+export const CommentForm = ({ postId }: CommentFormProps) => {
 	const [commentContent, setCommentContent] = useState("");
-	const { mutate: getPostDetailMutate } = useGetPostDetail(postId);
-	const { mutate: getCommentsForPostMutate } = useGetCommentsForPost(postId);
+	const createComment = useCreateComment();
 
-	const fetchComment = async () => {
+	const fetchComment = () => {
 		notifications.show({
 			id: "fetchComment",
 			autoClose: false,
@@ -29,32 +23,32 @@ export const CommentForm = ({ currentUser, postId }: CommentFormProps) => {
 			withCloseButton: false,
 		});
 
-		try {
-			await api.post(`${baseURL}/api/posts/${postId}/comments`, {
-				commentContent: commentContent,
-				currentUserId: currentUser.id,
-			});
-			setCommentContent("");
-			getPostDetailMutate();
-			getCommentsForPostMutate();
-			notifications.update({
-				id: "fetchComment",
-				autoClose: 2000,
-				color: "green",
-				icon: <IconCheck size="1rem" />,
-				message: "コメントに成功しました！",
-				title: "成功",
-			});
-		} catch {
-			notifications.update({
-				id: "fetchComment",
-				autoClose: 2000,
-				color: "red",
-				icon: <IconX size="1rem" />,
-				message: "コメントに失敗しました。",
-				title: "エラー",
-			});
-		}
+		createComment.mutate(
+			{ content: commentContent, postId },
+			{
+				onSuccess: () => {
+					setCommentContent("");
+					notifications.update({
+						id: "fetchComment",
+						autoClose: 2000,
+						color: "green",
+						icon: <IconCheck size="1rem" />,
+						message: "コメントに成功しました！",
+						title: "成功",
+					});
+				},
+				onError: () => {
+					notifications.update({
+						id: "fetchComment",
+						autoClose: 2000,
+						color: "red",
+						icon: <IconX size="1rem" />,
+						message: "コメントに失敗しました。",
+						title: "エラー",
+					});
+				},
+			},
+		);
 	};
 
 	return (
@@ -64,7 +58,7 @@ export const CommentForm = ({ currentUser, postId }: CommentFormProps) => {
 				autosize
 				minRows={5}
 				maxRows={20}
-				value={commentContent || ""}
+				value={commentContent}
 				onChange={(e) => {
 					return setCommentContent(e.currentTarget.value);
 				}}
@@ -73,7 +67,8 @@ export const CommentForm = ({ currentUser, postId }: CommentFormProps) => {
 			<Button
 				fullWidth
 				onClick={fetchComment}
-				disabled={commentContent ? commentContent.trim() === "" : true}
+				loading={createComment.isPending}
+				disabled={commentContent.trim() === ""}
 			>
 				コメントする
 			</Button>

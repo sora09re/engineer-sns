@@ -1,19 +1,17 @@
-import type { AppRouter } from "@/types/appRouter";
 import { Flex, Space, Text } from "@mantine/core";
 import { IconArrowLeft } from "@tabler/icons-react";
+import { useRouter } from "@tanstack/react-router";
 
-interface PreviousPageHeaderProps {
-	router: AppRouter;
-}
+export const PreviousPageHeader = () => {
+	const router = useRouter();
 
-export const PreviousPageHeader = ({ router }: PreviousPageHeaderProps) => {
 	return (
 		<Flex sx={{ borderBottom: "1px solid #E9ECEF" }} p="md">
 			<IconArrowLeft
 				size="1.5rem"
 				cursor="pointer"
 				onClick={() => {
-					router.back();
+					router.history.back();
 				}}
 			/>
 			<Space w="sm" />

@@ -1,5 +1,4 @@
 import { Avatar, Group, Text, UnstyledButton } from "@mantine/core";
-import { useSession } from "next-auth/react";
 
 import type { User } from "@/types/user";
 
@@ -8,23 +7,17 @@ interface AccountButtonProps {
 }
 
 export const AccountButton = ({ currentUser }: AccountButtonProps) => {
-	const { data: session } = useSession();
-
-	if (session) {
-		return (
-			<UnstyledButton>
-				<Group>
-					<Avatar src={currentUser.profile_image_url} size={40} />
-					<div>
-						<Text>{currentUser.name}</Text>
-						<Text size="xs" color="dimmed">
-							@{currentUser.username}
-						</Text>
-					</div>
-				</Group>
-			</UnstyledButton>
-		);
-	}
-
-	return <></>;
+	return (
+		<UnstyledButton>
+			<Group>
+				<Avatar src={currentUser.profile_image_url} size={40} />
+				<div>
+					<Text>{currentUser.name}</Text>
+					<Text size="xs" color="dimmed">
+						@{currentUser.username}
+					</Text>
+				</div>
+			</Group>
+		</UnstyledButton>
+	);
 };

@@ -2,13 +2,8 @@ import { Modal } from "@mantine/core";
 
 import { NewPostForm } from "@/components/NewPostForm/NewPostForm";
 import { useModal } from "@/hooks/useModal";
-import type { User } from "@/types/user";
 
-interface PostModalProps {
-	currentUser: User;
-}
-
-export const PostModal = ({ currentUser }: PostModalProps) => {
+export const PostModal = () => {
 	const [isVisible, setIsVisible] = useModal("post");
 
 	return (
@@ -20,7 +15,7 @@ export const PostModal = ({ currentUser }: PostModalProps) => {
 			}}
 			withCloseButton
 		>
-			<NewPostForm currentUser={currentUser} />
+			<NewPostForm />
 		</Modal>
 	);
 };

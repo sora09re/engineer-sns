@@ -25,7 +25,7 @@ export const ProfileActionsButton = ({ currentUserId, userId }: ProfileActionsBu
 					プロフィールを編集
 				</Button>
 			) : (
-				<FollowButton currentUserId={currentUserId} userId={userId} />
+				<FollowButton userId={userId} />
 			)}
 		</Center>
 	);

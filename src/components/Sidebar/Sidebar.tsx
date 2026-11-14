@@ -1,18 +1,15 @@
 import { Button, Navbar, Space } from "@mantine/core";
 
 import { AccountButton } from "@/components/AccountButton/AccountButton";
-import { LoginButton } from "@/components/LoginButton/LoginButton";
+import { LogoutButton } from "@/components/LogoutButton/LogoutButton";
 import { MainLinks } from "@/components/MainLinks/MainLinks";
 import { PostModal } from "@/components/Modal/PostModal/PostModal";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { useModal } from "@/hooks/useModal";
-import type { User } from "@/types/user";
 import { sideBarWidthBase } from "@/utils/sideBarWidth";
 
-interface SidebarProps {
-	currentUser: User;
-}
-
-export const Sidebar = ({ currentUser }: SidebarProps) => {
+export const Sidebar = () => {
+	const currentUser = useCurrentUser();
 	const [, setIsVisiblePostModal] = useModal("post");
 
 	return (
@@ -28,9 +25,9 @@ export const Sidebar = ({ currentUser }: SidebarProps) => {
 				>
 					投稿する
 				</Button>
-				<PostModal currentUser={currentUser} />
+				<PostModal />
 				<Space h="md" />
-				<LoginButton />
+				<LogoutButton />
 			</Navbar.Section>
 			<Navbar.Section>
 				<AccountButton currentUser={currentUser} />

@@ -1,37 +1,27 @@
 import { Box, Center, Loader, Tabs, TextInput } from "@mantine/core";
+import { useDebouncedValue } from "@mantine/hooks";
 import { IconSearch } from "@tabler/icons-react";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import useSWR from "swr";
 
+import { searchPostsQuery, searchUsersQuery } from "@/api/queries";
 import { PostsList } from "@/components/PostsList/PostsList";
 import { UsersList } from "@/components/UsersList/UsersList";
-import { useSearchPosts } from "@/hooks/useSearchPosts";
-import type { User } from "@/types/user";
-import { fetcher } from "@/utils/api";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
-interface SearchProps {
-	currentUser: User;
-}
-
-export const Search = ({ currentUser }: SearchProps) => {
+export const Search = () => {
+	const currentUser = useCurrentUser();
 	const [keyword, setKeyword] = useState("");
+	const [debouncedKeyword] = useDebouncedValue(keyword.trim(), 300);
 
-	const {
-		data: searchUserResults,
-		error: searchUserError,
-		isLoading: isLoadingSearchUser,
-	} = useSWR(`/api/search/users?keyword=${keyword}`, fetcher);
-
-	const {
-		data: searchPostResults,
-		error: searchPostError,
-		isLoading: isLoadingSearchPost,
-	} = useSearchPosts(keyword);
-
-	if (searchUserError || searchPostError) {
-		console.error("Error fetching search user results:", searchUserError);
-		console.error("Error fetching search post results:", searchPostError);
-	}
+	const { data: searchUserResults, isLoading: isLoadingSearchUser } = useQuery({
+		...searchUsersQuery(debouncedKeyword),
+		placeholderData: keepPreviousData,
+	});
+	const { data: searchPostResults, isLoading: isLoadingSearchPost } = useQuery({
+		...searchPostsQuery(debouncedKeyword),
+		placeholderData: keepPreviousData,
+	});
 
 	return (
 		<Box p="md">
@@ -54,7 +44,7 @@ export const Search = ({ currentUser }: SearchProps) => {
 							<Loader />
 						</Center>
 					) : (
-						<PostsList currentUserId={currentUser.id} posts={searchPostResults} keyword={keyword} />
+						<PostsList currentUserId={currentUser.id} posts={searchPostResults} />
 					)}
 				</Tabs.Panel>
 				<Tabs.Panel value="account">
@@ -63,7 +53,7 @@ export const Search = ({ currentUser }: SearchProps) => {
 							<Loader />
 						</Center>
 					) : (
-						<UsersList users={searchUserResults} currentUserId={currentUser.id} />
+						<UsersList users={searchUserResults ?? []} currentUserId={currentUser.id} />
 					)}
 				</Tabs.Panel>
 			</Tabs>
