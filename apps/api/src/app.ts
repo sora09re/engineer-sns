@@ -57,7 +57,7 @@ export const createApp = ({ db, jwks, storage }: AppDeps) => {
 		searchPosts: searchPosts({ posts }),
 		createPost: createPost({ users, postRepository, posts }),
 		createComment: createComment({ users, postRepository, posts }),
-		deletePost: deletePost({ postRepository }),
+		deletePost: deletePost({ users, postRepository }),
 		likePost: likePost({ users, likes, postRepository }),
 		unlikePost: unlikePost({ likes, postRepository }),
 		isFollowing: isFollowing({ users, follows }),

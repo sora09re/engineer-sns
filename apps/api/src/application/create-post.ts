@@ -1,6 +1,8 @@
-import { assertCanWrite } from "./assert-can-write";
+import { isValidPostContent } from "../domain/post";
+import { ValidationError } from "./errors";
 import type { PostQuery, PostRepository, UserRepository } from "./ports";
 import type { PostSummary } from "./post-summary";
+import { requireLoginUser } from "./require-login-user";
 
 /** 投稿する。投稿者は常にログイン中のアカウントのユーザー */
 export const createPost = (deps: {
@@ -9,7 +11,10 @@ export const createPost = (deps: {
 	posts: PostQuery;
 }) => {
 	return async (input: { accountId: string; content: string }): Promise<PostSummary> => {
-		await assertCanWrite(deps.users, input);
+		await requireLoginUser(deps, { accountId: input.accountId });
+		if (!isValidPostContent(input.content)) {
+			throw new ValidationError("本文を入力してください。");
+		}
 		const post = await deps.postRepository.create({
 			authorId: input.accountId,
 			content: input.content,
