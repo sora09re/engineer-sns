@@ -5,7 +5,7 @@ import type { OxlintOverride } from "vite-plus/lint";
 const ignorePatterns = [
 	"**/dist/**",
 	"**/node_modules/**",
-	"apps/web/src/routeTree.gen.ts",
+	"apps/web/src/app/routeTree.gen.ts",
 	"supabase/.temp/**",
 ];
 
