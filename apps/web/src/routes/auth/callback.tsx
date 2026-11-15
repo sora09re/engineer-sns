@@ -1,7 +1,7 @@
 import { Button, Center, Stack, Text } from "@mantine/core";
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 
-import { getSignedInAccount } from "@/api/session";
+import { getSignedInAccount } from "@/entities/account";
 
 /**
  * GitHub OAuth のコールバック。

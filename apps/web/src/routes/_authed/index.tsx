@@ -1,10 +1,10 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
-import { timelinePostsQuery } from "@/api/queries";
+import { timelinePostsQuery } from "@/entities/post";
+import { useCurrentUser } from "@/entities/user";
 import { Post } from "@/components/Post/Post";
 import { NewPostForm } from "@/components/NewPostForm/NewPostForm";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { pageTitle } from "@/shared/lib";
 
 export const Route = createFileRoute("/_authed/")({

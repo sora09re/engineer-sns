@@ -3,7 +3,8 @@ import { notifications } from "@mantine/notifications";
 import { IconX } from "@tabler/icons-react";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
-import { getSignedInAccount, signInWithGitHub } from "@/api/session";
+import { signInWithGitHub } from "@/api/session";
+import { getSignedInAccount } from "@/entities/account";
 import { pageTitle } from "@/shared/lib";
 
 export const Route = createFileRoute("/auth/signin")({

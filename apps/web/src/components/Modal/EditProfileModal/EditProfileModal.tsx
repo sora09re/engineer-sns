@@ -2,10 +2,9 @@ import { Button, Center, Grid, Modal, Paper, TextInput, Textarea } from "@mantin
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 
-import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
+import { ImageUpload, useUserValues } from "@/entities/user";
 import { useUpdateCurrentUser } from "@/api/mutations";
 import { useImageFile } from "@/shared/lib";
-import { useUserValues } from "@/hooks/useUserValues";
 import type { User } from "@engineer-sns/shared";
 
 interface EditProfileModalProps {

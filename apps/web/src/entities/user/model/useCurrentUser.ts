@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 
-import { currentUserQuery } from "@/api/queries";
+import { currentUserQuery } from "../api/queries";
 import type { User } from "@engineer-sns/shared";
 
 /**
