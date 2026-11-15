@@ -1,1 +1,2 @@
 vp staged
+pnpm --filter @engineer-sns/web lint:fsd

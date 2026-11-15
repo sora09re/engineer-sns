@@ -4,7 +4,7 @@ ADR 0001 では API サーバーを置かず、クライアントから supabase
 
 - **認証**は Supabase Auth（GitHub OAuth）のまま、ログインはフロントで行う。API にはアクセストークンを `Authorization: Bearer` で送り、API は JWKS（JWT signing keys、ES256）で検証して `sub` をアカウント ID とする。
 - **認可**は API で行う。DB には Drizzle と postgres.js で直接つなぐ（本番は Supavisor のトランザクションモード）。
-- **契約**は Hono RPC（`hc`）で型を共有する。フロントで API を呼べる場所は、これまでどおりデータアクセス層（`apps/web/src/api/`）だけとし、0001 で決めたとおり中身だけを差し替える。
+- **契約**は Hono RPC（`hc`）で型を共有する。フロントで API を呼べる場所は、これまでどおりデータアクセス層（`apps/web/src/api/`）だけとし、0001 で決めたとおり中身だけを差し替える。（[0003](./0003-feature-sliced-design-for-web.md) で、FSD の各スライスの `api` セグメントに改めた）
 - **API の中はオニオンアーキテクチャ**にする。依存は内側にだけ向ける（presentation / infrastructure → application → domain）。
   - `domain`: エンティティとルール。外側に依存しない
   - `application`: ユースケースと、外側に求めるもの（ports）。一覧などは読み取りモデル（例: `PostSummary`）で返す

@@ -17,5 +17,5 @@
 ## Consequences
 
 - Steiger の insignificant-slice に従い、1 か所でしか使わない操作は features に切らず、使う側（widgets / pages）に置く。2 か所目の利用者が出たら features に切り出す。そのため、いいねや削除のように features に見えないものがある。
-- Steiger は `pnpm check` から実行し、CI と pre-commit の両方で走らせる。
+- Steiger は `pnpm check`（CI）と pre-commit から実行する。
 - TanStack Router のファイルルートは `src/app/routes/` に置く（`routesDirectory` を変更する）。ルートファイルは `head` / `loader` / `beforeLoad` と、ページの UI を結び付けるだけにする。
