@@ -1,7 +1,8 @@
-import { assertCanWrite } from "./assert-can-write";
+import { isValidPostContent } from "../domain/post";
+import { ValidationError } from "./errors";
 import type { PostQuery, PostRepository, UserRepository } from "./ports";
 import type { PostSummary } from "./post-summary";
-import { requirePost } from "./require-post";
+import { requireLoginUser } from "./require-login-user";
 
 /** 投稿にコメントする。コメントは parentPostId を持つ投稿 */
 export const createComment = (deps: {
@@ -14,8 +15,13 @@ export const createComment = (deps: {
 		postId: string;
 		content: string;
 	}): Promise<PostSummary> => {
-		await assertCanWrite(deps.users, input);
-		const parent = await requirePost(deps.postRepository, input.postId);
+		const parent = await requireLoginUser(deps, {
+			accountId: input.accountId,
+			postId: input.postId,
+		});
+		if (!isValidPostContent(input.content)) {
+			throw new ValidationError("本文を入力してください。");
+		}
 		const comment = await deps.postRepository.create({
 			authorId: input.accountId,
 			content: input.content,

@@ -1,6 +1,5 @@
 import type { LikeRepository, PostRepository, UserRepository } from "./ports";
-import { requirePost } from "./require-post";
-import { requireUser } from "./require-user";
+import { requireLoginUser } from "./require-login-user";
 
 /** 投稿にいいねする */
 export const likePost = (deps: {
@@ -9,8 +8,7 @@ export const likePost = (deps: {
 	postRepository: PostRepository;
 }) => {
 	return async (input: { accountId: string; postId: string }): Promise<void> => {
-		await requirePost(deps.postRepository, input.postId);
-		await requireUser(deps.users, input.accountId);
+		await requireLoginUser(deps, input);
 		await deps.likes.add({ postId: input.postId, userId: input.accountId });
 	};
 };
