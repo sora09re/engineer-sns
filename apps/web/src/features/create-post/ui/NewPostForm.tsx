@@ -3,7 +3,7 @@ import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { useState } from "react";
 
-import { useCreatePost } from "@/api/mutations";
+import { useCreatePost } from "../api/useCreatePost";
 
 interface NewPostFormProps {
 	/** 投稿に成功したとき（モーダルから使うときに閉じるため） */

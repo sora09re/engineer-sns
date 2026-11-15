@@ -6,7 +6,7 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 import { userPostsQuery } from "@/entities/post";
 import { ProfileHeader, ProfileStats, useCurrentUser, userProfileQuery } from "@/entities/user";
 import { EditProfileModal } from "@/components/Modal/EditProfileModal/EditProfileModal";
-import { FollowButton } from "@/components/FollowButton/FollowButton";
+import { FollowButton } from "@/features/toggle-follow";
 import { Post } from "@/components/Post/Post";
 import { pageTitle } from "@/shared/lib";
 

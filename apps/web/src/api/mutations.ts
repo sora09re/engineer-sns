@@ -6,19 +6,9 @@ import { api, ensureOk, queryKeys } from "@/shared/api";
 import { withUploadedImage } from "@/entities/user";
 
 /**
- * 更新系のフック。API を呼ぶのはここの mutationFn だけ（読み取りは queries.ts の queryFn）。
+ * 更新系のフック。widgets / pages の api セグメントに移すまでの置き場所。
  * 成功後に関係するクエリを無効化し、再取得が終わるまで pending のままにする。
  */
-
-export const useCreatePost = () => {
-	const queryClient = useQueryClient();
-	return useMutation({
-		mutationFn: async (content: string) => {
-			await ensureOk(await api.api.posts.$post({ json: { content } }));
-		},
-		onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKeys.posts }),
-	});
-};
 
 export const useCreateComment = () => {
 	const queryClient = useQueryClient();
@@ -52,25 +42,6 @@ export const useToggleLike = () => {
 			await ensureOk(await (like ? endpoint.$put(args) : endpoint.$delete(args)));
 		},
 		onSettled: () => queryClient.invalidateQueries({ queryKey: queryKeys.posts }),
-	});
-};
-
-/** フォローする・外す。すでにその状態でも成功する */
-export const useToggleFollow = () => {
-	const queryClient = useQueryClient();
-	return useMutation({
-		mutationFn: async ({ follow, userId }: { follow: boolean; userId: string }) => {
-			const endpoint = api.api.users[":userId"].follow;
-			const args = { param: { userId } };
-			await ensureOk(await (follow ? endpoint.$put(args) : endpoint.$delete(args)));
-		},
-		onSettled: () => {
-			return Promise.all([
-				queryClient.invalidateQueries({ queryKey: queryKeys.follows }),
-				queryClient.invalidateQueries({ queryKey: queryKeys.users }),
-				queryClient.invalidateQueries({ queryKey: queryKeys.posts }),
-			]);
-		},
 	});
 };
 
