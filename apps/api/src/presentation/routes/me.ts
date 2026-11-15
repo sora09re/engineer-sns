@@ -3,9 +3,9 @@ import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
 import { z } from "zod";
 
-import type { HttpAppDeps } from "../deps";
+import type { HttpAppDeps } from "../http-app";
 import { requireAccount } from "../middleware/require-account";
-import { toUserResponse } from "../responses/post-type";
+import { toUserResponse } from "../responses";
 
 /** packages/shared の UserValues の形。中身のルール（空でないかなど）は application で確かめる */
 const userValuesSchema = z.object({

@@ -7,10 +7,17 @@ import {
 	NotFoundError,
 	ValidationError,
 } from "../application/errors";
-import type { HttpAppDeps } from "./deps";
+import type { AccessTokenVerifier } from "../application/ports";
+import type { UseCases } from "../application/use-cases";
 import { meRoutes } from "./routes/me";
 import { postsRoutes } from "./routes/posts";
 import { usersRoutes } from "./routes/users";
+
+/** HTTP の入口が受け取るもの。アクセストークンの検証はユースケースではないので分けて渡す */
+export type HttpAppDeps = {
+	verifyAccessToken: AccessTokenVerifier;
+	useCases: UseCases;
+};
 
 /** HTTP の入口。失敗は { message } とステータスコードで返す */
 export const createHttpApp = (deps: HttpAppDeps) => {
