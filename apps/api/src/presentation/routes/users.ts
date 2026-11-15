@@ -1,9 +1,8 @@
 import { Hono } from "hono";
 
-import type { HttpAppDeps } from "../deps";
+import type { HttpAppDeps } from "../http-app";
 import { requireAccount } from "../middleware/require-account";
-import { toPostType, toUserResponse } from "../responses/post-type";
-import { toProfileType } from "../responses/profile-type";
+import { toPostType, toProfileType, toUserResponse } from "../responses";
 
 export const usersRoutes = ({ verifyAccessToken, useCases }: HttpAppDeps) => {
 	const auth = requireAccount(verifyAccessToken);

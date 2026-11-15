@@ -1,8 +1,9 @@
-/** application の読み取りモデルを、API のレスポンスの形（packages/shared の PostType）にする */
-import type { PostType, User as UserResponse } from "@engineer-sns/shared";
+/** application の読み取りモデルを、API のレスポンスの形（packages/shared の型）にする */
+import type { PostType, ProfileType, User as UserResponse } from "@engineer-sns/shared";
 
-import type { PostSummary } from "../../application/post-summary";
-import type { User } from "../../domain/user";
+import type { PostSummary } from "../application/post-summary";
+import type { UserProfile } from "../application/user-profile";
+import type { User } from "../domain/user";
 
 export const toUserResponse = (user: User): UserResponse => {
 	return {
@@ -31,5 +32,13 @@ export const toPostType = ({ post, author, likes, commentCount }: PostSummary): 
 		parent_post_id: post.parentPostId,
 		user_id: post.authorId,
 		users: toUserResponse(author),
+	};
+};
+
+export const toProfileType = (profile: UserProfile): ProfileType => {
+	return {
+		...toUserResponse(profile.user),
+		follower_count: profile.followerCount,
+		followee_count: profile.followeeCount,
 	};
 };

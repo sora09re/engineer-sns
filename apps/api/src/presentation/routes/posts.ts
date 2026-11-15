@@ -3,9 +3,9 @@ import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
 import { z } from "zod";
 
-import type { HttpAppDeps } from "../deps";
+import type { HttpAppDeps } from "../http-app";
 import { requireAccount } from "../middleware/require-account";
-import { toPostType } from "../responses/post-type";
+import { toPostType } from "../responses";
 
 /** 本文の形が不正なら（content がない、文字列でない）、空の本文と同じく 422 にする */
 const postBody = zValidator("json", z.object({ content: z.string() }), (result) => {
