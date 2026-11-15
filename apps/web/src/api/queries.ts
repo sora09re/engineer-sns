@@ -2,17 +2,9 @@ import { queryOptions } from "@tanstack/react-query";
 
 import type { PostType, ProfileType, User } from "@engineer-sns/shared";
 
-import { api, parse, parseOrNull } from "./http";
+import { api, parse, parseOrNull, queryKeys } from "@/shared/api";
 
-/**
- * 読み取りのクエリ。API を呼ぶのはここの queryFn だけ（更新は mutations.ts の mutationFn）。
- * クエリキーの階層は、更新後に先頭の要素（"users" / "posts" / "follows"）単位で無効化する。
- */
-export const queryKeys = {
-	users: ["users"] as const,
-	posts: ["posts"] as const,
-	follows: ["follows"] as const,
-};
+/** 読み取りのクエリ。API を呼ぶのはここの queryFn だけ（更新は mutations.ts の mutationFn） */
 
 /** ログイン中のアカウントのユーザー。新規ユーザー登録前なら null */
 export const currentUserQuery = () => {

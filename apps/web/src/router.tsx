@@ -3,8 +3,7 @@ import { IconX } from "@tabler/icons-react";
 import { QueryCache, QueryClient } from "@tanstack/react-query";
 import { createRouter } from "@tanstack/react-router";
 
-import { CenteredLoader } from "@/components/CenteredLoader/CenteredLoader";
-import { ErrorView } from "@/components/ErrorView/ErrorView";
+import { CenteredLoader, ErrorView } from "@/shared/ui";
 import { routeTree } from "@/routeTree.gen";
 
 export const queryClient = new QueryClient({

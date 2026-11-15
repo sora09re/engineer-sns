@@ -15,7 +15,7 @@ import { useNavigate } from "@tanstack/react-router";
 
 import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
 import { useCreateCurrentUser } from "@/api/mutations";
-import { useImageFile } from "@/hooks/useImageFile";
+import { useImageFile } from "@/shared/lib";
 import { useUserValues } from "@/hooks/useUserValues";
 import type { Account } from "@engineer-sns/shared";
 

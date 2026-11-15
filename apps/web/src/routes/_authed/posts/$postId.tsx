@@ -5,9 +5,9 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 import { commentsQuery, postQuery } from "@/api/queries";
 import { CommentForm } from "@/components/CommentForm/CommentForm";
 import { Post } from "@/components/Post/Post";
-import { PreviousPageHeader } from "@/components/PreviousPageHeader/PreviousPageHeader";
+import { PreviousPageHeader } from "@/shared/ui";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
-import { pageTitle } from "@/lib/title";
+import { pageTitle } from "@/shared/lib";
 
 export const Route = createFileRoute("/_authed/posts/$postId")({
 	head: () => pageTitle("投稿"),

@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import { followeesQuery, followersQuery } from "@/api/queries";
 import { Follows } from "@/components/Follows/Follows";
-import { pageTitle } from "@/lib/title";
+import { pageTitle } from "@/shared/lib";
 
 export const Route = createFileRoute("/_authed/profile/$userId/follows")({
 	head: () => pageTitle("フォロー"),
