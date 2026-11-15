@@ -12,7 +12,7 @@ import { requireTargetUser } from "./require-target-user";
  * 対象が投稿なら、その投稿を返す
  */
 export async function requireLoginUser(
-	deps: { users: UserRepository; postRepository: PostRepository },
+	deps: { users: UserRepository; posts: PostRepository },
 	input: { accountId: string; postId: string },
 ): Promise<Post>;
 export async function requireLoginUser(
@@ -24,7 +24,7 @@ export async function requireLoginUser(
 	input: { accountId: string },
 ): Promise<void>;
 export async function requireLoginUser(
-	deps: { users: UserRepository; postRepository?: PostRepository },
+	deps: { users: UserRepository; posts?: PostRepository },
 	input: { accountId: string; postId?: string; userId?: string },
 ): Promise<Post | void> {
 	if (!(await deps.users.exists(input.accountId))) {
@@ -34,6 +34,6 @@ export async function requireLoginUser(
 		await requireTargetUser(deps.users, input.userId);
 	}
 	if (input.postId !== undefined) {
-		return requirePost(deps.postRepository!, input.postId);
+		return requirePost(deps.posts!, input.postId);
 	}
 }

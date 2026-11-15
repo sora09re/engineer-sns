@@ -5,7 +5,7 @@ import { requireLoginUser } from "./require-login-user";
 export const likePost = (deps: {
 	users: UserRepository;
 	likes: LikeRepository;
-	postRepository: PostRepository;
+	posts: PostRepository;
 }) => {
 	return async (input: { accountId: string; postId: string }): Promise<void> => {
 		await requireLoginUser(deps, input);

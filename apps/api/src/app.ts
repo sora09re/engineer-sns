@@ -10,7 +10,6 @@ import { createAccessTokenVerifier } from "./infrastructure/auth/access-token-ve
 import type { Db } from "./infrastructure/db/client";
 import { createFollowRepository } from "./infrastructure/repositories/follow-repository";
 import { createLikeRepository } from "./infrastructure/repositories/like-repository";
-import { createPostQuery } from "./infrastructure/repositories/post-query";
 import { createPostRepository } from "./infrastructure/repositories/post-repository";
 import { createUserQuery } from "./infrastructure/repositories/user-query";
 import { createUserRepository } from "./infrastructure/repositories/user-repository";
@@ -28,8 +27,7 @@ export const createApp = ({ db, jwks, storage }: AppDeps) => {
 		useCases: createUseCases({
 			follows: createFollowRepository(db),
 			likes: createLikeRepository(db),
-			posts: createPostQuery(db),
-			postRepository: createPostRepository(db),
+			posts: createPostRepository(db),
 			users: createUserRepository(db),
 			userQuery: createUserQuery(db),
 			storage: createProfileImageStorage(storage),

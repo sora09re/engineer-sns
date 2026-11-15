@@ -19,7 +19,6 @@ import { likePost } from "./like-post";
 import type {
 	FollowRepository,
 	LikeRepository,
-	PostQuery,
 	PostRepository,
 	ProfileImageStorage,
 	UserQuery,
@@ -35,8 +34,7 @@ import { updateCurrentUser } from "./update-current-user";
 export type Ports = {
 	follows: FollowRepository;
 	likes: LikeRepository;
-	posts: PostQuery;
-	postRepository: PostRepository;
+	posts: PostRepository;
 	users: UserRepository;
 	userQuery: UserQuery;
 	storage: ProfileImageStorage;

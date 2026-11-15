@@ -17,19 +17,6 @@ export type FollowRepository = {
 	remove: (values: { followerId: string; followeeId: string }) => Promise<void>;
 };
 
-export type PostQuery = {
-	/** authorIds のユーザーが書いた、コメントでない投稿を新しい順に返す */
-	findTopLevelByAuthors: (authorIds: string[]) => Promise<PostSummary[]>;
-	/** ID で投稿（コメントを含む）を 1 件返す。なければ null */
-	findById: (postId: string) => Promise<PostSummary | null>;
-	/** postId の投稿へのコメントを新しい順に返す */
-	findCommentsOf: (postId: string) => Promise<PostSummary[]>;
-	/** authorId のユーザーが書いた投稿（コメントを含む）を新しい順に返す */
-	findByAuthor: (authorId: string) => Promise<PostSummary[]>;
-	/** 本文に keyword を含む（大文字と小文字は区別しない）、コメントでない投稿を新しい順に返す */
-	searchTopLevel: (keyword: string) => Promise<PostSummary[]>;
-};
-
 export type UserQuery = {
 	findById: (userId: string) => Promise<User | null>;
 	/** フォロワー数とフォロー数つきのユーザー。なければ null */
@@ -53,10 +40,26 @@ export type UserRepository = {
 	update: (userId: string, values: Partial<UserValues>) => Promise<User>;
 };
 
-/** 書き込み用。domain の Post を扱う */
+/** 投稿。一覧や詳細は読み取りモデル（PostSummary）で、前提の確認には domain の Post で返す */
 export type PostRepository = {
+	/** ID で投稿（コメントを含む）を 1 件返す。前提の確認用。なければ null */
 	findById: (postId: string) => Promise<Post | null>;
-	create: (values: { authorId: string; content: string; parentPostId?: string }) => Promise<Post>;
+	/** ID で投稿（コメントを含む）を、投稿者・いいね・コメント数つきで 1 件返す。なければ null */
+	findSummaryById: (postId: string) => Promise<PostSummary | null>;
+	/** authorIds のユーザーが書いた、コメントでない投稿を新しい順に返す */
+	findTopLevelByAuthors: (authorIds: string[]) => Promise<PostSummary[]>;
+	/** postId の投稿へのコメントを新しい順に返す */
+	findCommentsOf: (postId: string) => Promise<PostSummary[]>;
+	/** authorId のユーザーが書いた投稿（コメントを含む）を新しい順に返す */
+	findByAuthor: (authorId: string) => Promise<PostSummary[]>;
+	/** 本文に keyword を含む（大文字と小文字は区別しない）、コメントでない投稿を新しい順に返す */
+	searchTopLevel: (keyword: string) => Promise<PostSummary[]>;
+	/** 投稿する。parentPostId があればコメント。作った投稿を一覧と同じ形で返す */
+	create: (values: {
+		authorId: string;
+		content: string;
+		parentPostId?: string;
+	}) => Promise<PostSummary>;
 	/** 投稿を削除する。コメントも消える */
 	delete: (postId: string) => Promise<void>;
 };

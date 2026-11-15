@@ -1,15 +1,11 @@
 import { isValidPostContent } from "../domain/post";
 import { ValidationError } from "./errors";
-import type { PostQuery, PostRepository, UserRepository } from "./ports";
+import type { PostRepository, UserRepository } from "./ports";
 import type { PostSummary } from "./post-summary";
 import { requireLoginUser } from "./require-login-user";
 
 /** 投稿にコメントする。コメントは parentPostId を持つ投稿 */
-export const createComment = (deps: {
-	users: UserRepository;
-	postRepository: PostRepository;
-	posts: PostQuery;
-}) => {
+export const createComment = (deps: { users: UserRepository; posts: PostRepository }) => {
 	return async (input: {
 		accountId: string;
 		postId: string;
@@ -22,16 +18,11 @@ export const createComment = (deps: {
 		if (!isValidPostContent(input.content)) {
 			throw new ValidationError("本文を入力してください。");
 		}
-		const comment = await deps.postRepository.create({
+		return deps.posts.create({
 			authorId: input.accountId,
 			content: input.content,
 			parentPostId: parent.id,
 		});
-		const summary = await deps.posts.findById(comment.id);
-		if (!summary) {
-			throw new Error(`作成したコメント（${comment.id}）が見つかりません。`);
-		}
-		return summary;
 	};
 };
 
