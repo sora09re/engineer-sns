@@ -5,7 +5,7 @@
 		"prepare": "vp config --hooks --no-agent",
 		"dev": "pnpm -r --parallel dev",
 		"build": "pnpm --filter @engineer-sns/web build",
-		"check": "vp check",
+		"check": "vp check && pnpm --filter @engineer-sns/web lint:fsd",
 		"fix": "vp check --fix",
 		"typecheck": "tsc -p . && pnpm -r typecheck",
 		"test": "pnpm -r test",
