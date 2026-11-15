@@ -1,16 +1,16 @@
 import type { User } from "../domain/user";
-import type { UserQuery } from "./ports";
+import type { UserRepository } from "./ports";
 
 /** フォロワー: userId のユーザーをフォローしているユーザー */
-export const getFollowers = (deps: { userQuery: UserQuery }) => {
+export const getFollowers = (deps: { users: UserRepository }) => {
 	return (userId: string): Promise<User[]> => {
-		return deps.userQuery.findFollowersOf(userId);
+		return deps.users.findFollowersOf(userId);
 	};
 };
 
 /** フォロー: userId のユーザーがフォローしているユーザー */
-export const getFollowees = (deps: { userQuery: UserQuery }) => {
+export const getFollowees = (deps: { users: UserRepository }) => {
 	return (userId: string): Promise<User[]> => {
-		return deps.userQuery.findFolloweesOf(userId);
+		return deps.users.findFolloweesOf(userId);
 	};
 };

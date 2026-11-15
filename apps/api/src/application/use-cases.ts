@@ -21,7 +21,6 @@ import type {
 	LikeRepository,
 	PostRepository,
 	ProfileImageStorage,
-	UserQuery,
 	UserRepository,
 } from "./ports";
 import { registerUser } from "./register-user";
@@ -36,7 +35,6 @@ export type Ports = {
 	likes: LikeRepository;
 	posts: PostRepository;
 	users: UserRepository;
-	userQuery: UserQuery;
 	storage: ProfileImageStorage;
 };
 

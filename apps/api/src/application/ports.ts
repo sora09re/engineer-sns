@@ -17,21 +17,20 @@ export type FollowRepository = {
 	remove: (values: { followerId: string; followeeId: string }) => Promise<void>;
 };
 
-export type UserQuery = {
+/** ユーザー。プロフィールは読み取りモデル（UserProfile）で返す */
+export type UserRepository = {
+	/** そのアカウントがユーザーを持っているか（新規ユーザー登録が済んでいるか） */
+	exists: (userId: string) => Promise<boolean>;
+	/** ID でユーザーを 1 件返す。なければ null */
 	findById: (userId: string) => Promise<User | null>;
 	/** フォロワー数とフォロー数つきのユーザー。なければ null */
 	findProfile: (userId: string) => Promise<UserProfile | null>;
 	/** userId のユーザーをフォローしているユーザー。フォローした順（古い順）、同じ時刻ならユーザー名順 */
 	findFollowersOf: (userId: string) => Promise<User[]>;
-	/** 名前・ユーザーネーム・自己紹介のどれかに keyword を含む（大文字と小文字は区別しない）ユーザー */
-	search: (keyword: string) => Promise<User[]>;
 	/** userId のユーザーがフォローしているユーザー。並び順は findFollowersOf と同じ */
 	findFolloweesOf: (userId: string) => Promise<User[]>;
-};
-
-export type UserRepository = {
-	/** そのアカウントがユーザーを持っているか（新規ユーザー登録が済んでいるか） */
-	exists: (userId: string) => Promise<boolean>;
+	/** 名前・ユーザーネーム・自己紹介のどれかに keyword を含む（大文字と小文字は区別しない）ユーザー */
+	search: (keyword: string) => Promise<User[]>;
 	/** そのユーザーネームを使っているユーザーの ID。いなければ null */
 	findIdByUsername: (username: string) => Promise<string | null>;
 	/** アカウントにユーザーを作る。ユーザーの ID はアカウントの ID と同じ */

@@ -1,9 +1,9 @@
 import type { User } from "../domain/user";
-import type { UserQuery } from "./ports";
+import type { UserRepository } from "./ports";
 
 /** ログイン中のアカウントのユーザー。新規ユーザー登録の前なら null */
-export const getCurrentUser = (deps: { userQuery: UserQuery }) => {
+export const getCurrentUser = (deps: { users: UserRepository }) => {
 	return (accountId: string): Promise<User | null> => {
-		return deps.userQuery.findById(accountId);
+		return deps.users.findById(accountId);
 	};
 };
