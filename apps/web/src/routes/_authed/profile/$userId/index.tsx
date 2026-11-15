@@ -3,13 +3,11 @@ import { useDisclosure } from "@mantine/hooks";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, notFound } from "@tanstack/react-router";
 
-import { userPostsQuery, userProfileQuery } from "@/api/queries";
+import { userPostsQuery } from "@/entities/post";
+import { ProfileHeader, ProfileStats, useCurrentUser, userProfileQuery } from "@/entities/user";
 import { EditProfileModal } from "@/components/Modal/EditProfileModal/EditProfileModal";
 import { FollowButton } from "@/components/FollowButton/FollowButton";
 import { Post } from "@/components/Post/Post";
-import { ProfileHeader } from "@/components/ProfileHeader/ProfileHeader";
-import { ProfileStats } from "@/components/ProfileStats/ProfileStats";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { pageTitle } from "@/shared/lib";
 
 export const Route = createFileRoute("/_authed/profile/$userId/")({

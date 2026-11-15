@@ -5,7 +5,7 @@ import { AccountButton } from "@/components/AccountButton/AccountButton";
 import { LogoutButton } from "@/components/LogoutButton/LogoutButton";
 import { MainLinks } from "@/components/MainLinks/MainLinks";
 import { NewPostForm } from "@/components/NewPostForm/NewPostForm";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { useCurrentUser } from "@/entities/user";
 import { sideBarWidthBase } from "@/utils/sideBarWidth";
 
 export const Sidebar = () => {

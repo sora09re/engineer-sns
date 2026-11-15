@@ -13,10 +13,9 @@ import { notifications } from "@mantine/notifications";
 import { IconX } from "@tabler/icons-react";
 import { useNavigate } from "@tanstack/react-router";
 
-import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
+import { ImageUpload, useUserValues } from "@/entities/user";
 import { useCreateCurrentUser } from "@/api/mutations";
 import { useImageFile } from "@/shared/lib";
-import { useUserValues } from "@/hooks/useUserValues";
 import type { Account } from "@engineer-sns/shared";
 
 interface NewUserFormProps {

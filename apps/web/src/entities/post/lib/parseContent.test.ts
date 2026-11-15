@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vite-plus/test";
 
-import { parseContent } from "./ContentPart";
+import { parseContent } from "./parseContent";
 
 describe("parseContent", () => {
 	it("コードブロックがなければ、全体を 1 つのテキストとして返す", () => {

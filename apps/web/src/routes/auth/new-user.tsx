@@ -1,7 +1,7 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
-import { currentUserQuery } from "@/api/queries";
-import { getSignedInAccount } from "@/api/session";
+import { getSignedInAccount } from "@/entities/account";
+import { currentUserQuery } from "@/entities/user";
 import { NewUserForm } from "@/components/NewUserForm/NewUserForm";
 import { pageTitle } from "@/shared/lib";
 

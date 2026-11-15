@@ -1,3 +1,5 @@
+import type { UserValues } from "@engineer-sns/shared";
+
 import { api, parse } from "@/shared/api";
 
 /** ファイルを選ぶときの候補。受け付けるかどうかは API が決める */
@@ -19,4 +21,12 @@ export const uploadProfileImage = async (file: File): Promise<string> => {
 		throw new Error(`画像をアップロードできませんでした（${response.status}）。`);
 	}
 	return target.public_url;
+};
+
+/** プロフィール画像があればアップロードしてから値に反映する */
+export const withUploadedImage = async (values: UserValues, imageFile: File | null) => {
+	if (!imageFile) {
+		return values;
+	}
+	return { ...values, profile_image_url: await uploadProfileImage(imageFile) };
 };

@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { UserValues } from "@engineer-sns/shared";
 
 import { api, ensureOk, queryKeys } from "@/shared/api";
-import { uploadProfileImage } from "./profile-image";
+import { withUploadedImage } from "@/entities/user";
 
 /**
  * 更新系のフック。API を呼ぶのはここの mutationFn だけ（読み取りは queries.ts の queryFn）。
@@ -72,14 +72,6 @@ export const useToggleFollow = () => {
 			]);
 		},
 	});
-};
-
-/** プロフィール画像があればアップロードしてから値に反映する */
-const withUploadedImage = async (values: UserValues, imageFile: File | null) => {
-	if (!imageFile) {
-		return values;
-	}
-	return { ...values, profile_image_url: await uploadProfileImage(imageFile) };
 };
 
 /** 新規ユーザー登録: ログイン中のアカウントにユーザーを作る */

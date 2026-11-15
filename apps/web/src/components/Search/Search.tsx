@@ -4,10 +4,10 @@ import { IconSearch } from "@tabler/icons-react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
-import { searchPostsQuery, searchUsersQuery } from "@/api/queries";
+import { searchPostsQuery } from "@/entities/post";
+import { searchUsersQuery, useCurrentUser } from "@/entities/user";
 import { Post } from "@/components/Post/Post";
 import { UserItem } from "@/components/UserItem/UserItem";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 export const Search = () => {
 	const currentUser = useCurrentUser();

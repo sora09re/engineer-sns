@@ -10,7 +10,7 @@ import { RouterProvider } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
-import { onSignedOut } from "@/api/session";
+import { onSignedOut } from "@/entities/account";
 import { queryClient, router } from "@/router";
 import { theme } from "@/theme";
 

@@ -1,8 +1,8 @@
 import { Box, Flex } from "@mantine/core";
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
-import { currentUserQuery } from "@/api/queries";
-import { getSignedInAccount } from "@/api/session";
+import { getSignedInAccount } from "@/entities/account";
+import { currentUserQuery } from "@/entities/user";
 import { Sidebar } from "@/components/Sidebar/Sidebar";
 import { sideBarWidthBase } from "@/utils/sideBarWidth";
 

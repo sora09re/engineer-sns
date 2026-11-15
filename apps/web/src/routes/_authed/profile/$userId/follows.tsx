@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { followeesQuery, followersQuery } from "@/api/queries";
+import { followeesQuery, followersQuery } from "@/entities/user";
 import { Follows } from "@/components/Follows/Follows";
 import { pageTitle } from "@/shared/lib";
 
