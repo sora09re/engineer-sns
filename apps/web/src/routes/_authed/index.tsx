@@ -2,8 +2,8 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
 import { timelinePostsQuery } from "@/api/queries";
+import { Post } from "@/components/Post/Post";
 import { NewPostForm } from "@/components/NewPostForm/NewPostForm";
-import { PostsList } from "@/components/PostsList/PostsList";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { pageTitle } from "@/lib/title";
 
@@ -20,7 +20,9 @@ function TimelinePage() {
 	return (
 		<>
 			<NewPostForm />
-			<PostsList posts={posts} currentUserId={currentUser.id} />
+			{posts.map((post) => {
+				return <Post key={post.id} post={post} currentUserId={currentUser.id} />;
+			})}
 		</>
 	);
 }

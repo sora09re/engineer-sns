@@ -4,7 +4,6 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 
 import { commentsQuery, postQuery } from "@/api/queries";
 import { CommentForm } from "@/components/CommentForm/CommentForm";
-import { PostsList } from "@/components/PostsList/PostsList";
 import { Post } from "@/components/Post/Post";
 import { PreviousPageHeader } from "@/components/PreviousPageHeader/PreviousPageHeader";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
@@ -37,7 +36,9 @@ function PostDetailPage() {
 			{post && <Post post={post} currentUserId={currentUser.id} />}
 			<Space h="md" />
 			<CommentForm postId={postId} />
-			<PostsList posts={comments} currentUserId={currentUser.id} />
+			{comments.map((comment) => {
+				return <Post key={comment.id} post={comment} currentUserId={currentUser.id} />;
+			})}
 		</>
 	);
 }

@@ -3,8 +3,8 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, notFound } from "@tanstack/react-router";
 
 import { userPostsQuery, userProfileQuery } from "@/api/queries";
+import { Post } from "@/components/Post/Post";
 import { EditProfileModal } from "@/components/Modal/EditProfileModal/EditProfileModal";
-import { PostsList } from "@/components/PostsList/PostsList";
 import { Profile } from "@/components/Profile/Profile";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { pageTitle } from "@/lib/title";
@@ -41,7 +41,9 @@ function ProfilePage() {
 				currentUserId={currentUser.id}
 				onEditProfile={editProfileModal.open}
 			/>
-			<PostsList posts={posts} currentUserId={currentUser.id} />
+			{posts.map((post) => {
+				return <Post key={post.id} post={post} currentUserId={currentUser.id} />;
+			})}
 			{currentUser.id === userId && (
 				<EditProfileModal
 					currentUser={currentUser}

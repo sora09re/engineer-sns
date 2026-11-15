@@ -5,8 +5,8 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
 import { searchPostsQuery, searchUsersQuery } from "@/api/queries";
-import { PostsList } from "@/components/PostsList/PostsList";
-import { UsersList } from "@/components/UsersList/UsersList";
+import { Post } from "@/components/Post/Post";
+import { UserItem } from "@/components/UserItem/UserItem";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 export const Search = () => {
@@ -44,7 +44,9 @@ export const Search = () => {
 							<Loader />
 						</Center>
 					) : (
-						<PostsList currentUserId={currentUser.id} posts={searchPostResults} />
+						searchPostResults?.map((post) => {
+							return <Post key={post.id} post={post} currentUserId={currentUser.id} />;
+						})
 					)}
 				</Tabs.Panel>
 				<Tabs.Panel value="account">
@@ -53,7 +55,9 @@ export const Search = () => {
 							<Loader />
 						</Center>
 					) : (
-						<UsersList users={searchUserResults ?? []} currentUserId={currentUser.id} />
+						searchUserResults?.map((user) => {
+							return <UserItem key={user.id} propsUser={user} currentUserId={currentUser.id} />;
+						})
 					)}
 				</Tabs.Panel>
 			</Tabs>

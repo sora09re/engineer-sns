@@ -2,7 +2,7 @@ import { Box, Tabs } from "@mantine/core";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 import { followeesQuery, followersQuery } from "@/api/queries";
-import { UsersList } from "@/components/UsersList/UsersList";
+import { UserItem } from "@/components/UserItem/UserItem";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 interface FollowsProps {
@@ -22,10 +22,14 @@ export const Follows = ({ userId }: FollowsProps) => {
 					<Tabs.Tab value="following">フォロー中</Tabs.Tab>
 				</Tabs.List>
 				<Tabs.Panel value="followers">
-					<UsersList users={followers} currentUserId={currentUser.id} />
+					{followers.map((user) => {
+						return <UserItem key={user.id} propsUser={user} currentUserId={currentUser.id} />;
+					})}
 				</Tabs.Panel>
 				<Tabs.Panel value="following">
-					<UsersList users={followees} currentUserId={currentUser.id} />
+					{followees.map((user) => {
+						return <UserItem key={user.id} propsUser={user} currentUserId={currentUser.id} />;
+					})}
 				</Tabs.Panel>
 			</Tabs>
 		</Box>
