@@ -45,6 +45,24 @@ describe("ログイン中のユーザーとして行う操作", () => {
 		});
 	});
 
+	test("ユーザーのないアカウントなら、対象の ID が UUID の形をしていなくても 403", async () => {
+		await withRollback(async (db) => {
+			const { send } = await setupApp(db);
+			const accountWithoutUser = crypto.randomUUID();
+			const requests = [
+				{ method: "POST", path: "/api/posts/not-a-uuid/comments", body: { content: "こんにちは" } },
+				{ method: "DELETE", path: "/api/posts/not-a-uuid" },
+				{ method: "PUT", path: "/api/posts/not-a-uuid/like" },
+				{ method: "PUT", path: "/api/users/not-a-uuid/follow" },
+			];
+
+			for (const { method, path, body } of requests) {
+				const res = await send(method, path, accountWithoutUser, body);
+				expect({ path, method, status: res.status }).toEqual({ path, method, status: 403 });
+			}
+		});
+	});
+
 	test("ユーザーがあれば、本文が不正でも対象の投稿がないことを先に 404 で返す", async () => {
 		await withRollback(async (db) => {
 			const { send } = await setupApp(db);

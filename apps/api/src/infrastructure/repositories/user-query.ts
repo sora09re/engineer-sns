@@ -4,6 +4,7 @@ import type { UserQuery } from "../../application/ports";
 import type { Db } from "../db/client";
 import { follows, users } from "../db/schema";
 import { escapeLike } from "./escape-like";
+import { isUuid } from "./is-uuid";
 import { toUser } from "./to-user";
 
 /**
@@ -18,10 +19,16 @@ const followOrder = [asc(follows.createdAt), asc(users.username)];
 export const createUserQuery = (db: Db): UserQuery => {
 	return {
 		findById: async (userId) => {
+			if (!isUuid(userId)) {
+				return null;
+			}
 			const [row] = await db.select().from(users).where(eq(users.id, userId));
 			return row ? toUser(row) : null;
 		},
 		findProfile: async (userId) => {
+			if (!isUuid(userId)) {
+				return null;
+			}
 			const [row] = await db
 				.select({
 					user: users,
@@ -57,6 +64,9 @@ export const createUserQuery = (db: Db): UserQuery => {
 			return rows.map(toUser);
 		},
 		findFollowersOf: async (userId) => {
+			if (!isUuid(userId)) {
+				return [];
+			}
 			const rows = await db
 				.select({ user: users })
 				.from(follows)
@@ -66,6 +76,9 @@ export const createUserQuery = (db: Db): UserQuery => {
 			return rows.map((row) => toUser(row.user));
 		},
 		findFolloweesOf: async (userId) => {
+			if (!isUuid(userId)) {
+				return [];
+			}
 			const rows = await db
 				.select({ user: users })
 				.from(follows)

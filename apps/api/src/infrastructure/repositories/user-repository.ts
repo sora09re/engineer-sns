@@ -3,11 +3,15 @@ import { eq } from "drizzle-orm";
 import type { UserRepository } from "../../application/ports";
 import type { Db } from "../db/client";
 import { users } from "../db/schema";
+import { isUuid } from "./is-uuid";
 import { toUser } from "./to-user";
 
 export const createUserRepository = (db: Db): UserRepository => {
 	return {
 		exists: async (userId) => {
+			if (!isUuid(userId)) {
+				return false;
+			}
 			const rows = await db.select({ id: users.id }).from(users).where(eq(users.id, userId));
 			return rows.length > 0;
 		},

@@ -6,6 +6,7 @@ import type { Post } from "../../domain/post";
 import type { Db } from "../db/client";
 import { likes, posts, users } from "../db/schema";
 import { escapeLike } from "./escape-like";
+import { isUuid } from "./is-uuid";
 import { toUser } from "./to-user";
 
 /** posts テーブルの行を domain の Post にする */
@@ -63,19 +64,28 @@ const findSummaryById = async (db: Db, postId: string) => {
 export const createPostRepository = (db: Db): PostRepository => {
 	return {
 		findById: async (postId) => {
+			if (!isUuid(postId)) {
+				return null;
+			}
 			const [row] = await db.select().from(posts).where(eq(posts.id, postId));
 			return row ? toPost(row) : null;
 		},
-		findSummaryById: (postId) => {
-			return findSummaryById(db, postId);
+		findSummaryById: async (postId) => {
+			return isUuid(postId) ? findSummaryById(db, postId) : null;
 		},
 		findTopLevelByAuthors: (authorIds) => {
 			return findSummaries(db, and(isNull(posts.parentPostId), inArray(posts.userId, authorIds)));
 		},
-		findCommentsOf: (postId) => {
+		findCommentsOf: async (postId) => {
+			if (!isUuid(postId)) {
+				return [];
+			}
 			return findSummaries(db, eq(posts.parentPostId, postId));
 		},
-		findByAuthor: (authorId) => {
+		findByAuthor: async (authorId) => {
+			if (!isUuid(authorId)) {
+				return [];
+			}
 			return findSummaries(db, eq(posts.userId, authorId));
 		},
 		searchTopLevel: (keyword) => {

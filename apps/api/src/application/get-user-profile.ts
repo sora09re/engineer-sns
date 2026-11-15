@@ -1,10 +1,15 @@
+import { NotFoundError } from "./errors";
 import type { UserQuery } from "./ports";
 import type { UserProfile } from "./user-profile";
 
-/** ユーザーのプロフィール。なければ null */
+/** ユーザーのプロフィール。なければ NotFoundError */
 export const getUserProfile = (deps: { userQuery: UserQuery }) => {
-	return (userId: string): Promise<UserProfile | null> => {
-		return deps.userQuery.findProfile(userId);
+	return async (userId: string): Promise<UserProfile> => {
+		const profile = await deps.userQuery.findProfile(userId);
+		if (!profile) {
+			throw new NotFoundError("ユーザーが見つかりません。");
+		}
+		return profile;
 	};
 };
 
