@@ -7,5 +7,3 @@ export const getCurrentUser = (deps: { userQuery: UserQuery }) => {
 		return deps.userQuery.findById(accountId);
 	};
 };
-
-export type GetCurrentUser = ReturnType<typeof getCurrentUser>;

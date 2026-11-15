@@ -13,5 +13,3 @@ export const deletePost = (deps: { users: UserRepository; posts: PostRepository 
 		await deps.posts.delete(post.id);
 	};
 };
-
-export type DeletePost = ReturnType<typeof deletePost>;

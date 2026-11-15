@@ -17,5 +17,3 @@ export const createPost = (deps: { users: UserRepository; posts: PostRepository 
 		});
 	};
 };
-
-export type CreatePost = ReturnType<typeof createPost>;

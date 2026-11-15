@@ -20,5 +20,3 @@ export const registerUser = (deps: { users: UserRepository }) => {
 		return deps.users.create({ ...input.values, id: input.accountId });
 	};
 };
-
-export type RegisterUser = ReturnType<typeof registerUser>;

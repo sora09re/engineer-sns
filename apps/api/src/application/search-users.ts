@@ -10,5 +10,3 @@ export const searchUsers = (deps: { userQuery: UserQuery }) => {
 		return deps.userQuery.search(keyword);
 	};
 };
-
-export type SearchUsers = ReturnType<typeof searchUsers>;

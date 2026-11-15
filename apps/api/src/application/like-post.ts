@@ -12,5 +12,3 @@ export const likePost = (deps: {
 		await deps.likes.add({ postId: input.postId, userId: input.accountId });
 	};
 };
-
-export type LikePost = ReturnType<typeof likePost>;

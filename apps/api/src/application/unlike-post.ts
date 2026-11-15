@@ -8,5 +8,3 @@ export const unlikePost = (deps: { likes: LikeRepository; posts: PostRepository 
 		await deps.likes.remove({ postId: input.postId, userId: input.accountId });
 	};
 };
-
-export type UnlikePost = ReturnType<typeof unlikePost>;

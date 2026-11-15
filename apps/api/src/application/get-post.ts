@@ -12,5 +12,3 @@ export const getPost = (deps: { posts: PostRepository }) => {
 		return post;
 	};
 };
-
-export type GetPost = ReturnType<typeof getPost>;

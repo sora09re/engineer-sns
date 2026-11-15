@@ -7,5 +7,3 @@ export const getUserPosts = (deps: { posts: PostRepository }) => {
 		return deps.posts.findByAuthor(userId);
 	};
 };
-
-export type GetUserPosts = ReturnType<typeof getUserPosts>;
