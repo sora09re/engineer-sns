@@ -4,8 +4,8 @@ import { IconX } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
-import { isFollowingQuery } from "@/api/queries";
-import { useToggleFollow } from "@/api/mutations";
+import { isFollowingQuery } from "../api/isFollowingQuery";
+import { useToggleFollow } from "../api/useToggleFollow";
 
 import classes from "./FollowButton.module.css";
 

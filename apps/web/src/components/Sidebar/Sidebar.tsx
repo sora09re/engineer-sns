@@ -4,7 +4,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { AccountButton } from "@/components/AccountButton/AccountButton";
 import { LogoutButton } from "@/components/LogoutButton/LogoutButton";
 import { MainLinks } from "@/components/MainLinks/MainLinks";
-import { NewPostForm } from "@/components/NewPostForm/NewPostForm";
+import { NewPostForm } from "@/features/create-post";
 import { useCurrentUser } from "@/entities/user";
 import { sideBarWidthBase } from "@/utils/sideBarWidth";
 
