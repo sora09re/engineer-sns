@@ -1,10 +1,10 @@
-import { Box, Button, Space } from "@mantine/core";
+import { Box, Button, Modal, Space } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
 import { AccountButton } from "@/components/AccountButton/AccountButton";
 import { LogoutButton } from "@/components/LogoutButton/LogoutButton";
 import { MainLinks } from "@/components/MainLinks/MainLinks";
-import { PostModal } from "@/components/Modal/PostModal/PostModal";
+import { NewPostForm } from "@/components/NewPostForm/NewPostForm";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { sideBarWidthBase } from "@/utils/sideBarWidth";
 
@@ -37,7 +37,9 @@ export const Sidebar = () => {
 				<Button style={{ fontSize: "1.0rem", fontWeight: "bold" }} onClick={postModal.open}>
 					投稿する
 				</Button>
-				<PostModal opened={isPostModalOpened} onClose={postModal.close} />
+				<Modal size={800} opened={isPostModalOpened} onClose={postModal.close} withCloseButton>
+					<NewPostForm onPosted={postModal.close} />
+				</Modal>
 				<Space h="md" />
 				<LogoutButton />
 			</Box>

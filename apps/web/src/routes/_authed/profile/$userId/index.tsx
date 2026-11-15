@@ -1,11 +1,14 @@
+import { Box, Button, Center } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, notFound } from "@tanstack/react-router";
 
 import { userPostsQuery, userProfileQuery } from "@/api/queries";
-import { Post } from "@/components/Post/Post";
 import { EditProfileModal } from "@/components/Modal/EditProfileModal/EditProfileModal";
-import { Profile } from "@/components/Profile/Profile";
+import { FollowButton } from "@/components/FollowButton/FollowButton";
+import { Post } from "@/components/Post/Post";
+import { ProfileHeader } from "@/components/ProfileHeader/ProfileHeader";
+import { ProfileStats } from "@/components/ProfileStats/ProfileStats";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { pageTitle } from "@/lib/title";
 
@@ -29,6 +32,7 @@ function ProfilePage() {
 	const { data: profile } = useSuspenseQuery(userProfileQuery(userId));
 	const { data: posts } = useSuspenseQuery(userPostsQuery(userId));
 	const [isEditProfileOpened, editProfileModal] = useDisclosure(false);
+	const isCurrentUser = currentUser.id === userId;
 
 	if (!profile) {
 		return null;
@@ -36,15 +40,29 @@ function ProfilePage() {
 
 	return (
 		<>
-			<Profile
-				user={profile}
-				currentUserId={currentUser.id}
-				onEditProfile={editProfileModal.open}
-			/>
+			<Box
+				p="xl"
+				w="100%"
+				style={{
+					borderBottom: "1px solid #E9ECEF",
+				}}
+			>
+				<ProfileHeader user={profile} />
+				<ProfileStats user={profile} />
+				<Center>
+					{isCurrentUser ? (
+						<Button variant="outline" color="dark" onClick={editProfileModal.open}>
+							プロフィールを編集
+						</Button>
+					) : (
+						<FollowButton userId={userId} />
+					)}
+				</Center>
+			</Box>
 			{posts.map((post) => {
 				return <Post key={post.id} post={post} currentUserId={currentUser.id} />;
 			})}
-			{currentUser.id === userId && (
+			{isCurrentUser && (
 				<EditProfileModal
 					currentUser={currentUser}
 					opened={isEditProfileOpened}
