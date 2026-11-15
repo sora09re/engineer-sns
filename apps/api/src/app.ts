@@ -11,7 +11,6 @@ import type { Db } from "./infrastructure/db/client";
 import { createFollowRepository } from "./infrastructure/repositories/follow-repository";
 import { createLikeRepository } from "./infrastructure/repositories/like-repository";
 import { createPostRepository } from "./infrastructure/repositories/post-repository";
-import { createUserQuery } from "./infrastructure/repositories/user-query";
 import { createUserRepository } from "./infrastructure/repositories/user-repository";
 import {
 	createProfileImageStorage,
@@ -29,7 +28,6 @@ export const createApp = ({ db, jwks, storage }: AppDeps) => {
 			likes: createLikeRepository(db),
 			posts: createPostRepository(db),
 			users: createUserRepository(db),
-			userQuery: createUserQuery(db),
 			storage: createProfileImageStorage(storage),
 		}),
 	});
