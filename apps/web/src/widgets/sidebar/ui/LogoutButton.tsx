@@ -4,7 +4,7 @@ import { IconLogout, IconX } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 
-import { signOut } from "@/api/session";
+import { signOut } from "../api/signOut";
 
 export const LogoutButton = () => {
 	const navigate = useNavigate();

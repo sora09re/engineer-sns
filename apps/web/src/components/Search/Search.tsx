@@ -6,8 +6,8 @@ import { useState } from "react";
 
 import { searchPostsQuery } from "@/entities/post";
 import { searchUsersQuery, useCurrentUser } from "@/entities/user";
-import { Post } from "@/components/Post/Post";
-import { UserItem } from "@/components/UserItem/UserItem";
+import { Post } from "@/widgets/post-card";
+import { UserItem } from "@/widgets/user-card";
 
 export const Search = () => {
 	const currentUser = useCurrentUser();

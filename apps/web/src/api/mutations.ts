@@ -22,29 +22,6 @@ export const useCreateComment = () => {
 	});
 };
 
-export const useDeletePost = () => {
-	const queryClient = useQueryClient();
-	return useMutation({
-		mutationFn: async (postId: string) => {
-			await ensureOk(await api.api.posts[":postId"].$delete({ param: { postId } }));
-		},
-		onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKeys.posts }),
-	});
-};
-
-/** いいねする・外す。すでにその状態でも成功する */
-export const useToggleLike = () => {
-	const queryClient = useQueryClient();
-	return useMutation({
-		mutationFn: async ({ like, postId }: { like: boolean; postId: string }) => {
-			const endpoint = api.api.posts[":postId"].like;
-			const args = { param: { postId } };
-			await ensureOk(await (like ? endpoint.$put(args) : endpoint.$delete(args)));
-		},
-		onSettled: () => queryClient.invalidateQueries({ queryKey: queryKeys.posts }),
-	});
-};
-
 /** 新規ユーザー登録: ログイン中のアカウントにユーザーを作る */
 export const useCreateCurrentUser = () => {
 	const queryClient = useQueryClient();

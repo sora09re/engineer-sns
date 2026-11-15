@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import { timelinePostsQuery } from "@/entities/post";
 import { useCurrentUser } from "@/entities/user";
-import { Post } from "@/components/Post/Post";
+import { Post } from "@/widgets/post-card";
 import { NewPostForm } from "@/features/create-post";
 import { pageTitle } from "@/shared/lib";
 
