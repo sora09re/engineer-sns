@@ -8,5 +8,3 @@ export const isFollowing = (deps: { users: UserRepository; follows: FollowReposi
 		return deps.follows.exists({ followerId: input.accountId, followeeId: input.userId });
 	};
 };
-
-export type IsFollowing = ReturnType<typeof isFollowing>;

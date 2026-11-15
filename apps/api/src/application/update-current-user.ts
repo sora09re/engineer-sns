@@ -21,5 +21,3 @@ export const updateCurrentUser = (deps: { users: UserRepository }) => {
 		return deps.users.update(input.accountId, input.values);
 	};
 };
-
-export type UpdateCurrentUser = ReturnType<typeof updateCurrentUser>;

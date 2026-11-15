@@ -25,5 +25,3 @@ export const createComment = (deps: { users: UserRepository; posts: PostReposito
 		});
 	};
 };
-
-export type CreateComment = ReturnType<typeof createComment>;

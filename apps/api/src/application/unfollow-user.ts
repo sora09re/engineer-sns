@@ -8,5 +8,3 @@ export const unfollowUser = (deps: { users: UserRepository; follows: FollowRepos
 		await deps.follows.remove({ followerId: input.accountId, followeeId: input.userId });
 	};
 };
-
-export type UnfollowUser = ReturnType<typeof unfollowUser>;

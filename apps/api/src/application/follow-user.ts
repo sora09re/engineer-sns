@@ -14,5 +14,3 @@ export const followUser = (deps: { users: UserRepository; follows: FollowReposit
 		await deps.follows.add(follow);
 	};
 };
-
-export type FollowUser = ReturnType<typeof followUser>;

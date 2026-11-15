@@ -7,5 +7,3 @@ export const getComments = (deps: { posts: PostRepository }) => {
 		return deps.posts.findCommentsOf(postId);
 	};
 };
-
-export type GetComments = ReturnType<typeof getComments>;

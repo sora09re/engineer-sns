@@ -12,5 +12,3 @@ export const getUserProfile = (deps: { userQuery: UserQuery }) => {
 		return profile;
 	};
 };
-
-export type GetUserProfile = ReturnType<typeof getUserProfile>;

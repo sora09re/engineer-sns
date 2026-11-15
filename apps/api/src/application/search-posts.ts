@@ -10,5 +10,3 @@ export const searchPosts = (deps: { posts: PostRepository }) => {
 		return deps.posts.searchTopLevel(keyword);
 	};
 };
-
-export type SearchPosts = ReturnType<typeof searchPosts>;

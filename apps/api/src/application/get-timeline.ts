@@ -8,5 +8,3 @@ export const getTimeline = (deps: { follows: FollowRepository; posts: PostReposi
 		return deps.posts.findTopLevelByAuthors([accountId, ...followeeIds]);
 	};
 };
-
-export type GetTimeline = ReturnType<typeof getTimeline>;

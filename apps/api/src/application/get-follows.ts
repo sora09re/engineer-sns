@@ -14,6 +14,3 @@ export const getFollowees = (deps: { userQuery: UserQuery }) => {
 		return deps.userQuery.findFolloweesOf(userId);
 	};
 };
-
-export type GetFollowers = ReturnType<typeof getFollowers>;
-export type GetFollowees = ReturnType<typeof getFollowees>;

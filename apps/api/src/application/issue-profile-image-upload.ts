@@ -18,5 +18,3 @@ export const issueProfileImageUpload = (deps: { storage: ProfileImageStorage }) 
 		);
 	};
 };
-
-export type IssueProfileImageUpload = ReturnType<typeof issueProfileImageUpload>;
