@@ -1,12 +1,12 @@
 import { Box, Button, Modal, Space } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
-import { AccountButton } from "@/components/AccountButton/AccountButton";
-import { LogoutButton } from "@/components/LogoutButton/LogoutButton";
-import { MainLinks } from "@/components/MainLinks/MainLinks";
+import { AccountButton } from "./AccountButton";
+import { LogoutButton } from "./LogoutButton";
+import { MainLinks } from "./MainLinks";
 import { NewPostForm } from "@/features/create-post";
 import { useCurrentUser } from "@/entities/user";
-import { sideBarWidthBase } from "@/utils/sideBarWidth";
+import { sideBarWidthBase } from "../config/sideBarWidth";
 
 export const Sidebar = () => {
 	const currentUser = useCurrentUser();

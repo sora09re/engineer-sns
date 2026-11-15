@@ -5,7 +5,7 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 import { commentsQuery, postQuery } from "@/entities/post";
 import { useCurrentUser } from "@/entities/user";
 import { CommentForm } from "@/components/CommentForm/CommentForm";
-import { Post } from "@/components/Post/Post";
+import { Post } from "@/widgets/post-card";
 import { PreviousPageHeader } from "@/shared/ui";
 import { pageTitle } from "@/shared/lib";
 

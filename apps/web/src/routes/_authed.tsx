@@ -3,8 +3,7 @@ import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
 import { getSignedInAccount } from "@/entities/account";
 import { currentUserQuery } from "@/entities/user";
-import { Sidebar } from "@/components/Sidebar/Sidebar";
-import { sideBarWidthBase } from "@/utils/sideBarWidth";
+import { Sidebar, sideBarWidthBase } from "@/widgets/sidebar";
 
 /**
  * ログイン必須のページをまとめるレイアウト。

@@ -2,7 +2,7 @@ import { Box, Tabs } from "@mantine/core";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 import { followeesQuery, followersQuery, useCurrentUser } from "@/entities/user";
-import { UserItem } from "@/components/UserItem/UserItem";
+import { UserItem } from "@/widgets/user-card";
 
 interface FollowsProps {
 	userId: string;

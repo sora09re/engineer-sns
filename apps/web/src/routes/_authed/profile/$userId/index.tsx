@@ -7,7 +7,7 @@ import { userPostsQuery } from "@/entities/post";
 import { ProfileHeader, ProfileStats, useCurrentUser, userProfileQuery } from "@/entities/user";
 import { EditProfileModal } from "@/components/Modal/EditProfileModal/EditProfileModal";
 import { FollowButton } from "@/features/toggle-follow";
-import { Post } from "@/components/Post/Post";
+import { Post } from "@/widgets/post-card";
 import { pageTitle } from "@/shared/lib";
 
 export const Route = createFileRoute("/_authed/profile/$userId/")({

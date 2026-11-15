@@ -3,8 +3,8 @@ import { Link, useNavigate } from "@tanstack/react-router";
 
 import { ContentPart, parseContent } from "@/entities/post";
 import { DateFormat } from "@/shared/ui";
-import { PostActionMenu } from "@/components/PostActionMenu/PostActionMenu";
-import { PostActionsButtonGroup } from "@/components/PostActionsButtonGroup/PostActionsButtonGroup";
+import { PostActionMenu } from "./PostActionMenu";
+import { PostActionsButtonGroup } from "./PostActionsButtonGroup";
 import type { PostType } from "@engineer-sns/shared";
 
 interface PostProps {
