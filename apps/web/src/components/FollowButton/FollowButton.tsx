@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
 import { isFollowingQuery } from "@/api/queries";
-import { useToggleFollow } from "@/hooks/mutations";
+import { useToggleFollow } from "@/api/mutations";
 
 import classes from "./FollowButton.module.css";
 

@@ -5,7 +5,7 @@ import type { PostType, ProfileType, User } from "@engineer-sns/shared";
 import { api, parse, parseOrNull } from "./http";
 
 /**
- * 読み取りのクエリ。API を呼ぶのはここの queryFn だけ（更新は posts.ts などの関数を hooks/mutations.ts から呼ぶ）。
+ * 読み取りのクエリ。API を呼ぶのはここの queryFn だけ（更新は mutations.ts の mutationFn）。
  * クエリキーの階層は、更新後に先頭の要素（"users" / "posts" / "follows"）単位で無効化する。
  */
 export const queryKeys = {

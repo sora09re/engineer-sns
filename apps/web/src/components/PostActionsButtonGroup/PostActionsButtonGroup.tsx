@@ -4,7 +4,7 @@ import { notifications } from "@mantine/notifications";
 import { IconMessageCircle2, IconThumbUp, IconX } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 
-import { useToggleLike } from "@/hooks/mutations";
+import { useToggleLike } from "@/api/mutations";
 import type { PostType } from "@engineer-sns/shared";
 
 interface PostActionsButtonGroupProps {

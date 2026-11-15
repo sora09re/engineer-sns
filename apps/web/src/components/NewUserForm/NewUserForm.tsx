@@ -14,7 +14,7 @@ import { IconX } from "@tabler/icons-react";
 import { useNavigate } from "@tanstack/react-router";
 
 import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
-import { useCreateCurrentUser } from "@/hooks/mutations";
+import { useCreateCurrentUser } from "@/api/mutations";
 import { useImageFile } from "@/hooks/useImageFile";
 import { useUserValues } from "@/hooks/useUserValues";
 import type { Account } from "@engineer-sns/shared";
