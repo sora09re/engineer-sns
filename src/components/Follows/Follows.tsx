@@ -1,50 +1,31 @@
 import { Box, Tabs } from "@mantine/core";
-import useSWR from "swr";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
-import { CenteredLoader } from "@/components/CenteredLoader/CenteredLoader";
+import { followeesQuery, followersQuery } from "@/api/queries";
 import { UsersList } from "@/components/UsersList/UsersList";
-import type { User } from "@/types/user";
-import { baseURL } from "@/utils/baseUrl";
-import { fetcher } from "@/utils/api";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 interface FollowsProps {
-	currentUserId: string;
 	userId: string;
 }
 
-export const Follows = ({ currentUserId, userId }: FollowsProps) => {
-	const {
-		data: followers,
-		error: getFollowersError,
-		isLoading: getFollowersIsLoading,
-	} = useSWR<User[]>(`${baseURL}/api/users/${userId}/followers`, fetcher);
-
-	const {
-		data: followingUsers,
-		error: getFollowingUsersError,
-		isLoading: getFollowingUsersIsLoading,
-	} = useSWR<User[]>(`${baseURL}/api/users/${userId}/following`, fetcher);
-
-	if (getFollowersIsLoading || getFollowingUsersIsLoading || !followers || !followingUsers) {
-		return <CenteredLoader />;
-	}
-
-	if (getFollowersError || getFollowingUsersError) {
-		return <div>エラーが発生しました。更新を行ってください。</div>;
-	}
+export const Follows = ({ userId }: FollowsProps) => {
+	const currentUser = useCurrentUser();
+	const { data: followers } = useSuspenseQuery(followersQuery(userId));
+	const { data: followees } = useSuspenseQuery(followeesQuery(userId));
 
 	return (
 		<Box p="md">
 			<Tabs defaultValue="followers" mt="md">
-				<Tabs.List grow position="center">
+				<Tabs.List grow justify="center">
 					<Tabs.Tab value="followers">フォロワー</Tabs.Tab>
 					<Tabs.Tab value="following">フォロー中</Tabs.Tab>
 				</Tabs.List>
 				<Tabs.Panel value="followers">
-					<UsersList users={followers} currentUserId={currentUserId} />
+					<UsersList users={followers} currentUserId={currentUser.id} />
 				</Tabs.Panel>
 				<Tabs.Panel value="following">
-					<UsersList users={followingUsers} currentUserId={currentUserId} />
+					<UsersList users={followees} currentUserId={currentUser.id} />
 				</Tabs.Panel>
 			</Tabs>
 		</Box>

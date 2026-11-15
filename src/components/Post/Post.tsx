@@ -1,6 +1,5 @@
 import { Avatar, Box, Group, Space, Text } from "@mantine/core";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { Link, useNavigate } from "@tanstack/react-router";
 
 import { ContentPart, parseContent } from "@/components/ContentPart/ContentPart";
 import { DateFormat } from "@/components/DateFormat/DateFormat";
@@ -10,13 +9,12 @@ import type { PostType } from "@/types/post";
 
 interface PostProps {
 	currentUserId: string;
-	keyword?: string;
 	post: PostType;
 }
 
-export const Post = ({ currentUserId, keyword, post }: PostProps) => {
+export const Post = ({ currentUserId, post }: PostProps) => {
 	const parsedContent = parseContent(post.content);
-	const router = useRouter();
+	const navigate = useNavigate();
 	const isPostByCurrentUser = post.user_id === currentUserId;
 
 	if (!post) {
@@ -25,43 +23,48 @@ export const Post = ({ currentUserId, keyword, post }: PostProps) => {
 
 	return (
 		<Box
+			component="article"
 			key={post.id}
 			p="md"
 			w="100%"
-			sx={{
+			style={{
 				borderBottom: "1px solid #E9ECEF",
 				cursor: "pointer",
 				position: "relative",
 			}}
 			onClick={() => {
-				return router.push(`/posts/${post.id}`);
+				return navigate({ to: "/posts/$postId", params: { postId: post.id } });
 			}}
 		>
-			{isPostByCurrentUser ? (
-				<PostActionMenu
-					postId={post.id}
-					currentUserId={currentUserId}
-					postUserId={post.user_id}
-					keyword={keyword}
-				/>
-			) : (
-				<></>
-			)}
+			{isPostByCurrentUser ? <PostActionMenu postId={post.id} /> : <></>}
 			<Group align="start">
 				<Box>
-					<Link href={`/profile/${post.user_id}`}>
+					<Link
+						to="/profile/$userId"
+						params={{ userId: post.user_id }}
+						onClick={(event) => {
+							event.stopPropagation();
+						}}
+					>
 						<Avatar src={post.users.profile_image_url} alt="投稿したユーザーのプロフィール画像" />
 					</Link>
 				</Box>
 				<Box>
-					<Group spacing="xs">
-						<Link href={`/profile/${post.user_id}`} style={{ textDecoration: "none" }}>
-							<Text fw={700} color="black">
+					<Group gap="xs">
+						<Link
+							to="/profile/$userId"
+							params={{ userId: post.user_id }}
+							style={{ textDecoration: "none" }}
+							onClick={(event) => {
+								event.stopPropagation();
+							}}
+						>
+							<Text fw={700} c="black">
 								{post.users.name}
 							</Text>
 						</Link>
-						<Text color="dimmed">@{post.users.username}</Text>
-						<Text color="dimmed">
+						<Text c="dimmed">@{post.users.username}</Text>
+						<Text c="dimmed">
 							<DateFormat props={post.created_at} />
 						</Text>
 					</Group>

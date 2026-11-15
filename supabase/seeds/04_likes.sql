@@ -1,4 +1,4 @@
-INSERT INTO likes (
+INSERT INTO public.likes (
     id,
     post_id,
     user_id

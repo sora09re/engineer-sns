@@ -1,0 +1,8 @@
+/* フォロー中のボタンは、ホバーすると赤い「フォロー解除」の見た目にする */
+@media (hover: hover) {
+	.unfollow:where(:not([data-disabled], :disabled)):hover {
+		--button-hover: var(--mantine-color-white);
+		--button-hover-color: var(--mantine-color-red-filled);
+		--button-bd: calc(0.0625rem * var(--mantine-scale)) solid var(--mantine-color-red-filled);
+	}
+}

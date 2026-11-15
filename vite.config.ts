@@ -1,15 +1,23 @@
-/// <reference types="vitest" />
+/// <reference types="vite-plus/test" />
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { tanstackRouter } from "@tanstack/router-plugin/vite";
+import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite-plus";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
+const ignorePatterns = [
+	"dist/**",
+	"node_modules/**",
+	"src/routeTree.gen.ts",
+	"src/api/database.types.ts",
+	"supabase/.temp/**",
+];
+
 export default defineConfig({
-	oxc: {
-		jsx: { runtime: "automatic" },
-	},
+	plugins: [tanstackRouter({ target: "react", autoCodeSplitting: true }), react()],
 	resolve: {
 		alias: {
 			"@": path.resolve(__dirname, "./src"),
@@ -19,12 +27,14 @@ export default defineConfig({
 		globals: true,
 		environment: "jsdom",
 		setupFiles: ["./vitest-setup.ts"],
+		// e2e/ は Playwright で動かす
+		exclude: ["**/node_modules/**", "e2e/**"],
 	},
 	lint: {
-		ignorePatterns: ["public/**", ".next/**", "node_modules/**"],
+		ignorePatterns,
 	},
 	fmt: {
-		ignorePatterns: ["public/**", ".next/**", "node_modules/**"],
+		ignorePatterns,
 		useTabs: true,
 		singleQuote: false,
 	},

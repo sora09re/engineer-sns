@@ -1,40 +1,49 @@
-import { Button, Navbar, Space } from "@mantine/core";
+import { Box, Button, Space } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 
 import { AccountButton } from "@/components/AccountButton/AccountButton";
-import { LoginButton } from "@/components/LoginButton/LoginButton";
+import { LogoutButton } from "@/components/LogoutButton/LogoutButton";
 import { MainLinks } from "@/components/MainLinks/MainLinks";
 import { PostModal } from "@/components/Modal/PostModal/PostModal";
-import { useModal } from "@/hooks/useModal";
-import type { User } from "@/types/user";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { sideBarWidthBase } from "@/utils/sideBarWidth";
 
-interface SidebarProps {
-	currentUser: User;
-}
-
-export const Sidebar = ({ currentUser }: SidebarProps) => {
-	const [, setIsVisiblePostModal] = useModal("post");
+export const Sidebar = () => {
+	const currentUser = useCurrentUser();
+	const [isPostModalOpened, postModal] = useDisclosure(false);
 
 	return (
-		<Navbar width={{ base: sideBarWidthBase }} p="xl" fixed={true} style={{ zIndex: 1 }}>
-			<Navbar.Section grow mt="md" px="20px">
+		// Mantine 7 で Navbar は廃止されたので、v6 の Navbar（fixed）と同じ配置を nav で組む
+		<Box
+			component="nav"
+			p="xl"
+			style={{
+				backgroundColor: "var(--mantine-color-body)",
+				borderRight: "1px solid var(--mantine-color-gray-2)",
+				display: "flex",
+				flexDirection: "column",
+				// v6 の Navbar は下端基準（bottom: 0）で、高さは 100vh だった
+				bottom: 0,
+				height: "100vh",
+				left: 0,
+				position: "fixed",
+				width: sideBarWidthBase,
+				zIndex: 1,
+			}}
+		>
+			<Box mt="md" px="20px" style={{ flex: 1 }}>
 				<MainLinks currentUserId={currentUser.id} />
 				<Space h="xl" />
-				<Button
-					sx={{ fontSize: "1.0rem", fontWeight: "bold" }}
-					onClick={() => {
-						return setIsVisiblePostModal(true);
-					}}
-				>
+				<Button style={{ fontSize: "1.0rem", fontWeight: "bold" }} onClick={postModal.open}>
 					投稿する
 				</Button>
-				<PostModal currentUser={currentUser} />
+				<PostModal opened={isPostModalOpened} onClose={postModal.close} />
 				<Space h="md" />
-				<LoginButton />
-			</Navbar.Section>
-			<Navbar.Section>
+				<LogoutButton />
+			</Box>
+			<Box>
 				<AccountButton currentUser={currentUser} />
-			</Navbar.Section>
-		</Navbar>
+			</Box>
+		</Box>
 	);
 };

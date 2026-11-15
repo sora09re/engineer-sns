@@ -1,26 +1,16 @@
 import { Modal } from "@mantine/core";
 
 import { NewPostForm } from "@/components/NewPostForm/NewPostForm";
-import { useModal } from "@/hooks/useModal";
-import type { User } from "@/types/user";
 
 interface PostModalProps {
-	currentUser: User;
+	opened: boolean;
+	onClose: () => void;
 }
 
-export const PostModal = ({ currentUser }: PostModalProps) => {
-	const [isVisible, setIsVisible] = useModal("post");
-
+export const PostModal = ({ opened, onClose }: PostModalProps) => {
 	return (
-		<Modal
-			size={800}
-			opened={isVisible}
-			onClose={() => {
-				return setIsVisible(false);
-			}}
-			withCloseButton
-		>
-			<NewPostForm currentUser={currentUser} />
+		<Modal size={800} opened={opened} onClose={onClose} withCloseButton>
+			<NewPostForm onPosted={onClose} />
 		</Modal>
 	);
 };

@@ -1,9 +1,10 @@
-import { Group, Text, ThemeIcon, UnstyledButton } from "@mantine/core";
+import { Box, Group, Text, ThemeIcon } from "@mantine/core";
 import { IconHome2, IconSearch, IconUserCircle } from "@tabler/icons-react";
-import Link from "next/link";
+import { Link } from "@tanstack/react-router";
 
-interface MainLinkProps {
-	href: string;
+import classes from "./MainLinks.module.css";
+
+interface MainLinkContentProps {
 	icon: React.ReactNode;
 	label: string;
 }
@@ -12,66 +13,42 @@ interface MainLinksProps {
 	currentUserId: string;
 }
 
-const MainLink = ({ href, icon, label }: MainLinkProps) => {
+const linkStyle = { color: "inherit", display: "block", textDecoration: "none" } as const;
+
+const MainLinkContent = ({ icon, label }: MainLinkContentProps) => {
 	return (
-		<UnstyledButton
-			component={Link}
-			href={href}
-			sx={(theme) => {
-				return {
-					"&:hover": {
-						backgroundColor:
-							theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0],
-					},
-					borderRadius: theme.radius.sm,
-					color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
-					display: "block",
-					padding: theme.spacing.xs,
-					width: "100%",
-				};
-			}}
-		>
+		<Box className={classes.link}>
 			<Group>
-				<ThemeIcon
-					color="white"
-					sx={(theme) => {
-						return {
-							"&:hover": {
-								color: theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[0],
-							},
-						};
-					}}
-				>
+				<ThemeIcon color="white" className={classes.icon}>
 					{icon}
 				</ThemeIcon>
-
 				<Text size="lg">{label}</Text>
 			</Group>
-		</UnstyledButton>
+		</Box>
 	);
 };
 
 export const MainLinks = ({ currentUserId }: MainLinksProps) => {
-	const data = [
-		{
-			href: "/",
-			icon: <IconHome2 size="2.0rem" stroke={1.5} color="black" />,
-			label: "ホーム",
-		},
-		{
-			href: "/search",
-			icon: <IconSearch size="2.0rem" stroke={1.5} color="black" />,
-			label: "検索",
-		},
-		{
-			href: `/profile/${currentUserId}`,
-			icon: <IconUserCircle size="2.0rem" stroke={1.5} color="black" />,
-			label: "プロフィール",
-		},
-	];
-
-	const links = data.map((link) => {
-		return <MainLink {...link} key={link.label} />;
-	});
-	return <div>{links}</div>;
+	return (
+		<div>
+			<Link to="/" style={linkStyle}>
+				<MainLinkContent
+					icon={<IconHome2 size="2.0rem" stroke={1.5} color="black" />}
+					label="ホーム"
+				/>
+			</Link>
+			<Link to="/search" style={linkStyle}>
+				<MainLinkContent
+					icon={<IconSearch size="2.0rem" stroke={1.5} color="black" />}
+					label="検索"
+				/>
+			</Link>
+			<Link to="/profile/$userId" params={{ userId: currentUserId }} style={linkStyle}>
+				<MainLinkContent
+					icon={<IconUserCircle size="2.0rem" stroke={1.5} color="black" />}
+					label="プロフィール"
+				/>
+			</Link>
+		</div>
+	);
 };

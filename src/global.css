@@ -1,0 +1,33 @@
+/*
+ * Mantine 6 から 9 で既定のスタイルが変わったところのうち、v6 の見た目を残すもの。
+ * theme.ts で指定できないもの（コンポーネント内部の CSS）だけをここに書く。
+ */
+:root[data-mantine-color-scheme="light"] {
+	/* v9 は gray の light / subtle の文字色が gray-9 になった。v6 は gray-6 */
+	--mantine-color-gray-light-color: var(--mantine-color-gray-6);
+	/* v9 は gray の light の背景が gray-1 寄りになった。v6 は gray-0 */
+	--mantine-color-gray-light: var(--mantine-color-gray-0);
+}
+
+/* v9 はラベルが太く黒い（600）。モーダルの見出しより目立ってしまうので v6 に合わせる */
+.mantine-InputWrapper-label {
+	color: var(--mantine-color-gray-9);
+	font-weight: 500;
+}
+
+.mantine-InputWrapper-required {
+	font-weight: 500;
+}
+
+.mantine-Input-section[data-position="left"] {
+	color: var(--mantine-color-gray-5);
+}
+
+.mantine-Input-wrapper[data-with-left-section] {
+	--input-padding-inline-start: 36px;
+}
+
+/* v9 は grow のタブでラベルが左寄せになった */
+.mantine-Tabs-tabLabel {
+	text-align: center;
+}

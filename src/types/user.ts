@@ -1,3 +1,4 @@
+/** ユーザー: アカウントに紐づく SNS 上の人格 */
 export type User = {
 	id: string;
 	bio?: string;
@@ -11,6 +12,8 @@ export type User = {
 	website?: string;
 };
 
-export type UserProps = {
-	user: User;
-};
+/** ユーザーが編集できる項目 */
+export type UserValues = Pick<
+	User,
+	"bio" | "email" | "location" | "name" | "profile_image_url" | "username" | "website"
+>;
