@@ -10,7 +10,7 @@ ADR 0001 では API サーバーを置かず、クライアントから supabase
   - `application`: ユースケースと、外側に求めるもの（ports）。一覧などは読み取りモデル（例: `PostSummary`）で返す
   - `infrastructure`: ports の実装（Drizzle、JWKS での検証）
   - `presentation`: Hono のルートとミドルウェア。読み取りモデルを API のレスポンスの形（`packages/shared` の `PostType`）に変換する
-  - `app.ts`: すべてを組み立てる唯一の場所。ユースケースは `(deps) => (input) => result` の関数で、クラスや DI コンテナは使わない
+  - `app.ts`: adapter を選んで組み立てる唯一の場所。どのユースケースにどの port を渡すかは `application/use-cases.ts` の `createUseCases` にまとめ、presentation はその戻り値の型（`UseCases`）を受け取る。ユースケースは `(deps) => (input) => result` の関数で、クラスや DI コンテナは使わない
 - **デプロイ**は SPA と同じ Vercel プロジェクトの Functions（Node.js ランタイム）にする。`/api/*` を同一オリジンで受けるので CORS は要らない。
 - 移行は機能ごとに PR を分けて段階的に進める。移行中は RLS を念のための防御として残し、最後にテーブルへの `anon` / `authenticated` の権限と、Storage への直接アップロードのポリシーを外して、フロントから DB と Storage に直接アクセスできないようにする（`supabase/migrations/20261115000000_revoke_direct_access.sql`）。フロントで supabase-js を使うのはログインだけになる。
 
