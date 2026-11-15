@@ -4,7 +4,7 @@ import { IconX } from "@tabler/icons-react";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
 import { getSignedInAccount, signInWithGitHub } from "@/api/session";
-import { pageTitle } from "@/lib/title";
+import { pageTitle } from "@/shared/lib";
 
 export const Route = createFileRoute("/auth/signin")({
 	head: () => pageTitle("ログイン"),

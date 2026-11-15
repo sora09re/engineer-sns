@@ -1,6 +1,6 @@
 import type { Account } from "@engineer-sns/shared";
 
-import { supabase } from "./client";
+import { supabase } from "@/shared/api";
 
 /** ログイン中のアカウント。未ログインなら null */
 export const getSignedInAccount = async (): Promise<Account | null> => {

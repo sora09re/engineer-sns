@@ -4,7 +4,7 @@ import { IconCheck, IconX } from "@tabler/icons-react";
 
 import { ImageUpload } from "@/components/ImageUpload/ImageUpload";
 import { useUpdateCurrentUser } from "@/api/mutations";
-import { useImageFile } from "@/hooks/useImageFile";
+import { useImageFile } from "@/shared/lib";
 import { useUserValues } from "@/hooks/useUserValues";
 import type { User } from "@engineer-sns/shared";
 

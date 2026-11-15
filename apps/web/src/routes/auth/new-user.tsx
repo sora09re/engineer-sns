@@ -3,7 +3,7 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 import { currentUserQuery } from "@/api/queries";
 import { getSignedInAccount } from "@/api/session";
 import { NewUserForm } from "@/components/NewUserForm/NewUserForm";
-import { pageTitle } from "@/lib/title";
+import { pageTitle } from "@/shared/lib";
 
 /** 新規ユーザー登録: ユーザーを持たないアカウントだけが表示できる */
 export const Route = createFileRoute("/auth/new-user")({

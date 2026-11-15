@@ -1,4 +1,4 @@
-import { api, parse } from "./http";
+import { api, parse } from "@/shared/api";
 
 /** ファイルを選ぶときの候補。受け付けるかどうかは API が決める */
 export const PROFILE_IMAGE_MIME_TYPES = ["image/gif", "image/jpeg", "image/png", "image/webp"];

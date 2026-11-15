@@ -2,9 +2,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import type { UserValues } from "@engineer-sns/shared";
 
-import { api, ensureOk } from "./http";
+import { api, ensureOk, queryKeys } from "@/shared/api";
 import { uploadProfileImage } from "./profile-image";
-import { queryKeys } from "./queries";
 
 /**
  * 更新系のフック。API を呼ぶのはここの mutationFn だけ（読み取りは queries.ts の queryFn）。

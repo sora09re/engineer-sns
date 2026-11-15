@@ -5,7 +5,7 @@ import { timelinePostsQuery } from "@/api/queries";
 import { Post } from "@/components/Post/Post";
 import { NewPostForm } from "@/components/NewPostForm/NewPostForm";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
-import { pageTitle } from "@/lib/title";
+import { pageTitle } from "@/shared/lib";
 
 export const Route = createFileRoute("/_authed/")({
 	head: () => pageTitle("ホーム"),

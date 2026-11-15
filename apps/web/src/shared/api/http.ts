@@ -1,10 +1,10 @@
 import type { AppType } from "@engineer-sns/api";
 import { hc } from "hono/client";
 
-import { supabase } from "./client";
+import { supabase } from "./supabase";
 
 /**
- * API サーバー（apps/api）のクライアント。src/api/ の外から import しないこと（docs/adr/0002 参照）。
+ * API サーバー（apps/api）のクライアント。shared/api と各スライスの api セグメントの外から import しないこと（docs/adr/0003 参照）。
  * 同一オリジンの /api に届く（開発中は Vite が apps/api へ転送する）。
  */
 export const api = hc<AppType>(window.location.origin, {
