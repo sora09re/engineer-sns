@@ -3,7 +3,7 @@ import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { useState } from "react";
 
-import { useCreateComment } from "@/hooks/mutations";
+import { useCreateComment } from "@/api/mutations";
 
 interface CommentFormProps {
 	postId: string;

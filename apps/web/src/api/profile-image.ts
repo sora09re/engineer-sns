@@ -1,16 +1,4 @@
-import type { User, UserValues } from "@engineer-sns/shared";
-
 import { api, parse } from "./http";
-
-/** 新規ユーザー登録: ログイン中のアカウントにユーザーを作る */
-export const createCurrentUser = async (values: UserValues): Promise<User> => {
-	return parse(await api.api.me.$post({ json: values }));
-};
-
-/** ログイン中のアカウントのユーザーを編集する。渡した項目だけを変える */
-export const updateCurrentUser = async (values: Partial<UserValues>): Promise<User> => {
-	return parse(await api.api.me.$patch({ json: values }));
-};
 
 /** ファイルを選ぶときの候補。受け付けるかどうかは API が決める */
 export const PROFILE_IMAGE_MIME_TYPES = ["image/gif", "image/jpeg", "image/png", "image/webp"];

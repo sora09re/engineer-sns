@@ -3,7 +3,7 @@ import { notifications } from "@mantine/notifications";
 import { IconCheck, IconDots, IconTrash, IconX } from "@tabler/icons-react";
 import { useState } from "react";
 
-import { useDeletePost } from "@/hooks/mutations";
+import { useDeletePost } from "@/api/mutations";
 
 interface PostActionMenuProps {
 	postId: string;

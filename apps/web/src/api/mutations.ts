@@ -1,20 +1,22 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { follow, unfollow } from "@/api/follows";
-import { likePost, unlikePost } from "@/api/likes";
-import { createComment, createPost, deletePost } from "@/api/posts";
-import { queryKeys } from "@/api/queries";
-import { createCurrentUser, updateCurrentUser, uploadProfileImage } from "@/api/users";
 import type { UserValues } from "@engineer-sns/shared";
 
+import { api, ensureOk } from "./http";
+import { uploadProfileImage } from "./profile-image";
+import { queryKeys } from "./queries";
+
 /**
- * 更新系のフック。成功後に関係するクエリを無効化し、再取得が終わるまで pending のままにする。
+ * 更新系のフック。API を呼ぶのはここの mutationFn だけ（読み取りは queries.ts の queryFn）。
+ * 成功後に関係するクエリを無効化し、再取得が終わるまで pending のままにする。
  */
 
 export const useCreatePost = () => {
 	const queryClient = useQueryClient();
 	return useMutation({
-		mutationFn: createPost,
+		mutationFn: async (content: string) => {
+			await ensureOk(await api.api.posts.$post({ json: { content } }));
+		},
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKeys.posts }),
 	});
 };
@@ -22,7 +24,11 @@ export const useCreatePost = () => {
 export const useCreateComment = () => {
 	const queryClient = useQueryClient();
 	return useMutation({
-		mutationFn: createComment,
+		mutationFn: async ({ content, postId }: { content: string; postId: string }) => {
+			await ensureOk(
+				await api.api.posts[":postId"].comments.$post({ param: { postId }, json: { content } }),
+			);
+		},
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKeys.posts }),
 	});
 };
@@ -30,26 +36,34 @@ export const useCreateComment = () => {
 export const useDeletePost = () => {
 	const queryClient = useQueryClient();
 	return useMutation({
-		mutationFn: deletePost,
+		mutationFn: async (postId: string) => {
+			await ensureOk(await api.api.posts[":postId"].$delete({ param: { postId } }));
+		},
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKeys.posts }),
 	});
 };
 
+/** いいねする・外す。すでにその状態でも成功する */
 export const useToggleLike = () => {
 	const queryClient = useQueryClient();
 	return useMutation({
-		mutationFn: ({ like, postId }: { like: boolean; postId: string }) => {
-			return like ? likePost(postId) : unlikePost(postId);
+		mutationFn: async ({ like, postId }: { like: boolean; postId: string }) => {
+			const endpoint = api.api.posts[":postId"].like;
+			const args = { param: { postId } };
+			await ensureOk(await (like ? endpoint.$put(args) : endpoint.$delete(args)));
 		},
 		onSettled: () => queryClient.invalidateQueries({ queryKey: queryKeys.posts }),
 	});
 };
 
+/** フォローする・外す。すでにその状態でも成功する */
 export const useToggleFollow = () => {
 	const queryClient = useQueryClient();
 	return useMutation({
-		mutationFn: ({ follow: shouldFollow, userId }: { follow: boolean; userId: string }) => {
-			return shouldFollow ? follow(userId) : unfollow(userId);
+		mutationFn: async ({ follow, userId }: { follow: boolean; userId: string }) => {
+			const endpoint = api.api.users[":userId"].follow;
+			const args = { param: { userId } };
+			await ensureOk(await (follow ? endpoint.$put(args) : endpoint.$delete(args)));
 		},
 		onSettled: () => {
 			return Promise.all([
@@ -69,11 +83,13 @@ const withUploadedImage = async (values: UserValues, imageFile: File | null) => 
 	return { ...values, profile_image_url: await uploadProfileImage(imageFile) };
 };
 
+/** 新規ユーザー登録: ログイン中のアカウントにユーザーを作る */
 export const useCreateCurrentUser = () => {
 	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: async ({ imageFile, values }: { imageFile: File | null; values: UserValues }) => {
-			await createCurrentUser(await withUploadedImage(values, imageFile));
+			const json = await withUploadedImage(values, imageFile);
+			await ensureOk(await api.api.me.$post({ json }));
 		},
 		// currentUser は /_authed の beforeLoad でしか読まれず非アクティブなので、明示的に再取得する
 		onSuccess: () =>
@@ -81,11 +97,13 @@ export const useCreateCurrentUser = () => {
 	});
 };
 
+/** ログイン中のアカウントのユーザーを編集する */
 export const useUpdateCurrentUser = () => {
 	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: async ({ imageFile, values }: { imageFile: File | null; values: UserValues }) => {
-			await updateCurrentUser(await withUploadedImage(values, imageFile));
+			const json = await withUploadedImage(values, imageFile);
+			await ensureOk(await api.api.me.$patch({ json }));
 		},
 		onSuccess: () => {
 			return Promise.all([

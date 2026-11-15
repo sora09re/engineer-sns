@@ -1,7 +1,7 @@
 import { Center, Group, Image } from "@mantine/core";
 import { Dropzone } from "@mantine/dropzone";
 
-import { PROFILE_IMAGE_MIME_TYPES } from "@/api/users";
+import { PROFILE_IMAGE_MIME_TYPES } from "@/api/profile-image";
 
 interface ImageUploadProps {
 	imageUrl?: string;
