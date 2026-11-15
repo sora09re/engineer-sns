@@ -9,7 +9,15 @@ import { defineConfig } from "vite-plus";
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
 export default defineConfig({
-	plugins: [tanstackRouter({ target: "react", autoCodeSplitting: true }), react()],
+	plugins: [
+		tanstackRouter({
+			target: "react",
+			autoCodeSplitting: true,
+			routesDirectory: "./src/app/routes",
+			generatedRouteTree: "./src/app/routeTree.gen.ts",
+		}),
+		react(),
+	],
 	resolve: {
 		alias: {
 			"@": path.resolve(__dirname, "./src"),
