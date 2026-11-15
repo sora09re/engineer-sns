@@ -39,3 +39,13 @@ export const ensureOk = async (response: JsonResponse): Promise<void> => {
 		throw await toError(response);
 	}
 };
+
+/** parse と同じだが、404 なら null を返す（詳細ページで「見つからない」を表示するため） */
+export const parseOrNull = async <R extends JsonResponse>(
+	response: R,
+): Promise<Awaited<ReturnType<R["json"]>> | null> => {
+	if (response.status === 404) {
+		return null;
+	}
+	return parse(response);
+};

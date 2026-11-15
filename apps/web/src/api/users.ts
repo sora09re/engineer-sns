@@ -1,25 +1,6 @@
-import type { ProfileType, User, UserValues } from "@engineer-sns/shared";
+import type { User, UserValues } from "@engineer-sns/shared";
 
 import { api, parse } from "./http";
-
-/** ログイン中のアカウントのユーザー。新規ユーザー登録前なら null */
-export const getCurrentUser = async (): Promise<User | null> => {
-	return parse(await api.api.me.$get());
-};
-
-/** フォロワー数とフォロー数つきのユーザー。なければ null */
-export const getUserProfile = async (userId: string): Promise<ProfileType | null> => {
-	const response = await api.api.users[":userId"].$get({ param: { userId } });
-	if (response.status === 404) {
-		return null;
-	}
-	return parse(response);
-};
-
-/** 名前・ユーザーネーム・自己紹介のどれかにキーワードを含むユーザー。ユーザーネーム順 */
-export const searchUsers = async (keyword: string): Promise<User[]> => {
-	return parse(await api.api.users.search.$get({ query: { q: keyword } }));
-};
 
 /** 新規ユーザー登録: ログイン中のアカウントにユーザーを作る */
 export const createCurrentUser = async (values: UserValues): Promise<User> => {
