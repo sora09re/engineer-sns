@@ -3,11 +3,7 @@ import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
 import { z } from "zod";
 
-import type { GetCurrentUser } from "../../application/get-current-user";
-import type { IssueProfileImageUpload } from "../../application/issue-profile-image-upload";
-import type { AccessTokenVerifier } from "../../application/ports";
-import type { RegisterUser } from "../../application/register-user";
-import type { UpdateCurrentUser } from "../../application/update-current-user";
+import type { HttpAppDeps } from "../deps";
 import { requireAccount } from "../middleware/require-account";
 import { toUserResponse } from "../responses/post-type";
 
@@ -58,28 +54,22 @@ const toUserValues = <T extends { profile_image_url?: string }>({
 };
 
 /** ログイン中のアカウントのユーザー */
-export const meRoutes = (deps: {
-	verifyAccessToken: AccessTokenVerifier;
-	getCurrentUser: GetCurrentUser;
-	registerUser: RegisterUser;
-	updateCurrentUser: UpdateCurrentUser;
-	issueProfileImageUpload: IssueProfileImageUpload;
-}) => {
-	const auth = requireAccount(deps.verifyAccessToken);
+export const meRoutes = ({ verifyAccessToken, useCases }: HttpAppDeps) => {
+	const auth = requireAccount(verifyAccessToken);
 	return new Hono()
 		.get("/", auth, async (c) => {
-			const user = await deps.getCurrentUser(c.var.accountId);
+			const user = await useCases.getCurrentUser(c.var.accountId);
 			return c.json(user && toUserResponse(user));
 		})
 		.post("/", auth, registerBody, async (c) => {
-			const user = await deps.registerUser({
+			const user = await useCases.registerUser({
 				accountId: c.var.accountId,
 				values: toUserValues(c.req.valid("json")),
 			});
 			return c.json(toUserResponse(user), 201);
 		})
 		.patch("/", auth, updateBody, async (c) => {
-			const user = await deps.updateCurrentUser({
+			const user = await useCases.updateCurrentUser({
 				accountId: c.var.accountId,
 				values: toUserValues(c.req.valid("json")),
 			});
@@ -87,7 +77,7 @@ export const meRoutes = (deps: {
 		})
 		.post("/profile-image", auth, profileImageBody, async (c) => {
 			const { content_type, size } = c.req.valid("json");
-			const target = await deps.issueProfileImageUpload({
+			const target = await useCases.issueProfileImageUpload({
 				accountId: c.var.accountId,
 				contentType: content_type,
 				size,

@@ -3,16 +3,7 @@ import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
 import { z } from "zod";
 
-import type { CreateComment } from "../../application/create-comment";
-import type { CreatePost } from "../../application/create-post";
-import type { DeletePost } from "../../application/delete-post";
-import type { GetComments } from "../../application/get-comments";
-import type { GetPost } from "../../application/get-post";
-import type { GetTimeline } from "../../application/get-timeline";
-import type { LikePost } from "../../application/like-post";
-import type { AccessTokenVerifier } from "../../application/ports";
-import type { SearchPosts } from "../../application/search-posts";
-import type { UnlikePost } from "../../application/unlike-post";
+import type { HttpAppDeps } from "../deps";
 import { requireAccount } from "../middleware/require-account";
 import { toPostType } from "../responses/post-type";
 
@@ -36,31 +27,20 @@ const postBody = zValidator("json", z.object({ content: z.string() }), (result) 
 	}
 });
 
-export const postsRoutes = (deps: {
-	verifyAccessToken: AccessTokenVerifier;
-	getTimeline: GetTimeline;
-	getPost: GetPost;
-	getComments: GetComments;
-	searchPosts: SearchPosts;
-	createPost: CreatePost;
-	createComment: CreateComment;
-	deletePost: DeletePost;
-	likePost: LikePost;
-	unlikePost: UnlikePost;
-}) => {
-	const auth = requireAccount(deps.verifyAccessToken);
+export const postsRoutes = ({ verifyAccessToken, useCases }: HttpAppDeps) => {
+	const auth = requireAccount(verifyAccessToken);
 	// 固定のパス（/timeline など）は /:postId より先に登録する
 	return new Hono()
 		.get("/timeline", auth, async (c) => {
-			const timeline = await deps.getTimeline(c.var.accountId);
+			const timeline = await useCases.getTimeline(c.var.accountId);
 			return c.json(timeline.map(toPostType));
 		})
 		.get("/search", auth, async (c) => {
-			const results = await deps.searchPosts(c.req.query("q") ?? "");
+			const results = await useCases.searchPosts(c.req.query("q") ?? "");
 			return c.json(results.map(toPostType));
 		})
 		.get("/:postId", auth, postIdParam, async (c) => {
-			const post = await deps.getPost(c.req.valid("param").postId);
+			const post = await useCases.getPost(c.req.valid("param").postId);
 			if (!post) {
 				throw postNotFound();
 			}
@@ -69,17 +49,17 @@ export const postsRoutes = (deps: {
 		.get("/:postId/comments", auth, async (c) => {
 			// ID の形をしていなければ、存在しない投稿と同じくコメントは空にする
 			const param = postIdSchema.safeParse(c.req.param());
-			const comments = param.success ? await deps.getComments(param.data.postId) : [];
+			const comments = param.success ? await useCases.getComments(param.data.postId) : [];
 			return c.json(comments.map(toPostType));
 		})
 		.post("/", auth, postBody, async (c) => {
 			const { content } = c.req.valid("json");
-			const post = await deps.createPost({ accountId: c.var.accountId, content });
+			const post = await useCases.createPost({ accountId: c.var.accountId, content });
 			return c.json(toPostType(post), 201);
 		})
 		.post("/:postId/comments", auth, postIdParam, postBody, async (c) => {
 			const { content } = c.req.valid("json");
-			const comment = await deps.createComment({
+			const comment = await useCases.createComment({
 				accountId: c.var.accountId,
 				postId: c.req.valid("param").postId,
 				content,
@@ -87,15 +67,21 @@ export const postsRoutes = (deps: {
 			return c.json(toPostType(comment), 201);
 		})
 		.delete("/:postId", auth, postIdParam, async (c) => {
-			await deps.deletePost({ accountId: c.var.accountId, postId: c.req.valid("param").postId });
+			await useCases.deletePost({
+				accountId: c.var.accountId,
+				postId: c.req.valid("param").postId,
+			});
 			return c.body(null, 204);
 		})
 		.put("/:postId/like", auth, postIdParam, async (c) => {
-			await deps.likePost({ accountId: c.var.accountId, postId: c.req.valid("param").postId });
+			await useCases.likePost({ accountId: c.var.accountId, postId: c.req.valid("param").postId });
 			return c.body(null, 204);
 		})
 		.delete("/:postId/like", auth, postIdParam, async (c) => {
-			await deps.unlikePost({ accountId: c.var.accountId, postId: c.req.valid("param").postId });
+			await useCases.unlikePost({
+				accountId: c.var.accountId,
+				postId: c.req.valid("param").postId,
+			});
 			return c.body(null, 204);
 		});
 };
