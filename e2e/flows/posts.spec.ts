@@ -46,7 +46,6 @@ test("コードブロックはハイライトして表示する", async ({ page 
 
 	const code = postCard(page, content).locator("pre");
 	await expect(code).toContainText("const answer: number = 42;");
-	// トークンごとに色が付いている
 	expect(await code.locator("span").count()).toBeGreaterThan(1);
 });
 

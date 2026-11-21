@@ -1,4 +1,3 @@
-// Vercel Functions（Node.js ランタイム）の入口。/api/* はすべてここに届く（vercel.json の rewrites）
 import { createAppFromEnv } from "@engineer-sns/api";
 import { handle } from "hono/vercel";
 

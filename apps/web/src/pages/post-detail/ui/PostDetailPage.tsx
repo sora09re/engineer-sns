@@ -20,7 +20,6 @@ export const PostDetailPage = ({ postId }: PostDetailPageProps) => {
 	return (
 		<>
 			<PreviousPageHeader />
-			{/* 削除された直後は null になる */}
 			{post && <Post post={post} currentUserId={currentUser.id} />}
 			<Space h="md" />
 			<CommentForm postId={postId} />

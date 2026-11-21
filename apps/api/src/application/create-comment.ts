@@ -4,7 +4,6 @@ import type { PostRepository, UserRepository } from "./ports";
 import type { PostSummary } from "./post-summary";
 import { requireLoginUser } from "./require-login-user";
 
-/** 投稿にコメントする。コメントは parentPostId を持つ投稿 */
 export const createComment = (deps: { users: UserRepository; posts: PostRepository }) => {
 	return async (input: {
 		accountId: string;

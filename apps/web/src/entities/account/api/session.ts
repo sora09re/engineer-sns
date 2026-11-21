@@ -2,7 +2,6 @@ import type { Account } from "@engineer-sns/shared";
 
 import { supabase } from "@/shared/api";
 
-/** ログイン中のアカウント。未ログインなら null */
 export const getSignedInAccount = async (): Promise<Account | null> => {
 	const {
 		data: { session },
@@ -23,7 +22,6 @@ export const getSignedInAccount = async (): Promise<Account | null> => {
 	};
 };
 
-/** 別タブでのログアウトやトークン失効を検知する */
 export const onSignedOut = (callback: () => void) => {
 	const {
 		data: { subscription },

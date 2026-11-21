@@ -4,14 +4,9 @@ import { setupApp } from "./app";
 import { withRollback } from "./db";
 import { createUser } from "./fixtures";
 
-/**
- * 何かを作る操作の前提の優先順位: 403（ユーザーがない）→ 404（対象がない）→ 422（入力のルール違反）。
- * どの操作でも同じ順で返ることを確かめる
- */
 describe("ログイン中のユーザーとして行う操作", () => {
 	const missingId = crypto.randomUUID();
 
-	/** アカウント ID を受け取り、対象がなく、入力もルールに合わないリクエストを作る */
 	const operations = (accountId: string) => {
 		return [
 			{ name: "投稿", method: "POST", path: "/api/posts", body: { content: " " } },
@@ -23,7 +18,6 @@ describe("ログイン中のユーザーとして行う操作", () => {
 			},
 			{ name: "投稿の削除", method: "DELETE", path: `/api/posts/${missingId}` },
 			{ name: "いいね", method: "PUT", path: `/api/posts/${missingId}/like` },
-			// 自分自身（ユーザーがないので、対象としても存在しない）をフォローする
 			{ name: "フォロー", method: "PUT", path: `/api/users/${accountId}/follow` },
 			{ name: "ユーザーの編集", method: "PATCH", path: "/api/me", body: { name: " " } },
 		];

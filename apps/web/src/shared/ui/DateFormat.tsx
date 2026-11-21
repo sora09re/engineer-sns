@@ -5,7 +5,6 @@ interface DateFormatProps {
 	props: Date | string;
 }
 
-/** ブラウザのローカルタイムで表示する（timestamptz を受け取る前提） */
 export const DateFormat = ({ props }: DateFormatProps) => {
 	const date = new Date(props);
 

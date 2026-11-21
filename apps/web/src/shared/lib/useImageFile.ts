@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 
-/** ドロップされた画像ファイルとプレビュー用 URL */
 export const useImageFile = () => {
 	const [imageFile, setImageFile] = useState<File | null>(null);
 	const [previewUrl, setPreviewUrl] = useState<string | null>(null);

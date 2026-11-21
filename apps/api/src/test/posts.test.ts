@@ -8,7 +8,6 @@ import { withRollback } from "./db";
 import { createPost, createUser, follow, like } from "./fixtures";
 import { storageConfig } from "./storage";
 
-/** レスポンスの投稿の本文だけを並び順どおりに取り出す */
 const contentsOf = async (res: Response) => {
 	const posts = (await res.json()) as PostType[];
 	return posts.map((post) => post.content);
@@ -87,7 +86,6 @@ describe("GET /api/posts/timeline", () => {
 			const followee = await createUser(db, "followee");
 			const stranger = await createUser(db, "stranger");
 			await follow(db, me.id, followee.id);
-			// フォローされているだけの相手は含めない（向きを取り違えていないか）
 			await follow(db, stranger.id, me.id);
 			await createPost(db, { userId: followee.id, content: "フォローしている人の投稿" });
 			await createPost(db, { userId: stranger.id, content: "知らない人の投稿" });

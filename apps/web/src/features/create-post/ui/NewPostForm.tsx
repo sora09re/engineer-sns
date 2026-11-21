@@ -6,7 +6,6 @@ import { useState } from "react";
 import { useCreatePost } from "../api/useCreatePost";
 
 interface NewPostFormProps {
-	/** 投稿に成功したとき（モーダルから使うときに閉じるため） */
 	onPosted?: () => void;
 }
 

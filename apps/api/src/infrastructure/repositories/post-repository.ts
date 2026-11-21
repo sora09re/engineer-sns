@@ -9,7 +9,6 @@ import { escapeLike } from "./escape-like";
 import { isUuid } from "./is-uuid";
 import { toUser } from "./to-user";
 
-/** posts テーブルの行を domain の Post にする */
 const toPost = (row: typeof posts.$inferSelect): Post => {
 	return {
 		id: row.id,
@@ -20,13 +19,11 @@ const toPost = (row: typeof posts.$inferSelect): Post => {
 	};
 };
 
-/** 条件に合う投稿を、投稿者・いいね・コメント数つきで新しい順に返す */
 const findSummaries = async (db: Db, where: SQL | undefined): Promise<PostSummary[]> => {
 	const rows = await db
 		.select({
 			post: posts,
 			user: users,
-			// サブクエリ側の posts は c と呼び、外側の "posts"."id" と区別する
 			commentCount:
 				sql<number>`(select count(*) from ${posts} as c where c.parent_post_id = ${posts.id})`.mapWith(
 					Number,
@@ -106,7 +103,6 @@ export const createPostRepository = (db: Db): PostRepository => {
 			return summary;
 		},
 		delete: async (postId) => {
-			// コメント（parent_post_id で参照する投稿）は DB の on delete cascade で消える
 			await db.delete(posts).where(eq(posts.id, postId));
 		},
 	};

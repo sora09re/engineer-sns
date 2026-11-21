@@ -6,7 +6,6 @@ import { toPostType, toProfileType, toUserResponse } from "../responses";
 
 export const usersRoutes = ({ verifyAccessToken, useCases }: HttpAppDeps) => {
 	const auth = requireAccount(verifyAccessToken);
-	// 固定のパス（/search）は /:userId より先に登録する
 	return new Hono()
 		.get("/search", auth, async (c) => {
 			const results = await useCases.searchUsers(c.req.query("q") ?? "");

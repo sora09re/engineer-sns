@@ -4,7 +4,6 @@ import type { PostType } from "@engineer-sns/shared";
 
 import { api, parse, parseOrNull, queryKeys } from "@/shared/api";
 
-/** タイムライン: 自分とフォローしているユーザーの、コメントでない投稿 */
 export const timelinePostsQuery = () => {
 	return queryOptions({
 		queryKey: [...queryKeys.posts, "timeline"],
@@ -12,7 +11,6 @@ export const timelinePostsQuery = () => {
 	});
 };
 
-/** 投稿（コメントを含む）を 1 件。なければ null */
 export const postQuery = (postId: string) => {
 	return queryOptions({
 		queryKey: [...queryKeys.posts, "detail", postId],
@@ -31,7 +29,6 @@ export const commentsQuery = (postId: string) => {
 	});
 };
 
-/** ユーザーが書いた投稿（コメントを含む） */
 export const userPostsQuery = (userId: string) => {
 	return queryOptions({
 		queryKey: [...queryKeys.posts, "user", userId],

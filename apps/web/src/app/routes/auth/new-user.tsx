@@ -5,7 +5,6 @@ import { currentUserQuery } from "@/entities/user";
 import { NewUserForm } from "@/pages/new-user";
 import { pageTitle } from "@/shared/lib";
 
-/** 新規ユーザー登録: ユーザーを持たないアカウントだけが表示できる */
 export const Route = createFileRoute("/auth/new-user")({
 	head: () => pageTitle("ユーザー新規登録"),
 	beforeLoad: async ({ context }) => {

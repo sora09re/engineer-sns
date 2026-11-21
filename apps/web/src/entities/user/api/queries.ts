@@ -4,7 +4,6 @@ import type { ProfileType, User } from "@engineer-sns/shared";
 
 import { api, parse, parseOrNull, queryKeys } from "@/shared/api";
 
-/** ログイン中のアカウントのユーザー。新規ユーザー登録前なら null */
 export const currentUserQuery = () => {
 	return queryOptions({
 		queryKey: [...queryKeys.users, "current"],
@@ -12,7 +11,6 @@ export const currentUserQuery = () => {
 	});
 };
 
-/** フォロワー数とフォロー数つきのユーザー。なければ null */
 export const userProfileQuery = (userId: string) => {
 	return queryOptions({
 		queryKey: [...queryKeys.users, "profile", userId],
@@ -22,7 +20,6 @@ export const userProfileQuery = (userId: string) => {
 	});
 };
 
-/** 名前・ユーザーネーム・自己紹介のどれかにキーワードを含むユーザー。ユーザーネーム順 */
 export const searchUsersQuery = (keyword: string) => {
 	return queryOptions({
 		queryKey: [...queryKeys.users, "search", keyword],
@@ -32,7 +29,6 @@ export const searchUsersQuery = (keyword: string) => {
 	});
 };
 
-/** userId をフォローしているユーザー。フォローした順 */
 export const followersQuery = (userId: string) => {
 	return queryOptions({
 		queryKey: [...queryKeys.follows, "followers", userId],
@@ -42,7 +38,6 @@ export const followersQuery = (userId: string) => {
 	});
 };
 
-/** userId がフォローしているユーザー。フォローした順 */
 export const followeesQuery = (userId: string) => {
 	return queryOptions({
 		queryKey: [...queryKeys.follows, "followees", userId],

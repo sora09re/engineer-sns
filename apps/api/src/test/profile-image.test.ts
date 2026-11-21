@@ -9,7 +9,6 @@ const MAX_SIZE = 3 * 1024 * 1024;
 
 type UploadTarget = { upload_url: string; public_url: string };
 
-/** 小さな PNG（1x1） */
 const png = Uint8Array.from(
 	atob(
 		"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",

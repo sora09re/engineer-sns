@@ -7,7 +7,6 @@ import type { HttpAppDeps } from "../http-app";
 import { requireAccount } from "../middleware/require-account";
 import { toUserResponse } from "../responses";
 
-/** packages/shared の UserValues の形。中身のルール（空でないかなど）は application で確かめる */
 const userValuesSchema = z.object({
 	name: z.string(),
 	username: z.string(),
@@ -18,7 +17,6 @@ const userValuesSchema = z.object({
 	profile_image_url: z.string().optional(),
 });
 
-/** 項目の型が違うなど形が不正なら 422 にする（JSON として読めなければ Hono が 400 にする） */
 const invalidBody = () => {
 	return new HTTPException(422, { message: "入力の形式が正しくありません。" });
 };
@@ -45,7 +43,6 @@ const profileImageBody = zValidator(
 	},
 );
 
-/** API の項目名（snake_case）を domain の項目名にする */
 const toUserValues = <T extends { profile_image_url?: string }>({
 	profile_image_url,
 	...rest
@@ -53,7 +50,6 @@ const toUserValues = <T extends { profile_image_url?: string }>({
 	return { ...rest, profileImageUrl: profile_image_url };
 };
 
-/** ログイン中のアカウントのユーザー */
 export const meRoutes = ({ verifyAccessToken, useCases }: HttpAppDeps) => {
 	const auth = requireAccount(verifyAccessToken);
 	return new Hono()

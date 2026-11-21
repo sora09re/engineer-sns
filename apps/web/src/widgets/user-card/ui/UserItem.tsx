@@ -39,11 +39,7 @@ export const UserItem = ({ currentUserId, propsUser }: UserItemProps) => {
 									{propsUser.name}
 								</Text>
 							</Link>
-							<Text c="dimmed">
-								@{propsUser.username}
-								{/* {" "}
-                <Badge color="gray">フォローされています</Badge> */}
-							</Text>
+							<Text c="dimmed">@{propsUser.username}</Text>
 						</Box>
 						{isCurrentUser ? <></> : <FollowButton userId={propsUser.id} />}
 					</Flex>

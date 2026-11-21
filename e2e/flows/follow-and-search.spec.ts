@@ -12,7 +12,6 @@ test("フォローするとフォロワー数とタイムラインに反映さ�
 	await insertRows("posts", [{ user_id: other.id, content: otherPost }]);
 	await signIn(me);
 
-	// フォロー前はタイムラインに出ない
 	await page.goto("/");
 	await expect(page).toHaveTitle("ホーム | Engineer-SNS");
 	await expect(postCard(page, otherPost)).toHaveCount(0);
@@ -25,7 +24,6 @@ test("フォローするとフォロワー数とタイムラインに反映さ�
 	await expect(page.getByRole("button", { name: /フォロー中|フォロー解除/ })).toBeVisible();
 	await expect(followerCount).toHaveText("1フォロワー");
 
-	// フォロー一覧に自分が出る
 	await followerCount.click();
 	await expect(page).toHaveTitle("フォロー | Engineer-SNS");
 	await expect(page.getByRole("tabpanel").getByText(`@${me.username}`)).toBeVisible();
@@ -33,7 +31,6 @@ test("フォローするとフォロワー数とタイムラインに反映さ�
 	await page.goto("/");
 	await expect(postCard(page, otherPost)).toBeVisible();
 
-	// 解除（ボタンはホバーすると「フォロー解除」になる）
 	await page.goto(`/profile/${other.id}`);
 	const unfollow = page.getByRole("button", { name: /フォロー中|フォロー解除/ });
 	await unfollow.hover();

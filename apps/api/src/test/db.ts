@@ -13,7 +13,6 @@ const { db } = connect(url);
 
 class Rollback extends Error {}
 
-/** テスト本体をトランザクションの中で動かし、最後にロールバックする。テスト同士でデータが混ざらない */
 export const withRollback = async (body: (tx: Db) => Promise<void>) => {
 	try {
 		await db.transaction(async (tx) => {

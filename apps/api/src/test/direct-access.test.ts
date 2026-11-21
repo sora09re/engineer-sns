@@ -1,7 +1,3 @@
-/**
- * フロントから DB と Storage に直接アクセスできないこと（読み書きはすべて API を通す。docs/adr/0002）。
- * HTTP の API では確かめられないので、ここだけ DB にログイン済みのロールで直接つなぐ。
- */
 import { sql, type SQL } from "drizzle-orm";
 import { describe, expect, test } from "vite-plus/test";
 
@@ -9,7 +5,6 @@ import type { Db } from "../infrastructure/db/client";
 import { withRollback } from "./db";
 import { createAccount } from "./fixtures";
 
-/** Postgres のエラーのメッセージ（drizzle は元のエラーを cause に入れる）。成功したら null */
 const errorMessageOf = async (promise: Promise<unknown>) => {
 	try {
 		await promise;
@@ -21,7 +16,6 @@ const errorMessageOf = async (promise: Promise<unknown>) => {
 	return null;
 };
 
-/** supabase-js がログイン済みでつなぐときと同じロールとクレームで、query を実行する */
 const asAuthenticated = async (db: Db, accountId: string, query: SQL) => {
 	await db.execute(sql`set local role authenticated`);
 	await db.execute(
@@ -30,7 +24,6 @@ const asAuthenticated = async (db: Db, accountId: string, query: SQL) => {
 	return db.execute(query);
 };
 
-/** テーブルの権限がない（RLS のポリシーで拒否されたときとは別のメッセージになる） */
 const permissionDenied = (table: string) => {
 	return `permission denied for table ${table}`;
 };
@@ -92,7 +85,6 @@ describe("ログイン済みのロールから Storage に直接アップロー�
 
 			const query = sql`insert into storage.objects (bucket_id, name) values ('profile_image', ${`${accountId}/direct.png`})`;
 
-			// storage.objects の権限は Supabase のものなので残る。insert のポリシーがないので RLS で拒否される
 			expect(await errorMessageOf(asAuthenticated(db, accountId, query))).toBe(
 				'new row violates row-level security policy for table "objects"',
 			);

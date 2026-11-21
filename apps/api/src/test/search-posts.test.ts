@@ -40,7 +40,6 @@ describe("GET /api/posts/search", () => {
 			const me = await createUser(db, "me");
 			const word = uniqueWord();
 			await createPost(db, { userId: me.id, content: `${word}${symbol}end` });
-			// ワイルドカードとして扱うと、こちらにも一致してしまう
 			await createPost(db, { userId: me.id, content: `${word}xend` });
 
 			const res = await get(search(`${word}${symbol}end`), me.id);

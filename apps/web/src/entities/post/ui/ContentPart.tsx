@@ -26,7 +26,7 @@ export const ContentPart: React.FC<ContentPartProps> = ({ part }) => {
 					<CopyButton value={value} />
 				</Box>
 				<Component
-					language={part.language || "htmlbars"} // 更新: 言語を動的に設定
+					language={part.language || "htmlbars"}
 					style={monokaiSublime}
 					onClick={(event) => {
 						event.stopPropagation();

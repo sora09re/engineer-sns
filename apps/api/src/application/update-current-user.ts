@@ -4,7 +4,6 @@ import { ValidationError } from "./errors";
 import type { UserRepository } from "./ports";
 import { requireLoginUser } from "./require-login-user";
 
-/** ログイン中のアカウントのユーザーを編集する。渡された項目だけを変える */
 export const updateCurrentUser = (deps: { users: UserRepository }) => {
 	return async (input: { accountId: string; values: Partial<UserValues> }): Promise<User> => {
 		await requireLoginUser(deps, { accountId: input.accountId });

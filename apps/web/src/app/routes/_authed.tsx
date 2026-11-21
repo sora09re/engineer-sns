@@ -5,10 +5,6 @@ import { getSignedInAccount } from "@/entities/account";
 import { currentUserQuery } from "@/entities/user";
 import { Sidebar, sideBarWidthBase } from "@/widgets/sidebar";
 
-/**
- * ログイン必須のページをまとめるレイアウト。
- * アカウントがなければログインへ、ユーザーがなければ新規ユーザー登録へ誘導する。
- */
 export const Route = createFileRoute("/_authed")({
 	beforeLoad: async ({ context }) => {
 		const account = await getSignedInAccount();

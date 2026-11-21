@@ -9,7 +9,6 @@ const unauthorized = () => {
 	return new HTTPException(401, { message: "ログインしていません。" });
 };
 
-/** ログイン必須。Bearer のアクセストークンを検証し、アカウント ID を c.var.accountId に置く */
 export const requireAccount = (verify: AccessTokenVerifier) => {
 	return createMiddleware<AuthEnv>(async (c, next) => {
 		const token = c.req.header("Authorization")?.match(/^Bearer (.+)$/)?.[1];

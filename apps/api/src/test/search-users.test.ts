@@ -15,7 +15,6 @@ const usernamesOf = async (res: Response) => {
 	return ((await res.json()) as User[]).map((user) => user.username);
 };
 
-/** 準備用: 名前と自己紹介を変える（ユーザーの編集の API はこの PR で作るので、ここでは直接書く） */
 const setProfile = async (db: Db, id: string, values: { name?: string; bio?: string }) => {
 	await db.execute(
 		sql`update public.users set name = coalesce(${values.name ?? null}, name), bio = coalesce(${values.bio ?? null}, bio) where id = ${id}`,
@@ -65,7 +64,6 @@ describe("GET /api/users/search", () => {
 			const hit = await createUser(db, "hit");
 			const miss = await createUser(db, "miss");
 			await setProfile(db, hit.id, { bio: `${word}${symbol}end` });
-			// ワイルドカードとして扱うと、こちらにも一致してしまう
 			await setProfile(db, miss.id, { bio: `${word}xend` });
 
 			const res = await get(search(`${word}${symbol}end`), me.id);

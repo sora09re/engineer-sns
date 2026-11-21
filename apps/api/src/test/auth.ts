@@ -1,9 +1,5 @@
 import { createLocalJWKSet, exportJWK, generateKeyPair, SignJWT } from "jose";
 
-/**
- * テスト用の署名鍵。Supabase Auth と同じ ES256 で署名し、API にはその公開鍵の JWKS を渡す。
- * 差し替えるのは鍵の取得元だけで、検証のコードは本番と同じものが動く。
- */
 export const createTestKeys = async () => {
 	const kid = "test-key";
 	const { privateKey, publicKey } = await generateKeyPair("ES256");

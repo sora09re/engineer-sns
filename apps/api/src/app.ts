@@ -1,8 +1,3 @@
-/**
- * 組み立て（composition root）。依存の向きは presentation → application → domain で、
- * infrastructure は application の ports を実装する。ここだけがすべての層を知っている。
- * どの adapter を使うかをここで決め、ユースケースへの配線は createUseCases に任せる
- */
 import type { JWTVerifyGetKey } from "jose";
 
 import { createUseCases } from "./application/use-cases";

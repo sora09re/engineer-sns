@@ -2,7 +2,6 @@ import { type JWTVerifyGetKey, jwtVerify } from "jose";
 
 import type { AccessTokenVerifier } from "../../application/ports";
 
-/** Supabase Auth のアクセストークンを JWKS（ES256）で検証する。sub がアカウント ID */
 export const createAccessTokenVerifier = (jwks: JWTVerifyGetKey): AccessTokenVerifier => {
 	return async (token) => {
 		const payload = await jwtVerify(token, jwks).then(

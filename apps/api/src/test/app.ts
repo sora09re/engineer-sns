@@ -5,10 +5,6 @@ import type { Db } from "../infrastructure/db/client";
 import { createTestKeys } from "./auth";
 import { storageConfig } from "./storage";
 
-/**
- * テスト用の app。get / send でそのアカウントとしてリクエストする。
- * send は JSON の本文を送る（POST / DELETE など）
- */
 export const setupApp = async (db: Db) => {
 	const keys = await createTestKeys();
 	const app = createApp({ db, jwks: keys.jwks, storage: storageConfig });
@@ -30,13 +26,11 @@ export const setupApp = async (db: Db) => {
 	return { app, get, send, ...keys };
 };
 
-/** レスポンスの投稿の本文だけを並び順どおりに取り出す */
 export const contentsOf = async (res: Response) => {
 	const posts = (await res.json()) as PostType[];
 	return posts.map((post) => post.content);
 };
 
-/** シードなど既存の投稿と重ならないキーワード（英小文字だけにして、大文字にしても別の語にならないようにする） */
 export const uniqueWord = () => {
 	return `kw${crypto.randomUUID().replaceAll("-", "").replace(/[0-9]/g, "")}`;
 };

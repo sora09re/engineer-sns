@@ -10,7 +10,6 @@ import { routeTree } from "./routeTree.gen";
 export const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {
-			// loader で取得した直後にコンポーネントが再取得しないようにする
 			staleTime: 30_000,
 		},
 	},
@@ -32,7 +31,6 @@ export const router = createRouter({
 	routeTree,
 	context: { queryClient },
 	defaultPreload: "intent",
-	// プリロードの鮮度は TanStack Query に任せる
 	defaultPreloadStaleTime: 0,
 	defaultPendingComponent: CenteredLoader,
 	defaultErrorComponent: ErrorView,

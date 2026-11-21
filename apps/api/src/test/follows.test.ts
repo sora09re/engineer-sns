@@ -13,7 +13,6 @@ const setup = async (db: Parameters<typeof setupApp>[0]) => {
 		const res = await app.get(`/api/users/${userId}/follow`, accountId);
 		return ((await res.json()) as { following: boolean }).following;
 	};
-	/** 一覧のユーザー名を並び順どおりに取り出す */
 	const usernames = async (path: string) => {
 		const res = await app.get(path, me.id);
 		return ((await res.json()) as User[]).map((user) => user.username);

@@ -1,7 +1,6 @@
 import { defineConfig } from "vite-plus";
 import type { OxlintOverride } from "vite-plus/lint";
 
-// ワークスペース全体の lint / fmt / staged。アプリごとの設定は apps/*/vite.config.ts に置く
 const ignorePatterns = [
 	"**/dist/**",
 	"**/node_modules/**",
@@ -9,12 +8,10 @@ const ignorePatterns = [
 	"supabase/.temp/**",
 ];
 
-/** apps/api の層の名前を、相対 import のパスで指すパターンにする */
 const layers = (...names: string[]) => {
 	return names.flatMap((name) => [`**/${name}`, `**/${name}/**`]);
 };
 
-/** layer の中から import してはいけないもの。違反したら、依存の向き（docs/adr/0002）を見直す */
 const restrictImports = (
 	layer: string,
 	forbiddenLayers: string[],
@@ -41,13 +38,15 @@ const restrictImports = (
 	};
 };
 
-/** domain と application は、フレームワークや DB のライブラリに依存しない */
 const frameworkPackages = ["hono", "drizzle-orm", "postgres", "jose", "@engineer-sns/shared"];
 
 export default defineConfig({
 	lint: {
 		ignorePatterns,
-		// apps/api のオニオンアーキテクチャ: presentation / infrastructure → application → domain
+		jsPlugins: ["./lint/no-comments.ts"],
+		rules: {
+			"local/no-comments": "error",
+		},
 		overrides: [
 			restrictImports(
 				"domain",

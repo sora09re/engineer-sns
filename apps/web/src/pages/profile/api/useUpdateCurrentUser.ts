@@ -5,7 +5,6 @@ import type { UserValues } from "@engineer-sns/shared";
 import { withUploadedImage } from "@/entities/user";
 import { api, ensureOk, queryKeys } from "@/shared/api";
 
-/** ログイン中のアカウントのユーザーを編集する */
 export const useUpdateCurrentUser = () => {
 	const queryClient = useQueryClient();
 	return useMutation({

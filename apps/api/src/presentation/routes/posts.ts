@@ -7,7 +7,6 @@ import type { HttpAppDeps } from "../http-app";
 import { requireAccount } from "../middleware/require-account";
 import { toPostType } from "../responses";
 
-/** 本文の形が不正なら（content がない、文字列でない）、空の本文と同じく 422 にする */
 const postBody = zValidator("json", z.object({ content: z.string() }), (result) => {
 	if (!result.success) {
 		throw new HTTPException(422, { message: "本文を入力してください。" });
@@ -16,7 +15,6 @@ const postBody = zValidator("json", z.object({ content: z.string() }), (result) 
 
 export const postsRoutes = ({ verifyAccessToken, useCases }: HttpAppDeps) => {
 	const auth = requireAccount(verifyAccessToken);
-	// 固定のパス（/timeline など）は /:postId より先に登録する
 	return new Hono()
 		.get("/timeline", auth, async (c) => {
 			const timeline = await useCases.getTimeline(c.var.accountId);

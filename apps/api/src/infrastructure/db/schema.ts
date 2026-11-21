@@ -1,8 +1,3 @@
-/**
- * Drizzle のスキーマ。正は supabase/migrations の SQL で、ここはそれを API から使うための写し。
- * テーブルや列を変えたら、マイグレーションと合わせてここも直す。
- * 制約や RLS のポリシーは SQL 側にあるので、ここには型に必要なものだけを書く。
- */
 import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
 const timestamps = {

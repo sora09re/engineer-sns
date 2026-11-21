@@ -13,13 +13,11 @@ import { meRoutes } from "./routes/me";
 import { postsRoutes } from "./routes/posts";
 import { usersRoutes } from "./routes/users";
 
-/** HTTP の入口が受け取るもの。アクセストークンの検証はユースケースではないので分けて渡す */
 export type HttpAppDeps = {
 	verifyAccessToken: AccessTokenVerifier;
 	useCases: UseCases;
 };
 
-/** HTTP の入口。失敗は { message } とステータスコードで返す */
 export const createHttpApp = (deps: HttpAppDeps) => {
 	return new Hono()
 		.basePath("/api")
@@ -28,7 +26,6 @@ export const createHttpApp = (deps: HttpAppDeps) => {
 		.route("/me", meRoutes(deps))
 		.onError((error, c) => {
 			if (error instanceof HTTPException) {
-				// 400 は Hono が投げる（本文が JSON として読めないなど）。メッセージが英語なので置き換える
 				const message =
 					error.status === 400 ? "リクエストの形式が正しくありません。" : error.message;
 				return c.json({ message }, error.status);
