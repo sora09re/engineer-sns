@@ -68,8 +68,8 @@ export const Post = ({ currentUserId, post }: PostProps) => {
 							<DateFormat props={post.created_at} />
 						</Text>
 					</Group>
-					{parsedContent.map((part, index) => {
-						return <ContentPart key={index} part={part} />;
+					{parsedContent.map((part) => {
+						return <ContentPart key={part.offset} part={part} />;
 					})}
 					<Space h="md" />
 					<PostActionsButtonGroup currentUserId={currentUserId} post={post} />
