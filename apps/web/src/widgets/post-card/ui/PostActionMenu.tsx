@@ -7,13 +7,14 @@ import { useDeletePost } from "../api/useDeletePost";
 
 interface PostActionMenuProps {
 	postId: string;
+	onDeleted?: () => void;
 }
 
-export const PostActionMenu = ({ postId }: PostActionMenuProps) => {
+export const PostActionMenu = ({ postId, onDeleted }: PostActionMenuProps) => {
 	const [opened, setOpened] = useState(false);
 	const removePost = useDeletePost();
 
-	const deletePost = () => {
+	const deletePost = async () => {
 		notifications.show({
 			id: "deletePost",
 			autoClose: false,
@@ -22,28 +23,28 @@ export const PostActionMenu = ({ postId }: PostActionMenuProps) => {
 			title: "削除中...",
 			withCloseButton: false,
 		});
-		removePost.mutate(postId, {
-			onSuccess: () => {
-				notifications.update({
-					id: "deletePost",
-					autoClose: 2000,
-					color: "green",
-					icon: <IconCheck size="1rem" />,
-					message: "削除しました。",
-					title: "成功",
-				});
-			},
-			onError: () => {
-				notifications.update({
-					id: "deletePost",
-					autoClose: 2000,
-					color: "red",
-					icon: <IconX size="1rem" />,
-					message: "削除失敗しました。",
-					title: "エラー",
-				});
-			},
+		try {
+			await removePost.mutateAsync(postId);
+		} catch {
+			notifications.update({
+				id: "deletePost",
+				autoClose: 2000,
+				color: "red",
+				icon: <IconX size="1rem" />,
+				message: "削除失敗しました。",
+				title: "エラー",
+			});
+			return;
+		}
+		notifications.update({
+			id: "deletePost",
+			autoClose: 2000,
+			color: "green",
+			icon: <IconCheck size="1rem" />,
+			message: "削除しました。",
+			title: "成功",
 		});
+		onDeleted?.();
 	};
 
 	return (
@@ -68,7 +69,7 @@ export const PostActionMenu = ({ postId }: PostActionMenuProps) => {
 					fw="bold"
 					onClick={(event) => {
 						event.stopPropagation();
-						deletePost();
+						void deletePost();
 					}}
 				>
 					削除

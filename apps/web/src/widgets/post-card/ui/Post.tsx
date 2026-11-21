@@ -10,9 +10,10 @@ import type { PostType } from "@engineer-sns/shared";
 interface PostProps {
 	currentUserId: string;
 	post: PostType;
+	onDeleted?: () => void;
 }
 
-export const Post = ({ currentUserId, post }: PostProps) => {
+export const Post = ({ currentUserId, post, onDeleted }: PostProps) => {
 	const parsedContent = parseContent(post.content);
 	const navigate = useNavigate();
 	const isPostByCurrentUser = post.user_id === currentUserId;
@@ -36,7 +37,7 @@ export const Post = ({ currentUserId, post }: PostProps) => {
 				return navigate({ to: "/posts/$postId", params: { postId: post.id } });
 			}}
 		>
-			{isPostByCurrentUser ? <PostActionMenu postId={post.id} /> : <></>}
+			{isPostByCurrentUser ? <PostActionMenu postId={post.id} onDeleted={onDeleted} /> : <></>}
 			<Group align="start">
 				<Box>
 					<Link

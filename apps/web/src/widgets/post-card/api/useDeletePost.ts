@@ -8,6 +8,13 @@ export const useDeletePost = () => {
 		mutationFn: async (postId: string) => {
 			await ensureOk(await api.api.posts[":postId"].$delete({ param: { postId } }));
 		},
-		onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKeys.posts }),
+		onSuccess: async (_, postId) => {
+			await queryClient.invalidateQueries({ queryKey: queryKeys.posts, refetchType: "none" });
+			await queryClient.refetchQueries({
+				queryKey: queryKeys.posts,
+				type: "active",
+				predicate: (query) => !query.queryKey.includes(postId),
+			});
+		},
 	});
 };
