@@ -14,13 +14,10 @@ export interface TestUser extends TestAccount {
 }
 
 interface Fixtures {
-	/** テストごとに新しいアカウントを作る。withProfile: false ならユーザー（プロフィール）を作らない */
 	createUser: (options?: { withProfile?: boolean; name?: string }) => Promise<TestUser>;
-	/** アカウントでログインした状態にする（GitHub OAuth の代わりにセッションを直接入れる） */
 	signIn: (account: TestAccount) => Promise<void>;
 }
 
-/** 外部へのリクエスト（シードのプロフィール画像など）は止めて、結果を安定させる */
 const blockExternalRequests = async (page: Page) => {
 	await page.route(
 		(url) => {
@@ -48,7 +45,6 @@ export const test = base.extend<Fixtures>({
 		await blockExternalRequests(page);
 		await use(page);
 	},
-	// Playwright は第 1 引数の分割代入から依存する fixture を読み取るので、依存がなくても {} が必要
 	// oxlint-disable-next-line no-empty-pattern
 	createUser: async ({}, use) => {
 		await use(async ({ withProfile = true, name } = {}) => {
@@ -72,12 +68,10 @@ export const test = base.extend<Fixtures>({
 
 export { expect };
 
-/** タイムラインなどの投稿カード */
 export const postCard = (page: Page, text: string) => {
 	return page.getByRole("article").filter({ hasText: text });
 };
 
-/** Mantine の通知 */
 export const notification = (page: Page, message: string) => {
 	return page.getByRole("alert").filter({ hasText: message });
 };

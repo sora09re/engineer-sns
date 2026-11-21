@@ -1,0 +1,16 @@
+import { format } from "date-fns";
+import { ja } from "date-fns/locale";
+
+interface DateFormatProps {
+	props: Date | string;
+}
+
+export const DateFormat = ({ props }: DateFormatProps) => {
+	const date = new Date(props);
+
+	return (
+		<time dateTime={date.toISOString()}>
+			{format(date, "yyyy年MM月dd日 HH:mm", { locale: ja })}
+		</time>
+	);
+};

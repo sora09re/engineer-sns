@@ -1,0 +1,30 @@
+{
+	"name": "@engineer-sns/api",
+	"private": true,
+	"type": "module",
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"scripts": {
+		"dev": "tsx watch --env-file-if-exists=.env.local src/server.ts",
+		"test": "vp test",
+		"typecheck": "tsc -p ."
+	},
+	"dependencies": {
+		"@engineer-sns/shared": "workspace:*",
+		"@hono/node-server": "^2.1.8",
+		"@hono/zod-validator": "^0.9.1",
+		"drizzle-orm": "^0.45.4",
+		"hono": "^4.13.18",
+		"jose": "^6.2.17",
+		"postgres": "^4.1.1",
+		"zod": "^4.6.7"
+	},
+	"devDependencies": {
+		"@types/node": "24.19.2",
+		"tsx": "^4.23.15",
+		"typescript": "7.0.2",
+		"vite-plus": "catalog:",
+		"vitest": "catalog:"
+	}
+}

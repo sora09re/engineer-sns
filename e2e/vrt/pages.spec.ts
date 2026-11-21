@@ -1,7 +1,3 @@
-/**
- * 見た目の記録。差分が出たら人が見て判断し、問題なければ pnpm vrt:update で基準を更新する。
- * データは e2e/support/vrt-fixtures.ts の固定データだけが映るようにしている。
- */
 import type { Page } from "@playwright/test";
 
 import { expect, postCard, signIn, test } from "../support/test";
@@ -21,7 +17,6 @@ const signInAs = (page: Page, account: { id: string; email: string }) => {
 };
 
 const capture = async (page: Page, name: string) => {
-	// クリックしたあとのホバーの見た目が写らないように、マウスを画面の端へ逃がす
 	await page.mouse.move(0, 0);
 	await page.waitForLoadState("networkidle");
 	await expect(page).toHaveScreenshot(`${name}.png`, { fullPage: true });

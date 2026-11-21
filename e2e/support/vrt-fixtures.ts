@@ -1,8 +1,3 @@
-/**
- * VRT 用の固定データ。ID も日時も固定し、毎回同じ画面になるようにする。
- * ほかのデータ（シードや E2E が作ったもの）が混ざらないよう、
- * 2 人のユーザーは互いだけをフォローし、検索には VRT_KEYWORD を使う。
- */
 import { createAccount, insertRows } from "./supabase";
 
 export const VRT_KEYWORD = "zxqvrt";
@@ -27,7 +22,6 @@ export const BOB = {
 	website: "https://example.com/bob",
 };
 
-/** ユーザー（プロフィール）をまだ作っていないアカウント。新規ユーザー登録の画面に使う */
 export const NEWBIE = {
 	id: "0e1b1e00-0000-4000-8000-000000000003",
 	email: "vrt-newbie@example.com",
@@ -40,7 +34,6 @@ export const POSTS = {
 	aliceComment: "a11ce000-0000-4000-8000-0000000000a4",
 };
 
-/** VRT のアカウントのパスワード。global setup で決めて、環境変数でテストに渡す */
 export const VRT_PASSWORDS_ENV = "E2E_VRT_PASSWORDS";
 
 export const createVrtFixtures = async () => {
