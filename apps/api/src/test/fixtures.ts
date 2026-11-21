@@ -1,7 +1,24 @@
-import { sql } from "drizzle-orm";
+import type { Like, PostType } from "@engineer-sns/shared";
+import { and, eq, sql } from "drizzle-orm";
 
 import type { Db } from "../infrastructure/db/client";
-import { follows, likes, posts, users } from "../infrastructure/db/schema";
+import { follows, posts, users } from "../infrastructure/db/schema";
+import { setupApp } from "./app";
+
+const apps = new WeakMap<Db, ReturnType<typeof setupApp>>();
+
+const request = async (db: Db, method: string, path: string, accountId: string, body?: unknown) => {
+	let app = apps.get(db);
+	if (!app) {
+		app = setupApp(db);
+		apps.set(db, app);
+	}
+	const res = await (await app).send(method, path, accountId, body);
+	if (!res.ok) {
+		throw new Error(`準備の ${method} ${path} が ${res.status} を返した: ${await res.text()}`);
+	}
+	return res;
+};
 
 export const createAccount = async (db: Db, email: string) => {
 	const id = crypto.randomUUID();
@@ -29,12 +46,15 @@ export const createPost = async (
 	db: Db,
 	values: { userId: string; content: string; parentPostId?: string; createdAt?: string },
 ) => {
-	const { createdAt, ...rest } = values;
-	const [post] = await db
-		.insert(posts)
-		.values({ ...rest, ...(createdAt ? { createdAt: new Date(createdAt) } : {}) })
-		.returning();
-	return post!;
+	const path = values.parentPostId ? `/api/posts/${values.parentPostId}/comments` : "/api/posts";
+	const res = await request(db, "POST", path, values.userId, { content: values.content });
+	const post = (await res.json()) as PostType;
+	if (values.createdAt) {
+		const createdAt = new Date(values.createdAt);
+		await db.update(posts).set({ createdAt }).where(eq(posts.id, post.id));
+		return { ...post, created_at: createdAt.toISOString() };
+	}
+	return post;
 };
 
 export const follow = async (
@@ -43,12 +63,26 @@ export const follow = async (
 	followeeId: string,
 	createdAt?: string,
 ) => {
-	await db
-		.insert(follows)
-		.values({ followerId, followeeId, ...(createdAt ? { createdAt: new Date(createdAt) } : {}) });
+	await request(db, "PUT", `/api/users/${followeeId}/follow`, followerId);
+	if (createdAt) {
+		await db
+			.update(follows)
+			.set({ createdAt: new Date(createdAt) })
+			.where(and(eq(follows.followerId, followerId), eq(follows.followeeId, followeeId)));
+	}
 };
 
 export const like = async (db: Db, userId: string, postId: string) => {
-	const [row] = await db.insert(likes).values({ userId, postId }).returning();
-	return row!;
+	await request(db, "PUT", `/api/posts/${postId}/like`, userId);
+	const res = await request(db, "GET", `/api/posts/${postId}`, userId);
+	const { likes } = (await res.json()) as PostType;
+	return likes.find((row: Like) => row.user_id === userId)!;
+};
+
+export const updateProfile = async (
+	db: Db,
+	userId: string,
+	values: { name?: string; bio?: string },
+) => {
+	await request(db, "PATCH", "/api/me", userId, values);
 };

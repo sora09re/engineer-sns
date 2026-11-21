@@ -1,11 +1,9 @@
 import type { User } from "@engineer-sns/shared";
-import { sql } from "drizzle-orm";
 import { describe, expect, test } from "vite-plus/test";
 
-import type { Db } from "../infrastructure/db/client";
 import { setupApp, uniqueWord } from "./app";
 import { withRollback } from "./db";
-import { createUser } from "./fixtures";
+import { createUser, updateProfile } from "./fixtures";
 
 const search = (q: string) => {
 	return `/api/users/search?${new URLSearchParams({ q })}`;
@@ -13,12 +11,6 @@ const search = (q: string) => {
 
 const usernamesOf = async (res: Response) => {
 	return ((await res.json()) as User[]).map((user) => user.username);
-};
-
-const setProfile = async (db: Db, id: string, values: { name?: string; bio?: string }) => {
-	await db.execute(
-		sql`update public.users set name = coalesce(${values.name ?? null}, name), bio = coalesce(${values.bio ?? null}, bio) where id = ${id}`,
-	);
 };
 
 describe("GET /api/users/search", () => {
@@ -31,8 +23,8 @@ describe("GET /api/users/search", () => {
 			const byBio = await createUser(db, "by_bio");
 			await createUser(db, `${word}_user`);
 			await createUser(db, "nobody");
-			await setProfile(db, byName.id, { name: `${word.toUpperCase()} さん` });
-			await setProfile(db, byBio.id, { bio: `${word} が好き` });
+			await updateProfile(db, byName.id, { name: `${word.toUpperCase()} さん` });
+			await updateProfile(db, byBio.id, { bio: `${word} が好き` });
 
 			const res = await get(search(word.toUpperCase()), me.id);
 
@@ -63,8 +55,8 @@ describe("GET /api/users/search", () => {
 			const word = uniqueWord();
 			const hit = await createUser(db, "hit");
 			const miss = await createUser(db, "miss");
-			await setProfile(db, hit.id, { bio: `${word}${symbol}end` });
-			await setProfile(db, miss.id, { bio: `${word}xend` });
+			await updateProfile(db, hit.id, { bio: `${word}${symbol}end` });
+			await updateProfile(db, miss.id, { bio: `${word}xend` });
 
 			const res = await get(search(`${word}${symbol}end`), me.id);
 
