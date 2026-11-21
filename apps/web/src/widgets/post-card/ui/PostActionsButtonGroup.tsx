@@ -20,7 +20,6 @@ export const PostActionsButtonGroup = ({ currentUserId, post }: PostActionsButto
 	const isLikedOnServer = post.likes.some((like) => {
 		return like.user_id === currentUserId;
 	});
-	// 送信中は押した結果を先に表示する（再取得が終わるまで pending のまま）
 	const isLikedByCurrentUser = toggleLike.isPending ? toggleLike.variables.like : isLikedOnServer;
 	const likeCount =
 		post.likes.length +

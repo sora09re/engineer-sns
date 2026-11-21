@@ -1,13 +1,8 @@
-/**
- * テストの準備用に、DB へ直接データを入れる。書き込みの API ができたら、そちらで準備するように置き換える。
- * 結果の確認には使わない（確認は必ず API のレスポンスで行う）。
- */
 import { sql } from "drizzle-orm";
 
 import type { Db } from "../infrastructure/db/client";
 import { follows, likes, posts, users } from "../infrastructure/db/schema";
 
-/** アカウント（auth.users）だけを作る。新規ユーザー登録の前の状態 */
 export const createAccount = async (db: Db, email: string) => {
 	const id = crypto.randomUUID();
 	await db.execute(sql`
@@ -23,7 +18,6 @@ export const createAccount = async (db: Db, email: string) => {
 	return id;
 };
 
-/** アカウント（auth.users）とユーザーを作る */
 export const createUser = async (db: Db, username: string) => {
 	const email = `${username}@example.com`;
 	const id = await createAccount(db, email);

@@ -1,7 +1,3 @@
-/**
- * ユースケースの一覧と、それぞれに渡す port の配線。ユースケースを足すときはここに 1 行足す。
- * どの adapter を使うかは app.ts が決める
- */
 import { createComment } from "./create-comment";
 import { createPost } from "./create-post";
 import { deletePost } from "./delete-post";

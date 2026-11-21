@@ -3,7 +3,6 @@ import { assertUsernameAvailable } from "./assert-username-available";
 import { ConflictError, ValidationError } from "./errors";
 import type { UserRepository } from "./ports";
 
-/** 新規ユーザー登録: ログイン中のアカウントにユーザーを作る */
 export const registerUser = (deps: { users: UserRepository }) => {
 	return async (input: { accountId: string; values: UserValues }): Promise<User> => {
 		const error = findUserValuesError(input.values);

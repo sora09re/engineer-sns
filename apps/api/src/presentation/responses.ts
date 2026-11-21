@@ -1,4 +1,3 @@
-/** application の読み取りモデルを、API のレスポンスの形（packages/shared の型）にする */
 import type { PostType, ProfileType, User as UserResponse } from "@engineer-sns/shared";
 
 import type { PostSummary } from "../application/post-summary";

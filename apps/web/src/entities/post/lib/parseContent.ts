@@ -1,7 +1,7 @@
 export type ParsedContent = {
 	content: string;
 	language?: string;
-	type: "text" | "code"; // 追加: コードブロックの言語
+	type: "text" | "code";
 };
 
 export const parseContent = (content: string): ParsedContent[] => {

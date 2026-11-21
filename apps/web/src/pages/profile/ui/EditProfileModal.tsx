@@ -100,7 +100,6 @@ export const EditProfileModal = ({ currentUser, opened, onClose }: EditProfileMo
 								return updateValues({ bio: e.currentTarget.value });
 							}}
 							maxLength={160}
-							// v9 は autosize でないと minRows が効かない
 							rows={4}
 							mt={marginTopPx}
 						/>

@@ -8,10 +8,8 @@ interface ImageUploadProps {
 	onDrop: (acceptedFiles: File[]) => void;
 }
 
-/** Mantine 6 の Image（withPlaceholder）が出していたプレースホルダーのアイコン */
 const PlaceholderIcon = () => {
 	return (
-		// v6 ではアイコンが中央より 3px 上にあった
 		<svg
 			viewBox="0 0 15 15"
 			fill="none"
@@ -48,7 +46,6 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ imageUrl, onDrop }) =>
 				}}
 			>
 				<Dropzone.Idle>
-					{/* Mantine 7 で Image の withPlaceholder は廃止されたので、画像がないときは v6 と同じプレースホルダーを自前で出す */}
 					{imageUrl ? (
 						<Image
 							src={imageUrl}

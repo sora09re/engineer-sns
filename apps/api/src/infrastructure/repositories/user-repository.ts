@@ -7,13 +7,8 @@ import { escapeLike } from "./escape-like";
 import { isUuid } from "./is-uuid";
 import { toUser } from "./to-user";
 
-/**
- * サブクエリから外側の users.id を指す。JOIN のない select では ${users.id} が表名なしの "id" になり、
- * サブクエリの中の f.id と取り違えるので、表名つきで書く
- */
 const outerUserId = sql`${users}.${sql.identifier("id")}`;
 
-/** フォローした順（古い順）。同じ時刻ならユーザー名順 */
 const followOrder = [asc(follows.createdAt), asc(users.username)];
 
 export const createUserRepository = (db: Db): UserRepository => {
@@ -109,7 +104,6 @@ export const createUserRepository = (db: Db): UserRepository => {
 			const changes = Object.fromEntries(
 				Object.entries(values).filter(([, value]) => value !== undefined),
 			);
-			// 変える項目がなければ、update ではなくいまの行を返す（drizzle は空の set を受け付けない）
 			const [row] =
 				Object.keys(changes).length > 0
 					? await db.update(users).set(changes).where(eq(users.id, userId)).returning()

@@ -1,7 +1,6 @@
 import type { LikeRepository, PostRepository, UserRepository } from "./ports";
 import { requireLoginUser } from "./require-login-user";
 
-/** 投稿にいいねする */
 export const likePost = (deps: {
 	users: UserRepository;
 	likes: LikeRepository;

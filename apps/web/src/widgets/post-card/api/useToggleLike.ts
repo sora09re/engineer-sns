@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { api, ensureOk, queryKeys } from "@/shared/api";
 
-/** いいねする・外す。すでにその状態でも成功する */
 export const useToggleLike = () => {
 	const queryClient = useQueryClient();
 	return useMutation({

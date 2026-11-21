@@ -4,6 +4,6 @@
 		"lib": ["dom", "esnext"],
 		"types": ["node"]
 	},
-	"include": ["e2e", "playwright.config.ts", "vite.config.ts", "api"],
+	"include": ["e2e", "playwright.config.ts", "vite.config.ts", "api", "lint"],
 	"exclude": ["node_modules"]
 }

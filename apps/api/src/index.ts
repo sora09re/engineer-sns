@@ -6,7 +6,6 @@ import { readEnv } from "./env";
 
 export type { AppType } from "./app";
 
-/** 環境変数から本番用の app を組み立てる（Vercel Functions とローカルのサーバーで使う） */
 export const createAppFromEnv = () => {
 	const env = readEnv();
 	const { db } = connect(env.DATABASE_URL);

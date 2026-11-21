@@ -11,7 +11,6 @@ const setup = async (db: Parameters<typeof setupApp>[0]) => {
 	const other = await createUser(db, "other");
 	const res = await app.send("POST", "/api/posts", other.id, { content: "いいねされる投稿" });
 	const post = (await res.json()) as PostType;
-	/** 投稿の詳細の likes から、いいねしたユーザーの ID を取り出す */
 	const likerIds = async () => {
 		const detail = await app.get(`/api/posts/${post.id}`, me.id);
 		return ((await detail.json()) as PostType).likes.map((like) => like.user_id);

@@ -13,7 +13,6 @@ export const Sidebar = () => {
 	const [isPostModalOpened, postModal] = useDisclosure(false);
 
 	return (
-		// Mantine 7 で Navbar は廃止されたので、v6 の Navbar（fixed）と同じ配置を nav で組む
 		<Box
 			component="nav"
 			p="xl"
@@ -22,7 +21,6 @@ export const Sidebar = () => {
 				borderRight: "1px solid var(--mantine-color-gray-2)",
 				display: "flex",
 				flexDirection: "column",
-				// v6 の Navbar は下端基準（bottom: 0）で、高さは 100vh だった
 				bottom: 0,
 				height: "100vh",
 				left: 0,

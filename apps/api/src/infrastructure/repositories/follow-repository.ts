@@ -21,7 +21,6 @@ export const createFollowRepository = (db: Db): FollowRepository => {
 			return rows.length > 0;
 		},
 		add: async ({ followerId, followeeId }) => {
-			// 同じ相手へのフォローは 1 つ（一意制約）。すでにあれば何もしない
 			await db.insert(follows).values({ followerId, followeeId }).onConflictDoNothing();
 		},
 		remove: async ({ followerId, followeeId }) => {

@@ -7,6 +7,7 @@
 		"build": "pnpm --filter @engineer-sns/web build",
 		"check": "vp check && pnpm --filter @engineer-sns/web lint:fsd",
 		"fix": "vp check --fix",
+		"comments": "node lint/comments.mts",
 		"typecheck": "tsc -p . && pnpm -r typecheck",
 		"test": "pnpm -r test",
 		"e2e": "playwright test --project=e2e",

@@ -8,12 +8,10 @@ if (!url || !secretKey) {
 	);
 }
 
-/** ローカルの Supabase の Storage */
 export const storageConfig: StorageConfig = { url, secretKey };
 
 const PUBLIC_PREFIX = "/storage/v1/object/public/profile_image/";
 
-/** テストでアップロードした画像を消す（Storage は DB のロールバックでは消えない） */
 export const deleteUploadedImages = async (publicUrls: string[]) => {
 	const names = publicUrls.map((publicUrl) =>
 		new URL(publicUrl).pathname.slice(PUBLIC_PREFIX.length),

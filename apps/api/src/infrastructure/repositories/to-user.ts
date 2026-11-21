@@ -1,7 +1,6 @@
 import type { User } from "../../domain/user";
 import type { users } from "../db/schema";
 
-/** users テーブルの行を domain の User にする */
 export const toUser = (row: typeof users.$inferSelect): User => {
 	return {
 		id: row.id,

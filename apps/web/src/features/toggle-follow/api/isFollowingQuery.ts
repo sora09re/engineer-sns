@@ -2,7 +2,6 @@ import { queryOptions } from "@tanstack/react-query";
 
 import { api, parse, queryKeys } from "@/shared/api";
 
-/** ログイン中のユーザーが userId をフォローしているか */
 export const isFollowingQuery = (userId: string) => {
 	return queryOptions({
 		queryKey: [...queryKeys.follows, "isFollowing", userId],
