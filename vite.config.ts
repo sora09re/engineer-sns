@@ -64,6 +64,6 @@ export default defineConfig({
 		singleQuote: false,
 	},
 	staged: {
-		"*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": "vp check --fix --deny-warnings",
+		"*.{js,ts,cjs,mjs,mts,d.cts,d.mts,jsx,tsx,json,jsonc,md}": "vp check --fix --deny-warnings",
 	},
 });
