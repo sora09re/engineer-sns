@@ -18,6 +18,7 @@
 
 - Supabase も API のサーバーも使わない。jsdom の上で、QueryClient やルーターと組み合わせた web の部品（キャッシュの無効化、詳細ページの「見つからない」など）を試す。
 - そのため、テストする module から `shared/api/http.ts`・`shared/api/supabase.ts` を読み込まない。supabase-js のクライアントは、読み込んだ時点で環境変数がないとエラーになる。レスポンスの検査は `shared/api/response.ts` に置く。
+- `@/shared/api` を経由すると、どちらも間接的に読み込まれる。そこで `apps/web/vitest-setup.ts` で両方を差し替え、使うとこの ADR を指すエラーで落とす。API を呼ぶ部品（フォームなど）を試すときは、テストで `@/shared/api/http` を `vi.mock` し、`fetch` を差し替えた Hono のクライアント（`hc<AppType>`）を渡す。送り先と本文はそこで確かめる。
 - 部品のテストで済ませず、変えた挙動が実際のページに出ることは E2E でも確かめる。API の結果を変えたいときは、`respondNotFoundFrom` のように `page.route` で差し替える。
 
 ## E2E と VRT
