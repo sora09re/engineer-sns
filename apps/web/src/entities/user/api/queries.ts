@@ -6,14 +6,14 @@ import { api, parse, parseOrNull, queryKeys } from "@/shared/api";
 
 export const currentUserQuery = () => {
 	return queryOptions({
-		queryKey: [...queryKeys.users, "current"],
+		queryKey: queryKeys.users.current(),
 		queryFn: async (): Promise<LoginUser | null> => parse(await api.api.me.$get()),
 	});
 };
 
 export const userProfileQuery = (userId: string) => {
 	return queryOptions({
-		queryKey: [...queryKeys.users, "profile", userId],
+		queryKey: queryKeys.users.profile(userId),
 		queryFn: async (): Promise<ProfileType | null> => {
 			return parseOrNull(await api.api.users[":userId"].$get({ param: { userId } }));
 		},
@@ -22,7 +22,7 @@ export const userProfileQuery = (userId: string) => {
 
 export const searchUsersQuery = (keyword: string) => {
 	return queryOptions({
-		queryKey: [...queryKeys.users, "search", keyword],
+		queryKey: queryKeys.users.search(keyword),
 		queryFn: async (): Promise<User[]> => {
 			return parse(await api.api.users.search.$get({ query: { q: keyword } }));
 		},
@@ -31,7 +31,7 @@ export const searchUsersQuery = (keyword: string) => {
 
 export const followersQuery = (userId: string) => {
 	return queryOptions({
-		queryKey: [...queryKeys.follows, "followers", userId],
+		queryKey: queryKeys.follows.followers(userId),
 		queryFn: async (): Promise<User[]> => {
 			return parse(await api.api.users[":userId"].followers.$get({ param: { userId } }));
 		},
@@ -40,7 +40,7 @@ export const followersQuery = (userId: string) => {
 
 export const followeesQuery = (userId: string) => {
 	return queryOptions({
-		queryKey: [...queryKeys.follows, "followees", userId],
+		queryKey: queryKeys.follows.followees(userId),
 		queryFn: async (): Promise<User[]> => {
 			return parse(await api.api.users[":userId"].followees.$get({ param: { userId } }));
 		},

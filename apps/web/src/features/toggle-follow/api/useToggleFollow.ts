@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { api, ensureOk, queryKeys } from "@/shared/api";
+import { afterFollowChanged, api, ensureOk } from "@/shared/api";
 
 export const useToggleFollow = () => {
 	const queryClient = useQueryClient();
@@ -10,12 +10,6 @@ export const useToggleFollow = () => {
 			const args = { param: { userId } };
 			await ensureOk(await (follow ? endpoint.$put(args) : endpoint.$delete(args)));
 		},
-		onSettled: () => {
-			return Promise.all([
-				queryClient.invalidateQueries({ queryKey: queryKeys.follows }),
-				queryClient.invalidateQueries({ queryKey: queryKeys.users }),
-				queryClient.invalidateQueries({ queryKey: queryKeys.posts }),
-			]);
-		},
+		onSettled: () => afterFollowChanged(queryClient),
 	});
 };

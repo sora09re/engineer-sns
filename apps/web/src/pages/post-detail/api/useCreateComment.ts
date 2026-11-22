@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { api, ensureOk, queryKeys } from "@/shared/api";
+import { afterPostsChanged, api, ensureOk } from "@/shared/api";
 
 export const useCreateComment = () => {
 	const queryClient = useQueryClient();
@@ -10,6 +10,6 @@ export const useCreateComment = () => {
 				await api.api.posts[":postId"].comments.$post({ param: { postId }, json: { content } }),
 			);
 		},
-		onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKeys.posts }),
+		onSuccess: () => afterPostsChanged(queryClient),
 	});
 };

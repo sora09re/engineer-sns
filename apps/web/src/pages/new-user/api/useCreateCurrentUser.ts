@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { UserValues } from "@engineer-sns/shared";
 
 import { withUploadedImage } from "@/entities/user";
-import { api, ensureOk, queryKeys } from "@/shared/api";
+import { afterUserRegistered, api, ensureOk } from "@/shared/api";
 
 export const useCreateCurrentUser = () => {
 	const queryClient = useQueryClient();
@@ -12,7 +12,6 @@ export const useCreateCurrentUser = () => {
 			const json = await withUploadedImage(values, imageFile);
 			await ensureOk(await api.api.me.$post({ json }));
 		},
-		onSuccess: () =>
-			queryClient.invalidateQueries({ queryKey: queryKeys.users, refetchType: "all" }),
+		onSuccess: () => afterUserRegistered(queryClient),
 	});
 };

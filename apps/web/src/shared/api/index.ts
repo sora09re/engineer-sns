@@ -1,3 +1,10 @@
 export { api, ensureOk, parse, parseOrNull } from "./http";
-export { queryKeys } from "./query-keys";
+export {
+	afterFollowChanged,
+	afterLoginUserChanged,
+	afterPostDeleted,
+	afterPostsChanged,
+	afterUserRegistered,
+	queryKeys,
+} from "./query-cache";
 export { supabase } from "./supabase";
