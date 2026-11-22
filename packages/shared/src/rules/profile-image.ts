@@ -20,7 +20,7 @@ export const findProfileImageError = (image: { contentType: string; size: number
 		return "対応していない画像形式です。";
 	}
 	if (image.size > PROFILE_IMAGE_MAX_SIZE) {
-		return "画像は3MBまでです。";
+		return `画像は${PROFILE_IMAGE_MAX_SIZE / 1024 / 1024}MBまでです。`;
 	}
 	return null;
 };

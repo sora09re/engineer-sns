@@ -1,4 +1,4 @@
-import { Button, Center, Grid, Modal, Paper, TextInput, Textarea } from "@mantine/core";
+import { Button, Center, Grid, Modal, Paper, Text, TextInput, Textarea } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 
@@ -27,7 +27,7 @@ export const EditProfileModal = ({ currentUser, opened, onClose }: EditProfileMo
 	});
 	const { clearImage, imageFile, previewUrl, selectImage } = useImageFile();
 	const updateUser = useUpdateCurrentUser();
-	const isValid = findUserValuesError(values) === null;
+	const valuesError = findUserValuesError(values);
 
 	const editProfile = () => {
 		notifications.show({
@@ -124,10 +124,15 @@ export const EditProfileModal = ({ currentUser, opened, onClose }: EditProfileMo
 							mt={marginTopPx}
 						/>
 
+						{valuesError && (
+							<Text c="red" size="sm" mt={marginTopPx} role="alert">
+								{valuesError}
+							</Text>
+						)}
 						<Button
 							onClick={editProfile}
 							loading={updateUser.isPending}
-							disabled={!isValid}
+							disabled={valuesError !== null}
 							mt={marginTopPx}
 						>
 							保存
