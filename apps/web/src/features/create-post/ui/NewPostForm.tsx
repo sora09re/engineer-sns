@@ -2,7 +2,7 @@ import { Box, Button, Space, Textarea } from "@mantine/core";
 import { useState } from "react";
 import { isValidPostContent } from "@engineer-sns/shared/rules";
 
-import { notifyMutation } from "@/shared/lib";
+import { notifyMutation, useIsMounted } from "@/shared/lib";
 
 import { useCreatePost } from "../api/useCreatePost";
 
@@ -13,9 +13,11 @@ interface NewPostFormProps {
 export const NewPostForm = ({ onPosted }: NewPostFormProps) => {
 	const [postContent, setPostContent] = useState("");
 	const createPost = useCreatePost();
+	const isMounted = useIsMounted();
 
 	const fetchPost = async () => {
-		if (await notifyMutation(createPost, postContent, { label: "投稿" })) {
+		const posted = await notifyMutation(createPost, postContent, { label: "投稿" });
+		if (posted && isMounted()) {
 			setPostContent("");
 			onPosted?.();
 		}

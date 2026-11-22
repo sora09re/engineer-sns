@@ -22,4 +22,6 @@
 - 更新の結果の知らせ方は、`shared/lib/notify-mutation.tsx` の `notifyMutation` の 1 か所にまとめる。UI は mutation と値と「何をしているか」のラベル（「投稿」「削除」など）を渡し、返る真偽値で成功したときの続き（入力を空にする、画面を移る）だけを書く。`notifyMutation` は `mutateAsync` で待ち、送信中・成功・失敗の通知を出す。通知の文言はラベルから作る（「投稿中...」「投稿に成功しました！」「投稿に失敗しました。」）。
   - 失敗は、API が返した `message`（[0005](./0005-api-input-errors-and-query-rules.md)）をそのまま見せる。`shared/api/response.ts` は、`{ message }` のある失敗のレスポンスを `ApiError` にして投げる。`message` のない失敗（通信の失敗など）は、英語のメッセージを見せないように「{ラベル}に失敗しました。」にする。
   - いいね・フォロー・新規ユーザー登録は、結果がすぐ画面に出る（ボタンが変わる、画面を移る）ので、`report: "failure"` で失敗だけを知らせる。
+  - 送信中から結果への通知は Mantine の `notifications.promise` で出す。`notifications.update` は前の通知に値を重ねるので、送信中の読み込みの表示が結果に残る。また送信中の通知が閉じられると、結果の通知が出ない。`notifications.update` と、`loading` を付けた `notifications.show` は lint（`mutation-notice/no-manual`）で禁じる。
+  - 成功の続きが呼び出し元の画面を変える（モーダルを閉じる、入力を空にする）ときは、`useIsMounted` で呼び出し元がまだ表示されているかを確かめる。`mutateAsync` の結果は、呼び出し元がアンマウントされたあとにも届く。たとえば投稿のモーダルを閉じて開き直したあとに前の投稿が済むと、開き直したモーダルを閉じてしまう。画面の移動（投稿を消したあとに戻る）は、アンマウントされたあとでも行う。
 - いいねは、送信中は押した結果を先に表示する。取り直しが終わるまで mutation は pending のままなので、その間は `variables` の値を使う。

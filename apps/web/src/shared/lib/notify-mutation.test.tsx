@@ -1,6 +1,6 @@
 import { MantineProvider } from "@mantine/core";
 import { Notifications, notifications } from "@mantine/notifications";
-import { act, render, screen } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeAll, describe, expect, it } from "vite-plus/test";
 
 import { ApiError } from "../api/response";
@@ -82,6 +82,50 @@ describe("notifyMutation", () => {
 		expect(await result).toBe(true);
 		expect(await notice("投稿に成功しました！")).toBeInTheDocument();
 		expect(screen.queryByText("投稿中...")).not.toBeInTheDocument();
+	});
+
+	it("結果の通知には、送信中の読み込みの表示を残さない", async () => {
+		setup();
+		const { promise, resolve } = deferred();
+		const { mutation } = mutationOf(promise);
+
+		let result: Promise<boolean> | undefined;
+		act(() => {
+			result = notifyMutation(mutation, "本文", { label: "投稿" });
+		});
+		const pending = (await notice("投稿中...")).closest(".mantine-Notification-root");
+		expect(pending?.querySelector(".mantine-Loader-root")).not.toBeNull();
+
+		await act(async () => {
+			resolve();
+			await result;
+		});
+		const done = (await notice("投稿に成功しました！")).closest(".mantine-Notification-root");
+		expect(done?.querySelector(".mantine-Loader-root")).toBeNull();
+	});
+
+	it("送信中の通知を閉じても、結果は知らせる", async () => {
+		setup();
+		const { promise, reject } = deferred();
+		const { mutation } = mutationOf(promise);
+
+		let result: Promise<boolean> | undefined;
+		act(() => {
+			result = notifyMutation(mutation, "本文", { label: "投稿" });
+		});
+		expect(await notice("投稿中...")).toBeInTheDocument();
+		act(() => {
+			notifications.clean();
+		});
+		await waitFor(() => {
+			expect(screen.queryByText("投稿中...")).not.toBeInTheDocument();
+		});
+
+		await act(async () => {
+			reject(new ApiError(422, "本文を入力してください。"));
+			await result;
+		});
+		expect(await notice("本文を入力してください。")).toBeInTheDocument();
 	});
 
 	it("成功の文言を差し替えられる", async () => {
