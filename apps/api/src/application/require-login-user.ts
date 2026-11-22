@@ -1,32 +1,56 @@
 import type { Post } from "../domain/post";
-import { ForbiddenError } from "./errors";
+import { ForbiddenError, NotFoundError } from "./errors";
 import type { PostRepository, UserRepository } from "./ports";
-import { requirePost } from "./require-post";
-import { requireTargetUser } from "./require-target-user";
 
-export async function requireLoginUser(
-	deps: { users: UserRepository; posts: PostRepository },
-	input: { accountId: string; postId: string },
-): Promise<Post>;
-export async function requireLoginUser(
-	deps: { users: UserRepository },
-	input: { accountId: string; userId: string },
-): Promise<void>;
-export async function requireLoginUser(
-	deps: { users: UserRepository },
-	input: { accountId: string },
-): Promise<void>;
-export async function requireLoginUser(
-	deps: { users: UserRepository; posts?: PostRepository },
-	input: { accountId: string; postId?: string; userId?: string },
-): Promise<Post | void> {
-	if (!(await deps.users.exists(input.accountId))) {
+type PostAuthorization = {
+	allows: (post: Post, accountId: string) => boolean;
+	message: string;
+};
+
+type Operator = { by: "loginUser" } | { by: "account" };
+
+type PostOperator = { by: "loginUser"; authorization?: PostAuthorization } | { by: "account" };
+
+const assertLoginUser = async (users: UserRepository, accountId: string, operator: Operator) => {
+	if (operator.by === "loginUser" && !(await users.exists(accountId))) {
 		throw new ForbiddenError("新規ユーザー登録が済んでいません。");
 	}
-	if (input.userId !== undefined) {
-		await requireTargetUser(deps.users, input.userId);
+};
+
+export const requireLoginUser = async (
+	deps: { users: UserRepository },
+	input: { accountId: string },
+): Promise<void> => {
+	await assertLoginUser(deps.users, input.accountId, { by: "loginUser" });
+};
+
+export const requirePost = async (
+	deps: { users: UserRepository; posts: PostRepository },
+	input: { accountId: string; postId: string },
+	operator: PostOperator,
+): Promise<Post> => {
+	await assertLoginUser(deps.users, input.accountId, operator);
+	const post = await deps.posts.findById(input.postId);
+	if (!post) {
+		throw new NotFoundError("投稿が見つかりません。");
 	}
-	if (input.postId !== undefined) {
-		return requirePost(deps.posts!, input.postId);
+	if (
+		operator.by === "loginUser" &&
+		operator.authorization &&
+		!operator.authorization.allows(post, input.accountId)
+	) {
+		throw new ForbiddenError(operator.authorization.message);
 	}
-}
+	return post;
+};
+
+export const requireTargetUser = async (
+	deps: { users: UserRepository },
+	input: { accountId: string; userId: string },
+	operator: Operator,
+): Promise<void> => {
+	await assertLoginUser(deps.users, input.accountId, operator);
+	if (!(await deps.users.exists(input.userId))) {
+		throw new NotFoundError("ユーザーが見つかりません。");
+	}
+};
