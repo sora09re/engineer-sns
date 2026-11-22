@@ -11,48 +11,49 @@ const setup = async (db: Parameters<typeof setupApp>[0]) => {
 	const other = await createUser(db, "other");
 	const res = await app.send("POST", "/api/posts", other.id, { content: "いいねされる投稿" });
 	const post = (await res.json()) as PostType;
-	const likerIds = async () => {
-		const detail = await app.get(`/api/posts/${post.id}`, me.id);
-		return ((await detail.json()) as PostType).likes.map((like) => like.user_id);
+	const likeOf = async (accountId: string) => {
+		const detail = await app.get(`/api/posts/${post.id}`, accountId);
+		const { is_liked, like_count } = (await detail.json()) as PostType;
+		return { is_liked, like_count };
 	};
-	return { ...app, me, other, post, likerIds };
+	return { ...app, me, other, post, likeOf };
 };
 
 describe("PUT /api/posts/:postId/like", () => {
-	test("いいねでき、204 を返す。投稿の likes に自分のいいねが入る", async () => {
+	test("いいねでき、204 を返す。いいね済みになり、件数が 1 増える", async () => {
 		await withRollback(async (db) => {
-			const { send, me, post, likerIds } = await setup(db);
+			const { send, me, post, likeOf } = await setup(db);
 
 			const res = await send("PUT", `/api/posts/${post.id}/like`, me.id);
 
 			expect(res.status).toBe(204);
-			expect(await likerIds()).toEqual([me.id]);
+			expect(await likeOf(me.id)).toEqual({ is_liked: true, like_count: 1 });
 		});
 	});
 
 	test("すでにいいねしていても 204 で、いいねは 1 つのまま", async () => {
 		await withRollback(async (db) => {
-			const { send, me, post, likerIds } = await setup(db);
+			const { send, me, post, likeOf } = await setup(db);
 			await send("PUT", `/api/posts/${post.id}/like`, me.id);
 
 			const res = await send("PUT", `/api/posts/${post.id}/like`, me.id);
 
 			expect(res.status).toBe(204);
-			expect(await likerIds()).toEqual([me.id]);
+			expect(await likeOf(me.id)).toEqual({ is_liked: true, like_count: 1 });
 		});
 	});
 });
 
 describe("DELETE /api/posts/:postId/like", () => {
-	test("いいねを外せて、204 を返す。投稿の likes から自分のいいねが消える", async () => {
+	test("いいねを外せて、204 を返す。いいね済みでなくなり、件数が 1 減る", async () => {
 		await withRollback(async (db) => {
-			const { send, me, post, likerIds } = await setup(db);
+			const { send, me, post, likeOf } = await setup(db);
 			await send("PUT", `/api/posts/${post.id}/like`, me.id);
 
 			const res = await send("DELETE", `/api/posts/${post.id}/like`, me.id);
 
 			expect(res.status).toBe(204);
-			expect(await likerIds()).toEqual([]);
+			expect(await likeOf(me.id)).toEqual({ is_liked: false, like_count: 0 });
 		});
 	});
 
@@ -68,13 +69,14 @@ describe("DELETE /api/posts/:postId/like", () => {
 
 	test("外れるのは自分のいいねだけで、ほかの人のいいねは残る", async () => {
 		await withRollback(async (db) => {
-			const { send, me, other, post, likerIds } = await setup(db);
+			const { send, me, other, post, likeOf } = await setup(db);
 			await send("PUT", `/api/posts/${post.id}/like`, me.id);
 			await send("PUT", `/api/posts/${post.id}/like`, other.id);
 
 			await send("DELETE", `/api/posts/${post.id}/like`, me.id);
 
-			expect(await likerIds()).toEqual([other.id]);
+			expect(await likeOf(me.id)).toEqual({ is_liked: false, like_count: 1 });
+			expect(await likeOf(other.id)).toEqual({ is_liked: true, like_count: 1 });
 		});
 	});
 });

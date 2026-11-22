@@ -3,7 +3,6 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useRouter } from "@tanstack/react-router";
 
 import { commentsQuery, postQuery } from "@/entities/post";
-import { useCurrentUser } from "@/entities/user";
 import { NotFoundView, PreviousPageHeader } from "@/shared/ui";
 import { Post } from "@/widgets/post-card";
 
@@ -14,7 +13,6 @@ interface PostDetailPageProps {
 }
 
 export const PostDetailPage = ({ postId }: PostDetailPageProps) => {
-	const currentUser = useCurrentUser();
 	const { data: post } = useSuspenseQuery(postQuery(postId));
 	const { data: comments } = useSuspenseQuery(commentsQuery(postId));
 	const router = useRouter();
@@ -34,11 +32,11 @@ export const PostDetailPage = ({ postId }: PostDetailPageProps) => {
 	return (
 		<>
 			<PreviousPageHeader />
-			<Post post={post} currentUserId={currentUser.id} onDeleted={leave} />
+			<Post post={post} onDeleted={leave} />
 			<Space h="md" />
 			<CommentForm postId={postId} />
 			{comments.map((comment) => {
-				return <Post key={comment.id} post={comment} currentUserId={currentUser.id} />;
+				return <Post key={comment.id} post={comment} />;
 			})}
 		</>
 	);

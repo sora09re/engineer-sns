@@ -27,15 +27,16 @@ export const toLoginUserResponse = (user: User): LoginUserResponse => {
 	return { ...toUserResponse(user), email: user.email };
 };
 
-export const toPostType = ({ post, author, likes, commentCount }: PostSummary): PostType => {
+export const toPostType = (summary: PostSummary): PostType => {
+	const { post, author } = summary;
 	return {
 		id: post.id,
-		comment_count: commentCount,
+		can_delete: summary.canDelete,
+		comment_count: summary.commentCount,
 		content: post.content,
 		created_at: post.createdAt.toISOString(),
-		likes: likes.map((like) => {
-			return { id: like.id, post_id: like.postId, user_id: like.userId };
-		}),
+		is_liked: summary.isLiked,
+		like_count: summary.likeCount,
 		parent_post_id: post.parentPostId,
 		user_id: post.authorId,
 		users: toUserResponse(author),

@@ -1,7 +1,7 @@
 import { type SQL, and, desc, eq, ilike, inArray, isNull, sql } from "drizzle-orm";
 
 import type { PostRepository } from "../../application/ports";
-import type { PostSummary } from "../../application/post-summary";
+import type { PostRecord } from "../../application/post-summary";
 import type { Post } from "../../domain/post";
 import type { Db } from "../db/client";
 import { likes, posts, users } from "../db/schema";
@@ -19,7 +19,7 @@ const toPost = (row: typeof posts.$inferSelect): Post => {
 	};
 };
 
-const findSummaries = async (db: Db, where: SQL | undefined): Promise<PostSummary[]> => {
+const findSummaries = async (db: Db, where: SQL | undefined): Promise<PostRecord[]> => {
 	const rows = await db
 		.select({
 			post: posts,

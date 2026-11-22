@@ -145,17 +145,19 @@ describe("GET /api/posts/timeline", () => {
 			});
 			await createPost(db, { userId: fan.id, content: "コメント1", parentPostId: post.id });
 			await createPost(db, { userId: fan.id, content: "コメント2", parentPostId: post.id });
-			const fanLike = await like(db, fan.id, post.id);
+			await like(db, fan.id, post.id);
 
 			const res = await getTimeline(me.id);
 
 			expect(await res.json()).toEqual([
 				{
 					id: post.id,
+					can_delete: true,
 					comment_count: 2,
 					content: "```ts\nconsole.log(1)\n```",
 					created_at: "2026-01-02T03:04:05.000Z",
-					likes: [{ id: fanLike.id, post_id: post.id, user_id: fan.id }],
+					is_liked: false,
+					like_count: 1,
 					parent_post_id: null,
 					user_id: me.id,
 					users: {

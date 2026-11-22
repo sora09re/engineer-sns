@@ -17,8 +17,10 @@ describe("POST /api/posts", () => {
 			const created = (await res.json()) as PostType;
 			expect(created).toMatchObject({
 				content: "新しい投稿",
+				can_delete: true,
 				comment_count: 0,
-				likes: [],
+				is_liked: false,
+				like_count: 0,
 				parent_post_id: null,
 				user_id: me.id,
 				users: { id: me.id, username: "me" },

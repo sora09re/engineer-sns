@@ -1,11 +1,12 @@
 import type { PostRepository } from "./ports";
-import type { PostSummary } from "./post-summary";
+import { type PostSummary, toPostSummary } from "./post-summary";
 
 export const searchPosts = (deps: { posts: PostRepository }) => {
-	return async (keyword: string): Promise<PostSummary[]> => {
-		if (!keyword.trim()) {
+	return async (input: { accountId: string; keyword: string }): Promise<PostSummary[]> => {
+		if (!input.keyword.trim()) {
 			return [];
 		}
-		return deps.posts.searchTopLevel(keyword);
+		const posts = await deps.posts.searchTopLevel(input.keyword);
+		return posts.map((post) => toPostSummary(post, input.accountId));
 	};
 };

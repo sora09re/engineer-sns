@@ -8,19 +8,13 @@ import { PostActionsButtonGroup } from "./PostActionsButtonGroup";
 import type { PostType } from "@engineer-sns/shared";
 
 interface PostProps {
-	currentUserId: string;
 	post: PostType;
 	onDeleted?: () => void;
 }
 
-export const Post = ({ currentUserId, post, onDeleted }: PostProps) => {
+export const Post = ({ post, onDeleted }: PostProps) => {
 	const parsedContent = parseContent(post.content);
 	const navigate = useNavigate();
-	const isPostByCurrentUser = post.user_id === currentUserId;
-
-	if (!post) {
-		return null;
-	}
 
 	return (
 		<Box
@@ -37,7 +31,7 @@ export const Post = ({ currentUserId, post, onDeleted }: PostProps) => {
 				return navigate({ to: "/posts/$postId", params: { postId: post.id } });
 			}}
 		>
-			{isPostByCurrentUser ? <PostActionMenu postId={post.id} onDeleted={onDeleted} /> : <></>}
+			{post.can_delete ? <PostActionMenu postId={post.id} onDeleted={onDeleted} /> : <></>}
 			<Group align="start">
 				<Box>
 					<Link
@@ -73,7 +67,7 @@ export const Post = ({ currentUserId, post, onDeleted }: PostProps) => {
 						return <ContentPart key={part.offset} part={part} />;
 					})}
 					<Space h="md" />
-					<PostActionsButtonGroup currentUserId={currentUserId} post={post} />
+					<PostActionsButtonGroup post={post} />
 				</Box>
 			</Group>
 		</Box>
