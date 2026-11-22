@@ -2,8 +2,6 @@ import type { UserValues } from "@engineer-sns/shared";
 
 import { api, parse } from "@/shared/api";
 
-export const PROFILE_IMAGE_MIME_TYPES = ["image/gif", "image/jpeg", "image/png", "image/webp"];
-
 export const uploadProfileImage = async (file: File): Promise<string> => {
 	const target = await parse(
 		await api.api.me["profile-image"].$post({

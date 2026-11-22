@@ -6,9 +6,7 @@ export type Post = {
 	createdAt: Date;
 };
 
-export const isValidPostContent = (content: string) => {
-	return content.trim().length > 0;
-};
+export { isValidPostContent } from "@engineer-sns/shared/rules";
 
 export const canDeletePost = (post: Post, accountId: string) => {
 	return post.authorId === accountId;

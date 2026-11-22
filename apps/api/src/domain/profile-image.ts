@@ -1,22 +1,14 @@
-const EXTENSIONS: Record<string, string> = {
+import { isProfileImageMimeType, type ProfileImageMimeType } from "@engineer-sns/shared/rules";
+
+export { findProfileImageError } from "@engineer-sns/shared/rules";
+
+const EXTENSIONS: Record<ProfileImageMimeType, string> = {
 	"image/gif": "gif",
 	"image/jpeg": "jpg",
 	"image/png": "png",
 	"image/webp": "webp",
 };
 
-export const PROFILE_IMAGE_MAX_SIZE = 3 * 1024 * 1024;
-
 export const profileImageExtension = (contentType: string): string | null => {
-	return EXTENSIONS[contentType] ?? null;
-};
-
-export const findProfileImageError = (image: { contentType: string; size: number }) => {
-	if (!profileImageExtension(image.contentType)) {
-		return "対応していない画像形式です。";
-	}
-	if (image.size > PROFILE_IMAGE_MAX_SIZE) {
-		return "画像は3MBまでです。";
-	}
-	return null;
+	return isProfileImageMimeType(contentType) ? EXTENSIONS[contentType] : null;
 };

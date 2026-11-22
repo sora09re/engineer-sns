@@ -2,6 +2,7 @@ import { Box, Button, Space, Textarea } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { useState } from "react";
+import { isValidPostContent } from "@engineer-sns/shared/rules";
 
 import { useCreateComment } from "../api/useCreateComment";
 
@@ -68,7 +69,7 @@ export const CommentForm = ({ postId }: CommentFormProps) => {
 				fullWidth
 				onClick={fetchComment}
 				loading={createComment.isPending}
-				disabled={commentContent.trim() === ""}
+				disabled={!isValidPostContent(commentContent)}
 			>
 				コメントする
 			</Button>
