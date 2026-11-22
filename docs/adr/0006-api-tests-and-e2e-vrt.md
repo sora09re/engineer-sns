@@ -1,6 +1,6 @@
-# API のテストと E2E・VRT の動かし方
+# API・web のテストと E2E・VRT の動かし方
 
-テストは、API のテスト（Vitest）、E2E（Playwright）、VRT（Playwright のスクリーンショット）の 3 つにする。どれもローカルの Supabase（`pnpm exec supabase start`）が起動している前提で動く。
+テストは、API のテスト（Vitest）、web のテスト（Vitest）、E2E（Playwright）、VRT（Playwright のスクリーンショット）の 4 つにする。web のテスト以外は、ローカルの Supabase（`pnpm exec supabase start`）が起動している前提で動く。
 
 ## API のテスト
 
@@ -13,6 +13,12 @@
 - アクセストークンは、テスト用の鍵で Supabase Auth と同じ ES256 で署名する。差し替えるのは鍵の取得元だけで、検証のコードは本番と同じものが動く。
 - 検索のテストのキーワードは、シードと重ならない英小文字だけの語にする。大文字にしても別の語にならないので、大文字と小文字を区別しないことを確かめられる。
 - フロントから DB と Storage に直接アクセスできないこと（0002）は HTTP では確かめられないので、`direct-access.test.ts` だけは、supabase-js がログイン済みでつなぐときと同じロールとクレームで DB に直接つなぐ。`storage.objects` の権限は Supabase のものなので残るが、insert のポリシーがないので RLS で拒否される。
+
+## web のテスト
+
+- Supabase も API のサーバーも使わない。jsdom の上で、QueryClient やルーターと組み合わせた web の部品（キャッシュの無効化、詳細ページの「見つからない」など）を試す。
+- そのため、テストする module から `shared/api/http.ts`・`shared/api/supabase.ts` を読み込まない。supabase-js のクライアントは、読み込んだ時点で環境変数がないとエラーになる。レスポンスの検査は `shared/api/response.ts` に置く。
+- 部品のテストで済ませず、変えた挙動が実際のページに出ることは E2E でも確かめる。API の結果を変えたいときは、`respondNotFoundFrom` のように `page.route` で差し替える。
 
 ## E2E と VRT
 

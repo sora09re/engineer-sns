@@ -1,4 +1,6 @@
-export { api, ensureOk, parse, parseOrNull } from "./http";
+export { defineDetailQuery } from "./detail-query";
+export { api } from "./http";
+export { ensureOk, parse } from "./response";
 export {
 	afterFollowChanged,
 	afterLoginUserChanged,

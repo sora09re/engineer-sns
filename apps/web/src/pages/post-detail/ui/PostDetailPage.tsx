@@ -2,8 +2,8 @@ import { Space } from "@mantine/core";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useRouter } from "@tanstack/react-router";
 
-import { commentsQuery, postQuery } from "@/entities/post";
-import { NotFoundView, PreviousPageHeader } from "@/shared/ui";
+import { commentsQuery, postDetail } from "@/entities/post";
+import { PreviousPageHeader } from "@/shared/ui";
 import { Post } from "@/widgets/post-card";
 
 import { CommentForm } from "./CommentForm";
@@ -13,13 +13,9 @@ interface PostDetailPageProps {
 }
 
 export const PostDetailPage = ({ postId }: PostDetailPageProps) => {
-	const { data: post } = useSuspenseQuery(postQuery(postId));
+	const post = postDetail.useData(postId);
 	const { data: comments } = useSuspenseQuery(commentsQuery(postId));
 	const router = useRouter();
-
-	if (!post) {
-		return <NotFoundView />;
-	}
 
 	const leave = () => {
 		if (router.history.canGoBack()) {

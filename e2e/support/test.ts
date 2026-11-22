@@ -75,3 +75,17 @@ export const postCard = (page: Page, text: string) => {
 export const notification = (page: Page, message: string) => {
 	return page.getByRole("alert").filter({ hasText: message });
 };
+
+export const respondNotFoundFrom = (page: Page, pathname: string) => {
+	return page.route(
+		(url) => {
+			return url.pathname === pathname;
+		},
+		(route) => {
+			if (route.request().method() !== "GET") {
+				return route.fallback();
+			}
+			return route.fulfill({ status: 404, json: { message: "見つかりません。" } });
+		},
+	);
+};

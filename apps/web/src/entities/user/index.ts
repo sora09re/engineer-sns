@@ -4,7 +4,7 @@ export {
 	followeesQuery,
 	followersQuery,
 	searchUsersQuery,
-	userProfileQuery,
+	userProfileDetail,
 } from "./api/queries";
 export { useCurrentUser } from "./model/useCurrentUser";
 export { useUserValues } from "./model/useUserValues";
