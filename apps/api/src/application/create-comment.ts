@@ -2,7 +2,7 @@ import { isValidPostContent } from "../domain/post";
 import { ValidationError } from "./errors";
 import type { PostRepository, UserRepository } from "./ports";
 import { type PostSummary, toPostSummary } from "./post-summary";
-import { requireLoginUser } from "./require-login-user";
+import { requirePost } from "./require-login-user";
 
 export const createComment = (deps: { users: UserRepository; posts: PostRepository }) => {
 	return async (input: {
@@ -10,10 +10,7 @@ export const createComment = (deps: { users: UserRepository; posts: PostReposito
 		postId: string;
 		content: string;
 	}): Promise<PostSummary> => {
-		const parent = await requireLoginUser(deps, {
-			accountId: input.accountId,
-			postId: input.postId,
-		});
+		const parent = await requirePost(deps, input);
 		if (!isValidPostContent(input.content)) {
 			throw new ValidationError("本文を入力してください。");
 		}

@@ -98,6 +98,21 @@ describe("PUT / DELETE /api/posts/:postId/like の共通", () => {
 		});
 	});
 
+	test.each(["00000000-0000-0000-0000-000000000000", "not-a-uuid"])(
+		"ユーザーのないアカウントでも、DELETE は投稿（%s）が存在しなければ 404",
+		async (postId) => {
+			await withRollback(async (db) => {
+				const { send } = await setup(db);
+				const accountWithoutUser = crypto.randomUUID();
+
+				const res = await send("DELETE", `/api/posts/${postId}/like`, accountWithoutUser);
+
+				expect(res.status).toBe(404);
+				expect(await res.json()).toEqual({ message: "投稿が見つかりません。" });
+			});
+		},
+	);
+
 	test("ユーザーのないアカウントは、PUT なら 403、DELETE なら外すいいねがないので 204", async () => {
 		await withRollback(async (db) => {
 			const { send, post } = await setup(db);
