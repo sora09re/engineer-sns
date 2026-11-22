@@ -1,8 +1,8 @@
 import { Box, Button, Space, Textarea } from "@mantine/core";
-import { notifications } from "@mantine/notifications";
-import { IconCheck, IconX } from "@tabler/icons-react";
 import { useState } from "react";
 import { isValidPostContent } from "@engineer-sns/shared/rules";
+
+import { notifyMutation, useIsMounted } from "@/shared/lib";
 
 import { useCreatePost } from "../api/useCreatePost";
 
@@ -11,19 +11,13 @@ const wordings = {
 		label: "投稿内容",
 		placeholder: "今どうしてる？",
 		submit: "投稿する",
-		notificationId: "post-data",
-		pending: "投稿中...",
-		succeeded: "投稿に成功しました！",
-		failed: "投稿に失敗しました。",
+		notice: "投稿",
 	},
 	comment: {
 		label: undefined,
 		placeholder: "コメント",
 		submit: "コメントする",
-		notificationId: "fetchComment",
-		pending: "コメント中...",
-		succeeded: "コメントに成功しました！",
-		failed: "コメントに失敗しました。",
+		notice: "コメント",
 	},
 } as const;
 
@@ -35,45 +29,16 @@ interface NewPostFormProps {
 export const NewPostForm = ({ parentPostId, onPosted }: NewPostFormProps) => {
 	const [content, setContent] = useState("");
 	const createPost = useCreatePost();
+	const isMounted = useIsMounted();
 	const wording = parentPostId === undefined ? wordings.post : wordings.comment;
 
-	const submit = () => {
-		notifications.show({
-			id: wording.notificationId,
-			autoClose: false,
-			loading: true,
-			message: "しばらくお待ちください。",
-			title: wording.pending,
-			withCloseButton: false,
-		});
-
-		createPost.mutate(
-			{ content, parentPostId },
-			{
-				onSuccess: () => {
-					setContent("");
-					onPosted?.();
-					notifications.update({
-						id: wording.notificationId,
-						autoClose: 2000,
-						color: "green",
-						icon: <IconCheck size="1rem" />,
-						message: wording.succeeded,
-						title: "成功",
-					});
-				},
-				onError: () => {
-					notifications.update({
-						id: wording.notificationId,
-						autoClose: 2000,
-						color: "red",
-						icon: <IconX size="1rem" />,
-						message: wording.failed,
-						title: "エラー",
-					});
-				},
-			},
-		);
+	const submit = async () => {
+		const variables = { content, parentPostId };
+		const posted = await notifyMutation(createPost, variables, { label: wording.notice });
+		if (posted && isMounted()) {
+			setContent("");
+			onPosted?.();
+		}
 	};
 
 	return (

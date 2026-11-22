@@ -1,8 +1,8 @@
 import { Button } from "@mantine/core";
-import { notifications } from "@mantine/notifications";
-import { IconX } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+
+import { notifyMutation } from "@/shared/lib";
 
 import { isFollowingQuery } from "../api/isFollowingQuery";
 import { useToggleFollow } from "../api/useToggleFollow";
@@ -23,21 +23,8 @@ export const FollowButton = ({ userId }: FollowButtonProps) => {
 	}
 
 	const handleToggle = (follow: boolean) => {
-		toggleFollow.mutate(
-			{ follow, userId },
-			{
-				onError: () => {
-					notifications.show({
-						id: follow ? "follow-error" : "unfollow-error",
-						autoClose: 2000,
-						color: "red",
-						icon: <IconX size="1rem" />,
-						message: follow ? "フォローに失敗しました。" : "フォロー解除に失敗しました。",
-						title: "エラー",
-					});
-				},
-			},
-		);
+		const label = follow ? "フォロー" : "フォロー解除";
+		void notifyMutation(toggleFollow, { follow, userId }, { label, report: "failure" });
 	};
 
 	if (isFollowing) {

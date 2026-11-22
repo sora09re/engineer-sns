@@ -43,9 +43,10 @@ const frameworkPackages = ["hono", "drizzle-orm", "postgres", "jose", "@engineer
 export default defineConfig({
 	lint: {
 		ignorePatterns,
-		jsPlugins: ["./lint/no-comments.ts"],
+		jsPlugins: ["./lint/no-comments.ts", "./lint/no-manual-mutation-notice.ts"],
 		rules: {
 			"local/no-comments": "error",
+			"mutation-notice/no-manual": "error",
 		},
 		overrides: [
 			restrictImports(
