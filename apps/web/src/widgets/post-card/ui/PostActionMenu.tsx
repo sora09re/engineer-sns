@@ -1,7 +1,8 @@
 import { Box, Menu } from "@mantine/core";
-import { notifications } from "@mantine/notifications";
-import { IconCheck, IconDots, IconTrash, IconX } from "@tabler/icons-react";
+import { IconDots, IconTrash } from "@tabler/icons-react";
 import { useState } from "react";
+
+import { notifyMutation } from "@/shared/lib";
 
 import { useDeletePost } from "../api/useDeletePost";
 
@@ -15,36 +16,9 @@ export const PostActionMenu = ({ postId, onDeleted }: PostActionMenuProps) => {
 	const removePost = useDeletePost();
 
 	const deletePost = async () => {
-		notifications.show({
-			id: "deletePost",
-			autoClose: false,
-			loading: true,
-			message: "しばらくお待ちください。",
-			title: "削除中...",
-			withCloseButton: false,
-		});
-		try {
-			await removePost.mutateAsync(postId);
-		} catch {
-			notifications.update({
-				id: "deletePost",
-				autoClose: 2000,
-				color: "red",
-				icon: <IconX size="1rem" />,
-				message: "削除失敗しました。",
-				title: "エラー",
-			});
-			return;
+		if (await notifyMutation(removePost, postId, { label: "削除", success: "削除しました。" })) {
+			onDeleted?.();
 		}
-		notifications.update({
-			id: "deletePost",
-			autoClose: 2000,
-			color: "green",
-			icon: <IconCheck size="1rem" />,
-			message: "削除しました。",
-			title: "成功",
-		});
-		onDeleted?.();
 	};
 
 	return (

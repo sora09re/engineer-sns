@@ -1,10 +1,9 @@
 import { Box, Container, Paper, Title } from "@mantine/core";
-import { notifications } from "@mantine/notifications";
-import { IconX } from "@tabler/icons-react";
 import { useNavigate } from "@tanstack/react-router";
 
 import { UserValuesForm, type UserValuesSubmission } from "@/features/user-values-form";
 import { useCreateCurrentUser } from "../api/useCreateCurrentUser";
+import { notifyMutation } from "@/shared/lib";
 import type { Account } from "@engineer-sns/shared";
 
 interface NewUserFormProps {
@@ -15,20 +14,11 @@ export const NewUserForm = ({ account }: NewUserFormProps) => {
 	const navigate = useNavigate();
 	const createUser = useCreateCurrentUser();
 
-	const handleSubmit = (submission: UserValuesSubmission) => {
-		createUser.mutate(submission, {
-			onSuccess: () => navigate({ to: "/" }),
-			onError: () => {
-				notifications.show({
-					id: "create-user-error",
-					autoClose: 2000,
-					color: "red",
-					icon: <IconX size="1rem" />,
-					message: "ユーザー登録に失敗しました。ユーザーネームが重複している可能性があります。",
-					title: "エラー",
-				});
-			},
-		});
+	const handleSubmit = async (submission: UserValuesSubmission) => {
+		const notice = { label: "ユーザー登録", report: "failure" } as const;
+		if (await notifyMutation(createUser, submission, notice)) {
+			await navigate({ to: "/" });
+		}
 	};
 
 	return (
@@ -51,7 +41,9 @@ export const NewUserForm = ({ account }: NewUserFormProps) => {
 						withEmail
 						submitLabel="送信"
 						isSubmitting={createUser.isPending}
-						onSubmit={handleSubmit}
+						onSubmit={(submission) => {
+							void handleSubmit(submission);
+						}}
 					/>
 				</Box>
 			</Paper>

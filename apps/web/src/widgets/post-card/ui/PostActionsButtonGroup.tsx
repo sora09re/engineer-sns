@@ -1,11 +1,12 @@
 import { Group, Text, Tooltip, UnstyledButton } from "@mantine/core";
 import { useHover } from "@mantine/hooks";
-import { notifications } from "@mantine/notifications";
-import { IconMessageCircle2, IconThumbUp, IconX } from "@tabler/icons-react";
+import { IconMessageCircle2, IconThumbUp } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 
 import { useToggleLike } from "../api/useToggleLike";
 import type { PostType } from "@engineer-sns/shared";
+
+import { notifyMutation } from "@/shared/lib";
 
 interface PostActionsButtonGroupProps {
 	post: PostType;
@@ -27,21 +28,8 @@ export const PostActionsButtonGroup = ({ post }: PostActionsButtonGroupProps) =>
 		if (toggleLike.isPending) {
 			return;
 		}
-		toggleLike.mutate(
-			{ like: !isLikedByCurrentUser, postId: post.id },
-			{
-				onError: () => {
-					notifications.show({
-						id: "click-likes",
-						autoClose: 2000,
-						color: "red",
-						icon: <IconX size="1rem" />,
-						message: "いいねに失敗しました。",
-						title: "エラー",
-					});
-				},
-			},
-		);
+		const variables = { like: !isLikedByCurrentUser, postId: post.id };
+		void notifyMutation(toggleLike, variables, { label: "いいね", report: "failure" });
 	};
 
 	return (
