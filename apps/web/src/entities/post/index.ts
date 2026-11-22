@@ -1,6 +1,6 @@
 export {
 	commentsQuery,
-	postQuery,
+	postDetail,
 	searchPostsQuery,
 	timelinePostsQuery,
 	userPostsQuery,

@@ -1,8 +1,8 @@
 import { queryOptions } from "@tanstack/react-query";
 
-import type { LoginUser, ProfileType, User } from "@engineer-sns/shared";
+import type { LoginUser, User } from "@engineer-sns/shared";
 
-import { api, parse, parseOrNull, queryKeys } from "@/shared/api";
+import { api, defineDetailQuery, parse, queryKeys } from "@/shared/api";
 
 export const currentUserQuery = () => {
 	return queryOptions({
@@ -11,14 +11,10 @@ export const currentUserQuery = () => {
 	});
 };
 
-export const userProfileQuery = (userId: string) => {
-	return queryOptions({
-		queryKey: queryKeys.users.profile(userId),
-		queryFn: async (): Promise<ProfileType | null> => {
-			return parseOrNull(await api.api.users[":userId"].$get({ param: { userId } }));
-		},
-	});
-};
+export const userProfileDetail = defineDetailQuery({
+	queryKey: queryKeys.users.profile,
+	request: (userId) => api.api.users[":userId"].$get({ param: { userId } }),
+});
 
 export const searchUsersQuery = (keyword: string) => {
 	return queryOptions({

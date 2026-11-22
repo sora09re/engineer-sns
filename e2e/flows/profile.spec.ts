@@ -93,3 +93,12 @@ test("プロフィール画像をアップロードできる", async ({ page, cr
 		})
 		.toBe(32);
 });
+
+test("存在しないユーザーのプロフィールは 404 を表示する", async ({ page, createUser, signIn }) => {
+	await signIn(await createUser());
+	await page.goto("/profile/00000000-0000-0000-0000-000000000000");
+
+	await expect(page.getByText("ページが見つかりません。")).toBeVisible();
+	await page.getByRole("link", { name: "ホームへ戻る" }).click();
+	await expect(page).toHaveTitle("ホーム | Engineer-SNS");
+});

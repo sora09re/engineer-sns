@@ -2,7 +2,7 @@ import { queryOptions } from "@tanstack/react-query";
 
 import type { PostType } from "@engineer-sns/shared";
 
-import { api, parse, parseOrNull, queryKeys } from "@/shared/api";
+import { api, defineDetailQuery, parse, queryKeys } from "@/shared/api";
 
 export const timelinePostsQuery = () => {
 	return queryOptions({
@@ -11,14 +11,10 @@ export const timelinePostsQuery = () => {
 	});
 };
 
-export const postQuery = (postId: string) => {
-	return queryOptions({
-		queryKey: queryKeys.posts.detail(postId),
-		queryFn: async (): Promise<PostType | null> => {
-			return parseOrNull(await api.api.posts[":postId"].$get({ param: { postId } }));
-		},
-	});
-};
+export const postDetail = defineDetailQuery({
+	queryKey: queryKeys.posts.detail,
+	request: (postId) => api.api.posts[":postId"].$get({ param: { postId } }),
+});
 
 export const commentsQuery = (postId: string) => {
 	return queryOptions({

@@ -4,7 +4,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 
 import { FollowButton } from "@/features/toggle-follow";
 import { userPostsQuery } from "@/entities/post";
-import { ProfileHeader, ProfileStats, userProfileQuery, useCurrentUser } from "@/entities/user";
+import { ProfileHeader, ProfileStats, userProfileDetail, useCurrentUser } from "@/entities/user";
 import { Post } from "@/widgets/post-card";
 
 import { EditProfileModal } from "./EditProfileModal";
@@ -15,14 +15,10 @@ interface ProfilePageProps {
 
 export const ProfilePage = ({ userId }: ProfilePageProps) => {
 	const currentUser = useCurrentUser();
-	const { data: profile } = useSuspenseQuery(userProfileQuery(userId));
+	const profile = userProfileDetail.useData(userId);
 	const { data: posts } = useSuspenseQuery(userPostsQuery(userId));
 	const [isEditProfileOpened, editProfileModal] = useDisclosure(false);
 	const isCurrentUser = currentUser.id === userId;
-
-	if (!profile) {
-		return null;
-	}
 
 	return (
 		<>
