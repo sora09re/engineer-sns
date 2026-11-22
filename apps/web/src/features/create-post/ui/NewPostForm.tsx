@@ -6,71 +6,97 @@ import { isValidPostContent } from "@engineer-sns/shared/rules";
 
 import { useCreatePost } from "../api/useCreatePost";
 
+const wordings = {
+	post: {
+		label: "投稿内容",
+		placeholder: "今どうしてる？",
+		submit: "投稿する",
+		notificationId: "post-data",
+		pending: "投稿中...",
+		succeeded: "投稿に成功しました！",
+		failed: "投稿に失敗しました。",
+	},
+	comment: {
+		label: undefined,
+		placeholder: "コメント",
+		submit: "コメントする",
+		notificationId: "fetchComment",
+		pending: "コメント中...",
+		succeeded: "コメントに成功しました！",
+		failed: "コメントに失敗しました。",
+	},
+} as const;
+
 interface NewPostFormProps {
+	parentPostId?: string;
 	onPosted?: () => void;
 }
 
-export const NewPostForm = ({ onPosted }: NewPostFormProps) => {
-	const [postContent, setPostContent] = useState("");
+export const NewPostForm = ({ parentPostId, onPosted }: NewPostFormProps) => {
+	const [content, setContent] = useState("");
 	const createPost = useCreatePost();
+	const wording = parentPostId === undefined ? wordings.post : wordings.comment;
 
-	const fetchPost = () => {
+	const submit = () => {
 		notifications.show({
-			id: "post-data",
+			id: wording.notificationId,
 			autoClose: false,
 			loading: true,
 			message: "しばらくお待ちください。",
-			title: "投稿中...",
+			title: wording.pending,
 			withCloseButton: false,
 		});
 
-		createPost.mutate(postContent, {
-			onSuccess: () => {
-				setPostContent("");
-				onPosted?.();
-				notifications.update({
-					id: "post-data",
-					autoClose: 2000,
-					color: "green",
-					icon: <IconCheck size="1rem" />,
-					message: "投稿に成功しました！",
-					title: "成功",
-				});
+		createPost.mutate(
+			{ content, parentPostId },
+			{
+				onSuccess: () => {
+					setContent("");
+					onPosted?.();
+					notifications.update({
+						id: wording.notificationId,
+						autoClose: 2000,
+						color: "green",
+						icon: <IconCheck size="1rem" />,
+						message: wording.succeeded,
+						title: "成功",
+					});
+				},
+				onError: () => {
+					notifications.update({
+						id: wording.notificationId,
+						autoClose: 2000,
+						color: "red",
+						icon: <IconX size="1rem" />,
+						message: wording.failed,
+						title: "エラー",
+					});
+				},
 			},
-			onError: () => {
-				notifications.update({
-					id: "post-data",
-					autoClose: 2000,
-					color: "red",
-					icon: <IconX size="1rem" />,
-					message: "投稿に失敗しました。",
-					title: "エラー",
-				});
-			},
-		});
+		);
 	};
 
 	return (
 		<Box p="md" style={{ borderBottom: "1px solid #E9ECEF" }}>
 			<Textarea
-				placeholder="今どうしてる？"
-				label="投稿内容"
+				placeholder={wording.placeholder}
+				label={wording.label}
 				autosize
 				minRows={5}
 				maxRows={20}
-				value={postContent}
+				value={content}
 				onChange={(e) => {
-					return setPostContent(e.currentTarget.value);
+					return setContent(e.currentTarget.value);
 				}}
 			/>
 			<Space h="md" />
 			<Button
 				fullWidth
-				onClick={fetchPost}
+				onClick={submit}
 				loading={createPost.isPending}
-				disabled={!isValidPostContent(postContent)}
+				disabled={!isValidPostContent(content)}
 			>
-				投稿する
+				{wording.submit}
 			</Button>
 		</Box>
 	);
