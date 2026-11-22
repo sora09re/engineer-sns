@@ -1,3 +1,5 @@
+import { PROFILE_IMAGE_MAX_SIZE, PROFILE_IMAGE_MIME_TYPES } from "@engineer-sns/shared/rules";
+import { sql } from "drizzle-orm";
 import { describe, expect, test } from "vite-plus/test";
 
 import { setupApp } from "./app";
@@ -133,4 +135,20 @@ describe("POST /api/me/profile-image", () => {
 			});
 		},
 	);
+});
+
+describe("Storage の profile_image バケット", () => {
+	test("サイズの上限と画像形式が、共有している入力のルールと同じ", async () => {
+		await withRollback(async (db) => {
+			const [bucket] = await db.execute<{
+				file_size_limit: number;
+				allowed_mime_types: string[];
+			}>(sql`
+				select file_size_limit::int as file_size_limit, allowed_mime_types from storage.buckets where id = 'profile_image'
+			`);
+
+			expect(bucket.file_size_limit).toBe(PROFILE_IMAGE_MAX_SIZE);
+			expect([...bucket.allowed_mime_types].sort()).toEqual([...PROFILE_IMAGE_MIME_TYPES].sort());
+		});
+	});
 });

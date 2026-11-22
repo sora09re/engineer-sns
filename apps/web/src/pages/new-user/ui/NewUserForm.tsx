@@ -17,6 +17,7 @@ import { ImageUpload, useUserValues } from "@/entities/user";
 import { useCreateCurrentUser } from "../api/useCreateCurrentUser";
 import { useImageFile } from "@/shared/lib";
 import type { Account } from "@engineer-sns/shared";
+import { BIO_MAX_LENGTH, findUserValuesError } from "@engineer-sns/shared/rules";
 
 interface NewUserFormProps {
 	account: Account;
@@ -36,7 +37,7 @@ export const NewUserForm = ({ account }: NewUserFormProps) => {
 	});
 	const createUser = useCreateCurrentUser();
 
-	const isValid = [values.name, values.username, values.email].every((value) => value.trim());
+	const isValid = findUserValuesError(values) === null;
 
 	const handleSubmit = () => {
 		createUser.mutate(
@@ -115,7 +116,7 @@ export const NewUserForm = ({ account }: NewUserFormProps) => {
 								onChange={(e) => {
 									return updateValues({ bio: e.currentTarget.value });
 								}}
-								maxLength={160}
+								maxLength={BIO_MAX_LENGTH}
 							/>
 						</Grid.Col>
 						<Grid.Col style={{ marginTop: 5 }}>

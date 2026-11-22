@@ -66,6 +66,31 @@ test("プロフィールを編集すると、プロフィールとサイドバ�
 	await expect(page.getByRole("navigation").getByText("編集後の名前")).toBeVisible();
 });
 
+test("名前を空にすると、理由が表示されて保存できず、入れ直すと保存できる", async ({
+	page,
+	createUser,
+	signIn,
+}) => {
+	const user = await createUser();
+	await signIn(user);
+	await page.goto(`/profile/${user.id}`);
+
+	await page.getByRole("button", { name: "プロフィールを編集" }).click();
+	const dialog = page.getByRole("dialog", { name: "プロフィールを編集" });
+	const save = dialog.getByRole("button", { name: "保存" });
+	await expect(save).toBeEnabled();
+
+	await dialog.getByLabel("名前").fill("  ");
+	await expect(dialog.getByRole("alert")).toHaveText("名前を入力してください。");
+	await expect(save).toBeDisabled();
+
+	await dialog.getByLabel("名前").fill("入れ直した名前");
+	await expect(dialog.getByRole("alert")).toBeHidden();
+	await expect(save).toBeEnabled();
+	await save.click();
+	await expect(notification(page, "更新に成功しました！")).toBeVisible();
+});
+
 test("プロフィール画像をアップロードできる", async ({ page, createUser, signIn }) => {
 	const user = await createUser();
 	await signIn(user);

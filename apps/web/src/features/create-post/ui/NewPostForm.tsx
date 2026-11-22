@@ -2,6 +2,7 @@ import { Box, Button, Space, Textarea } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { useState } from "react";
+import { isValidPostContent } from "@engineer-sns/shared/rules";
 
 import { useCreatePost } from "../api/useCreatePost";
 
@@ -67,7 +68,7 @@ export const NewPostForm = ({ onPosted }: NewPostFormProps) => {
 				fullWidth
 				onClick={fetchPost}
 				loading={createPost.isPending}
-				disabled={postContent.trim() === ""}
+				disabled={!isValidPostContent(postContent)}
 			>
 				投稿する
 			</Button>
