@@ -5,7 +5,7 @@ import { z } from "zod";
 
 import type { HttpAppDeps } from "../http-app";
 import { requireAccount } from "../middleware/require-account";
-import { toUserResponse } from "../responses";
+import { toLoginUserResponse } from "../responses";
 
 const userValuesSchema = z.object({
 	name: z.string(),
@@ -55,21 +55,21 @@ export const meRoutes = ({ verifyAccessToken, useCases }: HttpAppDeps) => {
 	return new Hono()
 		.get("/", auth, async (c) => {
 			const user = await useCases.getCurrentUser(c.var.accountId);
-			return c.json(user && toUserResponse(user));
+			return c.json(user && toLoginUserResponse(user));
 		})
 		.post("/", auth, registerBody, async (c) => {
 			const user = await useCases.registerUser({
 				accountId: c.var.accountId,
 				values: toUserValues(c.req.valid("json")),
 			});
-			return c.json(toUserResponse(user), 201);
+			return c.json(toLoginUserResponse(user), 201);
 		})
 		.patch("/", auth, updateBody, async (c) => {
 			const user = await useCases.updateCurrentUser({
 				accountId: c.var.accountId,
 				values: toUserValues(c.req.valid("json")),
 			});
-			return c.json(toUserResponse(user));
+			return c.json(toLoginUserResponse(user));
 		})
 		.post("/profile-image", auth, profileImageBody, async (c) => {
 			const { content_type, size } = c.req.valid("json");

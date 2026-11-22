@@ -2,7 +2,6 @@ export type User = {
 	id: string;
 	bio?: string;
 	created_at: string;
-	email: string;
 	location?: string;
 	name: string;
 	profile_image_url?: string;
@@ -11,7 +10,11 @@ export type User = {
 	website?: string;
 };
 
+export type LoginUser = User & {
+	email: string;
+};
+
 export type UserValues = Pick<
-	User,
+	LoginUser,
 	"bio" | "email" | "location" | "name" | "profile_image_url" | "username" | "website"
 >;

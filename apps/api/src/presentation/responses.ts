@@ -1,4 +1,9 @@
-import type { PostType, ProfileType, User as UserResponse } from "@engineer-sns/shared";
+import type {
+	LoginUser as LoginUserResponse,
+	PostType,
+	ProfileType,
+	User as UserResponse,
+} from "@engineer-sns/shared";
 
 import type { PostSummary } from "../application/post-summary";
 import type { UserProfile } from "../application/user-profile";
@@ -9,7 +14,6 @@ export const toUserResponse = (user: User): UserResponse => {
 		id: user.id,
 		bio: user.bio,
 		created_at: user.createdAt.toISOString(),
-		email: user.email,
 		location: user.location,
 		name: user.name,
 		profile_image_url: user.profileImageUrl,
@@ -17,6 +21,10 @@ export const toUserResponse = (user: User): UserResponse => {
 		username: user.username,
 		website: user.website,
 	};
+};
+
+export const toLoginUserResponse = (user: User): LoginUserResponse => {
+	return { ...toUserResponse(user), email: user.email };
 };
 
 export const toPostType = ({ post, author, likes, commentCount }: PostSummary): PostType => {

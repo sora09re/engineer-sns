@@ -161,7 +161,6 @@ describe("GET /api/posts/timeline", () => {
 					users: {
 						id: me.id,
 						created_at: expect.any(String),
-						email: "me@example.com",
 						name: "me",
 						updated_at: expect.any(String),
 						username: "me",
