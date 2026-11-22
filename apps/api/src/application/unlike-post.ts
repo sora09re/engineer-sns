@@ -1,13 +1,9 @@
-import type { LikeRepository, PostRepository, UserRepository } from "./ports";
-import { requirePost } from "./require-login-user";
+import type { LikeRepository, PostRepository } from "./ports";
+import { requirePostEvenWithoutUser } from "./require-login-user";
 
-export const unlikePost = (deps: {
-	users: UserRepository;
-	likes: LikeRepository;
-	posts: PostRepository;
-}) => {
+export const unlikePost = (deps: { likes: LikeRepository; posts: PostRepository }) => {
 	return async (input: { accountId: string; postId: string }): Promise<void> => {
-		await requirePost(deps, input, { by: "account" });
+		await requirePostEvenWithoutUser(deps, input);
 		await deps.likes.remove({ postId: input.postId, userId: input.accountId });
 	};
 };

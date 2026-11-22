@@ -10,7 +10,7 @@ export const createComment = (deps: { users: UserRepository; posts: PostReposito
 		postId: string;
 		content: string;
 	}): Promise<PostSummary> => {
-		const parent = await requirePost(deps, input, { by: "loginUser" });
+		const parent = await requirePost(deps, input);
 		if (!isValidPostContent(input.content)) {
 			throw new ValidationError("本文を入力してください。");
 		}

@@ -1,45 +1,51 @@
-import type { Post } from "../domain/post";
+import { canDeletePost, type Post } from "../domain/post";
 import { ForbiddenError, NotFoundError } from "./errors";
 import type { PostRepository, UserRepository } from "./ports";
-
-type PostAuthorization = {
-	allows: (post: Post, accountId: string) => boolean;
-	message: string;
-};
-
-type Operator = { by: "loginUser" } | { by: "account" };
-
-type PostOperator = { by: "loginUser"; authorization?: PostAuthorization } | { by: "account" };
-
-const assertLoginUser = async (users: UserRepository, accountId: string, operator: Operator) => {
-	if (operator.by === "loginUser" && !(await users.exists(accountId))) {
-		throw new ForbiddenError("新規ユーザー登録が済んでいません。");
-	}
-};
 
 export const requireLoginUser = async (
 	deps: { users: UserRepository },
 	input: { accountId: string },
 ): Promise<void> => {
-	await assertLoginUser(deps.users, input.accountId, { by: "loginUser" });
+	if (!(await deps.users.exists(input.accountId))) {
+		throw new ForbiddenError("新規ユーザー登録が済んでいません。");
+	}
+};
+
+export const requirePostEvenWithoutUser = async (
+	deps: { posts: PostRepository },
+	input: { postId: string },
+): Promise<Post> => {
+	const post = await deps.posts.findById(input.postId);
+	if (!post) {
+		throw new NotFoundError("投稿が見つかりません。");
+	}
+	return post;
+};
+
+export const requireTargetUserEvenWithoutUser = async (
+	deps: { users: UserRepository },
+	input: { userId: string },
+): Promise<void> => {
+	if (!(await deps.users.exists(input.userId))) {
+		throw new NotFoundError("ユーザーが見つかりません。");
+	}
 };
 
 export const requirePost = async (
 	deps: { users: UserRepository; posts: PostRepository },
 	input: { accountId: string; postId: string },
-	operator: PostOperator,
 ): Promise<Post> => {
-	await assertLoginUser(deps.users, input.accountId, operator);
-	const post = await deps.posts.findById(input.postId);
-	if (!post) {
-		throw new NotFoundError("投稿が見つかりません。");
-	}
-	if (
-		operator.by === "loginUser" &&
-		operator.authorization &&
-		!operator.authorization.allows(post, input.accountId)
-	) {
-		throw new ForbiddenError(operator.authorization.message);
+	await requireLoginUser(deps, input);
+	return requirePostEvenWithoutUser(deps, input);
+};
+
+export const requireDeletablePost = async (
+	deps: { users: UserRepository; posts: PostRepository },
+	input: { accountId: string; postId: string },
+): Promise<Post> => {
+	const post = await requirePost(deps, input);
+	if (!canDeletePost(post, input.accountId)) {
+		throw new ForbiddenError("この投稿は削除できません。");
 	}
 	return post;
 };
@@ -47,10 +53,7 @@ export const requirePost = async (
 export const requireTargetUser = async (
 	deps: { users: UserRepository },
 	input: { accountId: string; userId: string },
-	operator: Operator,
 ): Promise<void> => {
-	await assertLoginUser(deps.users, input.accountId, operator);
-	if (!(await deps.users.exists(input.userId))) {
-		throw new NotFoundError("ユーザーが見つかりません。");
-	}
+	await requireLoginUser(deps, input);
+	await requireTargetUserEvenWithoutUser(deps, input);
 };

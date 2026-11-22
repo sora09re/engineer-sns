@@ -7,7 +7,7 @@ export const likePost = (deps: {
 	posts: PostRepository;
 }) => {
 	return async (input: { accountId: string; postId: string }): Promise<void> => {
-		await requirePost(deps, input, { by: "loginUser" });
+		await requirePost(deps, input);
 		await deps.likes.add({ postId: input.postId, userId: input.accountId });
 	};
 };

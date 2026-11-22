@@ -121,6 +121,21 @@ describe("相手のユーザーが存在しないとき", () => {
 		});
 	});
 
+	test.each(["GET", "DELETE"].flatMap((method) => ids.map((userId) => [method, userId] as const)))(
+		"ユーザーのないアカウントでも、%s /follow はユーザー（%s）が存在しなければ 404",
+		async (method, userId) => {
+			await withRollback(async (db) => {
+				const { send } = await setup(db);
+				const accountWithoutUser = crypto.randomUUID();
+
+				const res = await send(method, `/api/users/${userId}/follow`, accountWithoutUser);
+
+				expect(res.status).toBe(404);
+				expect(await res.json()).toEqual({ message: "ユーザーが見つかりません。" });
+			});
+		},
+	);
+
 	test.each(
 		["followers", "followees"].flatMap((list) => ids.map((userId) => [list, userId] as const)),
 	)("%s: ユーザー（%s）が存在しなければ空", async (list, userId) => {
