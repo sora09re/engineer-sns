@@ -1,7 +1,7 @@
 import { Center, Group, Image } from "@mantine/core";
 import { Dropzone } from "@mantine/dropzone";
 
-import { PROFILE_IMAGE_MIME_TYPES } from "../api/profile-image";
+import { PROFILE_IMAGE_MAX_SIZE, PROFILE_IMAGE_MIME_TYPES } from "@engineer-sns/shared/rules";
 
 interface ImageUploadProps {
 	imageUrl?: string;
@@ -32,8 +32,8 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ imageUrl, onDrop }) =>
 	return (
 		<Dropzone
 			onDrop={onDrop}
-			maxSize={3 * 1024 ** 2}
-			accept={PROFILE_IMAGE_MIME_TYPES}
+			maxSize={PROFILE_IMAGE_MAX_SIZE}
+			accept={[...PROFILE_IMAGE_MIME_TYPES]}
 			style={{ border: 0, height: 120, padding: 0, width: 120 }}
 		>
 			<Group

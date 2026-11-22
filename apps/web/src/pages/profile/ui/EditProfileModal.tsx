@@ -1,4 +1,4 @@
-import { Button, Center, Grid, Modal, Paper, TextInput, Textarea } from "@mantine/core";
+import { Button, Center, Grid, Modal, Paper, Text, TextInput, Textarea } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 
@@ -6,6 +6,7 @@ import { ImageUpload, useUserValues } from "@/entities/user";
 import { useUpdateCurrentUser } from "../api/useUpdateCurrentUser";
 import { useImageFile } from "@/shared/lib";
 import type { LoginUser } from "@engineer-sns/shared";
+import { BIO_MAX_LENGTH, findUserValuesError } from "@engineer-sns/shared/rules";
 
 interface EditProfileModalProps {
 	currentUser: LoginUser;
@@ -26,6 +27,7 @@ export const EditProfileModal = ({ currentUser, opened, onClose }: EditProfileMo
 	});
 	const { clearImage, imageFile, previewUrl, selectImage } = useImageFile();
 	const updateUser = useUpdateCurrentUser();
+	const valuesError = findUserValuesError(values);
 
 	const editProfile = () => {
 		notifications.show({
@@ -99,7 +101,7 @@ export const EditProfileModal = ({ currentUser, opened, onClose }: EditProfileMo
 							onChange={(e) => {
 								return updateValues({ bio: e.currentTarget.value });
 							}}
-							maxLength={160}
+							maxLength={BIO_MAX_LENGTH}
 							rows={4}
 							mt={marginTopPx}
 						/>
@@ -122,7 +124,17 @@ export const EditProfileModal = ({ currentUser, opened, onClose }: EditProfileMo
 							mt={marginTopPx}
 						/>
 
-						<Button onClick={editProfile} loading={updateUser.isPending} mt={marginTopPx}>
+						{valuesError && (
+							<Text c="red" size="sm" mt={marginTopPx} role="alert">
+								{valuesError}
+							</Text>
+						)}
+						<Button
+							onClick={editProfile}
+							loading={updateUser.isPending}
+							disabled={valuesError !== null}
+							mt={marginTopPx}
+						>
 							保存
 						</Button>
 					</Grid.Col>
