@@ -8,23 +8,6 @@ import type { UserValues } from "@engineer-sns/shared";
 import { UserValuesForm } from "./UserValuesForm";
 
 beforeAll(() => {
-	window.matchMedia ??= (query: string) => {
-		return {
-			matches: false,
-			media: query,
-			onchange: null,
-			addEventListener: () => {},
-			removeEventListener: () => {},
-			addListener: () => {},
-			removeListener: () => {},
-			dispatchEvent: () => false,
-		};
-	};
-	globalThis.ResizeObserver ??= class {
-		observe() {}
-		unobserve() {}
-		disconnect() {}
-	};
 	URL.createObjectURL = () => "blob:preview";
 	URL.revokeObjectURL = () => {};
 });

@@ -1,6 +1,7 @@
 import { Modal, Paper } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
+import { useState } from "react";
 
 import { UserValuesForm, type UserValuesSubmission } from "@/features/user-values-form";
 import { useUpdateCurrentUser } from "../api/useUpdateCurrentUser";
@@ -14,6 +15,14 @@ interface EditProfileModalProps {
 
 export const EditProfileModal = ({ currentUser, opened, onClose }: EditProfileModalProps) => {
 	const updateUser = useUpdateCurrentUser();
+	const [openCount, setOpenCount] = useState(opened ? 1 : 0);
+	const [wasOpened, setWasOpened] = useState(opened);
+	if (opened !== wasOpened) {
+		setWasOpened(opened);
+		if (opened) {
+			setOpenCount(openCount + 1);
+		}
+	}
 
 	const editProfile = (submission: UserValuesSubmission) => {
 		notifications.show({
@@ -54,6 +63,7 @@ export const EditProfileModal = ({ currentUser, opened, onClose }: EditProfileMo
 		<Modal opened={opened} onClose={onClose} title="プロフィールを編集" withCloseButton>
 			<Paper p="md">
 				<UserValuesForm
+					key={openCount}
 					initialValues={{
 						bio: currentUser.bio ?? "",
 						email: currentUser.email,
