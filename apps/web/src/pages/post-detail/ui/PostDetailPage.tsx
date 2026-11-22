@@ -3,10 +3,9 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useRouter } from "@tanstack/react-router";
 
 import { commentsQuery, postDetail } from "@/entities/post";
+import { NewPostForm } from "@/features/create-post";
 import { PreviousPageHeader } from "@/shared/ui";
 import { Post } from "@/widgets/post-card";
-
-import { CommentForm } from "./CommentForm";
 
 interface PostDetailPageProps {
 	postId: string;
@@ -30,7 +29,7 @@ export const PostDetailPage = ({ postId }: PostDetailPageProps) => {
 			<PreviousPageHeader />
 			<Post post={post} onDeleted={leave} />
 			<Space h="md" />
-			<CommentForm postId={postId} />
+			<NewPostForm parentPostId={postId} />
 			{comments.map((comment) => {
 				return <Post key={comment.id} post={comment} />;
 			})}
