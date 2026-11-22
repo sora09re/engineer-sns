@@ -1,7 +1,7 @@
 import { MantineProvider } from "@mantine/core";
 import { Notifications, notifications } from "@mantine/notifications";
 import { act, render, screen, waitFor } from "@testing-library/react";
-import { afterEach, beforeAll, describe, expect, it } from "vite-plus/test";
+import { afterEach, describe, expect, it } from "vite-plus/test";
 
 import { ApiError } from "../api/response";
 import { notifyMutation } from "./notify-mutation";
@@ -32,21 +32,6 @@ const mutationOf = (result: Promise<void>) => {
 const notice = (text: string) => {
 	return screen.findByText(text);
 };
-
-beforeAll(() => {
-	window.matchMedia ??= (query: string) => {
-		return {
-			matches: false,
-			media: query,
-			onchange: null,
-			addEventListener: () => {},
-			removeEventListener: () => {},
-			addListener: () => {},
-			removeListener: () => {},
-			dispatchEvent: () => false,
-		};
-	};
-});
 
 const setup = () => {
 	render(
