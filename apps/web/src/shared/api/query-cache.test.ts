@@ -91,13 +91,13 @@ describe.each([
 ])("%s", (_name, after) => {
 	it("フォロー・ユーザー・投稿のクエリを古くし、表示中のものを取り直す", async () => {
 		const { queryClient, cached } = setup();
-		const isFollowing = await cached(queryKeys.follows.isFollowing("u1"), { active: true });
+		const followers = await cached(queryKeys.follows.followers("u1"), { active: true });
 		const profile = await cached(queryKeys.users.profile("u1"), { active: true });
 		const timeline = await cached(queryKeys.posts.timeline(), { active: true });
 
 		await after(queryClient);
 
-		expect(isFollowing.refetched()).toBe(true);
+		expect(followers.refetched()).toBe(true);
 		expect(profile.refetched()).toBe(true);
 		expect(timeline.refetched()).toBe(true);
 	});

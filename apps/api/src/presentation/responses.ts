@@ -3,10 +3,12 @@ import type {
 	PostType,
 	ProfileType,
 	User as UserResponse,
+	UserView as UserViewResponse,
 } from "@engineer-sns/shared";
 
 import type { PostSummary } from "../application/post-summary";
 import type { UserProfile } from "../application/user-profile";
+import type { UserView } from "../application/user-view";
 import type { User } from "../domain/user";
 
 export const toUserResponse = (user: User): UserResponse => {
@@ -43,9 +45,17 @@ export const toPostType = (summary: PostSummary): PostType => {
 	};
 };
 
+export const toUserViewResponse = (view: UserView): UserViewResponse => {
+	return {
+		...toUserResponse(view.user),
+		can_follow: view.canFollow,
+		is_following: view.isFollowing,
+	};
+};
+
 export const toProfileType = (profile: UserProfile): ProfileType => {
 	return {
-		...toUserResponse(profile.user),
+		...toUserViewResponse(profile),
 		follower_count: profile.followerCount,
 		followee_count: profile.followeeCount,
 	};

@@ -23,7 +23,6 @@ export const queryKeys = {
 		all: follows,
 		followers: (userId: string) => [...follows, "followers", userId] as const,
 		followees: (userId: string) => [...follows, "followees", userId] as const,
-		isFollowing: (userId: string) => [...follows, "isFollowing", userId] as const,
 	},
 };
 

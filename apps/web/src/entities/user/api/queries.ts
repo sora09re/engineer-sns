@@ -1,6 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
 
-import type { LoginUser, User } from "@engineer-sns/shared";
+import type { LoginUser, UserView } from "@engineer-sns/shared";
 
 import { api, defineDetailQuery, parse, queryKeys } from "@/shared/api";
 
@@ -19,7 +19,7 @@ export const userProfileDetail = defineDetailQuery({
 export const searchUsersQuery = (keyword: string) => {
 	return queryOptions({
 		queryKey: queryKeys.users.search(keyword),
-		queryFn: async (): Promise<User[]> => {
+		queryFn: async (): Promise<UserView[]> => {
 			return parse(await api.api.users.search.$get({ query: { q: keyword } }));
 		},
 	});
@@ -28,7 +28,7 @@ export const searchUsersQuery = (keyword: string) => {
 export const followersQuery = (userId: string) => {
 	return queryOptions({
 		queryKey: queryKeys.follows.followers(userId),
-		queryFn: async (): Promise<User[]> => {
+		queryFn: async (): Promise<UserView[]> => {
 			return parse(await api.api.users[":userId"].followers.$get({ param: { userId } }));
 		},
 	});
@@ -37,7 +37,7 @@ export const followersQuery = (userId: string) => {
 export const followeesQuery = (userId: string) => {
 	return queryOptions({
 		queryKey: queryKeys.follows.followees(userId),
-		queryFn: async (): Promise<User[]> => {
+		queryFn: async (): Promise<UserView[]> => {
 			return parse(await api.api.users[":userId"].followees.$get({ param: { userId } }));
 		},
 	});

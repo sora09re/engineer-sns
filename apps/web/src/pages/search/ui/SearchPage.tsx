@@ -5,12 +5,11 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
 import { searchPostsQuery } from "@/entities/post";
-import { searchUsersQuery, useCurrentUser } from "@/entities/user";
+import { searchUsersQuery } from "@/entities/user";
 import { Post } from "@/widgets/post-card";
 import { UserItem } from "@/widgets/user-card";
 
 export const SearchPage = () => {
-	const currentUser = useCurrentUser();
 	const [keyword, setKeyword] = useState("");
 	const [debouncedKeyword] = useDebouncedValue(keyword.trim(), 300);
 
@@ -56,7 +55,7 @@ export const SearchPage = () => {
 						</Center>
 					) : (
 						searchUserResults?.map((user) => {
-							return <UserItem key={user.id} propsUser={user} currentUserId={currentUser.id} />;
+							return <UserItem key={user.id} propsUser={user} />;
 						})
 					)}
 				</Tabs.Panel>

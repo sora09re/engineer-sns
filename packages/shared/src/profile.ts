@@ -1,6 +1,6 @@
-import type { User } from "./user";
+import type { UserView } from "./user";
 
-export type ProfileType = User & {
+export type ProfileType = UserView & {
 	follower_count: number;
 	followee_count: number;
 };

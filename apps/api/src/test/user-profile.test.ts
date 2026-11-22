@@ -26,7 +26,33 @@ describe("GET /api/users/:userId", () => {
 				username: "target",
 				follower_count: 2,
 				followee_count: 1,
+				is_following: true,
+				can_follow: true,
 			});
+		});
+	});
+
+	test("フォローしていない相手なら is_following は false", async () => {
+		await withRollback(async (db) => {
+			const { get } = await setupApp(db);
+			const me = await createUser(db, "me");
+			const target = await createUser(db, "target");
+			await follow(db, target.id, me.id);
+
+			const res = await get(`/api/users/${target.id}`, me.id);
+
+			expect(await res.json()).toMatchObject({ is_following: false, can_follow: true });
+		});
+	});
+
+	test("自分のプロフィールは、フォローできない", async () => {
+		await withRollback(async (db) => {
+			const { get } = await setupApp(db);
+			const me = await createUser(db, "me");
+
+			const res = await get(`/api/users/${me.id}`, me.id);
+
+			expect(await res.json()).toMatchObject({ is_following: false, can_follow: false });
 		});
 	});
 

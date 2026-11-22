@@ -1,4 +1,4 @@
-import type { User } from "@engineer-sns/shared";
+import type { ProfileType, UserView } from "@engineer-sns/shared";
 import { describe, expect, test } from "vite-plus/test";
 
 import { setupApp } from "./app";
@@ -10,12 +10,12 @@ const setup = async (db: Parameters<typeof setupApp>[0]) => {
 	const me = await createUser(db, "me");
 	const target = await createUser(db, "target");
 	const isFollowing = async (accountId: string, userId: string) => {
-		const res = await app.get(`/api/users/${userId}/follow`, accountId);
-		return ((await res.json()) as { following: boolean }).following;
+		const res = await app.get(`/api/users/${userId}`, accountId);
+		return ((await res.json()) as ProfileType).is_following;
 	};
 	const usernames = async (path: string) => {
 		const res = await app.get(path, me.id);
-		return ((await res.json()) as User[]).map((user) => user.username);
+		return ((await res.json()) as UserView[]).map((user) => user.username);
 	};
 	return { ...app, me, target, isFollowing, usernames };
 };
@@ -108,27 +108,28 @@ describe("DELETE /api/users/:userId/follow", () => {
 describe("相手のユーザーが存在しないとき", () => {
 	const ids = ["00000000-0000-0000-0000-000000000000", "not-a-uuid"];
 
-	test.each(
-		["GET", "PUT", "DELETE"].flatMap((method) => ids.map((userId) => [method, userId] as const)),
-	)("%s /follow: ユーザー（%s）が存在しなければ 404", async (method, userId) => {
-		await withRollback(async (db) => {
-			const { send, me } = await setup(db);
-
-			const res = await send(method, `/api/users/${userId}/follow`, me.id);
-
-			expect(res.status).toBe(404);
-			expect(await res.json()).toEqual({ message: "ユーザーが見つかりません。" });
-		});
-	});
-
-	test.each(["GET", "DELETE"].flatMap((method) => ids.map((userId) => [method, userId] as const)))(
-		"ユーザーのないアカウントでも、%s /follow はユーザー（%s）が存在しなければ 404",
+	test.each(["PUT", "DELETE"].flatMap((method) => ids.map((userId) => [method, userId] as const)))(
+		"%s /follow: ユーザー（%s）が存在しなければ 404",
 		async (method, userId) => {
+			await withRollback(async (db) => {
+				const { send, me } = await setup(db);
+
+				const res = await send(method, `/api/users/${userId}/follow`, me.id);
+
+				expect(res.status).toBe(404);
+				expect(await res.json()).toEqual({ message: "ユーザーが見つかりません。" });
+			});
+		},
+	);
+
+	test.each(ids)(
+		"ユーザーのないアカウントでも、DELETE /follow はユーザー（%s）が存在しなければ 404",
+		async (userId) => {
 			await withRollback(async (db) => {
 				const { send } = await setup(db);
 				const accountWithoutUser = crypto.randomUUID();
 
-				const res = await send(method, `/api/users/${userId}/follow`, accountWithoutUser);
+				const res = await send("DELETE", `/api/users/${userId}/follow`, accountWithoutUser);
 
 				expect(res.status).toBe(404);
 				expect(await res.json()).toEqual({ message: "ユーザーが見つかりません。" });
@@ -206,9 +207,45 @@ describe("一覧のユーザー", () => {
 			await follow(db, me.id, target.id);
 
 			for (const path of [`/api/users/${target.id}/followers`, `/api/users/${me.id}/followees`]) {
-				const [user] = (await (await get(path, me.id)).json()) as User[];
+				const [user] = (await (await get(path, me.id)).json()) as UserView[];
 				expect(user).not.toHaveProperty("email");
 			}
+		});
+	});
+});
+
+describe("一覧のユーザーの、ログイン中のユーザーから見た形", () => {
+	test("フォローしているかと、フォローできるかを返す", async () => {
+		await withRollback(async (db) => {
+			const { get, me, target } = await setup(db);
+			const stranger = await createUser(db, "stranger");
+			await follow(db, me.id, target.id);
+			await follow(db, target.id, me.id);
+			await follow(db, stranger.id, me.id);
+
+			const res = await get(`/api/users/${me.id}/followers`, me.id);
+			const followers = (await res.json()) as UserView[];
+
+			expect(
+				followers.map(({ username, is_following, can_follow }) => {
+					return { username, is_following, can_follow };
+				}),
+			).toEqual([
+				{ username: "stranger", is_following: false, can_follow: true },
+				{ username: "target", is_following: true, can_follow: true },
+			]);
+		});
+	});
+
+	test("フォロー一覧に自分が入っていれば、自分はフォローできない", async () => {
+		await withRollback(async (db) => {
+			const { get, me, target } = await setup(db);
+			await follow(db, target.id, me.id);
+
+			const res = await get(`/api/users/${target.id}/followees`, me.id);
+			const [user] = (await res.json()) as UserView[];
+
+			expect(user).toMatchObject({ id: me.id, is_following: false, can_follow: false });
 		});
 	});
 });

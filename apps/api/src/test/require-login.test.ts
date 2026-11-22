@@ -17,7 +17,6 @@ describe("ログインが必要なエンドポイント", () => {
 		["DELETE", `/api/posts/${id}`],
 		["PUT", `/api/posts/${id}/like`],
 		["DELETE", `/api/posts/${id}/like`],
-		["GET", `/api/users/${id}/follow`],
 		["PUT", `/api/users/${id}/follow`],
 		["DELETE", `/api/users/${id}/follow`],
 		["GET", `/api/users/${id}/followers`],

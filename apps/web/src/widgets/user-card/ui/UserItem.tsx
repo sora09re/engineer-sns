@@ -2,16 +2,14 @@ import { Avatar, Box, Flex, Space, Text } from "@mantine/core";
 import { Link, useNavigate } from "@tanstack/react-router";
 
 import { FollowButton } from "@/features/toggle-follow";
-import type { User } from "@engineer-sns/shared";
+import type { UserView } from "@engineer-sns/shared";
 
 type UserItemProps = {
-	currentUserId: string;
-	propsUser: User;
+	propsUser: UserView;
 };
 
-export const UserItem = ({ currentUserId, propsUser }: UserItemProps) => {
+export const UserItem = ({ propsUser }: UserItemProps) => {
 	const navigate = useNavigate();
-	const isCurrentUser = currentUserId === propsUser.id;
 
 	return (
 		<Box
@@ -41,7 +39,7 @@ export const UserItem = ({ currentUserId, propsUser }: UserItemProps) => {
 							</Link>
 							<Text c="dimmed">@{propsUser.username}</Text>
 						</Box>
-						{isCurrentUser ? <></> : <FollowButton userId={propsUser.id} />}
+						<FollowButton user={propsUser} />
 					</Flex>
 					<Text variant="h5">{propsUser.bio}</Text>
 				</Box>

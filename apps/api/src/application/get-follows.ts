@@ -1,14 +1,19 @@
-import type { User } from "../domain/user";
-import type { UserRepository } from "./ports";
+import type { FollowRepository, UserRepository } from "./ports";
+import { type UserView, viewUsers } from "./user-view";
 
-export const getFollowers = (deps: { users: UserRepository }) => {
-	return (userId: string): Promise<User[]> => {
-		return deps.users.findFollowersOf(userId);
+type Deps = { users: UserRepository; follows: FollowRepository };
+type Input = { accountId: string; userId: string };
+
+export const getFollowers = (deps: Deps) => {
+	return async (input: Input): Promise<UserView[]> => {
+		const users = await deps.users.findFollowersOf(input.userId);
+		return viewUsers(deps, { accountId: input.accountId, users });
 	};
 };
 
-export const getFollowees = (deps: { users: UserRepository }) => {
-	return (userId: string): Promise<User[]> => {
-		return deps.users.findFolloweesOf(userId);
+export const getFollowees = (deps: Deps) => {
+	return async (input: Input): Promise<UserView[]> => {
+		const users = await deps.users.findFolloweesOf(input.userId);
+		return viewUsers(deps, { accountId: input.accountId, users });
 	};
 };

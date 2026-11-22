@@ -1,5 +1,5 @@
 import { insertRows } from "../support/supabase";
-import { expect, postCard, test } from "../support/test";
+import { expect, postCard, respondNotFoundFrom, test } from "../support/test";
 
 test("フォローするとフォロワー数とタイムラインに反映され、解除すると戻る", async ({
 	page,
@@ -56,4 +56,34 @@ test("キーワードで投稿とアカウントを検索できる", async ({ pa
 	await page.getByRole("tab", { name: "アカウント" }).click();
 	await expect(page.getByRole("tabpanel").getByText(`@${author.username}`)).toBeVisible();
 	await expect(page.getByRole("tabpanel").getByText(`@${me.username}`)).toHaveCount(0);
+});
+
+test("存在しないユーザーのフォロー一覧は、空のタブではなく見つからないと表示する", async ({
+	page,
+	createUser,
+	signIn,
+}) => {
+	await signIn(await createUser());
+	await page.goto("/profile/00000000-0000-0000-0000-000000000000/follows");
+
+	await expect(page.getByText("ページが見つかりません。")).toBeVisible();
+	await expect(page.getByRole("tab", { name: "フォロワー" })).toHaveCount(0);
+});
+
+test("フォロー一覧を開いたあとにユーザーを取り直して 404 になると、見つからないと表示する", async ({
+	page,
+	createUser,
+	signIn,
+}) => {
+	const me = await createUser();
+	const other = await createUser();
+	await insertRows("follows", [{ follower_id: other.id, followee_id: me.id }]);
+	await signIn(me);
+	await page.goto(`/profile/${me.id}/follows`);
+	await expect(page.getByRole("tabpanel").getByText(`@${other.username}`)).toBeVisible();
+
+	await respondNotFoundFrom(page, `/api/users/${me.id}`);
+	await page.getByRole("tabpanel").getByRole("button", { name: "フォロー", exact: true }).click();
+
+	await expect(page.getByText("ページが見つかりません。")).toBeVisible();
 });
