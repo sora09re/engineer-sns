@@ -1,8 +1,8 @@
 import { Box, Button, Space, Textarea } from "@mantine/core";
-import { notifications } from "@mantine/notifications";
-import { IconCheck, IconX } from "@tabler/icons-react";
 import { useState } from "react";
 import { isValidPostContent } from "@engineer-sns/shared/rules";
+
+import { notifyMutation } from "@/shared/lib";
 
 import { useCreatePost } from "../api/useCreatePost";
 
@@ -14,40 +14,11 @@ export const NewPostForm = ({ onPosted }: NewPostFormProps) => {
 	const [postContent, setPostContent] = useState("");
 	const createPost = useCreatePost();
 
-	const fetchPost = () => {
-		notifications.show({
-			id: "post-data",
-			autoClose: false,
-			loading: true,
-			message: "しばらくお待ちください。",
-			title: "投稿中...",
-			withCloseButton: false,
-		});
-
-		createPost.mutate(postContent, {
-			onSuccess: () => {
-				setPostContent("");
-				onPosted?.();
-				notifications.update({
-					id: "post-data",
-					autoClose: 2000,
-					color: "green",
-					icon: <IconCheck size="1rem" />,
-					message: "投稿に成功しました！",
-					title: "成功",
-				});
-			},
-			onError: () => {
-				notifications.update({
-					id: "post-data",
-					autoClose: 2000,
-					color: "red",
-					icon: <IconX size="1rem" />,
-					message: "投稿に失敗しました。",
-					title: "エラー",
-				});
-			},
-		});
+	const fetchPost = async () => {
+		if (await notifyMutation(createPost, postContent, { label: "投稿" })) {
+			setPostContent("");
+			onPosted?.();
+		}
 	};
 
 	return (

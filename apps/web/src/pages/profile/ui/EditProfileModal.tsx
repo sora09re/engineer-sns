@@ -1,10 +1,8 @@
 import { Button, Center, Grid, Modal, Paper, Text, TextInput, Textarea } from "@mantine/core";
-import { notifications } from "@mantine/notifications";
-import { IconCheck, IconX } from "@tabler/icons-react";
 
 import { ImageUpload, useUserValues } from "@/entities/user";
 import { useUpdateCurrentUser } from "../api/useUpdateCurrentUser";
-import { useImageFile } from "@/shared/lib";
+import { notifyMutation, useImageFile } from "@/shared/lib";
 import type { LoginUser } from "@engineer-sns/shared";
 import { BIO_MAX_LENGTH, findUserValuesError } from "@engineer-sns/shared/rules";
 
@@ -29,43 +27,11 @@ export const EditProfileModal = ({ currentUser, opened, onClose }: EditProfileMo
 	const updateUser = useUpdateCurrentUser();
 	const valuesError = findUserValuesError(values);
 
-	const editProfile = () => {
-		notifications.show({
-			id: "updateProfile",
-			autoClose: false,
-			loading: true,
-			message: "しばらくお待ちください。",
-			title: "更新中...",
-			withCloseButton: false,
-		});
-
-		updateUser.mutate(
-			{ imageFile, values },
-			{
-				onSuccess: () => {
-					onClose();
-					clearImage();
-					notifications.update({
-						id: "updateProfile",
-						autoClose: 2000,
-						color: "green",
-						icon: <IconCheck size="1rem" />,
-						message: "更新に成功しました！",
-						title: "成功",
-					});
-				},
-				onError: () => {
-					notifications.update({
-						id: "updateProfile",
-						autoClose: 2000,
-						color: "red",
-						icon: <IconX size="1rem" />,
-						message: "更新に失敗しました。",
-						title: "エラー",
-					});
-				},
-			},
-		);
+	const editProfile = async () => {
+		if (await notifyMutation(updateUser, { imageFile, values }, { label: "更新" })) {
+			onClose();
+			clearImage();
+		}
 	};
 
 	return (

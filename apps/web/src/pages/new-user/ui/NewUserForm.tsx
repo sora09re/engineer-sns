@@ -9,13 +9,11 @@ import {
 	Textarea,
 	Title,
 } from "@mantine/core";
-import { notifications } from "@mantine/notifications";
-import { IconX } from "@tabler/icons-react";
 import { useNavigate } from "@tanstack/react-router";
 
 import { ImageUpload, useUserValues } from "@/entities/user";
 import { useCreateCurrentUser } from "../api/useCreateCurrentUser";
-import { useImageFile } from "@/shared/lib";
+import { notifyMutation, useImageFile } from "@/shared/lib";
 import type { Account } from "@engineer-sns/shared";
 import { BIO_MAX_LENGTH, findUserValuesError } from "@engineer-sns/shared/rules";
 
@@ -39,23 +37,11 @@ export const NewUserForm = ({ account }: NewUserFormProps) => {
 
 	const isValid = findUserValuesError(values) === null;
 
-	const handleSubmit = () => {
-		createUser.mutate(
-			{ imageFile, values },
-			{
-				onSuccess: () => navigate({ to: "/" }),
-				onError: () => {
-					notifications.show({
-						id: "create-user-error",
-						autoClose: 2000,
-						color: "red",
-						icon: <IconX size="1rem" />,
-						message: "ユーザー登録に失敗しました。ユーザーネームが重複している可能性があります。",
-						title: "エラー",
-					});
-				},
-			},
-		);
+	const handleSubmit = async () => {
+		const notice = { label: "ユーザー登録", report: "failure" } as const;
+		if (await notifyMutation(createUser, { imageFile, values }, notice)) {
+			await navigate({ to: "/" });
+		}
 	};
 
 	return (
@@ -67,7 +53,7 @@ export const NewUserForm = ({ account }: NewUserFormProps) => {
 				<form
 					onSubmit={(event) => {
 						event.preventDefault();
-						handleSubmit();
+						void handleSubmit();
 					}}
 					style={{ marginTop: 15 }}
 				>

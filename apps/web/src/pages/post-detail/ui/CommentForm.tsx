@@ -1,8 +1,8 @@
 import { Box, Button, Space, Textarea } from "@mantine/core";
-import { notifications } from "@mantine/notifications";
-import { IconCheck, IconX } from "@tabler/icons-react";
 import { useState } from "react";
 import { isValidPostContent } from "@engineer-sns/shared/rules";
+
+import { notifyMutation } from "@/shared/lib";
 
 import { useCreateComment } from "../api/useCreateComment";
 
@@ -14,42 +14,11 @@ export const CommentForm = ({ postId }: CommentFormProps) => {
 	const [commentContent, setCommentContent] = useState("");
 	const createComment = useCreateComment();
 
-	const fetchComment = () => {
-		notifications.show({
-			id: "fetchComment",
-			autoClose: false,
-			loading: true,
-			message: "しばらくお待ちください。",
-			title: "コメント中...",
-			withCloseButton: false,
-		});
-
-		createComment.mutate(
-			{ content: commentContent, postId },
-			{
-				onSuccess: () => {
-					setCommentContent("");
-					notifications.update({
-						id: "fetchComment",
-						autoClose: 2000,
-						color: "green",
-						icon: <IconCheck size="1rem" />,
-						message: "コメントに成功しました！",
-						title: "成功",
-					});
-				},
-				onError: () => {
-					notifications.update({
-						id: "fetchComment",
-						autoClose: 2000,
-						color: "red",
-						icon: <IconX size="1rem" />,
-						message: "コメントに失敗しました。",
-						title: "エラー",
-					});
-				},
-			},
-		);
+	const fetchComment = async () => {
+		const variables = { content: commentContent, postId };
+		if (await notifyMutation(createComment, variables, { label: "コメント" })) {
+			setCommentContent("");
+		}
 	};
 
 	return (
