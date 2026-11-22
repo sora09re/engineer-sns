@@ -2,7 +2,12 @@ import type { UserValues } from "@engineer-sns/shared";
 
 import { api, parse } from "@/shared/api";
 
-export const uploadProfileImage = async (file: File): Promise<string> => {
+export type UserValuesSubmission = {
+	imageFile: File | null;
+	values: UserValues;
+};
+
+const uploadProfileImage = async (file: File): Promise<string> => {
 	const target = await parse(
 		await api.api.me["profile-image"].$post({
 			json: { content_type: file.type, size: file.size },
@@ -19,7 +24,10 @@ export const uploadProfileImage = async (file: File): Promise<string> => {
 	return target.public_url;
 };
 
-export const withUploadedImage = async (values: UserValues, imageFile: File | null) => {
+export const toUserValuesBody = async ({
+	imageFile,
+	values,
+}: UserValuesSubmission): Promise<UserValues> => {
 	if (!imageFile) {
 		return values;
 	}

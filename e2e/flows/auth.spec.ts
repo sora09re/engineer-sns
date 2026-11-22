@@ -20,11 +20,16 @@ test("ユーザーのないアカウントは新規ユーザー登録をして�
 	await expect(page).toHaveURL(/\/auth\/new-user$/);
 	await expect(page).toHaveTitle("ユーザー新規登録 | Engineer-SNS");
 
+	const submit = page.getByRole("button", { name: "送信" });
+	await expect(page.getByRole("alert")).toHaveText("名前を入力してください。");
+	await expect(submit).toBeDisabled();
+
 	await page.getByLabel("名前").fill("新規 太郎");
 	await page.getByLabel("ユーザーネーム").fill(user.username);
+	await expect(page.getByRole("alert")).toBeHidden();
 	await page.getByLabel("メールアドレス").fill(user.email);
 	await page.getByLabel("自己紹介").fill("はじめまして");
-	await page.getByRole("button", { name: "送信" }).click();
+	await submit.click();
 
 	await expect(page).toHaveURL(/\/$/);
 	await expect(page).toHaveTitle("ホーム | Engineer-SNS");

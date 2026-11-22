@@ -1,15 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import type { UserValues } from "@engineer-sns/shared";
-
-import { withUploadedImage } from "@/entities/user";
+import { toUserValuesBody, type UserValuesSubmission } from "@/features/user-values-form";
 import { afterLoginUserChanged, api, ensureOk } from "@/shared/api";
 
 export const useUpdateCurrentUser = () => {
 	const queryClient = useQueryClient();
 	return useMutation({
-		mutationFn: async ({ imageFile, values }: { imageFile: File | null; values: UserValues }) => {
-			const json = await withUploadedImage(values, imageFile);
+		mutationFn: async (submission: UserValuesSubmission) => {
+			const json = await toUserValuesBody(submission);
 			await ensureOk(await api.api.me.$patch({ json }));
 		},
 		onSuccess: () => afterLoginUserChanged(queryClient),
