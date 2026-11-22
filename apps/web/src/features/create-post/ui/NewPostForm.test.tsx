@@ -2,32 +2,34 @@ import { MantineProvider } from "@mantine/core";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
+import type { AppType } from "@engineer-sns/api";
+import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 
 import { NewPostForm } from "./NewPostForm";
 
-vi.mock("@/shared/api/supabase", () => {
-	return { supabase: { auth: { getSession: async () => ({ data: { session: null } }) } } };
+const server = vi.hoisted(() => {
+	return { requests: [] as { path: string; body: unknown }[], status: 201 };
 });
 
-const requests: { path: string; body: unknown }[] = [];
-let status = 201;
+vi.mock("@/shared/api/http", async () => {
+	const { hc } = await import("hono/client");
+	return {
+		api: hc<AppType>("http://localhost", {
+			fetch: async (input: RequestInfo | URL, init?: RequestInit) => {
+				const request = new Request(input, init);
+				server.requests.push({
+					path: new URL(request.url).pathname,
+					body: await request.json(),
+				});
+				return Response.json({}, { status: server.status });
+			},
+		}),
+	};
+});
 
 beforeEach(() => {
-	requests.length = 0;
-	status = 201;
-	vi.stubGlobal("fetch", async (input: RequestInfo | URL, init?: RequestInit) => {
-		const request = new Request(input, init);
-		requests.push({ path: new URL(request.url).pathname, body: await request.json() });
-		return new Response(JSON.stringify({}), {
-			status,
-			headers: { "Content-Type": "application/json" },
-		});
-	});
-});
-
-afterEach(() => {
-	vi.unstubAllGlobals();
+	server.requests.length = 0;
+	server.status = 201;
 });
 
 const setup = (props: Parameters<typeof NewPostForm>[0]) => {
@@ -51,7 +53,7 @@ describe("NewPostForm", () => {
 		await user.click(screen.getByRole("button", { name: "投稿する" }));
 
 		await waitFor(() => expect(onPosted).toHaveBeenCalledOnce());
-		expect(requests).toEqual([{ path: "/api/posts", body: { content: "こんにちは" } }]);
+		expect(server.requests).toEqual([{ path: "/api/posts", body: { content: "こんにちは" } }]);
 		expect(screen.getByPlaceholderText("今どうしてる？")).toHaveValue("");
 	});
 
@@ -63,7 +65,7 @@ describe("NewPostForm", () => {
 		await user.click(screen.getByRole("button", { name: "コメントする" }));
 
 		await waitFor(() => expect(onPosted).toHaveBeenCalledOnce());
-		expect(requests).toEqual([
+		expect(server.requests).toEqual([
 			{ path: "/api/posts/parent-id/comments", body: { content: "いいですね" } },
 		]);
 		expect(screen.getByPlaceholderText("コメント")).toHaveValue("");
@@ -81,14 +83,14 @@ describe("NewPostForm", () => {
 	});
 
 	it("送れなかったら本文を残す", async () => {
-		status = 500;
+		server.status = 500;
 		const onPosted = vi.fn();
 		const { user } = setup({ onPosted });
 
 		await user.type(screen.getByPlaceholderText("今どうしてる？"), "残る本文");
 		await user.click(screen.getByRole("button", { name: "投稿する" }));
 
-		await waitFor(() => expect(requests).toHaveLength(1));
+		await waitFor(() => expect(server.requests).toHaveLength(1));
 		await waitFor(() => expect(screen.getByRole("button", { name: "投稿する" })).toBeEnabled());
 		expect(onPosted).not.toHaveBeenCalled();
 		expect(screen.getByPlaceholderText("今どうしてる？")).toHaveValue("残る本文");
