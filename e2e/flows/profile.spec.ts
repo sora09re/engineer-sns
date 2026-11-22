@@ -1,6 +1,6 @@
 import { deflateSync } from "node:zlib";
 
-import { expect, notification, test } from "../support/test";
+import { expect, notification, respondNotFoundFrom, test } from "../support/test";
 
 const solidPng = (size: number, [r, g, b]: [number, number, number]) => {
 	const crcTable = Array.from({ length: 256 }, (_, n) => {
@@ -101,4 +101,20 @@ test("存在しないユーザーのプロフィールは 404 を表示する", 
 	await expect(page.getByText("ページが見つかりません。")).toBeVisible();
 	await page.getByRole("link", { name: "ホームへ戻る" }).click();
 	await expect(page).toHaveTitle("ホーム | Engineer-SNS");
+});
+
+test("開いたあとにプロフィールを取り直して 404 になると、見つからないと表示する", async ({
+	page,
+	createUser,
+	signIn,
+}) => {
+	const other = await createUser();
+	await signIn(await createUser());
+	await page.goto(`/profile/${other.id}`);
+	await expect(page).toHaveTitle("プロフィール | Engineer-SNS");
+
+	await respondNotFoundFrom(page, `/api/users/${other.id}`);
+	await page.getByRole("button", { name: "フォロー", exact: true }).click();
+
+	await expect(page.getByText("ページが見つかりません。")).toBeVisible();
 });

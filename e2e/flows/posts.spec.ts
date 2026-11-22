@@ -1,4 +1,4 @@
-import { expect, notification, postCard, test } from "../support/test";
+import { expect, notification, postCard, respondNotFoundFrom, test } from "../support/test";
 
 test.beforeEach(async ({ page, createUser, signIn }) => {
 	await signIn(await createUser());
@@ -153,4 +153,18 @@ test("存在しない投稿は 404 を表示する", async ({ page }) => {
 	await expect(page.getByText("ページが見つかりません。")).toBeVisible();
 	await page.getByRole("link", { name: "ホームへ戻る" }).click();
 	await expect(page).toHaveTitle("ホーム | Engineer-SNS");
+});
+
+test("開いたあとに投稿を取り直して 404 になると、見つからないと表示する", async ({ page }) => {
+	const content = uniqueText("取り直すと消えている投稿");
+	await page.getByRole("main").getByPlaceholder("今どうしてる？").fill(content);
+	await page.getByRole("main").getByRole("button", { name: "投稿する" }).click();
+	await postCard(page, content).getByText(content).click();
+	await expect(page).toHaveTitle("投稿 | Engineer-SNS");
+	const postId = new URL(page.url()).pathname.split("/").at(-1);
+
+	await respondNotFoundFrom(page, `/api/posts/${postId}`);
+	await postCard(page, content).getByRole("button", { name: "いいね", exact: true }).click();
+
+	await expect(page.getByText("ページが見つかりません。")).toBeVisible();
 });
