@@ -32,7 +32,6 @@ describe("GET /api/posts/:postId", () => {
 				users: {
 					id: author.id,
 					created_at: expect.any(String),
-					email: "author@example.com",
 					name: "author",
 					updated_at: expect.any(String),
 					username: "author",

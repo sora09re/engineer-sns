@@ -183,3 +183,17 @@ describe("一覧の並び順", () => {
 		});
 	});
 });
+
+describe("一覧のユーザー", () => {
+	test("フォロワー一覧とフォロー一覧のユーザーに、メールアドレスを含めない", async () => {
+		await withRollback(async (db) => {
+			const { get, me, target } = await setup(db);
+			await follow(db, me.id, target.id);
+
+			for (const path of [`/api/users/${target.id}/followers`, `/api/users/${me.id}/followees`]) {
+				const [user] = (await (await get(path, me.id)).json()) as User[];
+				expect(user).not.toHaveProperty("email");
+			}
+		});
+	});
+});

@@ -5,10 +5,10 @@ import { IconCheck, IconX } from "@tabler/icons-react";
 import { ImageUpload, useUserValues } from "@/entities/user";
 import { useUpdateCurrentUser } from "../api/useUpdateCurrentUser";
 import { useImageFile } from "@/shared/lib";
-import type { User } from "@engineer-sns/shared";
+import type { LoginUser } from "@engineer-sns/shared";
 
 interface EditProfileModalProps {
-	currentUser: User;
+	currentUser: LoginUser;
 	opened: boolean;
 	onClose: () => void;
 }

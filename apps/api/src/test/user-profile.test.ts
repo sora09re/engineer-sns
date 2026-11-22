@@ -21,7 +21,6 @@ describe("GET /api/users/:userId", () => {
 			expect(await res.json()).toEqual({
 				id: target.id,
 				created_at: expect.any(String),
-				email: "target@example.com",
 				name: "target",
 				updated_at: expect.any(String),
 				username: "target",

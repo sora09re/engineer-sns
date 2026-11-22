@@ -1,13 +1,13 @@
 import { queryOptions } from "@tanstack/react-query";
 
-import type { ProfileType, User } from "@engineer-sns/shared";
+import type { LoginUser, ProfileType, User } from "@engineer-sns/shared";
 
 import { api, parse, parseOrNull, queryKeys } from "@/shared/api";
 
 export const currentUserQuery = () => {
 	return queryOptions({
 		queryKey: [...queryKeys.users, "current"],
-		queryFn: async (): Promise<User | null> => parse(await api.api.me.$get()),
+		queryFn: async (): Promise<LoginUser | null> => parse(await api.api.me.$get()),
 	});
 };
 

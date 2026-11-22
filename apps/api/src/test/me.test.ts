@@ -1,4 +1,4 @@
-import type { User } from "@engineer-sns/shared";
+import type { LoginUser } from "@engineer-sns/shared";
 import { describe, expect, test } from "vite-plus/test";
 
 import { setupApp } from "./app";
@@ -14,7 +14,7 @@ describe("GET /api/me", () => {
 			const res = await get("/api/me", me.id);
 
 			expect(res.status).toBe(200);
-			expect((await res.json()) as User).toMatchObject({
+			expect((await res.json()) as LoginUser).toMatchObject({
 				id: me.id,
 				name: "me",
 				username: "me",
@@ -54,9 +54,9 @@ describe("POST /api/me", () => {
 			const res = await send("POST", "/api/me", accountId, newUser);
 
 			expect(res.status).toBe(201);
-			expect((await res.json()) as User).toMatchObject({ id: accountId, ...newUser });
+			expect((await res.json()) as LoginUser).toMatchObject({ id: accountId, ...newUser });
 			const me = await get("/api/me", accountId);
-			expect((await me.json()) as User).toMatchObject({ id: accountId, ...newUser });
+			expect((await me.json()) as LoginUser).toMatchObject({ id: accountId, ...newUser });
 		});
 	});
 
@@ -120,7 +120,7 @@ describe("POST /api/me", () => {
 
 			expect(res.status).toBe(409);
 			expect(await res.json()).toEqual({ message: "新規ユーザー登録は済んでいます。" });
-			expect((await (await get("/api/me", me.id)).json()) as User).toMatchObject({
+			expect((await (await get("/api/me", me.id)).json()) as LoginUser).toMatchObject({
 				username: "me",
 			});
 		});
@@ -137,8 +137,8 @@ describe("PATCH /api/me", () => {
 
 			expect(res.status).toBe(200);
 			const expected = { id: me.id, name: "新しい名前", bio: "", username: "me" };
-			expect((await res.json()) as User).toMatchObject(expected);
-			expect((await (await get("/api/me", me.id)).json()) as User).toMatchObject(expected);
+			expect((await res.json()) as LoginUser).toMatchObject(expected);
+			expect((await (await get("/api/me", me.id)).json()) as LoginUser).toMatchObject(expected);
 		});
 	});
 
@@ -156,7 +156,7 @@ describe("PATCH /api/me", () => {
 
 			expect(res.status).toBe(422);
 			expect(await res.json()).toEqual({ message });
-			expect((await (await get("/api/me", me.id)).json()) as User).not.toHaveProperty(
+			expect((await (await get("/api/me", me.id)).json()) as LoginUser).not.toHaveProperty(
 				"location",
 				"大阪",
 			);

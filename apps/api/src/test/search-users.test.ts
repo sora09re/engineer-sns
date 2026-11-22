@@ -76,3 +76,19 @@ describe("GET /api/users/search", () => {
 		});
 	});
 });
+
+describe("検索結果のユーザー", () => {
+	test("メールアドレスを含めない", async () => {
+		await withRollback(async (db) => {
+			const { get } = await setupApp(db);
+			const me = await createUser(db, "me");
+			const word = uniqueWord();
+			await createUser(db, `${word}_user`);
+
+			const [user] = (await (await get(search(word), me.id)).json()) as User[];
+
+			expect(user).toMatchObject({ username: `${word}_user` });
+			expect(user).not.toHaveProperty("email");
+		});
+	});
+});
