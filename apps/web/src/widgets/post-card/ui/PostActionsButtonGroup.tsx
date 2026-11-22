@@ -8,22 +8,17 @@ import { useToggleLike } from "../api/useToggleLike";
 import type { PostType } from "@engineer-sns/shared";
 
 interface PostActionsButtonGroupProps {
-	currentUserId: string;
 	post: PostType;
 }
 
-export const PostActionsButtonGroup = ({ currentUserId, post }: PostActionsButtonGroupProps) => {
+export const PostActionsButtonGroup = ({ post }: PostActionsButtonGroupProps) => {
 	const { hovered: hoveredComments, ref: refComments } = useHover();
 	const { hovered: hoveredLikes, ref: refLikes } = useHover();
 	const toggleLike = useToggleLike();
 
-	const isLikedOnServer = post.likes.some((like) => {
-		return like.user_id === currentUserId;
-	});
-	const isLikedByCurrentUser = toggleLike.isPending ? toggleLike.variables.like : isLikedOnServer;
+	const isLikedByCurrentUser = toggleLike.isPending ? toggleLike.variables.like : post.is_liked;
 	const likeCount =
-		post.likes.length +
-		(isLikedByCurrentUser === isLikedOnServer ? 0 : isLikedByCurrentUser ? 1 : -1);
+		post.like_count + (isLikedByCurrentUser === post.is_liked ? 0 : isLikedByCurrentUser ? 1 : -1);
 
 	const commentsColor = hoveredComments ? "#228be6" : "black";
 	const likesColor = hoveredLikes ? "#37B24D" : isLikedByCurrentUser ? "#37B24D" : "black";

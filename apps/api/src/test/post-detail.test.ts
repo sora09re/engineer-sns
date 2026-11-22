@@ -16,17 +16,19 @@ describe("GET /api/posts/:postId", () => {
 				createdAt: "2026-02-03T04:05:06Z",
 			});
 			await createPost(db, { userId: me.id, content: "コメント", parentPostId: post.id });
-			const myLike = await like(db, me.id, post.id);
+			await like(db, me.id, post.id);
 
 			const res = await get(`/api/posts/${post.id}`, me.id);
 
 			expect(res.status).toBe(200);
 			expect(await res.json()).toEqual({
 				id: post.id,
+				can_delete: false,
 				comment_count: 1,
 				content: "見たい投稿",
 				created_at: "2026-02-03T04:05:06.000Z",
-				likes: [{ id: myLike.id, post_id: post.id, user_id: me.id }],
+				is_liked: true,
+				like_count: 1,
 				parent_post_id: null,
 				user_id: author.id,
 				users: {

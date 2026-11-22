@@ -1,4 +1,4 @@
-import type { Like, PostType } from "@engineer-sns/shared";
+import type { PostType } from "@engineer-sns/shared";
 import { and, eq, sql } from "drizzle-orm";
 
 import type { Db } from "../infrastructure/db/client";
@@ -74,9 +74,6 @@ export const follow = async (
 
 export const like = async (db: Db, userId: string, postId: string) => {
 	await request(db, "PUT", `/api/posts/${postId}/like`, userId);
-	const res = await request(db, "GET", `/api/posts/${postId}`, userId);
-	const { likes } = (await res.json()) as PostType;
-	return likes.find((row: Like) => row.user_id === userId)!;
 };
 
 export const updateProfile = async (

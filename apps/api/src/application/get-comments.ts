@@ -1,8 +1,9 @@
 import type { PostRepository } from "./ports";
-import type { PostSummary } from "./post-summary";
+import { type PostSummary, toPostSummary } from "./post-summary";
 
 export const getComments = (deps: { posts: PostRepository }) => {
-	return (postId: string): Promise<PostSummary[]> => {
-		return deps.posts.findCommentsOf(postId);
+	return async (input: { accountId: string; postId: string }): Promise<PostSummary[]> => {
+		const comments = await deps.posts.findCommentsOf(input.postId);
+		return comments.map((comment) => toPostSummary(comment, input.accountId));
 	};
 };

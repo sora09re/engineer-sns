@@ -46,7 +46,7 @@ export const ProfilePage = ({ userId }: ProfilePageProps) => {
 				</Center>
 			</Box>
 			{posts.map((post) => {
-				return <Post key={post.id} post={post} currentUserId={currentUser.id} />;
+				return <Post key={post.id} post={post} />;
 			})}
 			{isCurrentUser && (
 				<EditProfileModal

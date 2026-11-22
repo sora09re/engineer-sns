@@ -1,6 +1,6 @@
 import type { Post } from "../domain/post";
 import type { User, UserValues } from "../domain/user";
-import type { PostSummary } from "./post-summary";
+import type { PostRecord } from "./post-summary";
 import type { UserProfile } from "./user-profile";
 
 export type FollowRepository = {
@@ -24,16 +24,16 @@ export type UserRepository = {
 
 export type PostRepository = {
 	findById: (postId: string) => Promise<Post | null>;
-	findSummaryById: (postId: string) => Promise<PostSummary | null>;
-	findTopLevelByAuthors: (authorIds: string[]) => Promise<PostSummary[]>;
-	findCommentsOf: (postId: string) => Promise<PostSummary[]>;
-	findByAuthor: (authorId: string) => Promise<PostSummary[]>;
-	searchTopLevel: (keyword: string) => Promise<PostSummary[]>;
+	findSummaryById: (postId: string) => Promise<PostRecord | null>;
+	findTopLevelByAuthors: (authorIds: string[]) => Promise<PostRecord[]>;
+	findCommentsOf: (postId: string) => Promise<PostRecord[]>;
+	findByAuthor: (authorId: string) => Promise<PostRecord[]>;
+	searchTopLevel: (keyword: string) => Promise<PostRecord[]>;
 	create: (values: {
 		authorId: string;
 		content: string;
 		parentPostId?: string;
-	}) => Promise<PostSummary>;
+	}) => Promise<PostRecord>;
 	delete: (postId: string) => Promise<void>;
 };
 

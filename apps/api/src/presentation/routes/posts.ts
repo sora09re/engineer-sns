@@ -21,15 +21,24 @@ export const postsRoutes = ({ verifyAccessToken, useCases }: HttpAppDeps) => {
 			return c.json(timeline.map(toPostType));
 		})
 		.get("/search", auth, async (c) => {
-			const results = await useCases.searchPosts(c.req.query("q") ?? "");
+			const results = await useCases.searchPosts({
+				accountId: c.var.accountId,
+				keyword: c.req.query("q") ?? "",
+			});
 			return c.json(results.map(toPostType));
 		})
 		.get("/:postId", auth, async (c) => {
-			const post = await useCases.getPost(c.req.param("postId"));
+			const post = await useCases.getPost({
+				accountId: c.var.accountId,
+				postId: c.req.param("postId"),
+			});
 			return c.json(toPostType(post));
 		})
 		.get("/:postId/comments", auth, async (c) => {
-			const comments = await useCases.getComments(c.req.param("postId"));
+			const comments = await useCases.getComments({
+				accountId: c.var.accountId,
+				postId: c.req.param("postId"),
+			});
 			return c.json(comments.map(toPostType));
 		})
 		.post("/", auth, postBody, async (c) => {

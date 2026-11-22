@@ -45,7 +45,7 @@ export const SearchPage = () => {
 						</Center>
 					) : (
 						searchPostResults?.map((post) => {
-							return <Post key={post.id} post={post} currentUserId={currentUser.id} />;
+							return <Post key={post.id} post={post} />;
 						})
 					)}
 				</Tabs.Panel>

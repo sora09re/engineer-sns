@@ -1,7 +1,7 @@
 import { isValidPostContent } from "../domain/post";
 import { ValidationError } from "./errors";
 import type { PostRepository, UserRepository } from "./ports";
-import type { PostSummary } from "./post-summary";
+import { type PostSummary, toPostSummary } from "./post-summary";
 import { requireLoginUser } from "./require-login-user";
 
 export const createComment = (deps: { users: UserRepository; posts: PostRepository }) => {
@@ -17,10 +17,11 @@ export const createComment = (deps: { users: UserRepository; posts: PostReposito
 		if (!isValidPostContent(input.content)) {
 			throw new ValidationError("本文を入力してください。");
 		}
-		return deps.posts.create({
+		const post = await deps.posts.create({
 			authorId: input.accountId,
 			content: input.content,
 			parentPostId: parent.id,
 		});
+		return toPostSummary(post, input.accountId);
 	};
 };

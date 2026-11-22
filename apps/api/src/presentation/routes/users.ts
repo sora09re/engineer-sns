@@ -16,7 +16,10 @@ export const usersRoutes = ({ verifyAccessToken, useCases }: HttpAppDeps) => {
 			return c.json(toProfileType(profile));
 		})
 		.get("/:userId/posts", auth, async (c) => {
-			const posts = await useCases.getUserPosts(c.req.param("userId"));
+			const posts = await useCases.getUserPosts({
+				accountId: c.var.accountId,
+				userId: c.req.param("userId"),
+			});
 			return c.json(posts.map(toPostType));
 		})
 		.get("/:userId/follow", auth, async (c) => {
