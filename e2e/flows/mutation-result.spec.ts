@@ -12,7 +12,7 @@ test("プロフィールの編集で使われているユーザーネームに�
 
 	await page.getByRole("button", { name: "プロフィールを編集" }).click();
 	const dialog = page.getByRole("dialog", { name: "プロフィールを編集" });
-	await dialog.getByLabel("ユーザー名").fill(other.username);
+	await dialog.getByLabel("ユーザーネーム").fill(other.username);
 	await dialog.getByRole("button", { name: "保存" }).click();
 
 	await expect(notification(page, "このユーザーネームはすでに使われています。")).toBeVisible();

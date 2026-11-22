@@ -55,7 +55,7 @@ test("プロフィールを編集すると、プロフィールとサイドバ�
 	await dialog.getByLabel("名前").fill("編集後の名前");
 	await dialog.getByLabel("自己紹介").fill("編集後の自己紹介です。");
 	await dialog.getByLabel("場所").fill("Fukuoka");
-	await dialog.getByRole("button", { name: "保存" }).click();
+	await dialog.getByLabel("場所").press("Enter");
 
 	await expect(notification(page, "更新に成功しました！")).toBeVisible();
 	await expect(dialog).toBeHidden();
@@ -89,6 +89,28 @@ test("名前を空にすると、理由が表示されて保存できず、入�
 	await expect(save).toBeEnabled();
 	await save.click();
 	await expect(notification(page, "更新に成功しました！")).toBeVisible();
+});
+
+test("保存せずに閉じ、閉じ終わる前に開き直しても、入力は捨てられて今の値から始まる", async ({
+	page,
+	createUser,
+	signIn,
+}) => {
+	const user = await createUser();
+	await signIn(user);
+	await page.goto(`/profile/${user.id}`);
+
+	const open = page.getByRole("button", { name: "プロフィールを編集" });
+	const dialog = page.getByRole("dialog", { name: "プロフィールを編集" });
+	await open.click();
+	const name = dialog.getByLabel("名前");
+	const before = await name.inputValue();
+	await name.fill("保存しない名前");
+	await page.keyboard.press("Escape");
+	await expect(open).toBeFocused();
+	await page.keyboard.press("Enter");
+
+	await expect(dialog.getByLabel("名前")).toHaveValue(before);
 });
 
 test("プロフィール画像をアップロードできる", async ({ page, createUser, signIn }) => {
