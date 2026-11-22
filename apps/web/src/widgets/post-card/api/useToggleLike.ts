@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { api, ensureOk, queryKeys } from "@/shared/api";
+import { afterPostsChanged, api, ensureOk } from "@/shared/api";
 
 export const useToggleLike = () => {
 	const queryClient = useQueryClient();
@@ -10,6 +10,6 @@ export const useToggleLike = () => {
 			const args = { param: { postId } };
 			await ensureOk(await (like ? endpoint.$put(args) : endpoint.$delete(args)));
 		},
-		onSettled: () => queryClient.invalidateQueries({ queryKey: queryKeys.posts }),
+		onSettled: () => afterPostsChanged(queryClient),
 	});
 };
