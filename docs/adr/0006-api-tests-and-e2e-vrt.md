@@ -32,6 +32,16 @@
 - `fc.assert(fc.property(...))` を `vite-plus/test` の `it` の中で使う。`@fast-check/vitest` は使わない。pnpm の peer 依存の解決で `vite-plus/test` と別の Vitest の実体を読み込み、テストを集められずに落ちる。
 - 失敗すると fast-check が seed と縮めた反例を出す。直すときは、その反例を例のテストとして足す。
 
+## Mutation Testing
+
+- Stryker で、テストが見逃す変更（生き残ったミュータント）を探し、テストを足す手がかりにする。スコアは目安で、閾値で落とすことはしない（`thresholds.break` は設定しない）。CI でも動かさず、手元で `pnpm mutation` を流す。
+- 対象は純粋なロジック（`packages/shared/src/rules`、`apps/web` の `lib`）に絞る。API のテストは実 DB を使って直列に動くので、ミュータントごとに流すと遅すぎる。api の domain はほぼ shared のルールの再 export なので、対象にしない。
+- 設定はパッケージごとの `stryker.config.mjs` に置き、Stryker もそれぞれのパッケージに入れる。
+- テストは `command` ランナーで、ミュータントごとに `vp test run` を流す。`@stryker-mutator/vitest-runner` は、pnpm の peer 依存の解決で `vite-plus/test` とは別の Vitest の実体を読み込むことがあり、そのときは最初のテストの実行で落ちる。どちらの実体になるかはインストールのたびに変わる。`command` ランナーはテストごとのカバレッジ分析ができず、ミュータントごとにテストをすべて流すので、web は並列数を 2 に絞る（Vitest がそれぞれ複数のワーカーを使い、並列を増やすと時間切れになる）。
+- Stryker はサンドボックスにパッケージを写し、tsconfig の `extends` の相対パスを TypeScript の JS API で書き換える。TS 7 にはこの API がないので、`pnpm-workspace.yaml` の `packageExtensions` で `@stryker-mutator/core` にだけ TypeScript 5 を渡す。
+- `@stryker-mutator/typescript-checker`（型エラーになるミュータントを先に除く）は、同じ理由で TS 7 を読み込んで初期化に失敗するので使わない。型エラーになるミュータントも「殺された」と数えられるので、スコアは少し甘く出る。
+- 等価なミュータント（結果が変わらない変更）は、コードにコメントを書いて抑えない（`no-comments`）。残っていてよく、どうしても外すなら `stryker.config.mjs` の `mutate` で外す。通知の色のように、見た目だけが変わるミュータントも残してよい。
+
 ## E2E と VRT
 
 - E2E は動きを確かめ、合否の判定に使う。VRT は見た目を記録し、差分は人が見て判断する。問題がなければ `pnpm vrt:update` でベースラインを更新する。

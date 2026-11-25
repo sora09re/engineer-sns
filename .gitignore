@@ -41,3 +41,7 @@ pnpm-debug.log*
 # Playwright
 /playwright-report/
 /test-results/
+
+# Stryker
+.stryker-tmp/
+reports/

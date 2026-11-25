@@ -58,14 +58,17 @@ describe("notifyMutation", () => {
 			result = notifyMutation(mutation, "本文", { label: "投稿" });
 		});
 		expect(calls).toEqual(["本文"]);
-		expect(await notice("投稿中...")).toBeInTheDocument();
+		const pending = (await notice("投稿中...")).closest(".mantine-Notification-root");
+		expect(pending).toHaveTextContent("しばらくお待ちください。");
+		expect(pending?.querySelector(".mantine-Notification-closeButton")).toBeNull();
 
 		await act(async () => {
 			resolve();
 			await result;
 		});
 		expect(await result).toBe(true);
-		expect(await notice("投稿に成功しました！")).toBeInTheDocument();
+		const done = (await notice("投稿に成功しました！")).closest(".mantine-Notification-root");
+		expect(done?.querySelector(".mantine-Notification-title")?.textContent).toBe("成功");
 		expect(screen.queryByText("投稿中...")).not.toBeInTheDocument();
 	});
 
@@ -134,7 +137,10 @@ describe("notifyMutation", () => {
 			result = await notifyMutation(mutation, "値", { label: "更新" });
 		});
 		expect(result).toBe(false);
-		expect(await notice("そのユーザー名はすでに使われています。")).toBeInTheDocument();
+		const failed = (await notice("そのユーザー名はすでに使われています。")).closest(
+			".mantine-Notification-root",
+		);
+		expect(failed?.querySelector(".mantine-Notification-title")?.textContent).toBe("エラー");
 		expect(screen.queryByText("更新中...")).not.toBeInTheDocument();
 	});
 

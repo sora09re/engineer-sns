@@ -52,6 +52,7 @@ pnpm workspace のモノレポ（docs/adr/0002 参照）。
 pnpm check      # format / lint
 pnpm typecheck  # 型チェック（全パッケージ）
 pnpm test       # 単体テスト。API のテストは apps/api/.env.local の DATABASE_URL（ローカルの DB のみ）に対して、テストごとにロールバックして動く
+pnpm mutation   # Mutation Testing（Stryker）。packages/shared と apps/web の純粋なロジックが対象。結果は各パッケージの reports/mutation/index.html
 ```
 
 スキーマを変えたら（`supabase/migrations` に SQL を足したら）、`apps/api/src/infrastructure/db/schema.ts` も合わせて手で直す。
