@@ -9,7 +9,6 @@ const fence = "```";
 
 export const parseContent = (content: string): ParsedContent[] => {
 	const parts = content.split(fence);
-	let currentLanguage = "";
 	let offset = 0;
 
 	return parts.map((part, index) => {
@@ -17,17 +16,18 @@ export const parseContent = (content: string): ParsedContent[] => {
 		offset += part.length + fence.length;
 
 		let partContent = part;
+		let language = "";
 		if (index % 2 !== 0) {
 			const match = part.match(/^([a-zA-Z0-9]+)\n/);
 			if (match) {
-				currentLanguage = match[1];
+				language = match[1];
 				partContent = part.replace(match[0], "");
 			}
 		}
 
 		return {
 			content: partContent,
-			language: currentLanguage,
+			language,
 			offset: partOffset,
 			type: index % 2 === 0 ? "text" : "code",
 		};

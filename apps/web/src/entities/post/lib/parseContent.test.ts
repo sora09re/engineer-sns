@@ -39,6 +39,13 @@ describe("parseContent", () => {
 		]);
 	});
 
+	it("言語の指定がないコードブロックは、前のコードブロックの言語を引き継がない", () => {
+		const parts = parseContent("```ts\na\n```\n```\nb\n```");
+		const codes = parts.filter((part) => part.type === "code");
+
+		expect(codes.map((part) => part.language)).toEqual(["ts", ""]);
+	});
+
 	it("それぞれの部分に、元の本文の中で始まる位置を持たせる", () => {
 		const content = "前\n```ts\nx\n```\n後";
 
