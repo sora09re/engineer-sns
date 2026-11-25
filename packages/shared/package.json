@@ -7,9 +7,11 @@
 		"./rules": "./src/rules/index.ts"
 	},
 	"scripts": {
+		"test": "vp test",
 		"typecheck": "tsc -p ."
 	},
 	"devDependencies": {
+		"fast-check": "^4.11.0",
 		"typescript": "7.0.2"
 	}
 }
