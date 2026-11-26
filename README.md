@@ -23,21 +23,43 @@ https://engineer-sns.vercel.app/
 - TanStack Router / TanStack Query
 - TypeScript
 - Mantine
+- Hono（API サーバー） / Drizzle ORM
 - Supabase (PostgreSQL, Auth, Storage, RLS)
+
+# 構成
+
+pnpm workspace のモノレポ（docs/adr/0002 参照）。
+
+| ディレクトリ      | 内容                                                               |
+| ----------------- | ------------------------------------------------------------------ |
+| `apps/web`        | SPA（React + Vite）                                                |
+| `apps/api`        | API サーバー（Hono）。本番は Vercel Functions で `/api/*` を受ける |
+| `packages/shared` | FE と BE で共有するドメイン型                                      |
+| `api/`            | Vercel Functions の入口（`apps/api` を公開するだけ）               |
+| `supabase/`       | マイグレーション・シード・ローカルの Supabase の設定               |
+| `e2e/`            | E2E / VRT（Playwright）                                            |
 
 # ローカル開発
 
 1. GitHub OAuth App を作成し、コールバック URL に `http://127.0.0.1:54321/auth/v1/callback` を設定する
 2. `supabase/.env` に `SUPABASE_AUTH_EXTERNAL_GITHUB_CLIENT_ID` と `SUPABASE_AUTH_EXTERNAL_GITHUB_SECRET` を書く
-3. `pnpm exec supabase start` でローカルの Supabase を起動する（マイグレーションとシードが適用される）
-4. `.env.example` を `.env.local` にコピーし、`supabase status` に表示される URL と publishable key を設定する
-5. `pnpm dev` で http://localhost:5173 を開く
+3. `echo '[]' > supabase/signing_keys.json && pnpm exec supabase gen signing-key --algorithm ES256` で JWT の署名鍵を作る（初回のみ。`gen signing-key` は `supabase/signing_keys.json` に直接書き込み、ファイルがないとエラーになる）
+4. `pnpm exec supabase start` でローカルの Supabase を起動する（マイグレーションとシードが適用される）
+5. `apps/web/.env.example` と `apps/api/.env.example` をそれぞれ `.env.local` にコピーし、`supabase status` に表示される値を設定する
+6. `pnpm dev` で web（http://localhost:5173）と API（http://localhost:8787）を起動する。web の `/api` は API に転送される
 
-スキーマを変えたら `pnpm db:types` で `src/api/database.types.ts` を再生成する。生成に失敗したときはファイルを変更しない。追加の引数は `supabase gen types` に渡される（例: `pnpm db:types --workdir <dir>`）。
+```sh
+pnpm check      # format / lint
+pnpm typecheck  # 型チェック（全パッケージ）
+pnpm test       # 単体テスト。API のテストは apps/api/.env.local の DATABASE_URL（ローカルの DB のみ）に対して、テストごとにロールバックして動く
+pnpm mutation   # Mutation Testing（Stryker）。packages/shared と apps/web の純粋なロジックが対象。結果は各パッケージの reports/mutation/index.html
+```
+
+スキーマを変えたら（`supabase/migrations` に SQL を足したら）、`apps/api/src/infrastructure/db/schema.ts` も合わせて手で直す。
 
 # E2E / VRT
 
-ローカルの Supabase を起動した状態で実行する（Playwright。開発サーバーが動いていなければ自動で起動する）。
+ローカルの Supabase を起動した状態で実行する（Playwright）。web と API は毎回このチェックアウトのものを、開発用とは別のポート（web 5179、API 8788）で起動するので、`pnpm dev` を動かしたままでもよい。そのポートがほかで使われていると、エラーで止まる。
 
 ```sh
 pnpm exec playwright install chromium  # 初回のみ
@@ -47,6 +69,18 @@ pnpm vrt:update  # 見た目の差分を確認したうえで、基準のスク�
 ```
 
 - テスト用のアカウント（`e2e-*@example.com` / `vrt-*@example.com`）は実行のたびに作り直す。VRT は固定のデータ（`e2e/support/vrt-fixtures.ts`）だけを撮る
-- service role key は `supabase status` から取る。別のディレクトリから起動した Supabase を使うときは `E2E_SUPABASE_WORKDIR=<dir>` を付ける
+- service role key は `supabase status` から取る。別のディレクトリから起動した Supabase を使うときは `E2E_SUPABASE_WORKDIR=<dir>` を付けるか、`E2E_SUPABASE_SERVICE_ROLE_KEY` で直接渡す
 - ほかのローカル Supabase などで Docker の負荷が高いと、テストが止まることがある。使っていないものは止めてから実行する
 - スクリーンショットはフォントの描画が OS で変わるので、基準は macOS で作っている
+
+# CI
+
+GitHub Actions（`.github/workflows/ci.yml`）で、PR ごとに lint・型チェック・単体テスト・E2E を流す。VRT は手元だけで流す。
+
+ワークフローが使うアクションは `.github/workflows/actions.lock` でコミットに固定している（[workflow dependency lockfiles](https://docs.github.com/ja/actions/concepts/security/workflow-dependency-lockfiles)）。アクションを足したり版を変えたりしたら、ロックファイルを更新してからコミットする。手で編集しない。Dependabot の PR はロックファイルも更新する。
+
+```sh
+gh extension install github/gh-actions-lock  # 初回のみ
+gh actions-lock           # ワークフローのアクションを固定し、ロックファイルを更新する
+gh actions-lock --verify  # 確認だけ（CI でも流している）
+```

@@ -1,4 +1,4 @@
-import { expect, notification, postCard, test } from "../support/test";
+import { expect, notification, postCard, respondNotFoundFrom, test } from "../support/test";
 
 test.beforeEach(async ({ page, createUser, signIn }) => {
 	await signIn(await createUser());
@@ -46,7 +46,6 @@ test("コードブロックはハイライトして表示する", async ({ page 
 
 	const code = postCard(page, content).locator("pre");
 	await expect(code).toContainText("const answer: number = 42;");
-	// トークンごとに色が付いている
 	expect(await code.locator("span").count()).toBeGreaterThan(1);
 });
 
@@ -98,10 +97,74 @@ test("自分の投稿はメニューから削除できる", async ({ page }) => 
 	await expect(postCard(page, content)).toHaveCount(0);
 });
 
+test("投稿の詳細で投稿を削除すると、前のページに戻る", async ({ page }) => {
+	const content = uniqueText("詳細で削除する投稿");
+	await page.getByRole("main").getByPlaceholder("今どうしてる？").fill(content);
+	await page.getByRole("main").getByRole("button", { name: "投稿する" }).click();
+	await postCard(page, content).getByText(content).click();
+	await expect(page).toHaveTitle("投稿 | Engineer-SNS");
+
+	await postCard(page, content).getByRole("button", { name: "投稿メニュー" }).click();
+	await page.getByRole("menuitem", { name: "削除" }).click();
+
+	await expect(notification(page, "削除しました。")).toBeVisible();
+	await expect(page).toHaveTitle("ホーム | Engineer-SNS");
+	await expect(postCard(page, content)).toHaveCount(0);
+});
+
+test("前のページがないとき、投稿の詳細で投稿を削除するとタイムラインに行く", async ({ page }) => {
+	const content = uniqueText("直接開いて削除する投稿");
+	await page.getByRole("main").getByPlaceholder("今どうしてる？").fill(content);
+	await page.getByRole("main").getByRole("button", { name: "投稿する" }).click();
+	await postCard(page, content).getByText(content).click();
+	await expect(page).toHaveTitle("投稿 | Engineer-SNS");
+	await page.goto(page.url());
+
+	await postCard(page, content).getByRole("button", { name: "投稿メニュー" }).click();
+	await page.getByRole("menuitem", { name: "削除" }).click();
+
+	await expect(page).toHaveURL(/\/$/);
+	await expect(page).toHaveTitle("ホーム | Engineer-SNS");
+	await expect(postCard(page, content)).toHaveCount(0);
+});
+
+test("投稿の詳細でコメントを削除しても、詳細のページに残る", async ({ page }) => {
+	const content = uniqueText("コメントを消す投稿");
+	const comment = uniqueText("消すコメント");
+	await page.getByRole("main").getByPlaceholder("今どうしてる？").fill(content);
+	await page.getByRole("main").getByRole("button", { name: "投稿する" }).click();
+	await postCard(page, content).getByText(content).click();
+	await page.getByPlaceholder("コメント").fill(comment);
+	await page.getByRole("button", { name: "コメントする" }).click();
+	await expect(postCard(page, comment)).toBeVisible();
+
+	await postCard(page, comment).getByRole("button", { name: "投稿メニュー" }).click();
+	await page.getByRole("menuitem", { name: "削除" }).click();
+
+	await expect(notification(page, "削除しました。")).toBeVisible();
+	await expect(postCard(page, comment)).toHaveCount(0);
+	await expect(page).toHaveTitle("投稿 | Engineer-SNS");
+	await expect(postCard(page, content)).toBeVisible();
+});
+
 test("存在しない投稿は 404 を表示する", async ({ page }) => {
 	await page.goto("/posts/00000000-0000-0000-0000-000000000000");
 
 	await expect(page.getByText("ページが見つかりません。")).toBeVisible();
 	await page.getByRole("link", { name: "ホームへ戻る" }).click();
 	await expect(page).toHaveTitle("ホーム | Engineer-SNS");
+});
+
+test("開いたあとに投稿を取り直して 404 になると、見つからないと表示する", async ({ page }) => {
+	const content = uniqueText("取り直すと消えている投稿");
+	await page.getByRole("main").getByPlaceholder("今どうしてる？").fill(content);
+	await page.getByRole("main").getByRole("button", { name: "投稿する" }).click();
+	await postCard(page, content).getByText(content).click();
+	await expect(page).toHaveTitle("投稿 | Engineer-SNS");
+	const postId = new URL(page.url()).pathname.split("/").at(-1);
+
+	await respondNotFoundFrom(page, `/api/posts/${postId}`);
+	await postCard(page, content).getByRole("button", { name: "いいね", exact: true }).click();
+
+	await expect(page.getByText("ページが見つかりません。")).toBeVisible();
 });

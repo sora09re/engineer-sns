@@ -1,7 +1,3 @@
-/**
- * E2E / VRT 用の Supabase 操作。テスト用のアカウントとデータを service role で直接作る。
- * service role は RLS を無視できるので、ローカルの Supabase 以外では絶対に動かさない。
- */
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 
@@ -29,11 +25,6 @@ const readDotEnv = (path: string): Record<string, string> => {
 
 export const SERVICE_ROLE_KEY_ENV = "E2E_SUPABASE_SERVICE_ROLE_KEY";
 
-/**
- * supabase status から service role key を取る。E2E_SUPABASE_WORKDIR があれば --workdir に渡す。
- * 同期実行なので、ワーカーで呼ぶとテストのタイムアウトも効かなくなる。
- * global setup で 1 回だけ呼び、結果は環境変数でワーカーに渡す。
- */
 const readServiceRoleKey = (): string => {
 	if (process.env[SERVICE_ROLE_KEY_ENV]) {
 		return process.env[SERVICE_ROLE_KEY_ENV];
@@ -55,12 +46,12 @@ export const supabaseEnv = (): SupabaseEnv => {
 	if (cachedEnv) {
 		return cachedEnv;
 	}
-	const dotEnv = readDotEnv(".env.local");
+	const dotEnv = readDotEnv("apps/web/.env.local");
 	const url = process.env.VITE_SUPABASE_URL ?? dotEnv.VITE_SUPABASE_URL;
 	const anonKey = process.env.VITE_SUPABASE_ANON_KEY ?? dotEnv.VITE_SUPABASE_ANON_KEY;
 	if (!url || !anonKey) {
 		throw new Error(
-			".env.local に VITE_SUPABASE_URL と VITE_SUPABASE_ANON_KEY を設定してください。",
+			"apps/web/.env.local に VITE_SUPABASE_URL と VITE_SUPABASE_ANON_KEY を設定してください。",
 		);
 	}
 	const { hostname } = new URL(url);
@@ -90,7 +81,6 @@ const request = async <T>(path: string, init: RequestInit & { key?: "anon" | "se
 	return (text ? JSON.parse(text) : undefined) as T;
 };
 
-/** テストで作るアカウントのメールアドレスの接頭辞。後片付けはこれで見分ける */
 export const TEST_EMAIL_PREFIXES = ["e2e-", "vrt-"] as const;
 
 export interface TestAccount {
@@ -108,7 +98,6 @@ export const createAccount = async (email: string, id?: string): Promise<TestAcc
 	return { id: user.id, email, password };
 };
 
-/** テスト用のアカウント（e2e-* / vrt-*）をすべて消す。ユーザーや投稿は CASCADE で消える */
 export const deleteTestAccounts = async () => {
 	for (let page = 1; ; page++) {
 		const { users } = await request<{ users: { id: string; email?: string }[] }>(
@@ -126,7 +115,6 @@ export const deleteTestAccounts = async () => {
 	}
 };
 
-/** service role で行を入れる（RLS を通さずにフィクスチャを作るため） */
 export const insertRows = async (table: string, rows: Record<string, unknown>[]) => {
 	await request(`/rest/v1/${table}`, {
 		method: "POST",
@@ -150,7 +138,6 @@ export const signInWithPassword = async (account: TestAccount) => {
 	});
 };
 
-/** supabase-js がセッションを保存する localStorage のキー（sb-<ホスト名の先頭>-auth-token） */
 export const sessionStorageKey = () => {
 	return `sb-${new URL(supabaseEnv().url).hostname.split(".")[0]}-auth-token`;
 };

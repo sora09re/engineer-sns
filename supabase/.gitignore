@@ -6,3 +6,6 @@
 .env.keys
 .env.local
 .env.*.local
+
+# JWT の署名鍵（秘密鍵）。supabase gen signing-key で各自作る
+signing_keys.json

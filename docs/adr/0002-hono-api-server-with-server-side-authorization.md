@@ -1,0 +1,34 @@
+# Hono の API サーバーに分離し、認可をサーバー側に移す
+
+ADR 0001 では API サーバーを置かず、クライアントから supabase-js で DB に直接アクセスし、Postgres の RLS で認可していた。今回、認可と業務ロジックを TypeScript で書けるようにし、将来は Supabase への依存を減らせるようにするため、Hono の API サーバー（`apps/api`）を置いて FE と BE を分ける。リポジトリは pnpm workspace のモノレポ（`apps/web`、`apps/api`、`packages/shared`）にする。
+
+- **認証**は Supabase Auth（GitHub OAuth）のまま、ログインはフロントで行う。API にはアクセストークンを `Authorization: Bearer` で送り、API は JWKS（JWT signing keys、ES256）で検証して `sub` をアカウント ID とする。
+- **認可**は API で行う。DB には Drizzle と postgres.js で直接つなぐ（本番は Supavisor のトランザクションモード）。
+- **契約**は Hono RPC（`hc`）で型を共有する。フロントで API を呼べる場所は、これまでどおりデータアクセス層（`apps/web/src/api/`）だけとし、0001 で決めたとおり中身だけを差し替える。（[0003](./0003-feature-sliced-design-for-web.md) で、FSD の各スライスの `api` セグメントに改めた）
+- **API の中はオニオンアーキテクチャ**にする。依存は内側にだけ向ける（presentation / infrastructure → application → domain）。
+  - `domain`: エンティティとルール。外側に依存しない（web と共有する入力のルールは `packages/shared` の `rules` に置き、domain より内側として扱う。[0008](./0008-share-input-rules-in-packages-shared.md)）
+  - `application`: ユースケースと、外側に求めるもの（ports）。一覧などは読み取りモデル（例: `PostSummary`）で返す
+  - `infrastructure`: ports の実装（Drizzle、JWKS での検証）
+  - `presentation`: Hono のルートとミドルウェア。読み取りモデルを API のレスポンスの形（`packages/shared` の `PostType`）に変換する
+  - `app.ts`: adapter を選んで組み立てる唯一の場所。どのユースケースにどの port を渡すかは `application/use-cases.ts` の `createUseCases` にまとめ、presentation はその戻り値の型（`UseCases`）を受け取る。ユースケースは `(deps) => (input) => result` の関数で、クラスや DI コンテナは使わない
+- **デプロイ**は SPA と同じ Vercel プロジェクトの Functions（Node.js ランタイム）にする。`/api/*` を同一オリジンで受けるので CORS は要らない。
+- 移行は機能ごとに PR を分けて段階的に進める。移行中は RLS を念のための防御として残し、最後にテーブルへの `anon` / `authenticated` の権限と、Storage への直接アップロードのポリシーを外して、フロントから DB と Storage に直接アクセスできないようにする（`supabase/migrations/20261115000000_revoke_direct_access.sql`）。フロントで supabase-js を使うのはログインだけになる。
+
+## Considered Options
+
+- **RLS を残し、API はユーザーの JWT を付けて supabase-js を呼ぶ**: 移行は最小だが、API がほぼ中継になり、0001 で見送った理由（移しても中身が変わらない）がそのまま残る。
+- **サービスロールの supabase-js で DB にアクセスする**: クエリビルダーを流用できるが、Supabase への依存が減らない。
+- **HS256 の共有シークレットで JWT を検証する**: 手軽だが、秘密情報を API にも渡すことになり、Supabase でも非推奨になりつつある。
+- **OpenAPI（`@hono/zod-openapi`）でクライアントを生成する**: 別のクライアントが増えたら検討する。いまはフロントだけなので Hono RPC で足りる。
+- **層を分けず、ルートとクエリだけで組む**: 読み取りが中心のいまは薄くて済むが、RLS から移す認可のルールの置き場所が決まらず、移行の途中でルールが散らばる。読み取りも含めて全面的にオニオンにし、層を一貫させることにした。
+- **Turborepo**: アプリが 2 つだけなので入れず、pnpm workspace と Vite+ で回す。
+
+## Consequences
+
+- スキーマの正は引き続き `supabase/migrations` の SQL とする。`apps/api/src/infrastructure/db/schema.ts` は手で保つ写しなので、マイグレーションを変えたら合わせて直す。`drizzle-kit pull` の出力は auth スキーマへの参照が壊れるため使わない。
+- 認可のルールの正は API（TypeScript）で、API 側のテストで押さえる。テーブルの RLS のポリシーは消さずに残す。テーブルの権限がないので普段は使われないが、誤って権限を付け直しても本人の行に絞られる。ポリシーを消すと Supabase の Security Advisor が「RLS Enabled No Policy」と指摘する。ポリシーは移行の時点のまま更新しないので、API のルールと食い違っても直さない。
+- `public` に新しく作るテーブル・シーケンス・関数には、`anon` / `authenticated` の権限が付かない（`postgres` のロールが作るもの。関数は `PUBLIC` の実行権限も付かない）。フロントから直接触れるものを足すときは、明示的に `grant` する。
+- ローカルでも JWT signing keys が要る。`supabase/signing_keys.json` は各自 `supabase gen signing-key` で作る。本番の Supabase プロジェクトも signing keys に移行しておく必要がある。
+- 読み取りでも層を経由するので、一覧のような単純な取得でもファイルが増える。タイムラインの定義（自分とフォローしているユーザーのコメントでない投稿）はユースケースに書くため、SQL が 1 本から 2 本（フォローの取得と投稿の取得）に増える。
+- API のテストは全層を組み立てた app を HTTP から試すので、層の中を組み替えてもテストは変わらない。
+- プロフィール画像は、API が Storage の署名付きのアップロード URL を発行し、フロントがそこへ直接アップロードする（ファイルは API を通さない）。置き場所（`{accountId}/` 配下）、画像形式、サイズのルールは API に置く。発行には Supabase の secret key が要るので、API の環境変数に `SUPABASE_SECRET_KEY` を置く。Storage は supabase-js を使わず REST で呼び、Supabase に依存する箇所を `infrastructure/storage/` に閉じ込める。

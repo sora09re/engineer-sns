@@ -1,0 +1,19 @@
+{
+	"name": "@engineer-sns/shared",
+	"private": true,
+	"type": "module",
+	"exports": {
+		".": "./src/index.ts",
+		"./rules": "./src/rules/index.ts"
+	},
+	"scripts": {
+		"test": "vp test",
+		"typecheck": "tsc -p .",
+		"mutation": "stryker run"
+	},
+	"devDependencies": {
+		"@stryker-mutator/core": "^10.1.1",
+		"fast-check": "^4.11.0",
+		"typescript": "7.0.2"
+	}
+}
