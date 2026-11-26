@@ -10,6 +10,7 @@
 		"comments": "node lint/comments.mts",
 		"typecheck": "tsc -p . && pnpm -r typecheck",
 		"test": "pnpm -r test",
+		"mutation": "pnpm -r --workspace-concurrency=1 mutation",
 		"e2e": "playwright test --project=e2e",
 		"vrt": "playwright test --project=vrt-desktop",
 		"vrt:update": "playwright test --project=vrt-desktop --update-snapshots"

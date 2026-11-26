@@ -16,3 +16,7 @@ peerDependencyRules:
   allowedVersions:
     vite: "*"
     vitest: "*"
+packageExtensions:
+  "@stryker-mutator/core":
+    dependencies:
+      typescript: "5.9.3"
