@@ -1,6 +1,6 @@
 # API・web のテストと E2E・VRT の動かし方
 
-テストは、API のテスト（Vitest）、web のテスト（Vitest）、E2E（Playwright）、VRT（Playwright のスクリーンショット）の 4 つにする。web のテスト以外は、ローカルの Supabase（`pnpm exec supabase start`）が起動している前提で動く。
+テストは、API のテスト（Vitest）、web のテスト（Vitest）、shared のテスト（Vitest）、E2E（Playwright）、VRT（Playwright のスクリーンショット）の 5 つにする。web と shared のテスト以外は、ローカルの Supabase（`pnpm exec supabase start`）が起動している前提で動く。
 
 ## API のテスト
 
@@ -20,6 +20,17 @@
 - そのため、テストする module から `shared/api/http.ts`・`shared/api/supabase.ts` を読み込まない。supabase-js のクライアントは、読み込んだ時点で環境変数がないとエラーになる。レスポンスの検査は `shared/api/response.ts` に置く。
 - `@/shared/api` を経由すると、どちらも間接的に読み込まれる。そこで `apps/web/vitest-setup.ts` で両方を差し替え、使うとこの ADR を指すエラーで落とす。API を呼ぶ部品（フォームなど）を試すときは、テストで `@/shared/api/http` を `vi.mock` し、`fetch` を差し替えた Hono のクライアント（`hc<AppType>`）を渡す。送り先と本文はそこで確かめる。
 - 部品のテストで済ませず、変えた挙動が実際のページに出ることは E2E でも確かめる。API の結果を変えたいときは、`respondNotFoundFrom` のように `page.route` で差し替える。
+
+## shared のテスト
+
+- `packages/shared/src/rules/`（0008）の入力のルールを、ルールのファイルの隣（`rules/*.test.ts`）で直接試す。ルールは純粋な関数なので、DB も API のサーバーも使わない。
+- API のテストは HTTP から試すので、ルールの境界（自己紹介の上限ちょうどと 1 文字超え、空白だけの必須の項目など）を細かく押さえるのには向かない。境界はここで押さえる。API のテストでは、ルールが API に組み込まれていることを確かめれば足りる。
+
+## Property-based Testing
+
+- 入力の組み合わせが多い純粋な関数（入力のルール、投稿の本文の `parseContent`）は、例に加えて fast-check で性質を確かめる。境界の値は、性質に任せず例のテストとしても書く。
+- `fc.assert(fc.property(...))` を `vite-plus/test` の `it` の中で使う。`@fast-check/vitest` は使わない。pnpm の peer 依存の解決で `vite-plus/test` と別の Vitest の実体を読み込み、テストを集められずに落ちる。
+- 失敗すると fast-check が seed と縮めた反例を出す。直すときは、その反例を例のテストとして足す。
 
 ## E2E と VRT
 
