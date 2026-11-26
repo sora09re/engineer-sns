@@ -9,7 +9,6 @@ import { getPost } from "./get-post";
 import { getTimeline } from "./get-timeline";
 import { getUserPosts } from "./get-user-posts";
 import { getUserProfile } from "./get-user-profile";
-import { isFollowing } from "./is-following";
 import { issueProfileImageUpload } from "./issue-profile-image-upload";
 import { likePost } from "./like-post";
 import type {
@@ -46,7 +45,6 @@ export const createUseCases = (ports: Ports) => {
 		deletePost: deletePost(ports),
 		likePost: likePost(ports),
 		unlikePost: unlikePost(ports),
-		isFollowing: isFollowing(ports),
 		followUser: followUser(ports),
 		unfollowUser: unfollowUser(ports),
 		getFollowers: getFollowers(ports),

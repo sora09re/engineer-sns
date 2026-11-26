@@ -1,7 +1,7 @@
 import { Box, Tabs } from "@mantine/core";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
-import { followeesQuery, followersQuery, useCurrentUser } from "@/entities/user";
+import { followeesQuery, followersQuery, userProfileDetail } from "@/entities/user";
 import { UserItem } from "@/widgets/user-card";
 
 interface FollowsPageProps {
@@ -9,7 +9,7 @@ interface FollowsPageProps {
 }
 
 export const FollowsPage = ({ userId }: FollowsPageProps) => {
-	const currentUser = useCurrentUser();
+	userProfileDetail.useData(userId);
 	const { data: followers } = useSuspenseQuery(followersQuery(userId));
 	const { data: followees } = useSuspenseQuery(followeesQuery(userId));
 
@@ -22,12 +22,12 @@ export const FollowsPage = ({ userId }: FollowsPageProps) => {
 				</Tabs.List>
 				<Tabs.Panel value="followers">
 					{followers.map((user) => {
-						return <UserItem key={user.id} propsUser={user} currentUserId={currentUser.id} />;
+						return <UserItem key={user.id} propsUser={user} />;
 					})}
 				</Tabs.Panel>
 				<Tabs.Panel value="following">
 					{followees.map((user) => {
-						return <UserItem key={user.id} propsUser={user} currentUserId={currentUser.id} />;
+						return <UserItem key={user.id} propsUser={user} />;
 					})}
 				</Tabs.Panel>
 			</Tabs>

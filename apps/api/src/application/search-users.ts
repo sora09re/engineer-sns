@@ -1,11 +1,12 @@
-import type { User } from "../domain/user";
-import type { UserRepository } from "./ports";
+import type { FollowRepository, UserRepository } from "./ports";
+import { type UserView, viewUsers } from "./user-view";
 
-export const searchUsers = (deps: { users: UserRepository }) => {
-	return async (keyword: string): Promise<User[]> => {
-		if (!keyword.trim()) {
+export const searchUsers = (deps: { users: UserRepository; follows: FollowRepository }) => {
+	return async (input: { accountId: string; keyword: string }): Promise<UserView[]> => {
+		if (!input.keyword.trim()) {
 			return [];
 		}
-		return deps.users.search(keyword);
+		const users = await deps.users.search(input.keyword);
+		return viewUsers(deps, { accountId: input.accountId, users });
 	};
 };

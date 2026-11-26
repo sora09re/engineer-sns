@@ -37,7 +37,7 @@ export const ProfilePage = ({ userId }: ProfilePageProps) => {
 							プロフィールを編集
 						</Button>
 					) : (
-						<FollowButton userId={userId} />
+						<FollowButton user={profile} />
 					)}
 				</Center>
 			</Box>

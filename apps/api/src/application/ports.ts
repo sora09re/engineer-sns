@@ -1,7 +1,7 @@
 import type { Post } from "../domain/post";
 import type { User, UserValues } from "../domain/user";
 import type { PostRecord } from "./post-summary";
-import type { UserProfile } from "./user-profile";
+import type { UserProfileRecord } from "./user-profile";
 
 export type FollowRepository = {
 	findFolloweeIds: (followerId: string) => Promise<string[]>;
@@ -13,7 +13,7 @@ export type FollowRepository = {
 export type UserRepository = {
 	exists: (userId: string) => Promise<boolean>;
 	findById: (userId: string) => Promise<User | null>;
-	findProfile: (userId: string) => Promise<UserProfile | null>;
+	findProfile: (userId: string) => Promise<UserProfileRecord | null>;
 	findFollowersOf: (userId: string) => Promise<User[]>;
 	findFolloweesOf: (userId: string) => Promise<User[]>;
 	search: (keyword: string) => Promise<User[]>;

@@ -1,33 +1,32 @@
 import { Button } from "@mantine/core";
-import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+
+import type { UserView } from "@engineer-sns/shared";
 
 import { notifyMutation } from "@/shared/lib";
 
-import { isFollowingQuery } from "../api/isFollowingQuery";
 import { useToggleFollow } from "../api/useToggleFollow";
 
 import classes from "./FollowButton.module.css";
 
 interface FollowButtonProps {
-	userId: string;
+	user: Pick<UserView, "id" | "is_following" | "can_follow">;
 }
 
-export const FollowButton = ({ userId }: FollowButtonProps) => {
+export const FollowButton = ({ user }: FollowButtonProps) => {
 	const [label, setLabel] = useState("フォロー中");
-	const { data: isFollowing, error } = useQuery(isFollowingQuery(userId));
 	const toggleFollow = useToggleFollow();
 
-	if (error) {
-		return <div>エラーが発生しました: {error.message}</div>;
+	if (!user.can_follow) {
+		return null;
 	}
 
 	const handleToggle = (follow: boolean) => {
 		const label = follow ? "フォロー" : "フォロー解除";
-		void notifyMutation(toggleFollow, { follow, userId }, { label, report: "failure" });
+		void notifyMutation(toggleFollow, { follow, userId: user.id }, { label, report: "failure" });
 	};
 
-	if (isFollowing) {
+	if (user.is_following) {
 		return (
 			<Button
 				onMouseEnter={() => {
@@ -52,7 +51,7 @@ export const FollowButton = ({ userId }: FollowButtonProps) => {
 
 	return (
 		<Button
-			loading={toggleFollow.isPending || isFollowing === undefined}
+			loading={toggleFollow.isPending}
 			onClick={(event) => {
 				event.stopPropagation();
 				handleToggle(true);

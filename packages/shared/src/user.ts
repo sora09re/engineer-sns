@@ -10,6 +10,11 @@ export type User = {
 	website?: string;
 };
 
+export type UserView = User & {
+	can_follow: boolean;
+	is_following: boolean;
+};
+
 export type LoginUser = User & {
 	email: string;
 };
